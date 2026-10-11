@@ -1,0 +1,19 @@
+KYF37 ROM
+Copyright 2026 PabloTToledano
+
+Licensing summary
+-----------------
+  documentation: Apache License 2.0 (see LICENSE).
+* Patches to the Linux kernel and kernel modules (device-inspection/*kernel*, kernel-port-research/*.patch): GNU GPL v2, as derivative
+  works of Linux.
+* Patches against AOSP / LineageOS sources follow the licence of the file they modify (mostly Apache 2.0).
+
+Not included and not licensed by this repository
+------------------------------------------------
+* Kyocera proprietary firmware, system images, apps, blobs and artwork.
+* Magisk (GPL-3.0), TT9 (Apache-2.0), microG (Apache-2.0), TWRP (GPL-3.0 / Apache-2.0): obtained from their own projects.
+* Fonts used to generate the outer-screen bitmap font: DejaVu Sans (free licence) and Roboto Condensed (Apache-2.0).
+* Signing keys of any kind. They are never committed.
+
+The release artifacts (ROM installer, recovery images) are built from the above plus files extracted from the author's own phone and are
+provided for the author's convenience and for research. No warranty of any kind.
