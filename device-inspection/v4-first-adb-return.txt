@@ -1,0 +1,8 @@
+3.7.0_9-0
+
+5.1.1
+
+
+
+Linux localhost 3.10.49 #1 SMP PREEMPT Thu May 30 02:12:55 JST 2019 armv7l GNU/Linux
+

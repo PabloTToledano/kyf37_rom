@@ -1,0 +1,97 @@
+package android.app;
+
+import android.content.pm.ApplicationInfo;
+import android.graphics.*;
+import android.view.*;
+import android.widget.*;
+
+/** Shared physical-key guide for system activities. @hide */
+public final class Kyf37SystemKeyGuide extends View {
+    private static final String TAG = "kyf37-system-key-guide";
+    private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private Kyf37SystemKeyGuide(Activity a) {
+        super(a); setTag(TAG); setFocusable(false);
+        setContentDescription("Top left: Back. Top right: Menu. Center: Select. Bottom left: Pointer. Bottom right: Home.");
+    }
+    public static boolean supports(Activity a) {
+        if (!"kyf37".equals(android.os.Build.DEVICE)) return false;
+        String pkg = a.getPackageName();
+        String activity = a.getClass().getName();
+        if (activity.contains("ConfirmLock") || activity.contains("ChooseLock")
+                || activity.contains("ConfirmCredential") || activity.contains("Biometric")) return false;
+        // These apps supply context-sensitive guides of their own.
+        if (pkg.startsWith("jp.kyocera.") || pkg.equals("org.kyf37.home")
+                || pkg.equals("org.kyf37.dialer") || pkg.equals("org.kyf37.dialerxx")
+                || pkg.equals("org.kyf37.messages") || pkg.equals("org.kyf37.contacts")
+                || pkg.equals("org.kyf37.phonesettings")
+                || pkg.equals("com.android.systemui")) return false;
+        // Some original ports use com.kyocera/com.felicanetworks package names.
+        // Their asset marker identifies an app-owned guide regardless of prefix.
+        try {
+            a.getAssets().open("kyf37-native-softkeys/package.txt").close();
+            return false;
+        } catch (java.io.IOException absent) { }
+        return (a.getApplicationInfo().flags & (ApplicationInfo.FLAG_SYSTEM
+                | ApplicationInfo.FLAG_UPDATED_SYSTEM_APP)) != 0;
+    }
+    public static void install(Activity a) {
+        if (!supports(a)) return;
+        FrameLayout content = a.findViewById(android.R.id.content);
+        if (content == null || content.findViewWithTag(TAG) != null || content.getChildCount() == 0) return;
+        // A real layout reservation keeps the last row and IME above the guide.
+        LinearLayout column = new LinearLayout(a); column.setOrientation(LinearLayout.VERTICAL);
+        FrameLayout body = new FrameLayout(a);
+        while (content.getChildCount() > 0) {
+            View child = content.getChildAt(0);
+            ViewGroup.LayoutParams params = child.getLayoutParams();
+            content.removeViewAt(0); body.addView(child, params);
+        }
+        column.addView(body, new LinearLayout.LayoutParams(-1, 0, 1));
+        column.addView(new Kyf37SystemKeyGuide(a), new LinearLayout.LayoutParams(-1,
+                Math.round(60 * a.getResources().getDisplayMetrics().density)));
+        content.addView(column, new FrameLayout.LayoutParams(-1, -1));
+    }
+    @Override protected void onDraw(Canvas c) {
+        float d = getResources().getDisplayMetrics().density;
+        c.save();
+        c.clipRect(0, 0, getWidth(), getHeight());
+        paint.setColor(0xff101722);
+        c.drawRect(0, 0, getWidth(), getHeight(), paint);
+        float l = getWidth() * .36f, r = getWidth() * .64f, h = getHeight()/2f;
+        cell(c, "Back", 0, 0, l, h, d, 1);
+        cell(c, "Menu", r, 0, getWidth(), h, d, 2);
+        cell(c, "Pointer", 0, h, l, getHeight(), d, 3);
+        cell(c, "Home", r, h, getWidth(), getHeight(), d, 4);
+        cell(c, "OK", l, 0, r, getHeight(), d, 0);
+        c.restore();
+    }
+    private void cell(Canvas c, String label, float l, float t, float r, float b, float d, int key) {
+        boolean center = key == 0;
+        paint.setColor(center ? 0xff29446a : 0xff1c2839);
+        c.drawRoundRect(l+3*d,t+3*d,r-3*d,b-3*d,center?16*d:8*d,center?16*d:8*d,paint);
+        paint.setColor(0xffedf3ff); paint.setTextAlign(Paint.Align.CENTER);
+        paint.setTypeface(Typeface.create("sans-serif-medium",0));
+        paint.setTextSize(12*getResources().getDisplayMetrics().scaledDensity);
+        String text = android.text.TextUtils.ellipsize(label,new android.text.TextPaint(paint),
+                Math.max(0,r-l-(center?12:30)*d),android.text.TextUtils.TruncateAt.END).toString();
+        c.drawText(text,(l+r)/2+(center?0:7*d),(t+b-paint.ascent()-paint.descent())/2,paint);
+        if (!center) keyIcon(c, key, l+13*d, (t+b)/2, d);
+    }
+    private void keyIcon(Canvas c, int key, float x, float y, float d) {
+        paint.setStyle(Paint.Style.STROKE); paint.setStrokeWidth(1.2f*d);
+        if (key==1) { // Phone book
+            c.drawRoundRect(x-5*d,y-6*d,x+5*d,y+6*d,1*d,1*d,paint);
+            c.drawCircle(x,y-2*d,1.5f*d,paint); c.drawLine(x-3*d,y+3*d,x+3*d,y+3*d,paint);
+        } else if (key==2) { // Camera
+            c.drawRoundRect(x-6*d,y-4*d,x+6*d,y+5*d,1*d,1*d,paint);
+            c.drawCircle(x,y,2.5f*d,paint); c.drawLine(x-3*d,y-6*d,x+2*d,y-6*d,paint);
+        } else if (key==3) { // Mail
+            c.drawRect(x-6*d,y-4*d,x+6*d,y+4*d,paint);
+            c.drawLine(x-6*d,y-4*d,x,y+1*d,paint); c.drawLine(x,y+1*d,x+6*d,y-4*d,paint);
+        } else { // Browser
+            c.drawCircle(x,y,6*d,paint); c.drawOval(x-2.5f*d,y-6*d,x+2.5f*d,y+6*d,paint);
+            c.drawLine(x-6*d,y,x+6*d,y,paint);
+        }
+        paint.setStyle(Paint.Style.FILL);
+    }
+}

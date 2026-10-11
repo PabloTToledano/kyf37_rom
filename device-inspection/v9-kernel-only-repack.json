@@ -1,0 +1,9 @@
+{
+  "source": "/mnt/c/Users/pablo/Documents/ChatGPT/flipphone_roms/kyf37-rom/android10-go-candidate-20261007-v8/boot-android10-unsigned.img",
+  "output": "/mnt/c/Users/pablo/Documents/ChatGPT/flipphone_roms/kyf37-rom/boot-v8-v9-kernel-test-unsigned.img",
+  "bytes": 8960000,
+  "sha256": "536cedd9bb6468d8adcf2e486591ed0c248f7fdf9ba38f63182b2e82f0a1005a",
+  "old_kernel_sha256": "40505750d968f7b4f5607b2f8b657dddbdd333827a3b59cb5c0c2ee639be4a49",
+  "kernel_sha256": "a7de7aad86bd0b111ec937aeee334a9460792e4367d24d4775b29ff70f8aa521",
+  "unchanged_ramdisk_dt_and_arguments": true
+}

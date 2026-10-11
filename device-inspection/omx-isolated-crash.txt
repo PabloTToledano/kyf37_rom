@@ -1,0 +1,187 @@
+10-07 22:09:25.117 28507 28507 F DEBUG   : LineageOS Version: '17.1-20261008-UNOFFICIAL-kyf37'
+10-07 22:09:25.117 28507 28507 F DEBUG   : Build fingerprint: 'KYOCERA/lineage_kyf37/kyf37:10/QQ3A.200805.001/eng.pablo.20261008.101614:userdebug/test-keys'
+10-07 22:09:25.117 28507 28507 F DEBUG   : Revision: '0'
+10-07 22:09:25.117 28507 28507 F DEBUG   : ABI: 'arm'
+10-07 22:09:25.118 28507 28507 F DEBUG   : Timestamp: 2026-10-07 22:09:25-1100
+10-07 22:09:25.118 28507 28507 F DEBUG   : pid: 28490, tid: 28490, name: rild  >>> /vendor/bin/hw/rild <<<
+10-07 22:09:25.118 28507 28507 F DEBUG   : uid: 1001
+10-07 22:09:25.118 28507 28507 F DEBUG   : signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x20300868
+10-07 22:09:25.118 28507 28507 F DEBUG   :     r0  aaa36474  r1  aaa36474  r2  20300868  r3  a994b91c
+10-07 22:09:25.118 28507 28507 F DEBUG   :     r4  00000000  r5  00000000  r6  be88d660  r7  a994ce78
+10-07 22:09:25.118 28507 28507 F DEBUG   :     r8  be88d654  r9  aa424298  r10 aa46b01c  r11 aa405330
+10-07 22:09:25.119 28507 28507 F DEBUG   :     ip  a994cecc  sp  be88d630  lr  aacfa499  pc  20300868
+10-07 22:09:25.544 28507 28507 F DEBUG   : 
+10-07 22:09:25.544 28507 28507 F DEBUG   : backtrace:
+10-07 22:09:25.544 28507 28507 F DEBUG   :       #00 pc 20300868  <unknown>
+10-07 22:09:25.544 28507 28507 F DEBUG   :       #01 pc 00038497  /system/lib/libbinder.so (android::IInterface::asBinder()+10) (BuildId: 4b287b279610c091d901a70297a941c7)
+10-07 22:09:25.545 28507 28507 F DEBUG   :       #02 pc 0000670f  /system/vendor/lib/libperipheral_client.so (android::pm_register_connect(android::PeripheralManagerClient*, pm_event*)+242)
+10-07 22:09:25.545 28507 28507 F DEBUG   :       #03 pc 00006c77  /system/vendor/lib/libperipheral_client.so (pm_client_register+190)
+10-07 22:09:25.545 28507 28507 F DEBUG   :       #04 pc 002e248d  /system/vendor/lib/libril-qc-qmi-1.so (qmi_ril_peripheral_mng_init+400)
+10-07 22:09:25.545 28507 28507 F DEBUG   :       #05 pc 0008c24f  /system/vendor/lib/libril-qc-qmi-1.so (qcril_qmi_load_esoc_and_register_with_pm+358)
+10-07 22:09:25.545 28507 28507 F DEBUG   :       #06 pc 0008f2ad  /system/vendor/lib/libril-qc-qmi-1.so (RIL_Init+48)
+10-07 22:09:25.545 28507 28507 F DEBUG   :       #07 pc 00002253  /system/vendor/bin/hw/rild (main+522) (BuildId: f44457fa845f51b9f49bdcb9e4bef79e)
+10-07 22:09:25.545 28507 28507 F DEBUG   :       #08 pc 0005928b  /apex/com.android.runtime/lib/bionic/libc.so (__libc_init+66) (BuildId: 672c1815ab397985a96c5bfe25beb50b)
+10-07 22:09:25.545 28507 28507 F DEBUG   :       #09 pc 00002033  /system/vendor/bin/hw/rild (_start_main+42) (BuildId: f44457fa845f51b9f49bdcb9e4bef79e)
+10-07 22:09:25.545 28507 28507 F DEBUG   :       #10 pc 00004456  <anonymous:ab4f7000>
+10-07 22:09:30.087 28575 28575 F libc    : Fatal signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x20300868 in tid 28575 (rild), pid 28575 (rild)
+10-07 22:09:30.150 28586 28586 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-07 22:09:30.150 28586 28586 F DEBUG   : LineageOS Version: '17.1-20261008-UNOFFICIAL-kyf37'
+10-07 22:09:30.150 28586 28586 F DEBUG   : Build fingerprint: 'KYOCERA/lineage_kyf37/kyf37:10/QQ3A.200805.001/eng.pablo.20261008.101614:userdebug/test-keys'
+10-07 22:09:30.150 28586 28586 F DEBUG   : Revision: '0'
+10-07 22:09:30.150 28586 28586 F DEBUG   : ABI: 'arm'
+10-07 22:09:30.152 28586 28586 F DEBUG   : Timestamp: 2026-10-07 22:09:30-1100
+10-07 22:09:30.152 28586 28586 F DEBUG   : pid: 28575, tid: 28575, name: rild  >>> /vendor/bin/hw/rild <<<
+10-07 22:09:30.152 28586 28586 F DEBUG   : uid: 1001
+10-07 22:09:30.153 28586 28586 F DEBUG   : signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x20300868
+10-07 22:09:30.153 28586 28586 F DEBUG   :     r0  acdba474  r1  acdba474  r2  20300868  r3  aa9aa91c
+10-07 22:09:30.153 28586 28586 F DEBUG   :     r4  00000000  r5  00000000  r6  bef44660  r7  aa9abe78
+10-07 22:09:30.153 28586 28586 F DEBUG   :     r8  bef44654  r9  ac724298  r10 ac76b01c  r11 ac705330
+10-07 22:09:30.153 28586 28586 F DEBUG   :     ip  aa9abecc  sp  bef44630  lr  ad047499  pc  20300868
+10-07 22:09:30.583 28586 28586 F DEBUG   : 
+10-07 22:09:30.583 28586 28586 F DEBUG   : backtrace:
+10-07 22:09:30.583 28586 28586 F DEBUG   :       #00 pc 20300868  <unknown>
+10-07 22:09:30.583 28586 28586 F DEBUG   :       #01 pc 00038497  /system/lib/libbinder.so (android::IInterface::asBinder()+10) (BuildId: 4b287b279610c091d901a70297a941c7)
+10-07 22:09:30.583 28586 28586 F DEBUG   :       #02 pc 0000670f  /system/vendor/lib/libperipheral_client.so (android::pm_register_connect(android::PeripheralManagerClient*, pm_event*)+242)
+10-07 22:09:30.583 28586 28586 F DEBUG   :       #03 pc 00006c77  /system/vendor/lib/libperipheral_client.so (pm_client_register+190)
+10-07 22:09:30.584 28586 28586 F DEBUG   :       #04 pc 002e248d  /system/vendor/lib/libril-qc-qmi-1.so (qmi_ril_peripheral_mng_init+400)
+10-07 22:09:30.584 28586 28586 F DEBUG   :       #05 pc 0008c24f  /system/vendor/lib/libril-qc-qmi-1.so (qcril_qmi_load_esoc_and_register_with_pm+358)
+10-07 22:09:30.584 28586 28586 F DEBUG   :       #06 pc 0008f2ad  /system/vendor/lib/libril-qc-qmi-1.so (RIL_Init+48)
+10-07 22:09:30.584 28586 28586 F DEBUG   :       #07 pc 00002253  /system/vendor/bin/hw/rild (main+522) (BuildId: f44457fa845f51b9f49bdcb9e4bef79e)
+10-07 22:09:30.584 28586 28586 F DEBUG   :       #08 pc 0005928b  /apex/com.android.runtime/lib/bionic/libc.so (__libc_init+66) (BuildId: 672c1815ab397985a96c5bfe25beb50b)
+10-07 22:09:30.584 28586 28586 F DEBUG   :       #09 pc 00002033  /system/vendor/bin/hw/rild (_start_main+42) (BuildId: f44457fa845f51b9f49bdcb9e4bef79e)
+10-07 22:09:30.584 28586 28586 F DEBUG   :       #10 pc 00004456  <anonymous:ad8ab000>
+10-07 22:09:35.080 28652 28652 F libc    : Fatal signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x20300868 in tid 28652 (rild), pid 28652 (rild)
+10-07 22:09:35.138 28663 28663 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-07 22:09:35.138 28663 28663 F DEBUG   : LineageOS Version: '17.1-20261008-UNOFFICIAL-kyf37'
+10-07 22:09:35.138 28663 28663 F DEBUG   : Build fingerprint: 'KYOCERA/lineage_kyf37/kyf37:10/QQ3A.200805.001/eng.pablo.20261008.101614:userdebug/test-keys'
+10-07 22:09:35.138 28663 28663 F DEBUG   : Revision: '0'
+10-07 22:09:35.138 28663 28663 F DEBUG   : ABI: 'arm'
+10-07 22:09:35.140 28663 28663 F DEBUG   : Timestamp: 2026-10-07 22:09:35-1100
+10-07 22:09:35.140 28663 28663 F DEBUG   : pid: 28652, tid: 28652, name: rild  >>> /vendor/bin/hw/rild <<<
+10-07 22:09:35.140 28663 28663 F DEBUG   : uid: 1001
+10-07 22:09:35.140 28663 28663 F DEBUG   : signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x20300868
+10-07 22:09:35.140 28663 28663 F DEBUG   :     r0  b1c10474  r1  b1c10474  r2  20300868  r3  b021591c
+10-07 22:09:35.140 28663 28663 F DEBUG   :     r4  00000000  r5  00000000  r6  be8c2660  r7  b0216e78
+10-07 22:09:35.140 28663 28663 F DEBUG   :     r8  be8c2654  r9  b1124298  r10 b116b01c  r11 b1105330
+10-07 22:09:35.140 28663 28663 F DEBUG   :     ip  b0216ecc  sp  be8c2630  lr  b1879499  pc  20300868
+10-07 22:09:35.571 28663 28663 F DEBUG   : 
+10-07 22:09:35.571 28663 28663 F DEBUG   : backtrace:
+10-07 22:09:35.571 28663 28663 F DEBUG   :       #00 pc 20300868  <unknown>
+10-07 22:09:35.571 28663 28663 F DEBUG   :       #01 pc 00038497  /system/lib/libbinder.so (android::IInterface::asBinder()+10) (BuildId: 4b287b279610c091d901a70297a941c7)
+10-07 22:09:35.571 28663 28663 F DEBUG   :       #02 pc 0000670f  /system/vendor/lib/libperipheral_client.so (android::pm_register_connect(android::PeripheralManagerClient*, pm_event*)+242)
+10-07 22:09:35.571 28663 28663 F DEBUG   :       #03 pc 00006c77  /system/vendor/lib/libperipheral_client.so (pm_client_register+190)
+10-07 22:09:35.571 28663 28663 F DEBUG   :       #04 pc 002e248d  /system/vendor/lib/libril-qc-qmi-1.so (qmi_ril_peripheral_mng_init+400)
+10-07 22:09:35.571 28663 28663 F DEBUG   :       #05 pc 0008c24f  /system/vendor/lib/libril-qc-qmi-1.so (qcril_qmi_load_esoc_and_register_with_pm+358)
+10-07 22:09:35.572 28663 28663 F DEBUG   :       #06 pc 0008f2ad  /system/vendor/lib/libril-qc-qmi-1.so (RIL_Init+48)
+10-07 22:09:35.572 28663 28663 F DEBUG   :       #07 pc 00002253  /system/vendor/bin/hw/rild (main+522) (BuildId: f44457fa845f51b9f49bdcb9e4bef79e)
+10-07 22:09:35.572 28663 28663 F DEBUG   :       #08 pc 0005928b  /apex/com.android.runtime/lib/bionic/libc.so (__libc_init+66) (BuildId: 672c1815ab397985a96c5bfe25beb50b)
+10-07 22:09:35.572 28663 28663 F DEBUG   :       #09 pc 00002033  /system/vendor/bin/hw/rild (_start_main+42) (BuildId: f44457fa845f51b9f49bdcb9e4bef79e)
+10-07 22:09:35.572 28663 28663 F DEBUG   :       #10 pc 00004456  <anonymous:b2271000>
+10-07 22:09:40.097 28729 28729 F libc    : Fatal signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x20300868 in tid 28729 (rild), pid 28729 (rild)
+10-07 22:09:40.156 28740 28740 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-07 22:09:40.156 28740 28740 F DEBUG   : LineageOS Version: '17.1-20261008-UNOFFICIAL-kyf37'
+10-07 22:09:40.156 28740 28740 F DEBUG   : Build fingerprint: 'KYOCERA/lineage_kyf37/kyf37:10/QQ3A.200805.001/eng.pablo.20261008.101614:userdebug/test-keys'
+10-07 22:09:40.156 28740 28740 F DEBUG   : Revision: '0'
+10-07 22:09:40.156 28740 28740 F DEBUG   : ABI: 'arm'
+10-07 22:09:40.157 28740 28740 F DEBUG   : Timestamp: 2026-10-07 22:09:40-1100
+10-07 22:09:40.157 28740 28740 F DEBUG   : pid: 28729, tid: 28729, name: rild  >>> /vendor/bin/hw/rild <<<
+10-07 22:09:40.157 28740 28740 F DEBUG   : uid: 1001
+10-07 22:09:40.157 28740 28740 F DEBUG   : signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x20300868
+10-07 22:09:40.157 28740 28740 F DEBUG   :     r0  b3f3c474  r1  b3f3c474  r2  20300868  r3  b15eb91c
+10-07 22:09:40.157 28740 28740 F DEBUG   :     r4  00000000  r5  00000000  r6  beeeb660  r7  b15ece78
+10-07 22:09:40.158 28740 28740 F DEBUG   :     r8  beeeb654  r9  b3324298  r10 b336b01c  r11 b3305330
+10-07 22:09:40.158 28740 28740 F DEBUG   :     ip  b15ececc  sp  beeeb630  lr  b3c78499  pc  20300868
+10-07 22:09:40.584 28740 28740 F DEBUG   : 
+10-07 22:09:40.584 28740 28740 F DEBUG   : backtrace:
+10-07 22:09:40.584 28740 28740 F DEBUG   :       #00 pc 20300868  <unknown>
+10-07 22:09:40.585 28740 28740 F DEBUG   :       #01 pc 00038497  /system/lib/libbinder.so (android::IInterface::asBinder()+10) (BuildId: 4b287b279610c091d901a70297a941c7)
+10-07 22:09:40.585 28740 28740 F DEBUG   :       #02 pc 0000670f  /system/vendor/lib/libperipheral_client.so (android::pm_register_connect(android::PeripheralManagerClient*, pm_event*)+242)
+10-07 22:09:40.585 28740 28740 F DEBUG   :       #03 pc 00006c77  /system/vendor/lib/libperipheral_client.so (pm_client_register+190)
+10-07 22:09:40.585 28740 28740 F DEBUG   :       #04 pc 002e248d  /system/vendor/lib/libril-qc-qmi-1.so (qmi_ril_peripheral_mng_init+400)
+10-07 22:09:40.585 28740 28740 F DEBUG   :       #05 pc 0008c24f  /system/vendor/lib/libril-qc-qmi-1.so (qcril_qmi_load_esoc_and_register_with_pm+358)
+10-07 22:09:40.585 28740 28740 F DEBUG   :       #06 pc 0008f2ad  /system/vendor/lib/libril-qc-qmi-1.so (RIL_Init+48)
+10-07 22:09:40.585 28740 28740 F DEBUG   :       #07 pc 00002253  /system/vendor/bin/hw/rild (main+522) (BuildId: f44457fa845f51b9f49bdcb9e4bef79e)
+10-07 22:09:40.585 28740 28740 F DEBUG   :       #08 pc 0005928b  /apex/com.android.runtime/lib/bionic/libc.so (__libc_init+66) (BuildId: 672c1815ab397985a96c5bfe25beb50b)
+10-07 22:09:40.585 28740 28740 F DEBUG   :       #09 pc 00002033  /system/vendor/bin/hw/rild (_start_main+42) (BuildId: f44457fa845f51b9f49bdcb9e4bef79e)
+10-07 22:09:40.585 28740 28740 F DEBUG   :       #10 pc 00004456  <anonymous:b4448000>
+10-07 22:09:45.112 28800 28800 F libc    : Fatal signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x20300868 in tid 28800 (rild), pid 28800 (rild)
+10-07 22:09:45.174 28817 28817 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-07 22:09:45.174 28817 28817 F DEBUG   : LineageOS Version: '17.1-20261008-UNOFFICIAL-kyf37'
+10-07 22:09:45.174 28817 28817 F DEBUG   : Build fingerprint: 'KYOCERA/lineage_kyf37/kyf37:10/QQ3A.200805.001/eng.pablo.20261008.101614:userdebug/test-keys'
+10-07 22:09:45.174 28817 28817 F DEBUG   : Revision: '0'
+10-07 22:09:45.174 28817 28817 F DEBUG   : ABI: 'arm'
+10-07 22:09:45.175 28817 28817 F DEBUG   : Timestamp: 2026-10-07 22:09:45-1100
+10-07 22:09:45.175 28817 28817 F DEBUG   : pid: 28800, tid: 28800, name: rild  >>> /vendor/bin/hw/rild <<<
+10-07 22:09:45.175 28817 28817 F DEBUG   : uid: 1001
+10-07 22:09:45.175 28817 28817 F DEBUG   : signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x20300868
+10-07 22:09:45.175 28817 28817 F DEBUG   :     r0  aff53474  r1  aff53474  r2  20300868  r3  af56791c
+10-07 22:09:45.175 28817 28817 F DEBUG   :     r4  00000000  r5  00000000  r6  be921660  r7  af568e78
+10-07 22:09:45.176 28817 28817 F DEBUG   :     r8  be921654  r9  af924298  r10 af96b01c  r11 af905330
+10-07 22:09:45.176 28817 28817 F DEBUG   :     ip  af568ecc  sp  be921630  lr  b034e499  pc  20300868
+10-07 22:09:45.603 28817 28817 F DEBUG   : 
+10-07 22:09:45.603 28817 28817 F DEBUG   : backtrace:
+10-07 22:09:45.603 28817 28817 F DEBUG   :       #00 pc 20300868  <unknown>
+10-07 22:09:45.603 28817 28817 F DEBUG   :       #01 pc 00038497  /system/lib/libbinder.so (android::IInterface::asBinder()+10) (BuildId: 4b287b279610c091d901a70297a941c7)
+10-07 22:09:45.604 28817 28817 F DEBUG   :       #02 pc 0000670f  /system/vendor/lib/libperipheral_client.so (android::pm_register_connect(android::PeripheralManagerClient*, pm_event*)+242)
+10-07 22:09:45.604 28817 28817 F DEBUG   :       #03 pc 00006c77  /system/vendor/lib/libperipheral_client.so (pm_client_register+190)
+10-07 22:09:45.604 28817 28817 F DEBUG   :       #04 pc 002e248d  /system/vendor/lib/libril-qc-qmi-1.so (qmi_ril_peripheral_mng_init+400)
+10-07 22:09:45.604 28817 28817 F DEBUG   :       #05 pc 0008c24f  /system/vendor/lib/libril-qc-qmi-1.so (qcril_qmi_load_esoc_and_register_with_pm+358)
+10-07 22:09:45.604 28817 28817 F DEBUG   :       #06 pc 0008f2ad  /system/vendor/lib/libril-qc-qmi-1.so (RIL_Init+48)
+10-07 22:09:45.604 28817 28817 F DEBUG   :       #07 pc 00002253  /system/vendor/bin/hw/rild (main+522) (BuildId: f44457fa845f51b9f49bdcb9e4bef79e)
+10-07 22:09:45.604 28817 28817 F DEBUG   :       #08 pc 0005928b  /apex/com.android.runtime/lib/bionic/libc.so (__libc_init+66) (BuildId: 672c1815ab397985a96c5bfe25beb50b)
+10-07 22:09:45.604 28817 28817 F DEBUG   :       #09 pc 00002033  /system/vendor/bin/hw/rild (_start_main+42) (BuildId: f44457fa845f51b9f49bdcb9e4bef79e)
+10-07 22:09:45.604 28817 28817 F DEBUG   :       #10 pc 00004456  <anonymous:b0a52000>
+10-07 22:09:50.116 28877 28877 F libc    : Fatal signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x20300868 in tid 28877 (rild), pid 28877 (rild)
+10-07 22:09:50.174 28888 28888 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-07 22:09:50.174 28888 28888 F DEBUG   : LineageOS Version: '17.1-20261008-UNOFFICIAL-kyf37'
+10-07 22:09:50.174 28888 28888 F DEBUG   : Build fingerprint: 'KYOCERA/lineage_kyf37/kyf37:10/QQ3A.200805.001/eng.pablo.20261008.101614:userdebug/test-keys'
+10-07 22:09:50.174 28888 28888 F DEBUG   : Revision: '0'
+10-07 22:09:50.174 28888 28888 F DEBUG   : ABI: 'arm'
+10-07 22:09:50.175 28888 28888 F DEBUG   : Timestamp: 2026-10-07 22:09:50-1100
+10-07 22:09:50.175 28888 28888 F DEBUG   : pid: 28877, tid: 28877, name: rild  >>> /vendor/bin/hw/rild <<<
+10-07 22:09:50.175 28888 28888 F DEBUG   : uid: 1001
+10-07 22:09:50.175 28888 28888 F DEBUG   : signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x20300868
+10-07 22:09:50.175 28888 28888 F DEBUG   :     r0  acc42474  r1  acc42474  r2  20300868  r3  a9fc991c
+10-07 22:09:50.175 28888 28888 F DEBUG   :     r4  00000000  r5  00000000  r6  be97f660  r7  a9fcae78
+10-07 22:09:50.175 28888 28888 F DEBUG   :     r8  be97f654  r9  ac424298  r10 ac46b01c  r11 ac405330
+10-07 22:09:50.175 28888 28888 F DEBUG   :     ip  a9fcaecc  sp  be97f630  lr  ac6cc499  pc  20300868
+10-07 22:09:50.606 28888 28888 F DEBUG   : 
+10-07 22:09:50.606 28888 28888 F DEBUG   : backtrace:
+10-07 22:09:50.606 28888 28888 F DEBUG   :       #00 pc 20300868  <unknown>
+10-07 22:09:50.606 28888 28888 F DEBUG   :       #01 pc 00038497  /system/lib/libbinder.so (android::IInterface::asBinder()+10) (BuildId: 4b287b279610c091d901a70297a941c7)
+10-07 22:09:50.606 28888 28888 F DEBUG   :       #02 pc 0000670f  /system/vendor/lib/libperipheral_client.so (android::pm_register_connect(android::PeripheralManagerClient*, pm_event*)+242)
+10-07 22:09:50.606 28888 28888 F DEBUG   :       #03 pc 00006c77  /system/vendor/lib/libperipheral_client.so (pm_client_register+190)
+10-07 22:09:50.606 28888 28888 F DEBUG   :       #04 pc 002e248d  /system/vendor/lib/libril-qc-qmi-1.so (qmi_ril_peripheral_mng_init+400)
+10-07 22:09:50.606 28888 28888 F DEBUG   :       #05 pc 0008c24f  /system/vendor/lib/libril-qc-qmi-1.so (qcril_qmi_load_esoc_and_register_with_pm+358)
+10-07 22:09:50.606 28888 28888 F DEBUG   :       #06 pc 0008f2ad  /system/vendor/lib/libril-qc-qmi-1.so (RIL_Init+48)
+10-07 22:09:50.606 28888 28888 F DEBUG   :       #07 pc 00002253  /system/vendor/bin/hw/rild (main+522) (BuildId: f44457fa845f51b9f49bdcb9e4bef79e)
+10-07 22:09:50.607 28888 28888 F DEBUG   :       #08 pc 0005928b  /apex/com.android.runtime/lib/bionic/libc.so (__libc_init+66) (BuildId: 672c1815ab397985a96c5bfe25beb50b)
+10-07 22:09:50.607 28888 28888 F DEBUG   :       #09 pc 00002033  /system/vendor/bin/hw/rild (_start_main+42) (BuildId: f44457fa845f51b9f49bdcb9e4bef79e)
+10-07 22:09:50.607 28888 28888 F DEBUG   :       #10 pc 00004456  <anonymous:ad540000>
+10-07 22:09:55.128 28954 28954 F libc    : Fatal signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x20300868 in tid 28954 (rild), pid 28954 (rild)
+10-07 22:09:55.188 28965 28965 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-07 22:09:55.188 28965 28965 F DEBUG   : LineageOS Version: '17.1-20261008-UNOFFICIAL-kyf37'
+10-07 22:09:55.188 28965 28965 F DEBUG   : Build fingerprint: 'KYOCERA/lineage_kyf37/kyf37:10/QQ3A.200805.001/eng.pablo.20261008.101614:userdebug/test-keys'
+10-07 22:09:55.188 28965 28965 F DEBUG   : Revision: '0'
+10-07 22:09:55.188 28965 28965 F DEBUG   : ABI: 'arm'
+10-07 22:09:55.189 28965 28965 F DEBUG   : Timestamp: 2026-10-07 22:09:55-1100
+10-07 22:09:55.189 28965 28965 F DEBUG   : pid: 28954, tid: 28954, name: rild  >>> /vendor/bin/hw/rild <<<
+10-07 22:09:55.189 28965 28965 F DEBUG   : uid: 1001
+10-07 22:09:55.190 28965 28965 F DEBUG   : signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x20300868
+10-07 22:09:55.190 28965 28965 F DEBUG   :     r0  a736c474  r1  a736c474  r2  20300868  r3  a56a491c
+10-07 22:09:55.190 28965 28965 F DEBUG   :     r4  00000000  r5  00000000  r6  bee67660  r7  a56a5e78
+10-07 22:09:55.190 28965 28965 F DEBUG   :     r8  bee67654  r9  a6a24298  r10 a6a6b01c  r11 a6a05330
+10-07 22:09:55.190 28965 28965 F DEBUG   :     ip  a56a5ecc  sp  bee67630  lr  a6dc5499  pc  20300868
+10-07 22:09:55.623 28965 28965 F DEBUG   : 
+10-07 22:09:55.623 28965 28965 F DEBUG   : backtrace:
+10-07 22:09:55.623 28965 28965 F DEBUG   :       #00 pc 20300868  <unknown>
+10-07 22:09:55.623 28965 28965 F DEBUG   :       #01 pc 00038497  /system/lib/libbinder.so (android::IInterface::asBinder()+10) (BuildId: 4b287b279610c091d901a70297a941c7)
+10-07 22:09:55.624 28965 28965 F DEBUG   :       #02 pc 0000670f  /system/vendor/lib/libperipheral_client.so (android::pm_register_connect(android::PeripheralManagerClient*, pm_event*)+242)
+10-07 22:09:55.624 28965 28965 F DEBUG   :       #03 pc 00006c77  /system/vendor/lib/libperipheral_client.so (pm_client_register+190)
+10-07 22:09:55.624 28965 28965 F DEBUG   :       #04 pc 002e248d  /system/vendor/lib/libril-qc-qmi-1.so (qmi_ril_peripheral_mng_init+400)
+10-07 22:09:55.624 28965 28965 F DEBUG   :       #05 pc 0008c24f  /system/vendor/lib/libril-qc-qmi-1.so (qcril_qmi_load_esoc_and_register_with_pm+358)
+10-07 22:09:55.624 28965 28965 F DEBUG   :       #06 pc 0008f2ad  /system/vendor/lib/libril-qc-qmi-1.so (RIL_Init+48)
+10-07 22:09:55.624 28965 28965 F DEBUG   :       #07 pc 00002253  /system/vendor/bin/hw/rild (main+522) (BuildId: f44457fa845f51b9f49bdcb9e4bef79e)
+10-07 22:09:55.624 28965 28965 F DEBUG   :       #08 pc 0005928b  /apex/com.android.runtime/lib/bionic/libc.so (__libc_init+66) (BuildId: 672c1815ab397985a96c5bfe25beb50b)
+10-07 22:09:55.624 28965 28965 F DEBUG   :       #09 pc 00002033  /system/vendor/bin/hw/rild (_start_main+42) (BuildId: f44457fa845f51b9f49bdcb9e4bef79e)
+10-07 22:09:55.624 28965 28965 F DEBUG   :       #10 pc 00004456  <anonymous:a7aa6000>

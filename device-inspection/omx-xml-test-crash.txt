@@ -1,0 +1,357 @@
+--------- beginning of main
+10-07 21:38:52.970  8371  8371 E QSEECOMD: : ERROR: RPMB_INIT failed, shall not start listener services
+10-07 21:38:53.070     1     1 W libc    : Unable to set property "ro.init.updatable_crashing_process_name" to "qseecomd": error code: 0xb
+10-07 21:38:53.073     1     1 W libc    : Unable to set property "ro.init.updatable_crashing" to "1": error code: 0xb
+10-07 21:38:53.232   503   541 E QC-QMI  : qmi_client [503]: unable to connect to server, errno=[2:No such file or directory], attempt=56
+10-07 21:38:53.232   379   379 E QC-QMI  : qmi_client [379]: unable to connect to server, errno=[2:No such file or directory], attempt=43
+10-07 21:38:53.527   345  1706 E QC-QMI  : qmi_client [345]: unable to connect to server, errno=[2:No such file or directory], attempt=10
+10-07 21:38:53.905  3108  3108 W ServiceManagement: Waited one second for android.hardware.radio@1.1::IRadio/slot1
+10-07 21:38:53.906  3108  3108 I ServiceManagement: getService: Trying again for android.hardware.radio@1.1::IRadio/slot1...
+10-07 21:38:54.232   503   541 E QC-QMI  : qmi_client [503]: unable to connect to server, errno=[2:No such file or directory], attempt=57
+10-07 21:38:54.232   379   379 E QC-QMI  : qmi_client [379]: unable to connect to server, errno=[2:No such file or directory], attempt=44
+10-07 21:38:54.527   345  1706 E QC-QMI  : qmi_client [345]: unable to connect to server, errno=[2:No such file or directory], attempt=11
+10-07 21:38:54.906  3108  3108 W ServiceManagement: Waited one second for android.hardware.radio@1.1::IRadio/slot1
+10-07 21:38:54.907  3108  3108 I ServiceManagement: getService: Trying again for android.hardware.radio@1.1::IRadio/slot1...
+10-07 21:38:55.233   503   541 E QC-QMI  : qmi_client [503]: unable to connect to server, errno=[2:No such file or directory], attempt=58
+10-07 21:38:55.233   379   379 E QC-QMI  : qmi_client [379]: unable to connect to server, errno=[2:No such file or directory], attempt=45
+10-07 21:38:55.528   345  1706 E QC-QMI  : qmi_client [345]: unable to connect to server, errno=[2:No such file or directory], attempt=12
+10-07 21:38:55.908  3108  3108 W ServiceManagement: Waited one second for android.hardware.radio@1.1::IRadio/slot1
+10-07 21:38:55.909  3108  3108 I ServiceManagement: getService: Trying again for android.hardware.radio@1.1::IRadio/slot1...
+10-07 21:38:55.936  8374  8374 E Diag_Lib:  Diag_LSM_Init: Failed to open handle to diag driver, error = 13
+10-07 21:38:55.952  8374  8374 I libmdmdetect: ESOC framework not supported
+10-07 21:38:55.952  8374  8374 I libmdmdetect: Found internal modem: modem
+10-07 21:38:55.949   233   233 I servicemanager: type=1400 audit(0.0:3298): avc: denied { search } for uid=1000 name="8374" dev="proc" ino=125731 scontext=u:r:servicemanager:s0 tcontext=u:r:rild:s0 tclass=dir permissive=1
+10-07 21:38:55.949   233   233 I servicemanager: type=1400 audit(0.0:3299): avc: denied { read } for uid=1000 name="current" dev="proc" ino=125828 scontext=u:r:servicemanager:s0 tcontext=u:r:rild:s0 tclass=file permissive=1
+10-07 21:38:55.949   233   233 I servicemanager: type=1400 audit(0.0:3300): avc: denied { open } for uid=1000 path="/proc/8374/attr/current" dev="proc" ino=125828 scontext=u:r:servicemanager:s0 tcontext=u:r:rild:s0 tclass=file permissive=1
+10-07 21:38:55.955   376   389 D PerMgrSrv: modem state: is off-line, add client QCRIL
+10-07 21:38:55.955   376   389 D PerMgrSrv: QCRIL registered
+--------- beginning of crash
+10-07 21:38:55.955  8374  8374 F libc    : Fatal signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x20300868 in tid 8374 (rild), pid 8374 (rild)
+10-07 21:38:55.995  8379  8379 I crash_dump32: obtaining output fd from tombstoned, type: kDebuggerdTombstone
+10-07 21:38:55.995   640   640 I /system/bin/tombstoned: received crash request for pid 8374
+10-07 21:38:55.997  8379  8379 I crash_dump32: performing dump of process 8374 (target tid = 8374)
+10-07 21:38:56.007  8379  8379 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-07 21:38:56.008  8379  8379 F DEBUG   : LineageOS Version: '17.1-20261008-UNOFFICIAL-kyf37'
+10-07 21:38:56.008  8379  8379 F DEBUG   : Build fingerprint: 'KYOCERA/lineage_kyf37/kyf37:10/QQ3A.200805.001/eng.pablo.20261008.101614:userdebug/test-keys'
+10-07 21:38:56.008  8379  8379 F DEBUG   : Revision: '0'
+10-07 21:38:56.008  8379  8379 F DEBUG   : ABI: 'arm'
+10-07 21:38:56.009  8379  8379 F DEBUG   : Timestamp: 2026-10-07 21:38:56-1100
+10-07 21:38:56.009  8379  8379 F DEBUG   : pid: 8374, tid: 8374, name: rild  >>> /vendor/bin/hw/rild <<<
+10-07 21:38:56.009  8379  8379 F DEBUG   : uid: 1001
+10-07 21:38:56.009  8379  8379 F DEBUG   : signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x20300868
+10-07 21:38:56.009  8379  8379 F DEBUG   :     r0  aed22474  r1  aed22474  r2  20300868  r3  ac5bc91c
+10-07 21:38:56.009  8379  8379 F DEBUG   :     r4  00000000  r5  00000000  r6  bec68660  r7  ac5bde78
+10-07 21:38:56.009  8379  8379 F DEBUG   :     r8  bec68654  r9  ae524298  r10 ae56b01c  r11 ae505330
+10-07 21:38:56.009  8379  8379 F DEBUG   :     ip  ac5bdecc  sp  bec68630  lr  ae946499  pc  20300868
+10-07 21:38:56.233   503   541 E QC-QMI  : qmi_client [503]: unable to connect to server, errno=[2:No such file or directory], attempt=59
+10-07 21:38:56.234   379   379 E QC-QMI  : qmi_client [379]: unable to connect to server, errno=[2:No such file or directory], attempt=46
+10-07 21:38:56.436  8379  8379 F DEBUG   : 
+10-07 21:38:56.436  8379  8379 F DEBUG   : backtrace:
+10-07 21:38:56.436  8379  8379 F DEBUG   :       #00 pc 20300868  <unknown>
+10-07 21:38:56.437  8379  8379 F DEBUG   :       #01 pc 00038497  /system/lib/libbinder.so (android::IInterface::asBinder()+10) (BuildId: 4b287b279610c091d901a70297a941c7)
+10-07 21:38:56.437  8379  8379 F DEBUG   :       #02 pc 0000670f  /system/vendor/lib/libperipheral_client.so (android::pm_register_connect(android::PeripheralManagerClient*, pm_event*)+242)
+10-07 21:38:56.437  8379  8379 F DEBUG   :       #03 pc 00006c77  /system/vendor/lib/libperipheral_client.so (pm_client_register+190)
+10-07 21:38:56.437  8379  8379 F DEBUG   :       #04 pc 002e248d  /system/vendor/lib/libril-qc-qmi-1.so (qmi_ril_peripheral_mng_init+400)
+10-07 21:38:56.437  8379  8379 F DEBUG   :       #05 pc 0008c24f  /system/vendor/lib/libril-qc-qmi-1.so (qcril_qmi_load_esoc_and_register_with_pm+358)
+10-07 21:38:56.437  8379  8379 F DEBUG   :       #06 pc 0008f2ad  /system/vendor/lib/libril-qc-qmi-1.so (RIL_Init+48)
+10-07 21:38:56.437  8379  8379 F DEBUG   :       #07 pc 00002253  /system/vendor/bin/hw/rild (main+522) (BuildId: f44457fa845f51b9f49bdcb9e4bef79e)
+10-07 21:38:56.437  8379  8379 F DEBUG   :       #08 pc 0005928b  /apex/com.android.runtime/lib/bionic/libc.so (__libc_init+66) (BuildId: 672c1815ab397985a96c5bfe25beb50b)
+10-07 21:38:56.437  8379  8379 F DEBUG   :       #09 pc 00002033  /system/vendor/bin/hw/rild (_start_main+42) (BuildId: f44457fa845f51b9f49bdcb9e4bef79e)
+10-07 21:38:56.437  8379  8379 F DEBUG   :       #10 pc 00004456  <anonymous:af610000>
+10-07 21:38:56.528   345  1706 E QC-QMI  : qmi_client [345]: unable to connect to server, errno=[2:No such file or directory], attempt=13
+--------- beginning of system
+10-07 21:38:56.575   704  1426 W NativeCrashListener: Couldn't find ProcessRecord for pid 8374
+10-07 21:38:56.577   640   640 E /system/bin/tombstoned: Tombstone written to: /data/tombstones/tombstone_10
+10-07 21:38:56.587   704   737 I BootReceiver: Copying /data/tombstones/tombstone_10 to DropBox (SYSTEM_TOMBSTONE)
+10-07 21:38:56.592   376   391 E PerMgrSrv: QCRIL registered for modem has died
+10-07 21:38:56.592   376   391 D PerMgrSrv: modem client QCRIL is not a voter
+10-07 21:38:56.592   376   391 D PerMgrSrv: modem state: is off-line, remove client QCRIL
+10-07 21:38:56.596   704   737 I DropBoxManagerService: add tag=SYSTEM_TOMBSTONE isTagEnabled=true flags=0x2
+10-07 21:38:56.711     1     1 W libc    : Unable to set property "ro.init.updatable_crashing_process_name" to "ril-daemon": error code: 0xb
+10-07 21:38:56.714     1     1 W libc    : Unable to set property "ro.init.updatable_crashing" to "1": error code: 0xb
+10-07 21:38:56.909  3108  3108 W ServiceManagement: Waited one second for android.hardware.radio@1.1::IRadio/slot1
+10-07 21:38:56.910  3108  3108 I ServiceManagement: getService: Trying again for android.hardware.radio@1.1::IRadio/slot1...
+10-07 21:38:57.234   503   541 E QC-QMI  : qmi_client [503]: unable to connect to server, errno=[2:No such file or directory], attempt=60
+10-07 21:38:57.234   379   379 E QC-QMI  : qmi_client [379]: unable to connect to server, errno=[2:No such file or directory], attempt=47
+10-07 21:38:57.529   345  1706 E QC-QMI  : qmi_client [345]: unable to connect to server, errno=[2:No such file or directory], attempt=14
+10-07 21:38:57.911  3108  3108 W ServiceManagement: Waited one second for android.hardware.radio@1.1::IRadio/slot1
+10-07 21:38:57.912  3108  3108 I ServiceManagement: getService: Trying again for android.hardware.radio@1.1::IRadio/slot1...
+10-07 21:38:57.976  8388  8388 D QSEECOMD: : qseecom listener services process entry PPID = 1
+10-07 21:38:57.976  8388  8388 E QSEECOMD: : Listener: index = 0, hierarchy = 0
+10-07 21:38:57.976  8388  8388 E QSEECOMD: : Init dlopen(librpmb.so, RLTD_NOW) is failed....
+10-07 21:38:57.976  8388  8388 E QSEECOMD: : ERROR: RPMB_INIT failed, shall not start listener services
+10-07 21:38:58.041     1     1 W libc    : Unable to set property "ro.init.updatable_crashing_process_name" to "qseecomd": error code: 0xb
+10-07 21:38:58.044     1     1 W libc    : Unable to set property "ro.init.updatable_crashing" to "1": error code: 0xb
+10-07 21:38:58.235   503   541 E QC-QMI  : qmi_client [503]: unable to connect to server after 60 tries... giving up
+10-07 21:38:58.235   503   541 E QC-QMI  : qmi_qmux_if_pwr_up_init_ex:  Initialization failed, rc = -1
+10-07 21:38:58.235   503   541 E QMI_FW  : QMUXD: WARNING qmi_qmux_if_pwr_up_init failed! rc=-1
+10-07 21:38:58.236   503   541 E QC-QMI  : qmi_client [503]: unable to connect to server, errno=[2:No such file or directory], attempt=1
+10-07 21:38:58.236   379   379 E QC-QMI  : qmi_client [379]: unable to connect to server, errno=[2:No such file or directory], attempt=48
+10-07 21:38:58.229   503   503 I thermal-engine: type=1400 audit(0.0:3301): avc: denied { unlink } for uid=0 name=716D75785F636C69656E745F736F636B657420202020353431 dev="tmpfs" ino=118546 scontext=u:r:init:s0 tcontext=u:object_r:socket_device:s0 tclass=sock_file permissive=1
+10-07 21:38:58.229   503   503 I thermal-engine: type=1400 audit(0.0:3302): avc: denied { create } for uid=0 name=716D75785F636C69656E745F736F636B657420202020353431 scontext=u:r:init:s0 tcontext=u:object_r:socket_device:s0 tclass=sock_file permissive=1
+10-07 21:38:58.229   503   503 I thermal-engine: type=1400 audit(0.0:3303): avc: denied { setattr } for uid=0 name=716D75785F636C69656E745F736F636B657420202020353431 dev="tmpfs" ino=125890 scontext=u:r:init:s0 tcontext=u:object_r:socket_device:s0 tclass=sock_file permissive=1
+10-07 21:38:58.531   345  1706 E QC-QMI  : qmi_client [345]: unable to connect to server, errno=[2:No such file or directory], attempt=15
+10-07 21:38:58.769   595   595 I storaged: type=1400 audit(0.0:3304): avc: denied { read } for uid=0 name="stat" dev="sysfs" ino=14398 scontext=u:r:storaged:s0 tcontext=u:object_r:sysfs:s0 tclass=file permissive=1
+10-07 21:38:58.769   595   595 I storaged: type=1400 audit(0.0:3305): avc: denied { open } for uid=0 path="/sys/devices/soc.0/7824900.sdhci/mmc_host/mmc0/mmc0:0001/block/mmcblk0/stat" dev="sysfs" ino=14398 scontext=u:r:storaged:s0 tcontext=u:object_r:sysfs:s0 tclass=file permissive=1
+10-07 21:38:58.769   595   595 I storaged: type=1400 audit(0.0:3306): avc: denied { getattr } for uid=0 path="/sys/devices/soc.0/7824900.sdhci/mmc_host/mmc0/mmc0:0001/block/mmcblk0/stat" dev="sysfs" ino=14398 scontext=u:r:storaged:s0 tcontext=u:object_r:sysfs:s0 tclass=file permissive=1
+10-07 21:38:58.914  3108  3108 W ServiceManagement: Waited one second for android.hardware.radio@1.1::IRadio/slot1
+10-07 21:38:58.916  3108  3108 I ServiceManagement: getService: Trying again for android.hardware.radio@1.1::IRadio/slot1...
+10-07 21:38:59.236   503   541 E QC-QMI  : qmi_client [503]: unable to connect to server, errno=[2:No such file or directory], attempt=2
+10-07 21:38:59.236   379   379 E QC-QMI  : qmi_client [379]: unable to connect to server, errno=[2:No such file or directory], attempt=49
+10-07 21:38:59.533   345  1706 E QC-QMI  : qmi_client [345]: unable to connect to server, errno=[2:No such file or directory], attempt=16
+10-07 21:38:59.918  3108  3108 W ServiceManagement: Waited one second for android.hardware.radio@1.1::IRadio/slot1
+10-07 21:38:59.919  3108  3108 I ServiceManagement: getService: Trying again for android.hardware.radio@1.1::IRadio/slot1...
+10-07 21:39:00.007  1377  1377 D KeyguardClockSwitch: Updating clock: 9:39
+10-07 21:39:00.237   503   541 E QC-QMI  : qmi_client [503]: unable to connect to server, errno=[2:No such file or directory], attempt=3
+10-07 21:39:00.237   379   379 E QC-QMI  : qmi_client [379]: unable to connect to server, errno=[2:No such file or directory], attempt=50
+10-07 21:39:00.534   345  1706 E QC-QMI  : qmi_client [345]: unable to connect to server, errno=[2:No such file or directory], attempt=17
+10-07 21:39:00.920  3108  3108 W ServiceManagement: Waited one second for android.hardware.radio@1.1::IRadio/slot1
+10-07 21:39:00.921  3108  3108 I ServiceManagement: getService: Trying again for android.hardware.radio@1.1::IRadio/slot1...
+10-07 21:39:00.961  8393  8393 E Diag_Lib:  Diag_LSM_Init: Failed to open handle to diag driver, error = 13
+10-07 21:39:00.975  8393  8393 I libmdmdetect: ESOC framework not supported
+10-07 21:39:00.976  8393  8393 I libmdmdetect: Found internal modem: modem
+10-07 21:39:00.969   233   233 I servicemanager: type=1400 audit(0.0:3307): avc: denied { getattr } for uid=1000 scontext=u:r:servicemanager:s0 tcontext=u:r:rild:s0 tclass=process permissive=1
+10-07 21:39:00.980   376   389 D PerMgrSrv: modem state: is off-line, add client QCRIL
+10-07 21:39:00.980   376   389 D PerMgrSrv: QCRIL registered
+10-07 21:39:00.980  8393  8393 F libc    : Fatal signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x20300868 in tid 8393 (rild), pid 8393 (rild)
+10-07 21:39:01.023  8398  8398 I crash_dump32: obtaining output fd from tombstoned, type: kDebuggerdTombstone
+10-07 21:39:01.024   640   640 I /system/bin/tombstoned: received crash request for pid 8393
+10-07 21:39:01.025  8398  8398 I crash_dump32: performing dump of process 8393 (target tid = 8393)
+10-07 21:39:01.037  8398  8398 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-07 21:39:01.037  8398  8398 F DEBUG   : LineageOS Version: '17.1-20261008-UNOFFICIAL-kyf37'
+10-07 21:39:01.037  8398  8398 F DEBUG   : Build fingerprint: 'KYOCERA/lineage_kyf37/kyf37:10/QQ3A.200805.001/eng.pablo.20261008.101614:userdebug/test-keys'
+10-07 21:39:01.037  8398  8398 F DEBUG   : Revision: '0'
+10-07 21:39:01.037  8398  8398 F DEBUG   : ABI: 'arm'
+10-07 21:39:01.039  8398  8398 F DEBUG   : Timestamp: 2026-10-07 21:39:01-1100
+10-07 21:39:01.039  8398  8398 F DEBUG   : pid: 8393, tid: 8393, name: rild  >>> /vendor/bin/hw/rild <<<
+10-07 21:39:01.039  8398  8398 F DEBUG   : uid: 1001
+10-07 21:39:01.039  8398  8398 F DEBUG   : signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x20300868
+10-07 21:39:01.039  8398  8398 F DEBUG   :     r0  a6c8d474  r1  a6c8d474  r2  20300868  r3  a467a91c
+10-07 21:39:01.039  8398  8398 F DEBUG   :     r4  00000000  r5  00000000  r6  beb9d660  r7  a467be78
+10-07 21:39:01.039  8398  8398 F DEBUG   :     r8  beb9d654  r9  a6024298  r10 a606b01c  r11 a6005330
+10-07 21:39:01.039  8398  8398 F DEBUG   :     ip  a467becc  sp  beb9d630  lr  a6386499  pc  20300868
+10-07 21:39:01.237   503   541 E QC-QMI  : qmi_client [503]: unable to connect to server, errno=[2:No such file or directory], attempt=4
+10-07 21:39:01.237   379   379 E QC-QMI  : qmi_client [379]: unable to connect to server, errno=[2:No such file or directory], attempt=51
+10-07 21:39:01.471  8398  8398 F DEBUG   : 
+10-07 21:39:01.471  8398  8398 F DEBUG   : backtrace:
+10-07 21:39:01.471  8398  8398 F DEBUG   :       #00 pc 20300868  <unknown>
+10-07 21:39:01.471  8398  8398 F DEBUG   :       #01 pc 00038497  /system/lib/libbinder.so (android::IInterface::asBinder()+10) (BuildId: 4b287b279610c091d901a70297a941c7)
+10-07 21:39:01.472  8398  8398 F DEBUG   :       #02 pc 0000670f  /system/vendor/lib/libperipheral_client.so (android::pm_register_connect(android::PeripheralManagerClient*, pm_event*)+242)
+10-07 21:39:01.472  8398  8398 F DEBUG   :       #03 pc 00006c77  /system/vendor/lib/libperipheral_client.so (pm_client_register+190)
+10-07 21:39:01.472  8398  8398 F DEBUG   :       #04 pc 002e248d  /system/vendor/lib/libril-qc-qmi-1.so (qmi_ril_peripheral_mng_init+400)
+10-07 21:39:01.472  8398  8398 F DEBUG   :       #05 pc 0008c24f  /system/vendor/lib/libril-qc-qmi-1.so (qcril_qmi_load_esoc_and_register_with_pm+358)
+10-07 21:39:01.472  8398  8398 F DEBUG   :       #06 pc 0008f2ad  /system/vendor/lib/libril-qc-qmi-1.so (RIL_Init+48)
+10-07 21:39:01.472  8398  8398 F DEBUG   :       #07 pc 00002253  /system/vendor/bin/hw/rild (main+522) (BuildId: f44457fa845f51b9f49bdcb9e4bef79e)
+10-07 21:39:01.472  8398  8398 F DEBUG   :       #08 pc 0005928b  /apex/com.android.runtime/lib/bionic/libc.so (__libc_init+66) (BuildId: 672c1815ab397985a96c5bfe25beb50b)
+10-07 21:39:01.472  8398  8398 F DEBUG   :       #09 pc 00002033  /system/vendor/bin/hw/rild (_start_main+42) (BuildId: f44457fa845f51b9f49bdcb9e4bef79e)
+10-07 21:39:01.472  8398  8398 F DEBUG   :       #10 pc 00004456  <anonymous:a7151000>
+10-07 21:39:01.534   345  1706 E QC-QMI  : qmi_client [345]: unable to connect to server, errno=[2:No such file or directory], attempt=18
+10-07 21:39:01.611   704  1426 W NativeCrashListener: Couldn't find ProcessRecord for pid 8393
+10-07 21:39:01.614   640   640 E /system/bin/tombstoned: Tombstone written to: /data/tombstones/tombstone_11
+10-07 21:39:01.624   704   737 I BootReceiver: Copying /data/tombstones/tombstone_11 to DropBox (SYSTEM_TOMBSTONE)
+10-07 21:39:01.627   704   737 I DropBoxManagerService: add tag=SYSTEM_TOMBSTONE isTagEnabled=true flags=0x2
+10-07 21:39:01.629   376   391 E PerMgrSrv: QCRIL registered for modem has died
+10-07 21:39:01.629   376   391 D PerMgrSrv: modem client QCRIL is not a voter
+10-07 21:39:01.629   376   391 D PerMgrSrv: modem state: is off-line, remove client QCRIL
+10-07 21:39:01.732     1     1 W libc    : Unable to set property "ro.init.updatable_crashing_process_name" to "ril-daemon": error code: 0xb
+10-07 21:39:01.735     1     1 W libc    : Unable to set property "ro.init.updatable_crashing" to "1": error code: 0xb
+10-07 21:39:01.921  3108  3108 W ServiceManagement: Waited one second for android.hardware.radio@1.1::IRadio/slot1
+10-07 21:39:01.922  3108  3108 I ServiceManagement: getService: Trying again for android.hardware.radio@1.1::IRadio/slot1...
+10-07 21:39:02.238   503   541 E QC-QMI  : qmi_client [503]: unable to connect to server, errno=[2:No such file or directory], attempt=5
+10-07 21:39:02.238   379   379 E QC-QMI  : qmi_client [379]: unable to connect to server, errno=[2:No such file or directory], attempt=52
+10-07 21:39:02.239   404   404 I surfaceflinger: type=1400 audit(0.0:3308): avc: denied { ioctl } for uid=1000 path="/dev/kgsl-3d0" dev="tmpfs" ino=9223 ioctlcmd=93d scontext=u:r:surfaceflinger:s0 tcontext=u:object_r:device:s0 tclass=chr_file permissive=1
+10-07 21:39:02.536   345  1706 E QC-QMI  : qmi_client [345]: unable to connect to server, errno=[2:No such file or directory], attempt=19
+10-07 21:39:02.925  3108  3108 W ServiceManagement: Waited one second for android.hardware.radio@1.1::IRadio/slot1
+10-07 21:39:02.926  3108  3108 I ServiceManagement: getService: Trying again for android.hardware.radio@1.1::IRadio/slot1...
+10-07 21:39:02.992  8408  8408 D QSEECOMD: : qseecom listener services process entry PPID = 1
+10-07 21:39:02.992  8408  8408 E QSEECOMD: : Listener: index = 0, hierarchy = 0
+10-07 21:39:02.992  8408  8408 E QSEECOMD: : Init dlopen(librpmb.so, RLTD_NOW) is failed....
+10-07 21:39:02.992  8408  8408 E QSEECOMD: : ERROR: RPMB_INIT failed, shall not start listener services
+10-07 21:39:03.091     1     1 W libc    : Unable to set property "ro.init.updatable_crashing_process_name" to "qseecomd": error code: 0xb
+10-07 21:39:03.094     1     1 W libc    : Unable to set property "ro.init.updatable_crashing" to "1": error code: 0xb
+10-07 21:39:03.239   503   541 E QC-QMI  : qmi_client [503]: unable to connect to server, errno=[2:No such file or directory], attempt=6
+10-07 21:39:03.239   379   379 E QC-QMI  : qmi_client [379]: unable to connect to server, errno=[2:No such file or directory], attempt=53
+10-07 21:39:03.538   345  1706 E QC-QMI  : qmi_client [345]: unable to connect to server, errno=[2:No such file or directory], attempt=20
+10-07 21:39:03.656   675   675 I chatty  : uid=1000(system) /system/bin/vm_bms expire 16 lines
+10-07 21:39:03.649   675   675 I vm_bms  : type=1400 audit(0.0:3309): avc: denied { read } for uid=1000 name="cycle_count" dev="sysfs" ino=18182 scontext=u:r:kyf37_vm_bms:s0 tcontext=u:object_r:sysfs:s0 tclass=file permissive=1
+10-07 21:39:03.649   675   675 I vm_bms  : type=1400 audit(0.0:3310): avc: denied { open } for uid=1000 path="/sys/devices/soc.0/qpnp-vm-bms-9/power_supply/bms/cycle_count" dev="sysfs" ino=18182 scontext=u:r:kyf37_vm_bms:s0 tcontext=u:object_r:sysfs:s0 tclass=file permissive=1
+10-07 21:39:03.661   675   675 D VM_BMS  : For soc=24 batt_temp=350 rbatt_sf=93
+10-07 21:39:03.661   675   675 D VM_BMS  : rbatt_mohm_default=208, rbatt_mohm=193, sf=93 batt_temp=350
+10-07 21:39:03.661   675   675 D VM_BMS  : Lookup rbatt=193.000000  adjusted rbatt=193.000000
+10-07 21:39:03.661   675   675 D VM_BMS  : For ocv=3755310 batt_temp=350 soc=24
+10-07 21:39:03.661   675   675 D VM_BMS  : FIFO=1 fifo_avg=4.026486 rbatt=0.243000 slope=0.360000 ibatt=-1.117361 ocv=3.755311 soc=24 fcc_ah=1.458000 sample_count=128 sample_interval=70 seq_num=57
+10-07 21:39:03.661   675   675 D VM_BMS  : For soc=24 batt_temp=350 slope=3600
+10-07 21:39:03.662   675   675 D VM_BMS  : For soc=24 batt_temp=350 rbatt_sf=93
+10-07 21:39:03.649   675   675 I vm_bms  : type=1400 audit(0.0:3311): avc: denied { ioctl } for uid=1000 path="/dev/battery_data" dev="tmpfs" ino=9285 ioctlcmd=4204 scontext=u:r:kyf37_vm_bms:s0 tcontext=u:object_r:device:s0 tclass=chr_file permissive=1
+10-07 21:39:03.662   675   675 D VM_BMS  : rbatt_mohm_default=208, rbatt_mohm=193, sf=93 batt_temp=350
+10-07 21:39:03.662   675   675 D VM_BMS  : Lookup rbatt=193.000000  adjusted rbatt=193.000000
+10-07 21:39:03.662   675   675 D VM_BMS  : For ocv=3755984 batt_temp=350 soc=24
+10-07 21:39:03.662   675   675 D VM_BMS  : FIFO=2 fifo_avg=4.022361 rbatt=0.243000 slope=0.360000 ibatt=-1.097586 ocv=3.755985 soc=24 fcc_ah=1.458000 sample_count=128 sample_interval=70 seq_num=57
+10-07 21:39:03.662   675   675 D VM_BMS  : For soc=24 batt_temp=350 slope=3600
+10-07 21:39:03.662   675   675 D VM_BMS  : For soc=24 batt_temp=350 rbatt_sf=93
+10-07 21:39:03.662   675   675 D VM_BMS  : rbatt_mohm_default=208, rbatt_mohm=193, sf=93 batt_temp=350
+10-07 21:39:03.649   675   675 I vm_bms  : type=1400 audit(0.0:3312): avc: denied { write } for uid=1000 name="current_now" dev="sysfs" ino=18184 scontext=u:r:kyf37_vm_bms:s0 tcontext=u:object_r:sysfs:s0 tclass=file permissive=1
+10-07 21:39:03.662   675   675 D VM_BMS  : Lookup rbatt=193.000000  adjusted rbatt=193.000000
+10-07 21:39:03.662   675   675 D VM_BMS  : For ocv=3756651 batt_temp=350 soc=24
+10-07 21:39:03.662   675   675 D VM_BMS  : FIFO=3 fifo_avg=4.020300 rbatt=0.243000 slope=0.360000 ibatt=-1.086346 ocv=3.756652 soc=24 fcc_ah=1.458000 sample_count=128 sample_interval=70 seq_num=57
+10-07 21:39:03.662   675   675 D VM_BMS  : For soc=24 batt_temp=350 slope=3600
+10-07 21:39:03.662   675   675 D VM_BMS  : For soc=24 batt_temp=350 rbatt_sf=93
+10-07 21:39:03.662   675   675 D VM_BMS  : rbatt_mohm_default=208, rbatt_mohm=193, sf=93 batt_temp=350
+10-07 21:39:03.662   675   675 D VM_BMS  : Lookup rbatt=193.000000  adjusted rbatt=193.000000
+10-07 21:39:03.662   675   675 D VM_BMS  : For ocv=3757332 batt_temp=350 soc=25
+10-07 21:39:03.662   675   675 D VM_BMS  : FIFO=4 fifo_avg=4.026486 rbatt=0.243000 slope=0.360000 ibatt=-1.109030 ocv=3.757333 soc=25 fcc_ah=1.458000 sample_count=128 sample_interval=70 seq_num=57
+10-07 21:39:03.662   675   675 I VM_BMS  : power_supply_update: ocv_uv=3757332 ibatt=-1109029 soc=25 seq_num=57
+10-07 21:39:03.662   675   675 D VM_BMS  : End process_bms_data
+10-07 21:39:03.662   675   675 E VM_BMS  : failed to wake_unlock rc=-13
+10-07 21:39:03.928  3108  3108 W ServiceManagement: Waited one second for android.hardware.radio@1.1::IRadio/slot1
+10-07 21:39:03.929  3108  3108 I ServiceManagement: getService: Trying again for android.hardware.radio@1.1::IRadio/slot1...
+10-07 21:39:04.241   503   541 E QC-QMI  : qmi_client [503]: unable to connect to server, errno=[2:No such file or directory], attempt=7
+10-07 21:39:04.241   379   379 E QC-QMI  : qmi_client [379]: unable to connect to server, errno=[2:No such file or directory], attempt=54
+10-07 21:39:04.540   345  1706 E QC-QMI  : qmi_client [345]: unable to connect to server, errno=[2:No such file or directory], attempt=21
+10-07 21:39:04.929  3108  3108 W ServiceManagement: Waited one second for android.hardware.radio@1.1::IRadio/slot1
+10-07 21:39:04.931  3108  3108 I ServiceManagement: getService: Trying again for android.hardware.radio@1.1::IRadio/slot1...
+10-07 21:39:05.243   503   541 E QC-QMI  : qmi_client [503]: unable to connect to server, errno=[2:No such file or directory], attempt=8
+10-07 21:39:05.243   379   379 E QC-QMI  : qmi_client [379]: unable to connect to server, errno=[2:No such file or directory], attempt=55
+10-07 21:39:05.541   345  1706 E QC-QMI  : qmi_client [345]: unable to connect to server, errno=[2:No such file or directory], attempt=22
+10-07 21:39:05.931  3108  3108 W ServiceManagement: Waited one second for android.hardware.radio@1.1::IRadio/slot1
+10-07 21:39:05.932  3108  3108 I ServiceManagement: getService: Trying again for android.hardware.radio@1.1::IRadio/slot1...
+10-07 21:39:05.973  8412  8412 E Diag_Lib:  Diag_LSM_Init: Failed to open handle to diag driver, error = 13
+10-07 21:39:05.990  8412  8412 I libmdmdetect: ESOC framework not supported
+10-07 21:39:05.990  8412  8412 I libmdmdetect: Found internal modem: modem
+10-07 21:39:05.993   376   389 D PerMgrSrv: modem state: is off-line, add client QCRIL
+10-07 21:39:05.993   376   389 D PerMgrSrv: QCRIL registered
+10-07 21:39:05.979  8412  8412 I rild    : type=1400 audit(0.0:3313): avc: denied { call } for uid=1001 scontext=u:r:rild:s0 tcontext=u:r:init:s0 tclass=binder permissive=1
+10-07 21:39:05.989  8412  8412 I rild    : type=1400 audit(0.0:3314): avc: denied { transfer } for uid=1001 scontext=u:r:rild:s0 tcontext=u:r:init:s0 tclass=binder permissive=1
+10-07 21:39:05.994  8412  8412 F libc    : Fatal signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x20300868 in tid 8412 (rild), pid 8412 (rild)
+10-07 21:39:06.036  8417  8417 I crash_dump32: obtaining output fd from tombstoned, type: kDebuggerdTombstone
+10-07 21:39:06.037   640   640 I /system/bin/tombstoned: received crash request for pid 8412
+10-07 21:39:06.038  8417  8417 I crash_dump32: performing dump of process 8412 (target tid = 8412)
+10-07 21:39:06.050  8417  8417 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-07 21:39:06.050  8417  8417 F DEBUG   : LineageOS Version: '17.1-20261008-UNOFFICIAL-kyf37'
+10-07 21:39:06.050  8417  8417 F DEBUG   : Build fingerprint: 'KYOCERA/lineage_kyf37/kyf37:10/QQ3A.200805.001/eng.pablo.20261008.101614:userdebug/test-keys'
+10-07 21:39:06.050  8417  8417 F DEBUG   : Revision: '0'
+10-07 21:39:06.050  8417  8417 F DEBUG   : ABI: 'arm'
+10-07 21:39:06.051  8417  8417 F DEBUG   : Timestamp: 2026-10-07 21:39:06-1100
+10-07 21:39:06.051  8417  8417 F DEBUG   : pid: 8412, tid: 8412, name: rild  >>> /vendor/bin/hw/rild <<<
+10-07 21:39:06.051  8417  8417 F DEBUG   : uid: 1001
+10-07 21:39:06.051  8417  8417 F DEBUG   : signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x20300868
+10-07 21:39:06.051  8417  8417 F DEBUG   :     r0  a82db474  r1  a82db474  r2  20300868  r3  a737991c
+10-07 21:39:06.051  8417  8417 F DEBUG   :     r4  00000000  r5  00000000  r6  bee57660  r7  a737ae78
+10-07 21:39:06.051  8417  8417 F DEBUG   :     r8  bee57654  r9  a7624298  r10 a766b01c  r11 a7605330
+10-07 21:39:06.051  8417  8417 F DEBUG   :     ip  a737aecc  sp  bee57630  lr  a7acc499  pc  20300868
+10-07 21:39:06.244   503   541 E QC-QMI  : qmi_client [503]: unable to connect to server, errno=[2:No such file or directory], attempt=9
+10-07 21:39:06.244   379   379 E QC-QMI  : qmi_client [379]: unable to connect to server, errno=[2:No such file or directory], attempt=56
+10-07 21:39:06.239   673   673 I netmgrd : type=1400 audit(0.0:3315): avc: denied { ioctl } for uid=0 path="socket:[127365]" dev="sockfs" ino=127365 ioctlcmd=89f8 scontext=u:r:init:s0 tcontext=u:r:init:s0 tclass=udp_socket permissive=1
+10-07 21:39:06.476  8417  8417 F DEBUG   : 
+10-07 21:39:06.476  8417  8417 F DEBUG   : backtrace:
+10-07 21:39:06.476  8417  8417 F DEBUG   :       #00 pc 20300868  <unknown>
+10-07 21:39:06.477  8417  8417 F DEBUG   :       #01 pc 00038497  /system/lib/libbinder.so (android::IInterface::asBinder()+10) (BuildId: 4b287b279610c091d901a70297a941c7)
+10-07 21:39:06.477  8417  8417 F DEBUG   :       #02 pc 0000670f  /system/vendor/lib/libperipheral_client.so (android::pm_register_connect(android::PeripheralManagerClient*, pm_event*)+242)
+10-07 21:39:06.477  8417  8417 F DEBUG   :       #03 pc 00006c77  /system/vendor/lib/libperipheral_client.so (pm_client_register+190)
+10-07 21:39:06.477  8417  8417 F DEBUG   :       #04 pc 002e248d  /system/vendor/lib/libril-qc-qmi-1.so (qmi_ril_peripheral_mng_init+400)
+10-07 21:39:06.477  8417  8417 F DEBUG   :       #05 pc 0008c24f  /system/vendor/lib/libril-qc-qmi-1.so (qcril_qmi_load_esoc_and_register_with_pm+358)
+10-07 21:39:06.477  8417  8417 F DEBUG   :       #06 pc 0008f2ad  /system/vendor/lib/libril-qc-qmi-1.so (RIL_Init+48)
+10-07 21:39:06.477  8417  8417 F DEBUG   :       #07 pc 00002253  /system/vendor/bin/hw/rild (main+522) (BuildId: f44457fa845f51b9f49bdcb9e4bef79e)
+10-07 21:39:06.477  8417  8417 F DEBUG   :       #08 pc 0005928b  /apex/com.android.runtime/lib/bionic/libc.so (__libc_init+66) (BuildId: 672c1815ab397985a96c5bfe25beb50b)
+10-07 21:39:06.477  8417  8417 F DEBUG   :       #09 pc 00002033  /system/vendor/bin/hw/rild (_start_main+42) (BuildId: f44457fa845f51b9f49bdcb9e4bef79e)
+10-07 21:39:06.477  8417  8417 F DEBUG   :       #10 pc 00004456  <anonymous:a87c0000>
+10-07 21:39:06.541   345  1706 E QC-QMI  : qmi_client [345]: unable to connect to server, errno=[2:No such file or directory], attempt=23
+10-07 21:39:06.615   704  1426 W NativeCrashListener: Couldn't find ProcessRecord for pid 8412
+10-07 21:39:06.617   640   640 E /system/bin/tombstoned: Tombstone written to: /data/tombstones/tombstone_12
+10-07 21:39:06.631   704   737 I BootReceiver: Copying /data/tombstones/tombstone_12 to DropBox (SYSTEM_TOMBSTONE)
+10-07 21:39:06.636   704   737 I DropBoxManagerService: add tag=SYSTEM_TOMBSTONE isTagEnabled=true flags=0x2
+10-07 21:39:06.644   376   391 E PerMgrSrv: QCRIL registered for modem has died
+10-07 21:39:06.645   376   391 D PerMgrSrv: modem client QCRIL is not a voter
+10-07 21:39:06.645   376   391 D PerMgrSrv: modem state: is off-line, remove client QCRIL
+10-07 21:39:06.740     1     1 W libc    : Unable to set property "ro.init.updatable_crashing_process_name" to "ril-daemon": error code: 0xb
+10-07 21:39:06.743     1     1 W libc    : Unable to set property "ro.init.updatable_crashing" to "1": error code: 0xb
+10-07 21:39:06.823   704   715 I system_server: Background concurrent copying GC freed 4004(550KB) AllocSpace objects, 33(2680KB) LOS objects, 24% free, 8001KB/10MB, paused 162us total 191.913ms
+10-07 21:39:06.934  3108  3108 W ServiceManagement: Waited one second for android.hardware.radio@1.1::IRadio/slot1
+10-07 21:39:06.935  3108  3108 I ServiceManagement: getService: Trying again for android.hardware.radio@1.1::IRadio/slot1...
+10-07 21:39:07.246   503   541 E QC-QMI  : qmi_client [503]: unable to connect to server, errno=[2:No such file or directory], attempt=10
+10-07 21:39:07.246   379   379 E QC-QMI  : qmi_client [379]: unable to connect to server, errno=[2:No such file or directory], attempt=57
+10-07 21:39:07.543   345  1706 E QC-QMI  : qmi_client [345]: unable to connect to server, errno=[2:No such file or directory], attempt=24
+10-07 21:39:07.935  3108  3108 W ServiceManagement: Waited one second for android.hardware.radio@1.1::IRadio/slot1
+10-07 21:39:07.936  3108  3108 I ServiceManagement: getService: Trying again for android.hardware.radio@1.1::IRadio/slot1...
+10-07 21:39:08.002  8426  8426 D QSEECOMD: : qseecom listener services process entry PPID = 1
+10-07 21:39:08.002  8426  8426 E QSEECOMD: : Listener: index = 0, hierarchy = 0
+10-07 21:39:08.002  8426  8426 E QSEECOMD: : Init dlopen(librpmb.so, RLTD_NOW) is failed....
+10-07 21:39:08.002  8426  8426 E QSEECOMD: : ERROR: RPMB_INIT failed, shall not start listener services
+10-07 21:39:08.072     1     1 W libc    : Unable to set property "ro.init.updatable_crashing_process_name" to "qseecomd": error code: 0xb
+10-07 21:39:08.076     1     1 W libc    : Unable to set property "ro.init.updatable_crashing" to "1": error code: 0xb
+10-07 21:39:08.246   503   541 E QC-QMI  : qmi_client [503]: unable to connect to server, errno=[2:No such file or directory], attempt=11
+10-07 21:39:08.246   379   379 E QC-QMI  : qmi_client [379]: unable to connect to server, errno=[2:No such file or directory], attempt=58
+10-07 21:39:08.544   345  1706 E QC-QMI  : qmi_client [345]: unable to connect to server, errno=[2:No such file or directory], attempt=25
+10-07 21:39:08.937  3108  3108 W ServiceManagement: Waited one second for android.hardware.radio@1.1::IRadio/slot1
+10-07 21:39:08.938  3108  3108 I ServiceManagement: getService: Trying again for android.hardware.radio@1.1::IRadio/slot1...
+10-07 21:39:09.248   503   541 E QC-QMI  : qmi_client [503]: unable to connect to server, errno=[2:No such file or directory], attempt=12
+10-07 21:39:09.249   379   379 E QC-QMI  : qmi_client [379]: unable to connect to server, errno=[2:No such file or directory], attempt=59
+10-07 21:39:09.546   345  1706 E QC-QMI  : qmi_client [345]: unable to connect to server, errno=[2:No such file or directory], attempt=26
+10-07 21:39:09.938  3108  3108 W ServiceManagement: Waited one second for android.hardware.radio@1.1::IRadio/slot1
+10-07 21:39:09.939  3108  3108 I ServiceManagement: getService: Trying again for android.hardware.radio@1.1::IRadio/slot1...
+10-07 21:39:10.251   503   541 E QC-QMI  : qmi_client [503]: unable to connect to server, errno=[2:No such file or directory], attempt=13
+10-07 21:39:10.251   379   379 E QC-QMI  : qmi_client [379]: unable to connect to server, errno=[2:No such file or directory], attempt=60
+10-07 21:39:10.249   673   673 I netmgrd : type=1400 audit(0.0:3316): avc: denied { module_request } for uid=0 kmod="netdev-rmnet0" scontext=u:r:init:s0 tcontext=u:r:kernel:s0 tclass=system permissive=1
+10-07 21:39:10.547   345  1706 E QC-QMI  : qmi_client [345]: unable to connect to server, errno=[2:No such file or directory], attempt=27
+10-07 21:39:10.939  3108  3108 W ServiceManagement: Waited one second for android.hardware.radio@1.1::IRadio/slot1
+10-07 21:39:10.940  3108  3108 I ServiceManagement: getService: Trying again for android.hardware.radio@1.1::IRadio/slot1...
+10-07 21:39:10.983  8429  8429 E Diag_Lib:  Diag_LSM_Init: Failed to open handle to diag driver, error = 13
+10-07 21:39:10.999  8429  8429 I libmdmdetect: ESOC framework not supported
+10-07 21:39:11.000  8429  8429 I libmdmdetect: Found internal modem: modem
+10-07 21:39:11.002   376   389 D PerMgrSrv: modem state: is off-line, add client QCRIL
+10-07 21:39:11.002   376   389 D PerMgrSrv: QCRIL registered
+10-07 21:39:11.002  8429  8429 F libc    : Fatal signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x20300868 in tid 8429 (rild), pid 8429 (rild)
+10-07 21:39:11.048  8434  8434 I crash_dump32: obtaining output fd from tombstoned, type: kDebuggerdTombstone
+10-07 21:39:11.049   640   640 I /system/bin/tombstoned: received crash request for pid 8429
+10-07 21:39:11.050  8434  8434 I crash_dump32: performing dump of process 8429 (target tid = 8429)
+10-07 21:39:11.064  8434  8434 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+10-07 21:39:11.064  8434  8434 F DEBUG   : LineageOS Version: '17.1-20261008-UNOFFICIAL-kyf37'
+10-07 21:39:11.064  8434  8434 F DEBUG   : Build fingerprint: 'KYOCERA/lineage_kyf37/kyf37:10/QQ3A.200805.001/eng.pablo.20261008.101614:userdebug/test-keys'
+10-07 21:39:11.065  8434  8434 F DEBUG   : Revision: '0'
+10-07 21:39:11.065  8434  8434 F DEBUG   : ABI: 'arm'
+10-07 21:39:11.067  8434  8434 F DEBUG   : Timestamp: 2026-10-07 21:39:11-1100
+10-07 21:39:11.067  8434  8434 F DEBUG   : pid: 8429, tid: 8429, name: rild  >>> /vendor/bin/hw/rild <<<
+10-07 21:39:11.067  8434  8434 F DEBUG   : uid: 1001
+10-07 21:39:11.067  8434  8434 F DEBUG   : signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x20300868
+10-07 21:39:11.067  8434  8434 F DEBUG   :     r0  a73bc474  r1  a73bc474  r2  20300868  r3  a615c91c
+10-07 21:39:11.067  8434  8434 F DEBUG   :     r4  00000000  r5  00000000  r6  bece2660  r7  a615de78
+10-07 21:39:11.067  8434  8434 F DEBUG   :     r8  bece2654  r9  a6f24298  r10 a6f6b01c  r11 a6f05330
+10-07 21:39:11.067  8434  8434 F DEBUG   :     ip  a615decc  sp  bece2630  lr  a7af9499  pc  20300868
+10-07 21:39:11.251   503   541 E QC-QMI  : qmi_client [503]: unable to connect to server, errno=[2:No such file or directory], attempt=14
+10-07 21:39:11.251   379   379 E QC-QMI  : qmi_client [379]: unable to connect to server after 60 tries... giving up
+10-07 21:39:11.251   379   379 E QC-QMI  : qmi_qmux_if_pwr_up_init_ex:  Initialization failed, rc = -1
+10-07 21:39:11.498  8434  8434 F DEBUG   : 
+10-07 21:39:11.498  8434  8434 F DEBUG   : backtrace:
+10-07 21:39:11.498  8434  8434 F DEBUG   :       #00 pc 20300868  <unknown>
+10-07 21:39:11.498  8434  8434 F DEBUG   :       #01 pc 00038497  /system/lib/libbinder.so (android::IInterface::asBinder()+10) (BuildId: 4b287b279610c091d901a70297a941c7)
+10-07 21:39:11.498  8434  8434 F DEBUG   :       #02 pc 0000670f  /system/vendor/lib/libperipheral_client.so (android::pm_register_connect(android::PeripheralManagerClient*, pm_event*)+242)
+10-07 21:39:11.498  8434  8434 F DEBUG   :       #03 pc 00006c77  /system/vendor/lib/libperipheral_client.so (pm_client_register+190)
+10-07 21:39:11.498  8434  8434 F DEBUG   :       #04 pc 002e248d  /system/vendor/lib/libril-qc-qmi-1.so (qmi_ril_peripheral_mng_init+400)
+10-07 21:39:11.498  8434  8434 F DEBUG   :       #05 pc 0008c24f  /system/vendor/lib/libril-qc-qmi-1.so (qcril_qmi_load_esoc_and_register_with_pm+358)
+10-07 21:39:11.498  8434  8434 F DEBUG   :       #06 pc 0008f2ad  /system/vendor/lib/libril-qc-qmi-1.so (RIL_Init+48)
+10-07 21:39:11.498  8434  8434 F DEBUG   :       #07 pc 00002253  /system/vendor/bin/hw/rild (main+522) (BuildId: f44457fa845f51b9f49bdcb9e4bef79e)
+10-07 21:39:11.498  8434  8434 F DEBUG   :       #08 pc 0005928b  /apex/com.android.runtime/lib/bionic/libc.so (__libc_init+66) (BuildId: 672c1815ab397985a96c5bfe25beb50b)
+10-07 21:39:11.498  8434  8434 F DEBUG   :       #09 pc 00002033  /system/vendor/bin/hw/rild (_start_main+42) (BuildId: f44457fa845f51b9f49bdcb9e4bef79e)
+10-07 21:39:11.499  8434  8434 F DEBUG   :       #10 pc 00004456  <anonymous:a7fcc000>
+10-07 21:39:11.547   345  1706 E QC-QMI  : qmi_client [345]: unable to connect to server, errno=[2:No such file or directory], attempt=28
+10-07 21:39:11.639   704  1426 W NativeCrashListener: Couldn't find ProcessRecord for pid 8429
+10-07 21:39:11.640   640   640 E /system/bin/tombstoned: Tombstone written to: /data/tombstones/tombstone_13
+10-07 21:39:11.650   704   737 I BootReceiver: Copying /data/tombstones/tombstone_13 to DropBox (SYSTEM_TOMBSTONE)
+10-07 21:39:11.656   376   391 E PerMgrSrv: QCRIL registered for modem has died
+10-07 21:39:11.656   376   391 D PerMgrSrv: modem client QCRIL is not a voter
+10-07 21:39:11.656   376   391 D PerMgrSrv: modem state: is off-line, remove client QCRIL
+10-07 21:39:11.660   704   737 I DropBoxManagerService: add tag=SYSTEM_TOMBSTONE isTagEnabled=true flags=0x2
+10-07 21:39:11.754   379   379 E QC-QMI  : qmi_client [379]: unable to connect to server, errno=[2:No such file or directory], attempt=1
+10-07 21:39:11.800     1     1 W libc    : Unable to set property "ro.init.updatable_crashing_process_name" to "ril-daemon": error code: 0xb
+10-07 21:39:11.803     1     1 W libc    : Unable to set property "ro.init.updatable_crashing" to "1": error code: 0xb
+10-07 21:39:11.941  3108  3108 W ServiceManagement: Waited one second for android.hardware.radio@1.1::IRadio/slot1
+10-07 21:39:11.942  3108  3108 I ServiceManagement: getService: Trying again for android.hardware.radio@1.1::IRadio/slot1...
+10-07 21:39:12.189   349   349 I health@2.0-serv: type=1400 audit(0.0:3317): avc: denied { read } for uid=1000 name="present" dev="sysfs" ino=18091 scontext=u:r:hal_health_default:s0 tcontext=u:object_r:sysfs:s0 tclass=file permissive=1
+10-07 21:39:12.189   349   349 I health@2.0-serv: type=1400 audit(0.0:3318): avc: denied { open } for uid=1000 path="/sys/devices/soc.0/78b8000.i2c/i2c-4/4-001c/power_supply/battery/present" dev="sysfs" ino=18091 scontext=u:r:hal_health_default:s0 tcontext=u:object_r:sysfs:s0 tclass=file permissive=1
+10-07 21:39:12.189   349   349 I health@2.0-serv: type=1400 audit(0.0:3319): avc: denied { getattr } for uid=1000 path="/sys/devices/soc.0/78b8000.i2c/i2c-4/4-001c/power_supply/battery/present" dev="sysfs" ino=18091 scontext=u:r:hal_health_default:s0 tcontext=u:object_r:sysfs:s0 tclass=file permissive=1
+10-07 21:39:12.189   348   348 I hwcUeventThread: type=1400 audit(0.0:3320): avc: denied { read } for uid=1000 scontext=u:r:hal_graphics_composer_default:s0 tcontext=u:r:hal_graphics_composer_default:s0 tclass=netlink_kobject_uevent_socket permissive=1
+10-07 21:39:12.229  1377  1377 I RenderThread: type=1400 audit(0.0:3321): avc: denied { ioctl } for uid=10102 path="/dev/kgsl-3d0" dev="tmpfs" ino=9223 ioctlcmd=93d scontext=u:r:platform_app:s0:c512,c768 tcontext=u:object_r:device:s0 tclass=chr_file permissive=1
+10-07 21:39:12.252   503   541 E QC-QMI  : qmi_client [503]: unable to connect to server, errno=[2:No such file or directory], attempt=15
+10-07 21:39:12.263   660   660 E QC-QMI  : linux_qmi_qmux_io.c: Unable to open port id /dev/smdcntl0, error [110:Connection timed out]
+10-07 21:39:12.264   660   660 E QC-QMI  : qmi_qmux_open_connection: QMI_QMUX_IO_PLATFORM_OPEN_CONN failed conn_id=0 rc=-1 
+10-07 21:39:12.264   660   660 E QC-QMI  : qmuxd: opening connection for conn_id=0 [DATA5_CNTL] failed on attempt 67, Waiting 500 milliseconds before retry

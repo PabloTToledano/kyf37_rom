@@ -1,0 +1,11 @@
+# Magisk root daemon, started once the system is up. Opt out with: setprop persist.kyf37.magisk 0 (next boot).
+service kyf37-magisk /system/bin/sh /system/etc/kyf37-magisk.sh
+    class main
+    user root
+    group root
+    seclabel u:r:init:s0
+    disabled
+    oneshot
+
+on property:sys.boot_completed=1
+    start kyf37-magisk

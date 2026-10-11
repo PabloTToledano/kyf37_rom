@@ -1,0 +1,12 @@
+e2fsck 1.47.2 (1-Jan-2025)
+Pass 1: Checking inodes, blocks, and sizes
+Pass 2: Checking directory structure
+Pass 3: Checking directory connectivity
+Pass 4: Checking reference counts
+Pass 5: Checking group summary information
+Padding at end of inode bitmap is not set. Fix? no
+
+
+/mnt/c/Users/pablo/Documents/ChatGPT/flipphone_roms/device-inspection/system-stock.img: ********** WARNING: Filesystem still has errors **********
+
+/mnt/c/Users/pablo/Documents/ChatGPT/flipphone_roms/device-inspection/system-stock.img: 4396/98592 files (0.0% non-contiguous), 251975/393728 blocks

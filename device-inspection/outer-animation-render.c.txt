@@ -1,0 +1,68 @@
+/* KYF37 bounded star-friend animation */
+#include "reference-poses.h"
+static void sparkle(unsigned char *p,int x,int y,int size) {
+ for(int i=-size;i<=size;i++){pixel(p,x+i,y);pixel(p,x,y+i);}
+}
+static void pose(unsigned char *p,int id,int left,int top,int scale) {
+ const struct PetPose *s=&pet_poses[id];
+ for(int y=0;y<s->h;y++)for(int x=0;x<s->w;x++)if(s->p[y*s->w+x])
+  for(int dy=0;dy<scale;dy++)for(int dx=0;dx<scale;dx++)pixel(p,left+x*scale+dx,top+y*scale+dy);
+}
+int kyf37_subdisplay_idle(unsigned char *p,size_t count,int hour,int minute,int battery,int phase) {
+ if(!p || count!=128*36 || hour<0 || hour>23 || minute<0 || minute>59 || battery<0 || battery>100){errno=EINVAL;return -1;}
+ memset(p,0,count);
+ /* Large 21px-high clock; the battery is a compact footer. */
+ digit(p,hour/10,2,2,3);digit(p,hour%10,20,2,3);
+ for(int y=0;y<3;y++)for(int x=0;x<2;x++){pixel(p,39+x,7+y);pixel(p,39+x,16+y);}
+ digit(p,minute/10,47,2,3);digit(p,minute%10,65,2,3);
+ for(int x=3;x<=18;x++){pixel(p,x,29);pixel(p,x,34);}
+ for(int y=29;y<=34;y++){pixel(p,3,y);pixel(p,18,y);}
+ pixel(p,19,31);pixel(p,19,32);
+ for(int x=5;x<5+12*battery/100;x++)for(int y=31;y<=32;y++)pixel(p,x,y);
+ if(battery==100)digit(p,1,26,27,1);
+ digit(p,(battery/10)%10,32,27,1);digit(p,battery%10,38,27,1);
+ int id=scene_start[0]+(phase&1)%scene_count[0];
+ pose(p,id,106,34-pet_poses[id].h+(phase&1),1);
+ if((phase&3)==2)sparkle(p,123,13,1);
+ return 0;
+}
+static void sized_pose(unsigned char *p,int id,int center,int bottom,int height) {
+ const struct PetPose *s=&pet_poses[id];
+ int width=s->w*height/s->h;
+ if(width>60){width=60;height=s->h*width/s->w;}
+ int left=center-width/2,top=bottom-height;
+ for(int y=0;y<height;y++)for(int x=0;x<width;x++)
+  if(s->p[(y*s->h/height)*s->w+x*s->w/width])pixel(p,left+x,top+y);
+}
+int kyf37_subdisplay_animation(unsigned char *p,size_t count,int frame,int hour,int minute,int battery,int scene) {
+ if(!p || count!=128*36 || frame<0 || frame>=48 || scene<0 || scene>=PET_SCENES){errno=EINVAL;return -1;}
+ unsigned char clock[128*36];
+ if(kyf37_subdisplay_idle(clock,sizeof clock,hour,minute,battery,0))return -1;
+ memset(p,0,count);
+ if(frame==0 || frame==47){memcpy(p,clock,count);return 0;}
+ /* Only the digits/battery travel: remove the idle actor from this layer. */
+ for(int y=0;y<36;y++)for(int x=96;x<128;x++)clock[y*128+x]=0;
+ const struct PetPose *idle=&pet_poses[scene_start[0]];
+ int idleCenter=106+idle->w/2,idleBottom=34;
+ int offset=-128,center=64,bottom=34,height=31,id=scene_start[scene];
+ if(frame<8){
+  offset=-frame*128/7;center=idleCenter+(64-idleCenter)*frame/7;
+  bottom=idleBottom+(34-idleBottom)*frame/7;height=idle->h+(31-idle->h)*frame/7;
+  id=scene_start[0];
+ } else if(frame<28){
+  id=scene_start[scene]+((frame-8)/4)%scene_count[scene];
+  if(scene==9 || scene==31 || scene==41){int t=frame-8;center+=t<10?t*2:(19-t)*2;}
+  else bottom-=(frame/3)%2;
+ } else {
+  /* Same actor shrinks into its idle spot as the clock is restored. */
+  int t=frame-28;
+  offset=t<16?-128+t*128/15:0;
+  center=64+(idleCenter-64)*t/19;bottom=34+(idleBottom-34)*t/19;
+  height=31+(idle->h-31)*t/19;
+  id=t<12?scene_start[scene]+4%scene_count[scene]:scene_start[0];
+ }
+ for(int y=0;y<36;y++)for(int x=0;x<96;x++)if(clock[y*128+x])pixel(p,x+offset,y);
+ sized_pose(p,id,center,bottom,height);
+ if(frame>=8 && frame<28){sparkle(p,20,8,1+(frame/4)%2);sparkle(p,110,24,1);}
+ return 0;
+}

@@ -1,0 +1,258 @@
+Unknown command: exit-info
+Bad activity command, or no activities match: exit-info
+Use -h for help.
+Drop box contents: 300 entries
+Max entries: 300
+Low priority rate limit period: 2000 ms
+Low priority tags: {data_app_wtf, keymaster, system_server_wtf, system_app_strictmode, system_app_wtf, system_server_strictmode, data_app_strictmode, netstats}
+Searching for: system_app_crash
+
+========================================
+2026-10-07 21:36:53 system_app_crash (compressed text, 1408 bytes)
+Process: com.android.settings
+PID: 3952
+UID: 1000
+Flags: 0x28c9be45
+Package: com.android.settings v29 (10)
+Foreground: Yes
+Build: KYOCERA/lineage_kyf37/kyf37:10/QQ3A.200805.001/eng.pablo.20261008.101614:userdebug/test-keys
+
+java.lang.RuntimeException: Unable to start activity ComponentInfo{com.android.settings/com.android.settings.SubSettings}: java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.String[] android.net.wifi.WifiManager.getFactoryMacAddresses()' on a null object reference
+	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:3270)
+	at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:3409)
+	at android.app.servertransaction.LaunchActivityItem.execute(LaunchActivityItem.java:83)
+	at android.app.servertransaction.TransactionExecutor.executeCallbacks(TransactionExecutor.java:135)
+	at android.app.servertransaction.TransactionExecutor.execute(TransactionExecutor.java:95)
+	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2016)
+	at android.os.Handler.dispatchMessage(Handler.java:107)
+	at android.os.Looper.loop(Looper.java:214)
+	at android.app.ActivityThread.main(ActivityThread.java:7356)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:491)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:940)
+Caused by: java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.String[] android.net.wifi.WifiManager.getFactoryMacAddresses()' on a null object reference
+	at com.android.settingslib.deviceinfo.AbstractWifiMacAddressPreferenceController.updateConnectivity(AbstractWifiMacAddressPreferenceController.java:84)
+	at com.android.settingslib.deviceinfo.AbstractWifiMacAddressPreferenceController.displayPreference(AbstractWifiMacAddressPreferenceController.java:73)
+	at com.android.settings.dashboard.DashboardFragment.lambda$displayResourceTilesToScreen$5(DashboardFragment.java:321)
+	at com.android.settings.dashboard.-$$Lambda$DashboardFragment$E98G1shazpe8SaLEovhpIxhHH0Q.accept(Unknown Source:4)
+	at java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+	at java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1390)
+	at java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:604)
+	at java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:283)
+	at java.util.Iterator.forEachRemaining(Iterator.java:116)
+	at java.util.Spliterators$IteratorSpliterator.forEachRemaining(Spliterators.java:1801)
+	at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:485)
+	at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:475)
+	at java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+	at java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:133)
+	at java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:236)
+	at java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:435)
+	at com.android.settings.dashboard.DashboardFragment.displayResourceTilesToScreen(DashboardFragment.java:320)
+	at com.android.settings.dashboard.DashboardFragment.displayResourceTiles(DashboardFragment.java:312)
+	at com.android.settings.dashboard.DashboardFragment.refreshAllPreferences(DashboardFragment.java:368)
+	at com.android.settings.dashboard.DashboardFragment.onCreatePreferences(DashboardFragment.java:160)
+	at androidx.preference.PreferenceFragmentCompat.onCreate(PreferenceFragmentCompat.java:160)
+	at com.android.settingslib.core.lifecycle.ObservablePreferenceFragment.onCreate(ObservablePreferenceFragment.java:61)
+	at com.android.settings.SettingsPreferenceFragment.onCreate(SettingsPreferenceFragment.java:144)
+	at com.android.settings.dashboard.DashboardFragment.onCreate(DashboardFragment.java:137)
+	at androidx.fragment.app.Fragment.performCreate(Fragment.java:2596)
+	at androidx.fragment.app.FragmentManagerImpl.moveToState(FragmentManagerImpl.java:831)
+	at androidx.fragment.app.FragmentTransition.addToFirstInLastOut(FragmentTransition.java:1197)
+	at androidx.fragment.app.FragmentTransition.calculateFragments(FragmentTransition.java:1080)
+	at androidx.fragment.app.FragmentTransition.startTransitions(FragmentTransition.java:119)
+	at androidx.fragment.app.FragmentManagerImpl.executeOpsTogether(FragmentManagerImpl.java:1853)
+	at androidx.fragment.app.FragmentManagerImpl.removeRedundantOperationsAndExecute(FragmentManagerImpl.java:1811)
+	at androidx.fragment.app.FragmentManagerImpl.execPendingActions(FragmentManagerImpl.java:1717)
+	at androidx.fragment.app.FragmentManagerImpl.executePendingTransactions(FragmentManagerImpl.java:183)
+	at com.android.settings.SettingsActivity.switchToFragment(SettingsActivity.java:567)
+	at com.android.settings.SettingsActivity.launchSettingFragment(SettingsActivity.java:360)
+	at com.android.settings.SettingsActivity.onCreate(SettingsActivity.java:268)
+	at android.app.Activity.performCreate(Activity.java:7824)
+	at android.app.Activity.performCreate(Activity.java:7813)
+	at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1306)
+	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:3245)
+	... 11 more
+
+========================================
+2026-10-07 21:37:01 system_app_crash (compressed text, 1408 bytes)
+Process: com.android.settings
+PID: 9893
+UID: 1000
+Flags: 0x28c9be45
+Package: com.android.settings v29 (10)
+Foreground: Yes
+Build: KYOCERA/lineage_kyf37/kyf37:10/QQ3A.200805.001/eng.pablo.20261008.101614:userdebug/test-keys
+
+java.lang.RuntimeException: Unable to start activity ComponentInfo{com.android.settings/com.android.settings.SubSettings}: java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.String[] android.net.wifi.WifiManager.getFactoryMacAddresses()' on a null object reference
+	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:3270)
+	at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:3409)
+	at android.app.servertransaction.LaunchActivityItem.execute(LaunchActivityItem.java:83)
+	at android.app.servertransaction.TransactionExecutor.executeCallbacks(TransactionExecutor.java:135)
+	at android.app.servertransaction.TransactionExecutor.execute(TransactionExecutor.java:95)
+	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2016)
+	at android.os.Handler.dispatchMessage(Handler.java:107)
+	at android.os.Looper.loop(Looper.java:214)
+	at android.app.ActivityThread.main(ActivityThread.java:7356)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:491)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:940)
+Caused by: java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.String[] android.net.wifi.WifiManager.getFactoryMacAddresses()' on a null object reference
+	at com.android.settingslib.deviceinfo.AbstractWifiMacAddressPreferenceController.updateConnectivity(AbstractWifiMacAddressPreferenceController.java:84)
+	at com.android.settingslib.deviceinfo.AbstractWifiMacAddressPreferenceController.displayPreference(AbstractWifiMacAddressPreferenceController.java:73)
+	at com.android.settings.dashboard.DashboardFragment.lambda$displayResourceTilesToScreen$5(DashboardFragment.java:321)
+	at com.android.settings.dashboard.-$$Lambda$DashboardFragment$E98G1shazpe8SaLEovhpIxhHH0Q.accept(Unknown Source:4)
+	at java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+	at java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1390)
+	at java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:604)
+	at java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:283)
+	at java.util.Iterator.forEachRemaining(Iterator.java:116)
+	at java.util.Spliterators$IteratorSpliterator.forEachRemaining(Spliterators.java:1801)
+	at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:485)
+	at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:475)
+	at java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+	at java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:133)
+	at java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:236)
+	at java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:435)
+	at com.android.settings.dashboard.DashboardFragment.displayResourceTilesToScreen(DashboardFragment.java:320)
+	at com.android.settings.dashboard.DashboardFragment.displayResourceTiles(DashboardFragment.java:312)
+	at com.android.settings.dashboard.DashboardFragment.refreshAllPreferences(DashboardFragment.java:368)
+	at com.android.settings.dashboard.DashboardFragment.onCreatePreferences(DashboardFragment.java:160)
+	at androidx.preference.PreferenceFragmentCompat.onCreate(PreferenceFragmentCompat.java:160)
+	at com.android.settingslib.core.lifecycle.ObservablePreferenceFragment.onCreate(ObservablePreferenceFragment.java:61)
+	at com.android.settings.SettingsPreferenceFragment.onCreate(SettingsPreferenceFragment.java:144)
+	at com.android.settings.dashboard.DashboardFragment.onCreate(DashboardFragment.java:137)
+	at androidx.fragment.app.Fragment.performCreate(Fragment.java:2596)
+	at androidx.fragment.app.FragmentManagerImpl.moveToState(FragmentManagerImpl.java:831)
+	at androidx.fragment.app.FragmentTransition.addToFirstInLastOut(FragmentTransition.java:1197)
+	at androidx.fragment.app.FragmentTransition.calculateFragments(FragmentTransition.java:1080)
+	at androidx.fragment.app.FragmentTransition.startTransitions(FragmentTransition.java:119)
+	at androidx.fragment.app.FragmentManagerImpl.executeOpsTogether(FragmentManagerImpl.java:1853)
+	at androidx.fragment.app.FragmentManagerImpl.removeRedundantOperationsAndExecute(FragmentManagerImpl.java:1811)
+	at androidx.fragment.app.FragmentManagerImpl.execPendingActions(FragmentManagerImpl.java:1717)
+	at androidx.fragment.app.FragmentManagerImpl.executePendingTransactions(FragmentManagerImpl.java:183)
+	at com.android.settings.SettingsActivity.switchToFragment(SettingsActivity.java:567)
+	at com.android.settings.SettingsActivity.launchSettingFragment(SettingsActivity.java:360)
+	at com.android.settings.SettingsActivity.onCreate(SettingsActivity.java:268)
+	at android.app.Activity.performCreate(Activity.java:7824)
+	at android.app.Activity.performCreate(Activity.java:7813)
+	at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1306)
+	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:3245)
+	... 11 more
+
+========================================
+2026-10-07 21:37:57 system_app_crash (text, 3500 bytes)
+Process: com.android.camera2
+PID: 10340
+UID: 10095
+Flags: 0x20d8bc45
+Package: com.android.camera2 v20002030 (2.0.002)
+Foreground: Yes
+Build: KYOCERA/lineage_kyf37/kyf37:10/QQ3A.200805.001/eng.pablo.20261008.101614:userdebug/test-keys
+
+java.lang.RuntimeException: Unable to start activity ComponentInfo{com.android.camera2/com.android.camera.CameraActivity}: java.lang.IllegalArgumentException: supportsCameraApi:1986: Unknown camera ID 0
+	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:3270)
+	at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:3409)
+	at android.app.servertransaction.LaunchActivityItem.execute(LaunchActivityItem.java:83)
+	at android.app.servertransaction.TransactionExecutor.executeCallbacks(TransactionExecutor.java:135)
+	at android.app.servertransaction.TransactionExecutor.execute(TransactionExecutor.java:95)
+	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2016)
+	at android.os.Handler.dispatchMessage(Handler.java:107)
+	at android.os.Looper.loop(Looper.java:214)
+	at android.app.ActivityThread.main(ActivityThread.java:7356)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:491)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:940)
+Caused by: java.lang.IllegalArgumentException: supportsCameraApi:1986: Unknown camera ID 0
+	at android.hardware.camera2.CameraManager.throwAsPublicException(CameraManager.java:819)
+	at android.hardware.camera2.CameraManager.getCameraCharacteristics(CameraManager.java:328)
+	at com.android.camera.one.v2.Camera2OneCameraManagerImpl.findFirstCameraIdFacing(Camera2OneCameraManagerImpl.java:181)
+	at com.android.camera.one.v2.Camera2OneCameraManagerImpl.findFirstBackCameraId(Camera2OneCameraManagerImpl.java:157)
+	at com.android.camera.one.v2.Camera2OneCameraManagerImpl.findCameraId(Camera2OneCameraManagerImpl.java:145)
+	at com.android.camera.one.v2.Camera2OneCameraManagerImpl.findFirstCameraFacing(Camera2OneCameraManagerImpl.java:114)
+	at com.android.camera.one.v2.Camera2OneCameraManagerImpl.<init>(Camera2OneCameraManagerImpl.java:77)
+	at com.android.camera.one.v2.Camera2OneCameraManagerImpl.create(Camera2OneCameraManagerImpl.java:61)
+	at com.android.camera.one.OneCameraModule.provideOneCameraManager(OneCameraModule.java:68)
+	at com.android.camera.CaptureModule.init(CaptureModule.java:410)
+	at com.android.camera.CameraActivity.onCreateTasks(CameraActivity.java:1651)
+	at com.android.camera.util.QuickActivity.onCreate(QuickActivity.java:114)
+	at android.app.Activity.performCreate(Activity.java:7824)
+	at android.app.Activity.performCreate(Activity.java:7813)
+	at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1306)
+	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:3245)
+	... 11 more
+Caused by: android.os.ServiceSpecificException: supportsCameraApi:1986: Unknown camera ID 0 (code 3)
+	at android.os.Parcel.createException(Parcel.java:2108)
+	at android.os.Parcel.readException(Parcel.java:2062)
+	at android.os.Parcel.readException(Parcel.java:2010)
+	at android.hardware.ICameraService$Stub$Proxy.supportsCameraApi(ICameraService.java:800)
+	at android.hardware.camera2.CameraManager.supportsCameraApiLocked(CameraManager.java:872)
+	at android.hardware.camera2.CameraManager.supportsCamera2ApiLocked(CameraManager.java:848)
+	at android.hardware.camera2.CameraManager.getCameraCharacteristics(CameraManager.java:304)
+	... 25 more
+
+========================================
+2026-10-07 21:39:41 system_app_crash (compressed text, 1416 bytes)
+Process: com.android.settings
+PID: 12015
+UID: 1000
+Flags: 0x28c9be45
+Package: com.android.settings v29 (10)
+Foreground: Yes
+Build: KYOCERA/lineage_kyf37/kyf37:10/QQ3A.200805.001/eng.pablo.20261008.101614:userdebug/test-keys
+
+java.lang.RuntimeException: Unable to start activity ComponentInfo{com.android.settings/com.android.settings.Settings$MyDeviceInfoActivity}: java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.String[] android.net.wifi.WifiManager.getFactoryMacAddresses()' on a null object reference
+	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:3270)
+	at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:3409)
+	at android.app.servertransaction.LaunchActivityItem.execute(LaunchActivityItem.java:83)
+	at android.app.servertransaction.TransactionExecutor.executeCallbacks(TransactionExecutor.java:135)
+	at android.app.servertransaction.TransactionExecutor.execute(TransactionExecutor.java:95)
+	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2016)
+	at android.os.Handler.dispatchMessage(Handler.java:107)
+	at android.os.Looper.loop(Looper.java:214)
+	at android.app.ActivityThread.main(ActivityThread.java:7356)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:491)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:940)
+Caused by: java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.String[] android.net.wifi.WifiManager.getFactoryMacAddresses()' on a null object reference
+	at com.android.settingslib.deviceinfo.AbstractWifiMacAddressPreferenceController.updateConnectivity(AbstractWifiMacAddressPreferenceController.java:84)
+	at com.android.settingslib.deviceinfo.AbstractWifiMacAddressPreferenceController.displayPreference(AbstractWifiMacAddressPreferenceController.java:73)
+	at com.android.settings.dashboard.DashboardFragment.lambda$displayResourceTilesToScreen$5(DashboardFragment.java:321)
+	at com.android.settings.dashboard.-$$Lambda$DashboardFragment$E98G1shazpe8SaLEovhpIxhHH0Q.accept(Unknown Source:4)
+	at java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+	at java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1390)
+	at java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:604)
+	at java.util.stream.ReferencePipeline$7$1.accept(ReferencePipeline.java:283)
+	at java.util.Iterator.forEachRemaining(Iterator.java:116)
+	at java.util.Spliterators$IteratorSpliterator.forEachRemaining(Spliterators.java:1801)
+	at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:485)
+	at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:475)
+	at java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+	at java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:133)
+	at java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:236)
+	at java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:435)
+	at com.android.settings.dashboard.DashboardFragment.displayResourceTilesToScreen(DashboardFragment.java:320)
+	at com.android.settings.dashboard.DashboardFragment.displayResourceTiles(DashboardFragment.java:312)
+	at com.android.settings.dashboard.DashboardFragment.refreshAllPreferences(DashboardFragment.java:368)
+	at com.android.settings.dashboard.DashboardFragment.onCreatePreferences(DashboardFragment.java:160)
+	at androidx.preference.PreferenceFragmentCompat.onCreate(PreferenceFragmentCompat.java:160)
+	at com.android.settingslib.core.lifecycle.ObservablePreferenceFragment.onCreate(ObservablePreferenceFragment.java:61)
+	at com.android.settings.SettingsPreferenceFragment.onCreate(SettingsPreferenceFragment.java:144)
+	at com.android.settings.dashboard.DashboardFragment.onCreate(DashboardFragment.java:137)
+	at androidx.fragment.app.Fragment.performCreate(Fragment.java:2596)
+	at androidx.fragment.app.FragmentManagerImpl.moveToState(FragmentManagerImpl.java:831)
+	at androidx.fragment.app.FragmentTransition.addToFirstInLastOut(FragmentTransition.java:1197)
+	at androidx.fragment.app.FragmentTransition.calculateFragments(FragmentTransition.java:1080)
+	at androidx.fragment.app.FragmentTransition.startTransitions(FragmentTransition.java:119)
+	at androidx.fragment.app.FragmentManagerImpl.executeOpsTogether(FragmentManagerImpl.java:1853)
+	at androidx.fragment.app.FragmentManagerImpl.removeRedundantOperationsAndExecute(FragmentManagerImpl.java:1811)
+	at androidx.fragment.app.FragmentManagerImpl.execPendingActions(FragmentManagerImpl.java:1717)
+	at androidx.fragment.app.FragmentManagerImpl.executePendingTransactions(FragmentManagerImpl.java:183)
+	at com.android.settings.SettingsActivity.switchToFragment(SettingsActivity.java:567)
+	at com.android.settings.SettingsActivity.launchSettingFragment(SettingsActivity.java:360)
+	at com.android.settings.SettingsActivity.onCreate(SettingsActivity.java:268)
+	at android.app.Activity.performCreate(Activity.java:7824)
+	at android.app.Activity.performCreate(Activity.java:7813)
+	at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1306)
+	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:3245)
+	... 11 more
+

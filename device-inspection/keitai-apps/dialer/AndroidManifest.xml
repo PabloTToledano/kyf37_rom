@@ -1,0 +1,107 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.kyf37.dialer">
+    <uses-sdk android:minSdkVersion="28" android:targetSdkVersion="28" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.CALL_PRIVILEGED" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.WRITE_CALL_LOG" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.START_ACTIVITIES_FROM_BACKGROUND" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.MANAGE_ROLE_HOLDERS" />
+    <application android:label="Phone" android:icon="@drawable/ic_launcher" android:allowBackup="false"
+            android:theme="@android:style/Theme.Material.NoActionBar">
+
+        <activity android:name=".DialerActivity" android:label="Phone" android:exported="true"
+                android:launchMode="singleTask" android:windowSoftInputMode="stateHidden"
+                android:showWhenLocked="false">
+            <intent-filter android:priority="100">
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter android:priority="100">
+                <action android:name="android.intent.action.DIAL" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter android:priority="100">
+                <action android:name="android.intent.action.DIAL" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="tel" />
+            </intent-filter>
+            <intent-filter android:priority="100">
+                <action android:name="android.intent.action.DIAL" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="voicemail" />
+            </intent-filter>
+            <intent-filter android:priority="100">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="tel" />
+            </intent-filter>
+            <intent-filter android:priority="100">
+                <action android:name="android.intent.action.CALL_BUTTON" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".RecentsActivity" android:label="Recents" android:exported="true">
+            <intent-filter android:priority="100">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.dir/calls" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".SpeedDialActivity" android:label="Speed dial" android:exported="true" />
+
+        <activity android:name=".InCallActivity" android:label="Call" android:exported="false"
+                android:launchMode="singleTask" android:taskAffinity="org.kyf37.dialer.incall"
+                android:showWhenLocked="true" android:turnScreenOn="true"
+                android:excludeFromRecents="true" android:screenOrientation="portrait" />
+
+        <service android:name=".KeitaiInCallService" android:exported="true"
+                android:permission="android.permission.BIND_INCALL_SERVICE">
+            <meta-data android:name="android.telecom.IN_CALL_SERVICE_UI" android:value="true" />
+            <intent-filter>
+                <action android:name="android.telecom.InCallService" />
+            </intent-filter>
+        </service>
+
+        <receiver android:name=".KeitaiInCallService$ActionReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="org.kyf37.dialer.ANSWER" />
+                <action android:name="org.kyf37.dialer.DECLINE" />
+                <action android:name="org.kyf37.dialer.HANGUP" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Debug only (no-ops unless Build.IS_DEBUGGABLE): fake line to test Telecom without a radio. -->
+        <service android:name=".TestConnectionService" android:exported="true"
+                android:permission="android.permission.BIND_TELECOM_CONNECTION_SERVICE">
+            <intent-filter>
+                <action android:name="android.telecom.ConnectionService" />
+            </intent-filter>
+        </service>
+        <receiver android:name=".TestConnectionService$Debug" android:exported="true">
+            <intent-filter>
+                <action android:name="org.kyf37.dialer.DEBUG_INCOMING" />
+                <action android:name="org.kyf37.dialer.DEBUG_OUTGOING" />
+                <action android:name="org.kyf37.dialer.DEBUG_REMOTE_HANGUP" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".RoleBoot" android:exported="false">
+            <meta-data android:name="org.kyf37.ROLE" android:value="android.app.role.DIALER" />
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>

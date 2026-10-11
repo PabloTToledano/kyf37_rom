@@ -1,0 +1,50 @@
+package org.kyf37.home;
+
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Properties;
+
+/** Bundled icon pack: no network, permissions, background service, or APK rewriting. */
+public final class PastelIcons {
+    private static final Properties packages = new Properties();
+    private static final HashMap<String, Drawable.ConstantState> cache = new HashMap<>();
+    private static boolean loaded;
+
+    public static synchronized Drawable get(Context context, String pkg) {
+        if (!loaded) {
+            try (InputStream in = context.getAssets().open("pastel-star/packages.properties")) {
+                packages.load(in);
+                packages.setProperty("com.android.camera2","camera");
+                // Current Kyocera port mappings
+                packages.setProperty("com.kyocera.calculator2","calculator");
+                packages.setProperty("jp.kyocera.charactercheck","keypad");
+                packages.setProperty("jp.kyocera.datafolder","files");
+                packages.setProperty("org.kyf37.dialerxx","phone");
+                packages.setProperty("org.kyf37.dialer","phone");
+                packages.setProperty("org.kyf37.messages","messages");
+                packages.setProperty("org.kyf37.contacts","contacts");
+
+                loaded = true;
+            } catch (Exception e) { Log.e("PastelStar", "Package map unavailable", e); }
+        }
+        String name = packages.getProperty(pkg);
+        // Missing or placeholder mappings use the original activity icon.
+        if (name == null || "generic".equals(name)) return null;
+        int themeId = android.provider.Settings.Global.getInt(context.getContentResolver(),"kyf37_icon_theme",1);
+        String folder = themeId==3 ? "kyocera-classic/classic_" : (themeId==2 ? "sky-star/sky_" : "pastel-star/pastel_");
+        String cacheKey = folder + name;
+        Drawable.ConstantState state = cache.get(cacheKey);
+        if (state != null) return state.newDrawable(context.getResources());
+        try (InputStream in = context.getAssets().open(folder + name + ".png")) {
+            Drawable icon = Drawable.createFromResourceStream(context.getResources(), null, in, name);
+            if (icon != null) {
+                if (icon.getConstantState() != null) cache.put(cacheKey, icon.getConstantState());
+                return icon;
+            }
+        } catch (Exception e) { Log.e("PastelStar", "Icon unavailable: " + name, e); }
+        return null; // Missing/broken artwork also keeps the original icon.
+    }
+}

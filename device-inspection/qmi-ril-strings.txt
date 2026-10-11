@@ -1,0 +1,2423 @@
+td$m
+/system/bin/linker
+__libc_init
+__cxa_atexit
+memset
+pthread_mutexattr_init
+pthread_mutexattr_setpshared
+pthread_mutex_init
+pthread_cond_init
+__aeabi_unwind_cpp_pr0
+pthread_cond_destroy
+pthread_mutexattr_destroy
+pthread_mutex_destroy
+pthread_mutex_lock
+pthread_cond_wait
+pthread_mutex_unlock
+pthread_cond_signal
+strlen
+strcmp
+property_get
+strncpy
+strncmp
+__stack_chk_fail
+__stack_chk_guard
+qmi_release
+malloc
+free
+memcpy
+time
+localtime
+strftime
+fprintf
+vfprintf
+fputc
+fflush
+__sF
+__aeabi_unwind_cpp_pr1
+qmi_idl_get_message_c_struct_len
+gettimeofday
+qmi_client_send_msg_sync
+qmi_init
+voice_get_service_object_internal_v02
+nas_get_service_object_internal_v01
+wms_get_service_object_internal_v01
+wds_get_service_object_internal_v01
+dms_get_service_object_internal_v01
+uim_get_service_object_internal_v01
+pbm_get_service_object_internal_v01
+sar_get_service_object_internal_v01
+qmi_client_init
+qmi_client_get_service_version
+pthread_create
+qmi_client_message_decode
+pthread_exit
+strstr
+select
+signal
+pthread_join
+atoi
+pthread_kill
+__sprintf_chk
+strlcpy
+strcpy
+__memset_chk
+snprintf
+__strcpy_chk
+puts
+__strcat_chk
+printf
+fgetc
+__memcpy_chk
+fgets
+__strlen_chk
+qmi_client_send_msg_async
+qmi_client_release
+putchar
+fopen
+fputs
+sleep
+sscanf
+vsnprintf
+__android_log_print
+_edata
+__bss_start
+_end
+libc.so
+libcutils.so
+libidl.so
+libm.so
+libqcci_legacy.so
+libqmi.so
+libqmi_client_qmux.so
+libqmiservices.so
+libstdc++.so
+X h7
+FzD{D
+,% `
+"PF~D
+%{DzD
+1hxD
+DHF"
+r!xD
+!:F F
+! F 
+@F!F
+  FH"
+@F!F
+  FH"
+@F!F
+lP!F
+F1F"F
+`F"F
+vP#F
+}D2F
+}HxD
+vHxD
+vHxD
+tHxD
+rHxD
+nHxD
+nHxD
+mK{D
+jHxD
+iHAF:FxD
+DJcL
+X|D#`
+bI@FbLyD|D
+_HxD
+:H)X!`O
+XI8FXOyD
+VHxD
+-H)X
+:`RH,XV
+RI0FyD
+OHxD
+!`LOLH
+DxD9h
+JHKIKJxDzDyD
+IH9hxD
+HH9hxD
+)F F
+1K2J{Dp
+F#h&F
+,I(FyD
+*H*IxDyD.
+)I(FyD
+'H'IxDyD"
+&I(FyD
+$HiF$JxDzD
+"IhFyD
+ IhFyD
+IxDyD
+IxDyD
+H)FxD
+ F5h
++`0F
+"`8F
+ F)F
+1F*F
+F Fp
+`pG"_
+&J(F
+YF*F F
+9F F
+YF*FHF
+9FHF
+|MxD
+qHaixD
+kHxD
+("AF8F
+MHxD
+JHahxD
+=HYFxD
+6HxD
+kh8F
+G4HxD
+1HxD
+F4HxD
+3K{D
+&fab`
+H)FxD
+*`%`
+HihxD
+H)F"FxD
+H|DxD
+0F1F
+`a[!
+FzD8F
+H1FxD
+H)FxD
+!i8F
+|J8F
+FyH1FxD
+FzD8F
+FjH)FxD
+bLcH|DxD
+Z `O
+DzD8F
+F[H1FxD
+!j8F
+PJ8F
+FMH)FxD
+aj8F
+FzD8F
+F?H1FxD
+ai8F
+V xD
+8F2J
+F0HxD
+j xD
+)F+FzD
+!!`,F
+$$H!FxD
+!H9FxD
+H)FxD
+!F2F+F
+!F2F+F
+!F2F+F
+!F2F+F
+!F2F+F
+!F2F+F
+!F2F+F
+1F*F#F
+H)F"FxD
+h@hIh
+#c` F
+&hch
+b`#h`h
+#P%ho
+h0FQ
+#c`%
+n` F
+8FAF
+ FAF
+ FIF
+QF F
+ (`p
+% H|DxD
+HajxD
++F(F
+H1FxD
+HyDxD
+ha)F
+ayD`i
+byD@i
+!HahxD
+h)F F
+hxDbh
++h#`
+`0Fc`
+h"a+ica
+ `0F
+b0Fla
+F Fp
+Ni(F
+ii8F
+&fb+i
+hIFS
+`afi&
+ F4F
+` Fp
+HxDpG
+HxDpG
+HxDpG
+HxDpG
+HxDpG
+HxDpG
+{DxD
+IhxD
+Tt!F
+)FxD
+H"ixD
+H~DxD
+HIFxD
+jHxD
+eN~D
+^N^H~DxD
+[HxD
+OJzD
+KI`iyD
+FHxD
+D8h@
+>HxD
+;K!F{D
+6JzD
+/HxD
+.HxD
+F$LxD|D
+ha)F F
+FxDzD
+p@xD
+LxD|D
+#0Fc`.
+`0F,`
+(F!F
+#H)F2FxD
+!IyD
+H)ixD
+H)FxD
+##a F
+;H1F:FxD
+F5HAFxD
+(b8F
+1Fhb)M}D
+a$H!ixD
+HYFxD
+hb8F
+!#FzD
+H1FxD
+F9F}D
+!H2F9FxD
+8F!F
+HxDpG
+HxDpG
+HxDpG
+HxDpG
+HxDpG
+HxDpG
+HxDpG
+HxDpG
+HxDpG
+HxDpG
+HxDpG
+`f` F
+FxDah
+"|D F
+/#hF
+NKOJ{D-
+F+hxD
+F:H9FxD
+9K4"
+IF{D(F
+pi)F
+#|bi3L
+0c`C
+0H0IxDyD
+,KIF
+'F{D
+D)Fpi
+4"KF(F
+pi)F
+!2F(F
+HKIJ{D-
+F+h~D
+!h0F>NO
+F7HQFxD
+5K4"
+IF{D(F
+xi)F
+hzD$y
+4`T`@
+q`,H,IxDyD
+&F{D
+D)Fxi
+!4"(F
+xi)F
+!4" F
+!K"J{D
+phd"
+ F{D
+hi!F
+qz F
+I FyD
+!{Dd"
+hi!F
+hxD)F
+*H)FxD
+(H)FxD
+&H)FxD
+$H)FxD
+ H)FxD
+H)FxD
+H)FxD
+"%#hF
+AKBJ{D
+h3h-)+
+4IyD
+4IyD
+3IyD
+3IyD
+2IyD
+2IyD
+1IyD1K
+"{D8F
+`i9F
+`i)F
+9K:J{D
+hi1F
+-H1FxD
+!(KO
+r0F{D
+hi1F
+#H1FxD
+r{D0F
+hi1F
+H1FxD
+!{DO
+hi1F
+H1FxD
+00W0
+yD{DQ
+FBH!FxD
+@H1FxD
+?H1FxD
+.H1FxD
+!`@F
+XbFlF
+;hQh
+2hCF
+jz)y
+$4`y
+MFED
+rHF&sPD
+h *!
+H}DxD)h
+2!(FzD
+pi)F
+!/#hF
+%K&J{D-
+F;h0F
+hxD9F
+H9FxD
+ 7#,"
+%K&J{D-
+F;h0F
+hxD9F
+H9FxD
+1K2J{D-
+F;h(F
+xDAF
+$HAFxD
+" F&'
+BKCJ{D-
+F#h(F
+`h)`
+KKLJ{D-
+8"+h
+DyD@F
+`iAF
+r,K9F
+@F{D>F*O
+`iAF
+'I@FyD
+`iAF
+`i9F
+5F{D0FO
+IxDyD
+K}D{D(F
+`i)F
+DyD@F
+hiAF
+`z9FAKO
+@F{D
+hiAF
+D{D8F
+hi9F
+!4K8F
+hi9F
+DyD`F,O
+CF8F
+hi9F
+4F{D0FO
+IxDyD
+K|D{D F
+hi!F
+J{D-
+!JF F
+pi!F
+|K{D
+[FzJ
+! FzD
+pi!F
+rK{D
+rK{D
+qK{D
+qK{D
+pK{D
+pK{D
+oK{DoJ
+! FzD
+pi!F
+ 0 FzD
+pi!F
+!0 FzD
+pi!F
+[K{D
+[K{D
+ZK{D
+ZK{D
+YK{D
+YK{D
+XK{DXJ
+! FzD
+pi!F
+PK{D
+PK{D
+OK{D
+OK{D
+NK{D
+NK{D
+MK{DMJ
+! FzD
+pi!F
+l0 FzD
+pi!F
+@K{D
+@K{D
+?K{D
+?K{D
+>K{D
+>K{D
+=K{D=J
+! FzD
+pi!F
+t0 FzD
+pi!F
+2IpiyD
+%L&I|DyD F
+hi!F
+IhiyD 
+ F{D
+I{DyD
+ F{D
+hi!F
+%M&I}DyD(F
+`i)F
+r9F(F
+`i)F
+vz(F
+(F{DO
+I{DyD
+(F{D
+`i)F
+(F{DO
+I{DyD
+F`iaF
+(F{D
+`i)F
+!M!I}DyD(F
+`i)F
+r{D"
+I(FyD
+(F{DO
+IxDyD
+K}D{D(F
+`i)F
+(L(I|DyD F
+hi!F
+ F{D
+hi!F
+hi!F
+hi!F
+hi!F
+I{DyD
+I|DyD F
+hi!F
+ F{D
+hi!F
+I{DyD
+"K#J{D-
+F#h'F%
+D FQF
+hi1F
+{D(F
+ F{DO
+hi!F
+"$#hF
+DyD@F
+`iAF
+I@FyD
+`iAF
+IxDyD
+IxDyD
+IxDyD
+IxDyD
+IxDyD
+IxDyD
+IHFyD
+`iIF
+`i~D1F
+I0FyD
+`i1F
+*i0F
+I8FyD
+`i9F
+ki8F
+I@FyD
+`iAF
+IxDyD
+IxDyD
+IxDyD
+IxDyD
+IxDyD
+IHFyD
+8FAF
+6`iyD
+DyD`F
+F`iIF
+I@FyD
+`iAF
+DyD8F
+`i9F
+`i9F
+`i9F
+8F{D
+`i9F
+`i9F
+`i9F
+DyD@F
+`iAF
+!}K@F
+`iAF
+!@FO
+uK{D
+`iAF
+DyDHF
+`iIF
+rjKHF
+`iIF
+HF{D
+`iIF
+!]KHF
+`iIF!
+!ohO
+rWK~D
+5F{D0F
+UHUIxDyD
+rQK}D{D(F
+`i)F
+!!#hF
+F}D+h;
+ (`!i
+DyD@F
+`iAF
+yD}D
+@[FI
+`i)F
+!{D(F
+`i)F
+`i)F
+`i)F
+`i)F
+I(FyD
+I(FyD
+I(FyD
+~I(FyD~O
+<8FyI
+`i9F
+rI8FyD
+qI8FyD
+pI8FyD
+oI8FyDnO
+`i9F
+bI8FyD
+aI8FyD
+`I8FyD
+_I8FyD_O
+8FyD
+`i9F
+SI8FyD
+RI8FyD
+QI8FyD
+PI8FyDPO
+LI8FyD
+`i9F
+HI@FyD
+DyDHF
+F`iQF
+!uhO
+@F{D
+`iAF
+DyD`F
+:J:IzDyD
+F`i1F
+8F{D
+`i9F
+!F2F
+!*F0F
+J{D-
+F%h5
+)F2F8F
+X"(F|D!F
+hxD1F
+'H1FxD
+"0FO
+H1FxD
+IxDyD
+J}DzD(F[h
+J}DzD(F
+`i)F
+J}DzD(F
+`i)F
+IxDyD
+~DyD0F
+`i1F
+0FyD
+`i1F
+xDyD!
+xDyD
+xDyD
+xDyD
+xDyD
+xDyD
+8FyD
+`i9F
+jh8F
+@FyD
+`iAF
+HFyD
+`iIF
+PFyD
+`iQF
+xDyD
+YFxD
+QFxD
+IFxD
+AFxD
+9FxD
+6`iyD
+DyDXF
+F`iaF
+PFyD
+`iQF
+DyD@F
+`iAF
+IxDyD%
+IxDyD 
+IxDyD
+IxDyD
+HYFxD
+HQFxD
+HIFxD
+HAFxD
+H9FxD
+6`iyD
+DyDpF
+F`iIF
+I@FyD
+`iAF
+DyDPF
+`iQF
+!{DO
+`iQF
+PF{D
+`iQF
+!PFO
+`iQF
+DyDXF
+`iYF
+I@FyD
+`iAF
+DyDHF
+`iIF
+`iIF
+HF{D
+`iIF
+`iIF
+rSFHF
+`iIF
+!HFO
+`iIF
+DyDXF
+`iYF
+`iYF
+XF{D
+`iYF
+!rKXF
+`iYF
+nKnI{DyD
+(F{DO
+I{DyD
+F`iaF
+(F{D
+`i)F
+,K-J{D-
+F+hxD
+!2FO
+dKeJ{D-
+nh&a/{
+*iba+~
+KHaixD
+IHahxD
+7p/p
+0FQF
+6I(F
+(FYh
+!3F FzD
++H+IxDyD
+*H1FxD 
+.x F~
+!+FzD
+%H&IxDyD
+$H)FxD
+#IyD
+"H#IxDyD
+!H"IxDyD
+HajxD
+IxDyD
+IxDyD
+kKlJ{D-
+h&a/}
+ija`
+QHaixD
+PHahxD
+7p/p
+0FQF
+>I(F
+(FYh
+! F{D
+1H2IxDyD
+0H1FxD 
+.x F~
+!+FzD
+,H,IxDyD
++H)FxD
+*IyD
+)H)IxDyD
+(H(IxDyD(M
+!F}D
+"HxD
+2F8F
+!@(F
+!2F(F
+`yD`i
+)F F
+!F2F8F
+(i!F
+-i){
+I~DyD0F
+`i1F
+r9F0F
+`i1F
+`i1F
+*{9F
+`i1F
+r9F0F
+`i1F
+0F{D
+`i1F
+9F{D
+`i1F
+I0FyD
+`i1F
+*x0F
+`i1F
+kh9FO
+`i1F
+DyD@F}O
+`iAF
+rxK@F
+`iAF
+rrK@F
+`iAF
+i@FlK
+`iAF
+gI@FyD
+`iAF
+CF8F
+`i9F
+DyDpF
+F`iIF
+1FBFHF
+hi1F
+DyD`F
+DyD`F
+F{DpF
+`iIF'
+5M6I}DyD(F
+DyDHF
+DyD@F
+/N/I~DyD0F
+.H.IxDyD
+F`iAF
+*HxD
+" #O
+5K|D{D F
+hi!F
+,K{D
+hi!F
+ F{D
+hi!F
+r"K F
+hi!F
+hi!F
+vi F
+IxDyD
+K|D{D F
+hi!F
+" qK
+! #O
+!F2F8F
+!F2F8F
+ZN[I~DyD0F
+`i1F
+LHLIxDyD,
+IHIIxDyD"
+FHGIxDyD
+FHFIxDyD
+EHFIxDyD
+@FIF
+CHDIxDyD
+CHCIxDyD
+BIPFyD
+<I0FyD$
+;I0FyD 
+!ohO
+r9K~D{D0F
+`i1F
+h0F2K
+.I0FyD
+`i1F
++H,IxDyD
+r'K}D{D(F
+`i)F
+!F*F0F
+WNXI~DyD0F
+`i1F
+IHIIxDyD,
+FHFIxDyD"
+CHDIxDyD
+CHCIxDyD
+BHCIxDyD
+@FIF
+@HAIxDyD
+@H@IxDyD
+?IPFyD
+9I0FyD$
+8I0FyD 
+!ohO
+r6K~D{D0F
+`i1F
+h0F/K
++I0FyD
+`i1F
+(H)IxDyD
+r$K}D{D(F
+`i)F
+!F*F0F
+qNrI~DyD0F
+`i1F
+r{D8F
+`i9F
+UHVIxDyD,
+RHSIxDyD"
+PHPIxDyD
+OHPIxDyD
+OHOIxDyD
+MHMIxDyD
+LHMIxDyD
+LIXFyD
+8F{DO
+`i9F
+=I0FyD&
+<I0FyD"
+!jh;K~D{D0F
+`i1F
+T0F2K
+.I0FyD
+`i1F
++H,IxDyD
+r'K}D{D(F
+`i)F
+I{DyD
+DNE F
+D8hf
+HH!xD
+PyD"F
+4HxD
+0HxDR
+.HQFxD
+,HIFxD
++HAFxD
+)H9FxD
+HYFxD
+H1FxD
+H!FxD
+H)FxD
+HQhxD
+1F*FC
+!)TPF)F
+!FXF
+CFyD
+H)FxD
+mDN'
+!~DO
+=Hx!xD
+;I(FvXy!2F
+y!(F
+(!&H
+BF(!(FO
+(F(!
+hpGb
+J{D-
+)h0F
+"0Fb`
+`!F@F
+ sJ{D-
+jLkI|DkM
+HF)F
+/hzh
+#d cc
+hSFyDbF
+F9FFH
+8FPF
+xa9F
+!yc(h
+(HxD
+!%K@FO
+Gyi9
+hzDSh
+,I*h
+!|D8" F
+'`f`
+H|DxD
+ D(`
+`pGJ
+hpG>
+F~DO
+b}D0F3`)F+p:K{D
+ h)F8KO
+0F{D
+ah0F3KO
+)F{D
+h0F/K)F
+h0F+K)F
+D~D@F{D1F$O
+$K@F
+1F#NO
+b{D~D
+0FCFJ|9F
+K|DxD!F{D
+H!FxD
+'+LO
+b+K}D|D(F{D!F/`'p
+3h(F!FO
+$K{D
+0y!F"KO
+(F{D
+qy(F
+!F{D
+M!F{DO
+b}D<F
+K~DxD1F{D
+H1FxD
+F2LO
+b}D|D(F+`!F#p/K{D
+0h!F-KO
+(F{D
+1y(F)KO
+!F{D
+h(F%K!F
+h(F!FO
+0|!F
+(F{D
+qi(F
+!F{D
+6~(F
+K(F!FO
+H!FxD
+b}D0F3`)F+p
+0Fay{D
+H)FxD
+FaMO
+b~D}D0F3`)F+p^K{D
+b[K)F
+0F{D
+bSMaySK~D}D0F
+)F{D
+#y0F)FO
+LK{D
+KK~D}D
+)F{D0F
+0FGK)F
+bCMCK~D}D0F{D)F
+ y)F?KO
+0F{D
+by0F;K)F
+y0F7K)F
+b4M5K~D}D0F{D)F
+0F1KO
+)F{D
+y0F)FO
++K{D
+y0F)K)F
+b&I&KxDyD{D
+b$H$K~DxD1F{D
+"H1FxD
+0@FyDO
+xDyD
+X3h+
+I*F0hyD
+&>MO
+D}D8F{D)F>`.p
+#x8F)FO
+7F5K
+4H)FxD
+D~D8F
+x&*K9`1p1F
+&K8F1FO
+b!H!K
+D{DAFxD
+HAFxD
+D5M@F~D
+4K0F}DO
+b{D)F7`/p
+#x0F)FO
+,K{D
+`x)F*KO
+0F{D
+x0F&KO
+)F{D
+x0F"K)F
+l0F)FO
+b0F)F{D
+H)FxD
+("(F
+<0xD
+ pG-
+;HxDH
+:H1FxD
+ex6H!x*FxD
+2HxD0
+0HxD*
+0H)FxD
+-H)FxD
++H)F2FxD
+&HxD
+IFxD
+ HxD
+F8HxD
+4HxD
+2HxD
+/HxD
+8F!F2F
+$HxD
+ HxD
+H)FxD
+FOHxD
+NHxD
+HHxD
+bDM~D}D0F
+iCK1`)p)F{D
+#i0F)FO
+=K{D
+`i)F;KO
+0F{D
+0F6KO
+)F{D
+1&0F2K)F
+i0F)FO
+,K{D
+)F)KO
+0F{D
+0F%KO
+)F{D
+"H)FxD
+ F1F
+H9FxD
+HaxxD
+F'O(N(L
+D|D8F~D
+#0F3`!F#pO
+b"K{D
+(x!F KO
+0F{D
+ix0F
+!F{D
+b0F!F
+H!FxD
+F"O#N#L
+D|D8F~D
+#0F3`!F#pO
+0F{D
+!F{D
+*y0F
+H!FxD
+J{D-
+b}D8F{D)F>`
+ x)F{KO
+8F{D
+xH)FxD
+!xQE
+'oM~D}D0F
+x&)FmK7`/p{D
+|60F)FO
+fK{D
+)FcKO
+0F{D
+0F_KO
+)F{D
+&0FZK)F
+WH)FxD
+7`0F/p)FRKO
+bQMRN
+{D}D
+FHGIxDyDN
+?K)F
+b{D0F7`/p
+)F9KO
+0F7M8N{D}D
+b*H*K
+DxDAF{D
+(HAFxD
+H1FxD
+.#phx`p
+b}D|D(F+`!F#p
+0h!F
+(F{D
+qh(F
+!F{D
+2z(F
+H!FxD
+b}D|D(F+`!F#p
+0x!F
+(F{D
+qx(F
+!F{D
+H!FxD
+hJOJHKN
+D~DxD
+#8F;`1F3pO
+bEK{D
+DK8F
+1F{DO
+@H1FxD
+)HxD
+ %NO
+D~D"K8`0p8F
+1F{D
+78F1FO
+IxDyD
+D2L@F}D
+1K(F|DO
+b{D!F/`'p
+3x(F
+b&K!F
+(F{D
+HF!F
+'p(F
+K/`{D
+HF!F
+\H;hxD
+XHxD
+ dxD
+PHxD~
+LHxD
+JHxDi
+FHxD
+BHxDX
+?HxD
+;HxDB
+8HxD:
+5HxD2
+ F)FB
+JyDzD
+ &JyDzD
+#4p,F!
+JyDzD
+ "J#FyDzD
+ +JyDzD
+&t)x
+JyDzD
+ -x%v
+ yJyDzD
+ pJGFyDzD#x
+/pax
+ eJyDzD
+ dJyDzDcx
+op1F
+ YJyDzD
+ XJyDzD
+'yDzD
+ JJGFyDzD
+p yO
+1F8F
+'yDzD
+ =JGFyDzD#y
+/q1FbyO
+2I;F2J
+ /J7FyDzDcy
+yDzD
+'yDzD
+xD{DzD
+t'yDzD
+d'yDzD
+P'yDzD
+##`Px q
+('yDzD
+'yDzDU
+##`Px
+&yDzD
+&yDzD(
+#c`Px
+&yDzD
+&yDzD
+|&yDzDw
+l&yDzD
+8&yDzDM
+(&yDzD
+##`Px q
+%yDzD
+%yDzDs
+#`Sx#q
+%yDzD
+t%yDzD
+P%yDzD<
+%yDzD
+$yDzD
+!`Sx#q
+$yDzD|
+$yDzD
+" F"`Kx#q
+ 3 0
+$yDzDL
+$yDzD
+  ` FKx#q
+<$yDzD
+,$yDzD
+"Hx q
+JyDzD
+JyDzDf
+  `Sx#q
+3 +Hq
+JyDzD
+JyDzDE
+JyDzD
+!`Px q
+JyDzD
+JyDzD\
+DzDIF
+ IFzD
+JyDzD
+JyDzD
+JyDzD6
+JyDzD[F
+ ""`Bx"q
+"Nx&r_
+ yDzD
+yDzD
+'yDzD
+JyDzD
+p@F?
+ |JyDzD
+ <JyDzDN
+ 4JyDzD9
+0x1F"F#
+ -JyDzD'
+JyDzD
+0x1F"F#
+z`BF
+ >JyDzD
+ :JyDzD
+(F!p*x
+ ,JyDzD
+D nH
+JyDzD
+0Dp4
+)\8F
+J+FyDzD
+NED~D5`
+<%VC
+JyDzD
+ OJyDzD
+LI0#LJ
+ yDzD
+ yDzD
+,yDzD
+,yDzD
+|zDxD
+,yDzD
+\,yDzD3F
++yDzD
++[FyDzD
+(F9F
+<+yDzD
+"(FAF
+IF(F
+IF(F
+ yDzD
+IFbF(F
+ yDzD
+#yDzD
+)yDzD
+x)yDzD
+#yDzD
+(yDzD
+t(yDzD
+#yDzDq
+q(FO
+(yDzDS
+r(FO
+#yDzD
+'yDzD
+8'yDzD
+0'yDzD
+'yDzD
+&yDzD
+&yDzD
+#yDzD~
+"(FAF
+"(FO
+"(FQF
+(&yDzD
+AF(F
+%yDzD
+%yDzD
+#yDzD
+d%yDzD
+AF(F
+QDHw
+IDaDHw
+(FAF
+JyDzD
+JyDzD
+RDP`
+JyDzD
+JyDzD3F
+JU#yDzD)
+JyDzD3F
+wJ3F
+uJ[F
+O!FO
+#h&F
+JyDzD
+b}D(F
+JyDzD
+h2F+F
+JyDzD
+JyDzD
+JyDzD
+ yDzD
+ 5JyDzD
+#h``
+JyDzD
+(FFDBF
+JyDzD
+ $JyDzD
+%yDzD
+JyDzD
+$yDzD
+#yDzD
+JCFyDzD
+JyDzD
+JCFyDzD
+yDzD
+ yDzDE
+IzDyD"
+ yDzD
+yDzD
+T;1F
+ yDzD
+ |J3FyDzD
+ yDzD
+ eJyDzD
+ _JyDzD3F
+yDzDU
+ YFzD
+ 9JyDzD
+ 6JyDzD
+ 2JyDzD
+ 1JyDzD
+ +JyDzD
+hq`:
+ (JyDzD
+"|D$M
+DHF}D
+##`AF
+ F9F*F
+ yDzD
+yDzD
+Android
+local
+rmnet0
+remote
+rmnet_sdio0
+default
+ro.baseband
+csfb
+svlte2a
+rmnet
+%x %X
+%s  
+%s 1 - %d
+qmi_util_requester_thread_func entry
+qmi_util_requester_thread_func got svc id
+qmi_util_requester_thread_func got quit signal
+qmi_util_requester_thread_func got indication repost msg
+qmi_util_requester_thread_func got send msg request
+.. payload len
+qmi_util_requester_thread_func .. sending message
+.. msg ID
+.. svc ID
+qmi_util_requester_thread_func .. message sent
+qmi_util_requester_thread_func .. invoking callback
+qmi_util_requester_thread_func .. callback returned
+.. unexpected control info data
+qmi_util_requester_thread_func exiting
+qmi_util_requester_thread_func now awaiting message
+qmi_util_requester_thread_func got something
+qmi_util_post_request entry
+qmi_util_post_request payload cloned len
+qmi_util_post_request probably posted
+qmi_util_post_request exit
+ALERT: qmi_util_event_pipe_post_event asked to loop
+%s 1 - %d, 2 - %d
+qmi_util_common_init entry
+qmi message library init failed. 
+qmi_util_common_init VOICE svc client
+qmi_util_common_init VOICE versions
+qmi_util_common_init NAS svc client
+qmi_util_common_init NAS versions
+qmi_util_common_init DMS svc client
+qmi_util_common_init DMS versions
+qmi_util_common_init WDS svc client
+qmi_util_common_init WDS versions
+qmi_util_common_init UIM svc client
+qmi_util_common_init UIM versions
+qmi_util_common_init PB svc client
+qmi_util_common_init WMS svc client
+qmi_util_common_init WMS versions
+qmi_util_common_init RF SAR svc client
+qmi_util_common_init RF SAR versions
+qmi_util_common_init exit
+qmi_util_inication_repost encoded payload size
+qmi_util_inication_repost expectations 
+qmi_util_inication_repost decode status
+qmi_util_unsolicited_rf_sar_ind_handler, msg
+qmi_util_unsolicited_wms_ind_handler, msg
+qmi_util_unsolicited_pb_ind_handler, msg
+qmi_util_unsolicited_uim_ind_handler, msg
+qmi_util_unsolicited_wds_ind_handler, msg
+qmi_util_unsolicited_dms_ind_handler, msg
+qmi_util_unsolicited_nas_ind_handler, msg
+qmi_util_unsolicited_voice_ind_handler
+NULL
+%s 1 - %s
+%s 1 - %s 2 - %s
+qmi_simple_ril_complete_request
+cond wait request
+READY
+NOT READY
+wait for time - 
+wait for condition - 
+wait error_code
+__init_nas__
+SIMPLE_RIL_INTEGRITY
+simple ril init complete
+qmi simple RIL now exiting....
+qmi_simple_ril_resp_ind_handler
+.. svc id, msg id
+notification pass through
+qmi_simple_ril_resp_ind_handler invoking message handler
+qmi_simple_ril_resp_ind_handler message handler returned
+qmi_simple_ril_resp_ind_handler no message handler
+qmi_simple_ril_service_indication_handler
+qmi_simple_ril_service_message_handler
+__purge__
+__end_batch__
+block_
+enforce_response
+SUCCESS (UNCONDITIONAL)
+ERROR (INVALID ARGUMENT)
+ERROR (INVALID USE)
+ERROR (NO RESOURCES)
+ERROR (FALSE)
+ERROR (UNSPECIFIED)
+qmi_simle_ril_engine_thread_func awaiting cmd
+qmi_simle_ril_engine_thread_func dispatching categoty
+.. incoming cmd
+.. completed req id
+.. completed cmd 
+.. inclined to send report
+.. inclined to complete op
+.. pre qmi_simple_ril_core_delete_operation_info_direct
+.. post qmi_simple_ril_core_delete_operation_info_direct
+NOTIFICATION
+.. internal traffic req id 
+qmi_simle_ril_engine_thread_func - unhandled category 
+qmi_simle_ril_engine_thread_func invalid incoming event
+qmi_simle_ril_engine_thread_func enetring command handler
+qmi_simle_ril_engine_thread_func command handler done
+.. command handler result, req id 
+qmi_simle_ril_engine_thread_func no handler for this command
+qmi_simple_ril_engine_initialize entry
+__initialize__
+qmi_simple_ril_engine_initialize leave
+__shutdown__
+qmi_simple_ril_engine_destroy waiting for engine shutdown
+qmi_simple_ril_engine_destroy cleanup
+TRUE
+FALSE
+qmi_simple_ril_check_cond_handler input
+.. cur val
+.. met the match
+cond wait check
+qmi_simple_ril_wait_on_cond_handler input
+qmi_simple_ril_wait_on_cond_handler input - timeout
+.. meeting  match
+no entry found by the name 
+qmi_simple_ril_core_set_cond_var change
+qmi_simple_ril_core_set_cond_var expected value
+qmi_simple_ril_core_set_cond_var wait thread values
+.. thread waiting for condition match
+.. cond val match
+quit
+block_wait_on_condition
+block_check_condition
+modem
+get_dev_id
+dial
+call_answer
+call_reject
+call_end
+cdma_burst
+call_hold
+call_resume
+card
+set_srv_status
+get_fdn_status
+verify_pin
+send_apdu
+logical_channel
+get_imsi
+nw_cdma_info
+nw_scan
+nw_auto
+nw_manual
+nw_set_3gpp2_subs
+mode_pref
+ss_waiting
+ss_barring
+ss_forwarding
+ms_mt_route
+sms_mt
+fota
+mo_sms_cdma
+mo_sms_gsm
+bc_cdma
+bc_gsm
+rf_sar_power
+qmi_svc_versions
+ping
+ORIGINATION
+INCOMING
+CONVERSATION
+CC_IN_PROGRESS
+ALERTING
+HOLD
+WAITING
+DISCONNECTING
+SETUP
+UNKNOWN
+qmi_simple_ril_do_voice_manage_calls 
+qmi_simple_ril_voice_call_state_resp_handler
+call_state
+NONE
+call state %s
+voice call state update, total calls %d
+call %d in state %s
+qmi_simple_ril_voice_unsolicited_qmi_message_handler
+Error code for CDMA BURST DTMF - %d
+CDMA BURST DTMF sent for call id - %d
+Callback has no message payload
+[VOICE_TEST] ERROR in sending the SEND_CDMA_BURST_DTMF Request, ERROR CODE:%d
+status
+online
+offline
+get_time
+reset
+ONLINE
+OFFLINE
+RESETTING
+SHUTTING DOWN
+modem is %s
+qmi_simple_ril_misc_dms_modem_mode_qmi_message_handler modem status 
+seconds elapsed from start of GPS time = %lf, time_source = %d
+esn is %s
+qmi_simple_ril_misc_dms_get_device_id_message_handler esn: 
+imei is %s
+qmi_simple_ril_misc_dms_get_device_id_message_handler imei: 
+imeisv_svn is %s
+qmi_simple_ril_misc_dms_get_device_id_message_handler imeisv_svn: 
+meid is %s
+qmi_simple_ril_misc_dms_get_device_id_message_handler meid: 
+qmi_simple_ril_misc_uim_get_imsi_handler Slot: 
+qmi_simple_ril_misc_uim_get_imsi_handler Session type: 
+qmi_simple_ril_misc_uim_get_imsi_handler QMI_UIM_READ_TRANSPARENT_REQ_V01 sent!
+qmi_simple_ril_misc_uim_read_transp_message_handler session_type_gw: 
+IMSI is %s
+Number of entries 
+send_apdu request returned success
+length of APDU response: 0x%x
+APDU response data: 
+0x%x 
+send_apdu request returned error code: 0x%x
+send_apdu response has no message payload
+ERROR in sending APDU, error code :0x%x
+logical_channel request returned success
+channel_id: 0x%x
+SW1: 0x%x
+SW2: 0x%x
+SELECT response: 
+logical_channel req returned error code: 0x%x
+logical_channel response has no message payload
+ERROR in sending APDU, error code: 0x%x
+Error
+Absent
+Present
+Unknown
+Enabled and not verified
+Enabled and verified
+Disabled
+Blocked
+Permanently blocked
+Personalization operation is in progress
+Ready
+Personalization code is required
+PUK for personalization code is required
+CARD %d
+card state %s
+upin state %s
+upin retries %d
+upuk retries %d
+perso state %s
+pin1 state %s
+pin1 retries %d
+pin2 state %s
+pin2 retries %d
+no card information available
+[UIM_Test] Get Service Status returned success
+[UIM_Test] FDN not available
+[UIM_Test] FDN available but disabled
+[UIM_Test] FDN available and enabled
+[UIM_Test] FDN status unknown
+[UIM_Test] Get Service Status returned error code: %d
+[UIM_Test] Get Service status callback has no message payload
+[UIM_TEST] ERROR in sending Get Service Status request, error code :%d
+[UIM_Test] Verify PIN returned success
+[UIM_Test] Unblocking attempts left: %d
+[UIM_Test] Verifying attempts left: %d
+[UIM_Test] Verify PIN returned error code: %d
+[UIM_Test] Verify PIN callback has no message payload
+[UIM_TEST] ERROR in sending Verify PIN request, error code :%d
+[UIM_Test] Set Service Status returned success
+[UIM_Test] Set Service Status returned error code: %d
+[UIM_Test] Set Service status callback has no message payload
+[UIM_TEST] ERROR in sending Set Service Status request, error code :%d
+[PB_TEST] Registration Info : 
+[PB_TEST] Registration MASK was set to : %d
+[PB_TEST] Registration MASK was not set : 
+[PB_TEST] ERROR in Indication_Register Response, ERROR CODE:%d
+[PB_TEST] ERROR in sending the Indication_Register Request, ERROR CODE:%d
+[PB_TEST] Record Update Info : 
+[PB_TEST] Session Type : %d
+[PB_TEST] PB Type : %d
+[PB_TEST] Operation : %d
+[PB_TEST] Record ID : %d
+Indication has no message payload
+[PB_TEST] Ready Info : 
+service %s version %d . %d
+Time taken for QMI transport = %lld micro seconds
+Voice
+RF_SAR
+[NAS_TEST] Serving Info : 
+[NAS_TEST] Registration State : 
+Not registered-mobile is not currently searching for a new network to provide service
+Registered with a network
+Registration denied by the visible network 
+Registration state is unknown
+QMI ERROR : Invalid Value
+[NAS_TEST] Circuit switch domain attach state : 
+Unknown
+Attached
+Detached
+[NAS_TEST] Packet switch domain attach state : 
+[NAS_TEST] Registered Network : 
+3GPP2 network
+3GPP network
+[NAS_TEST] Radio Interface(s) currently in use : 
+No Service, 
+cdma2000 1X, 
+cdma2000 HRPD (1xEV-DO), 
+AMPS, 
+GSM, 
+UMTS, 
+QMI ERROR : Invalid Value
+QMI ERROR : Invalid Length
+ [NAS_TEST] Detailed Service Info : 
+ [NAS_TEST] Service status : %d
+ [NAS_TEST] Service capability : %d
+ [NAS_TEST] HDR Service status : %d
+ [NAS_TEST] HDR hybrid : %d
+ [NAS_TEST] Is system forbidden : %d
+ [NAS_TEST] CDMA System Info : 
+ [NAS_TEST] MCC : %d
+ [NAS_TEST] IMSI 11 12 : %d
+ [NAS_TEST] 3GPP Time Zone Info: 
+ [NAS_TEST] Leap seconds since start of CDMA time : %d
+ [NAS_TEST] Offset (2's complement) in 30 mins increment : %d
+ [NAS_TEST] Daylight savings (1 = ON, 0 = OFF) : %d
+[NAS_TEST] ERROR in Get_Serving_Info Response, ERROR CODE:%d
+[NAS_TEST] ERROR in sending the Get_Serving_Info Request, ERROR CODE:%d
+[NAS_TEST] Network Scan Info - 3GPP Network(s) present: 
+[NAS_TEST] Network ID - %d :
+[NAS_TEST] Description : %s
+[NAS_TEST] Country Code : %d
+[NAS_TEST] Network Code : %d
+[NAS_TEST] In-use status : 
+Current Serving
+Available
+[NAS_TEST] Roaming status : 
+Home
+Roam
+[NAS_TEST] Forbidden status : 
+Forbidden
+Not Forbidden
+[NAS_TEST] Preferred status : 
+Preferred
+Not Preferred
+----------------------
+[NAS_TEST] No Info
+[NAS_TEST] ERROR in Perform_Network_Scan Response, ERROR CODE:%d
+==================================
+help
+req_msg.mode_pref: 
+Set mode pref returned success
+Set mode pref returned error code: %d
+ERROR in sending Set mode pref request, error code :%d
+Mode pref :%d
+Unable to fetch mode pref
+[NAS_TEST] Data Capabilities supported : 
+GPRS, 
+EDGE, 
+HSDPA, 
+HSUPA, 
+WCDMA, 
+CDMA, 
+EV-DO REV 0, 
+EV-DO REV A, 
+[NAS_TEST] Current PLMN : 
+[NAS_TEST] Roaming Indicator Information : 
+Roaming
+Home
+Flashing
+Operator Defined value
+[NAS_Test] Set Service Status returned success
+[NAS_Test] Set Service Status returned error code: %d
+[NAS_Test] Set Service status callback has no message payload
+[NAS_TEST] ERROR in sending Set Service Status request, error code :%d
+qmi_simple_ril_qmi_sar_power_handler entry HEY
+qmi_simple_ril_qmi_sar_power_handler power param 
+qmi_simple_ril_qmi_sar_power_handler power param to QMI
+ind srv: cdma
+ind srv: hdr
+ind srv: gsm
+ind srv: wcdma
+ind srv: lte
+ind srv: tdscdma
+NW_REG (IN SERVICE) (%s)
+nw_reg
+FULL_SERVICE
+nw_rte
+NW_REG (LIMITED SERVICE) (%s)
+LIMITED_SERVICE
+NW_REG (NO SERVICE) 
+NO_SERVICE
+dms ind : modem operating mdoe %d
+modem_state
+qmi_simple_ril_nas_fetch_sys_info_resp_handler bypassing report as init driven
+init nas cmd
+simple ril NW reg init complete
+GW Acq Order AUTOMATIC --------------> 0
+GW Acq Order GSM,WCDMA --------------> 1
+GW Acq Order WCDMA,GSM --------------> 2
+CDMA -----------------------------> 1
+HRPD -----------------------------> 2
+CDMA,HRPD ------------------------> 3
+GSM ------------------------------> 4
+UMTS -----------------------------> 8
+LTE ------------------------------> 10
+GSM,UMTS -------------------------> 12
+CDMA,HRPD,LTE --------------------> 13
+GSM,UMTS,CDMA,HRPD ---------------> 15
+UMTS,LTE -------------------------> 18
+TDSCDMA --------------------------> 20
+GSM,UMTS,LTE ---------------------> 22
+GSM,TDSCDMA ----------------------> 24
+GSM,UMTS,CDMA,HRPD,LTE -----------> 25
+UMTS,TDSCDMA ---------------------> 28
+TDSCDMA,LTE ----------------------> 30
+GSM,UMTS,TDSCDMA -----------------> 32
+GSM,TDSCDMA,LTE ------------------> 34
+GSM,TDSCDMA,CDMA,HRPD,UMTS -------> 35
+UMTS,TDSCDMA,LTE -----------------> 38
+GSM,UMTS,TDSCDMA,LTE -------------> 42
+GSM,UMTS,TDSCDMA,CDMA,HRPD,LTE ---> 45
+unknown
+WCDMA
+CDMA
+TDSCDMA
+START qmi_simple_ril_mt_sms_req_handler_fota
+END qmi_simple_ril_mt_sms_req_handler_fota
+START qmi_simple_ril_wms_unsolicited_qmi_message_handler
+MESSAGE MODE CDMA
+mt_message_valid:%d
+storage_type:%d, storage_index:%d
+transfer_route_mt_message_valid:%d
+mt_sms.transfer_route_mt_message.ack_indicator:%d
+transaction_id: %d
+format:%d
+MT_MESSAGE IS VALID
+storage_type:%d, storage_index:%d
+MT_MESSAGE IS INVALID
+TRANSFER_ROUTE_MT_MESSAGE IS VALID
+ack_indicator: %d
+transaction_id: %d
+format:%d
+message_data :
+%02x
+Acking..
+TRANSFER_ROUTE_MT_MESSAGE IS INVALID
+MESSAGE MODE VALID: %d
+MESSAGE MODE INVALID
+MESSAGE MODE GW, NO PROCESS
+MESSAGE MODE MWI, NO PROCESS
+UNKNOWN MESSAGE MODE
+END qmi_simple_ril_wms_unsolicited_qmi_message_handler
+MESSAGE ID %d
+RESULT CODE %d
+CAUSE CODE VALID %d
+CAUSE_CODE %d
+ERROR_CLASS_VALID %d
+ERROR_CLASS %d
+ERROR in sending the MO_SMS Request, ERROR CODE:%d
+[SS_TEST] Call Waiting Info : 
+[SS_TEST] VOICE Information Class has Call Waiting active
+[SS_TEST] Data Information Class has Call Waiting active
+[SS_TEST] FAX Information Class has Call Waiting active
+[SS_TEST] SMS Information Class has Call Waiting active
+[SS_TEST] DATACIRCUITSYNC Information Class has Call Waiting active
+[SS_TEST] DATACIRCUITASYNC Information Class has Call Waiting active
+[SS_TEST] PACKETACCESS Information Class has Call Waiting active
+[SS_TEST] PADACCESS Information Class has Call Waiting active
+[SS_TEST] None of the Information Classes have Call Waiting active
+[SS_TEST] no information provided
+[SS_TEST] ERROR in Get_Call_Waiting Response, ERROR CODE:%d
+[SS_TEST] Failure Cause : %d
+[SS_TEST] QMI ERROR : Unknown Error
+[SS_TEST] ERROR in sending the Get_Call_Waiting Request, ERROR CODE:%d
+SIZEEE %d
+[SS_TEST] Call Barring Info : 
+[SS_TEST] VOICE Information Class has Call Barring active
+[SS_TEST] Data Information Class has Call Barring active
+[SS_TEST] FAX Information Class has Call Barring active
+[SS_TEST] SMS Information Class has Call Barring active
+[SS_TEST] DATACIRCUITSYNC Information Class has Call Barring active
+[SS_TEST] DATACIRCUITASYNC Information Class has Call Barring active
+[SS_TEST] PACKETACCESS Information Class has Call Barring active
+[SS_TEST] PADACCESS Information Class has Call Barring active
+[SS_TEST] None of the Information Classes have Call Barring active
+[SS_TEST] no service class info provided 
+[SS_TEST] ERROR in Get_Call_Barring Response, ERROR CODE:%d
+[SS_TEST] no failure cause provided
+[SS_TEST] ERROR in sending the Get_Call_Barring Request, ERROR CODE:%d
+[SS_TEST] Call Forwarding Info : 
+[SS_TEST] Call Forwarding Info for number-%s : 
+[SS_TEST] VOICE Information Class has Call Forwarding active
+[SS_TEST] Data Information Class has Call Forwarding active
+[SS_TEST] FAX Information Class has Call Forwarding active
+[SS_TEST] SMS Information Class has Call Forwarding active
+[SS_TEST] DATACIRCUITSYNC Information Class has Call Forwarding active
+[SS_TEST] DATACIRCUITASYNC Information Class has Call Forwarding active
+[SS_TEST] PACKETACCESS Information Class has Call Forwarding active
+[SS_TEST] PADACCESS Information Class has Call Forwarding active
+[SS_TEST] None of the Information Classes have Call Forwarding active for number-%s
+[SS_TEST] QMI ERROR : Invalid Length
+[SS_TEST] no information provided for SS status
+[SS_TEST] ERROR in Get_Call_Forwarding Response, ERROR CODE:%d
+[SS_TEST] no faulire cause provided 
+[SS_TEST] ERROR in sending the Get_Call_Forwarding Request, ERROR CODE:%d
+******************Received SS Indication****************
+qmi_simple_ril_suite_shutdown_handler
+Size of request is %d
+Size of response is %d
+Information being sent is session type = %d, PB type = %d
+Getting PB info for PB type %d returned error %d
+PB Info received from QMI PBM
+-----------------------------
+Response from QMI PBM returned error %d
+Session Type : %d
+Phonebook Type: %d
+Used Records: %d
+Max Records: %d
+Max Number Length: %d
+Max Name Length: %d
+Max Groups Possible: %d
+Max Group Alpha String Length: %d
+Max additional numbers: %d
+Max additional number length: %d
+Max additional number alpha string length: %d
+Max emails: %d
+Max email length: %d
+Max second name length: %d
+Hidden entry support: %d
+Error: QMI PBM request for writing failed with error code %d
+Writing a record using PBM was successful
+New record was added at index %d
+Writing a record using PBM failed with error code %d
+Number of record instances in the read indication: %d
+Index of record in ADN: %d
+Name in the record: %s
+Number in the record: %s
+Number type in the record: %d
+Number plan in the record: %d
+Error: Unable to allocate memory
+Error: Decoding unsolicited indication with id = %ld, returned in error = %d
+Enter the name of the new contact to be added (MAX length = %d):
+Enter the number of the new contact to be added (MAX length = %d):
+Error: Sending asynchronous request for writing record failed with error code %d
+Sending asynchronous request for writing record was successfull
+*** Simple RIL / QMI test console v2.0 ***
+debug
+modem=
+modem_port=
+input=
+output=
+data=
+Error: Qmi message library not initialized
+Error: connection not Initialized...Error Code:%d
+Release not successful 
+QMI client release successful 
+Connection Initialized....User Handle:%x
+Failed to initialize PBM modem subsystem, error code=%d 
+Press any key to continue 
+PBM modem subsystem successfully initialized 
+***************SIM Phonebook Test Menu***************
+Press '1' for retrieving storage information for various phonebooks
+Press '2' for reading entries from ADN phonebook
+Press '3' for writing entries to ADN phonebook
+Press '%c' to exit this program
+Enter choice: 
+Read request for ADN failed with error code = %d
+There are no entries filled in ADN, nothing to read
+There are %d filled entries in ADN
+ Error: Information received for ADN did not return total number of records
+Invalid choice entered. Please try again
+QMI release done.........
+sril input output
+fallback input to stdin 
+fallback output to stdout 
+fallback data to stdout 
+*** starting console ***
+Type in simple RIL commands and observe feedback 
+Use 'quit' command to terminate simple RIL 
+qmi_test_console_collector_thread_func going dormant
+qmi_test_console_main_thread_func awaiting cmd
+qmi_test_console_main_thread_func got cmd
+[%s]%s
+.. parsing input line
+qmi_test_console_main_thread_func dumping msg from uplink
+[%s]
+qmi_test_console_main_thread_func unhandled category
+qmi_test_console_run
+qmi_test_console_run thread creation
+qmi_test_console_run completing
+address {
+ digit_mode: %d
+, number_mode: %d
+, number_type: %d
+, number_plan: %d
+, number_of_digits: %u
+, address.digits: 
+subaddress {
+ type: %u
+, odd: %u
+, subaddress.digits: 
+dcs {
+ msg_class: %d
+, is_compressed: %d
+, alphabet (0=7bit, 1=8bit, 2=usc2): %d
+, msg_waiting: %d
+, msg_waiting_active: %d
+, msg_waiting_kind: %d
+, raw_dcs_data: %u
+timestamp (y:m:d:h:m:s:tz):  
+%u:%u:%u:%u:%u:%u:%d
+udh {
+ header_id: %u
+, wap_8.orig_port: %u
+, wap_8.dest_port: %u
+, wap_16.orig_port: %u
+, wap_16.dest_port: %u
+, wms_udh_concat_8: {
+, msg_ref: %u
+, total_sm: %u
+, seq_num: %u }
+, wms_udh_concat_16: {
+, unhandled header id
+RAW uint8 in hex with space (data_len=%d):
+%d:  
+%.2x 
+data pipe is NULL
+Sending %d bytes on data pipe
+%06d
+Done sending %d bytes on data pipe
+user_data {
+ num_headers: %u }
+{ sm_len: %u
+, sm_data: 
+==================================================
+deliver {
+ more: %u
+, reply_path_present: %u
+, user_data_header_present: %u
+, status_report_enabled: %u
+, pid: %u
+SENT ack for protocol(0=cdma, 1=wcdma): %d, transaction_id: %d, ims: %d, request_id:%d
+START fota_verify_wap_push: data_len=%u
+ERROR: received NULL arguments
+ERROR:: data_len %u < 3
+tid = %u, pdu_type = %u
+ERROR: wrong pdu type
+ERROR: header_len is not 1 octet
+header_len=%d
+ERROR: header_len %d < 3
+ERROR:  header_len(%d) > (data_len(%d) - 3) = %d
+ERROR: content type was not short integer
+found content type %#x
+ERROR: content type mismatch
+ERROR: did not find application-id code 0x07 for fota. octet=%#.2x, header_len=%d
+END fota_verify_wap_push
+START wms_process_mt_gw_sms ==================================================
+ERROR: Failed to allocate buffer to decode new GW SMS.
+ERROR: TRANSFER_ROUTE_MT_MESSAGE INVALID
+ERROR: Invalid format
+******* FOUND GW WAP ***********************
+GW WAP was concatenated, bail out
+ERROR: data_len %u > max %d
+nofity daemon here, sending %u bytes:
+******* NOT GW WAP stop processing *********
+ERROR: decode deliver FAILURE! err = %d
+END wms_process_mt_gw_sms ==================================================
+START wms_print_sms_ind_fota
+ERROR: event_report_ind is NULL
+It is SMS on SIM with message_mode (0=cdma, 1=gw): %d, Ignoring...
+It is ETWS message, Ignoring...
+format(0=cdma, 6=gw_pp, 7=gw_bc, 8=mwi): %d, 
+ack_indicator (0=ack, 1=don't ack): %d, 
+transaction id: %d, 
+sms_on_ims_valid: %d, 
+sms_on_ims: %d, 
+data_len: %u, 
+mt_message_smsc_address_valid: %u, 
+mt_message_smsc_address.data_len: %u 
+It is a broadcast SMS, Ignoring...
+ERROR: Unknown format %d
+END wms_print_sms_ind_fota
+user_data->total_segment %d
+33333333333333333333333333333333333333333333333333
+wdp_cdma_user_data {
+ message_type: %u
+, total_segment: %u
+, segment_number: %u
+, data_len: %u }
+ datagram: 
+44444444444444444444444444444444444444444444444444
+wdp_cdma_data_gram {
+ src_port: %u
+, dest_port: %u
+ data: 
+{ encoding (0=octet,1=is91ep, 2=ascii 4=unicode, 9=gsm7bit): %u
+, is91ep_type: %u
+, padding_bits: %u
+data: 
+ unpacked ascii 7 bit data: {
+ data_len: %u, data: 
+START fota_decode_wdp_cdma_datagram() DECODE STEP 4
+Error: NULL arguments
+Error: len should be at least 4.  was %d
+END fota_decode_wdp_cdma_datagram() DECODE STEP 4
+START fota_decode_wdp_cdma_user_data_from_chari() DECODE STEP 3
+Error: len should be at least 3.  was %d
+END fota_decode_wdp_cdma_user_data_from_chari() DECODE STEP 3
+message_id {
+ type (1=DELIVER, 2=SUBMIT): %u
+, id_number: %u
+, udh_present: %u }
+reply_option {
+ user_ack_requested: %u
+, delivery_ack_requested: %u
+, read_ack_requested: %u }
+22222222222222222222222222222222222222222222222222
+bd {
+ mask: %u  %#x }
+ priority: %u
+ privacy: %u
+ alert_mode: %u
+ language (1=en): %u
+callback address:
+ display_mode: %u
+, download_mode: %u
+11111111111111111111111111111111111111111111111111
+cdma_message {
+ is_mo: %u
+, teleservice: %u }
+{ is_tl_ack_requested: %u
+, is_service_present: %u
+, service: %u }
+START wms_process_mt_cdma_sms ==================================================
+CALLING wms_ts_cdma_OTA2cl()  DECODE STEP 1
+ERROR: wms_ts_cdma_OTA2cl() failed! err=%d
+DONE wms_ts_cdma_OTA2cl DECODE STEP 1
+******* NOT CDMA WAP stop processing**********
+******* FOUND CDMA WAP ***********************
+CALLING wms_ts_decode_bearer_data() DECODE STEP 2
+ERROR: wms_ts_decode_bearer_data() failed! err=%d
+DONE wms_ts_decode_bearer_data() DECODE STEP 2
+ERROR: fota_decode_wdp_cdma_user_data() failed.
+CDMA WAP is not WDP message type, bail out
+CDMA WAP was concatenated, bail out
+was WMS_MESSAGE_FORMAT_MWI_V01...IGNORE..
+ERROR Invalid format %d
+END wms_process_mt_cdma_sms ====================================================
+WMSTS
+Invalid BCD digit!
+null pointer in wms_ts_pack_gw_7_bit_chars
+Addr len too long: %d
+null pointer in wms_ts_unpack_gw_7_bit_chars
+Not enough output buffer for unpacking!
+Month is invalid: %d
+Day is invalid: %d
+Hour is invalid: %d
+Minute is invalid: %d
+Second is invalid: %d
+Timezone is out of bound: %d
+SMS UDH Header id %d Present with no Data
+UDH EO data too long: %d
+Null pointer in wms_ts_encode_command!
+Command Data Length %d Exceeds Command Data Buffer!
+null pointer in wms_ts_decode_dcs
+Invalid DCS: %x
+null pointer in wms_ts_decode_timestamp
+Invalid BCD Digits in Encoded Timestamp Year : %d
+Invalid BCD Digits in Encoded Timestamp Month : %d
+Invalid BCD Digits in Encoded Timestamp Day : %d
+Hour is too large: %d
+Invalid BCD Digits in Encoded Timestamp Hour : %d
+Minute is too large: %d
+Invalid BCD Digits in Encoded Timestamp Minute : %d
+Second is too large: %d
+Invalid BCD Digits in Encoded Timestamp Second : %d
+null pointer in wms_ts_decode_user_data_header
+udh is NULL
+UDH Header Concat 8 Present with invalid data length = %d
+UDH Header Contact 8 with out of bound max messages
+SMS UDH Header Concat16 Present with invalid data length = %d
+SMS UDH Header Special SM Present with invalid data length = %d
+UDH Header Port 8 Present with invalid data length = %d
+SMS UDH Header Port16 Present with invalid data length = %d
+SMS UDH Header Text Formatting Present with invalid data length = %d
+SMS UDH Header Pre Defined Sound Present with invalid data length = %d
+SMS UDH Header User Defined Sound Present with no Data
+Max Size Exceed Header id %d 
+SMS UDH Header Pre Defined Animation Present with invalid data length = %d
+SMS UDH Header Large Defined Animation Present with invalid data length = %d
+SMS UDH Header Large Picture Present with invalid data length = %d
+SMS UDH Header Small Picture Present with invalid data legnth = %d
+SMS UDH Header Var Picture Present with invalid data length = %d
+SMS UDH Header Var Picture, pic size value mismatch with heigt and weight
+SMS UDH User Prompt present with invalid data length = %d
+null in wms_ts_udh_decode_first_seg_check
+wms_ts_udh_decode_first_seg_check failed
+WMS_UDH_CONCAT_16 not first segment!
+SMS UDH Extended Object present with no Data
+SMS UDH Header Rfc822 Present with invalid data length = %d
+SMS UDH Header Other data length exceeding 226
+number of bytes decoded has exceeded UDHL value of %d
+Bad UDH: pos=%d, data[pos]=%d
+decode_udh: Num Headers has exceeded WMS_MAX_UD_HEADERS
+SMS UDH could not be decoded
+null pointer in wms_ts_decode_gw_user_data
+user data length > max value for gw 7-bit alphabet
+user data header length > total length
+user data length > max value for 8-bit chararacters
+null pointer in wms_ts_decode_deliver
+invalid tpdu type in wms_ts_decode_deliver
+invalid param size in wms_ts_decode_deliver
+invalid param value in wms_ts_decode_deliver
+User Data Length has exceeded capacity: UDL = %lu
+Null pointer in wms_ts_decode_deliver_report_ack!
+Null pointer in wms_ts_decode_deliver_report_error!
+Null pointer in wms_ts_decode_status_report!
+Null pointer in wms_ts_decode_command!
+Null pointer in wms_ts_decode_submit_report_ack!
+Null pointer in wms_ts_decode_submit_report_error!
+null pointer in wms_ts_decode_relative_time
+null pointer in wms_ts_decode_gw_validity
+Error while Decoding Absolute Validity Timestamp
+Null pointer in wms_ts_decode_submit!
+Year is invalid: %d
+null pointer in wms_ts_encode_relative_time
+Null pointer in wms_ts_decode_gw_cb_dcs!
+gw cb dcs, reserved coding groups
+Null pointer in wms_ts_decode_gw_cb_page_header!
+Invalid GW CB DCS, page number > total pages, %d > %d
+Null pointer in wms_ts_decode!
+>>>>>>>>>> pthread_mutex_lock() : wmsts_mutex >>>>>>>>>>
+Invalid TPDU type %d
+Invalid format: %d
+>>>>>>>>>> pthread_mutex_unlock() : wmsts_mutex >>>>>>>>>>
+Null pointer in wms_ts_compute_user_data_header_length!
+Encode User Data Header Exceeds Capacity - Skipping UDH
+Null pointer in wms_ts_compute_gw_user_data_length!
+Null pointer in wms_ts_encode_deliver!
+User Data Length has exceeded capacity
+Null pointer in wms_ts_encode_deliver_report_ack!
+Null pointer in wms_ts_encode_deliver_report_error!
+Null pointer in wms_ts_encode_status_report!
+Null pointer in wms_ts_encode_submit!
+Null pointer in wms_ts_encode_submit_report_ack!
+Null pointer in wms_ts_encode_submit_report_error!
+Null pointer in wms_ts_encode!
+WMSTSCDMA
+Null pointer in wms_ts_encode_IS91EP_payload!
+No resources: Over 100 voice mails %d
+wsm_ts_encode_IS91EP_payload: invalid IS91EP type: %d
+wms_ts_encode_CDMA_bd null ptr!
+enc UD sz err: %d!=%d
+encoding: UD too big: %d
+Param not in range in wms_ts_encode_CDMA_bd (num_of_msgs)
+other_data=NULL in wms_ts_encode_CDMA_bd!
+wms_ts_encode_bearer_data null ptr!
+wms_ts_decode_IS91EP_payload null ptr!
+wms_ts_decode_IS91EP_payload, number of digits exceeded max value: %d
+wms_ts_decode_IS91EP_payload: invalid IS91EP type: %d
+wms_ts_decode_CDMA_bd null ptr!
+** BD Msg too short: %d
+decoding: parameter (id=%d) extends beyond bd size %d
+Duplicate parm: %d
+decoding: BD msg id len is not 3: %d. Reset to 3.
+decoding: BD user data too big. len=%d
+decoding: UD sz error(%d<%d)
+Bearer data too short or bad len field in wms_ts_decode_CDMA_bd (num_of_msgs)
+Param not in range in wms_ts_decode_CDMA_bd; first BCD digit in num_of_msgs
+Param not in range in wms_ts_decode_CDMA_bd; second BCD digit in num_of_msgs
+Bearer data too short in wms_ts_decode_CDMA_bd (language)
+decoding: callback number too big: %d
+Bearer data too short or bad len field in wms_ts_decode_CDMA_bd (display_mode)
+null pointer in wms_ts_decode_CDMA_bd (scpt_data)
+null pointer in wms_ts_decode_CDMA_bd (scpt_result)
+Decoding BD: unrecognized parm_id: %d
+Decoding BD: unrecognized parm_len: %d
+Decoding BD: new desired_other_len=%d
+Decoding other parameters
+input_other_len %d < desired_other_len!
+other_data==NULL!
+error in function wms_ts_decode_IS91EP_payload
+NULL pointer in wms_ts_decode_IS91EP_bd
+NULL pointers in wms_ts_decode_MWI_bd
+NULL pointers in wms_ts_decode_bearer_data
+**Invalid msg fmt when decoding: %d
+wms_ts_convert_cl2tl null ptr!
+wms_ts_encode_address null ptr!
+wms_ts_encode_subaddress null ptr!
+wms_ts_encode_CDMA_tl null ptr!
+Invalid bd len: %d
+Invalid parm size: %d
+wms_ts_cdma_cl2OTA() null ptr!
+wms_ts_encode_CDMA_tl()  failed w/st = %d
+wms_ts_decode_address null ptr!
+decoding: address digits number too big: %d
+decoding: address too long: %d>%d
+wms_ts_decode_subaddress null ptr!
+decoding: subaddress digits number too big: %d
+decoding: subaddress too long: %d>%d
+wms_ts_decode_CDMA_tl null ptr or OTA data len is zero!
+** TL Msg too short: %d
+** TL Msg len too long: %d
+WARNING: Invalid TL msg type: %d
+decoding: msg size %d incorrect
+decoding: parameter (id=%d) extends beyond msg size %d
+decoding: bearer reply option len is not 1: %d. Reset to 1.
+decoding: invalid parm len = 1 with valid error cause identifier
+decoding: invalid parm len for CauseCodes: %d
+decoding: bearer data len is 0
+decoding: Invalid parm id: %d
+No address present in msg!
+decoding: broadcast category is not present!
+decoding: cause code is not present in Ack!
+decoding: invalid TL msg type: %d
+wms_ts_convert_tl2cl null ptr!
+wms_ts_cdma_OTA2cl() null ptr!
+decode CDMA tl failed w/st = %d
+wms_ts_unpack_ascii null ptr!
+%1234567890
+1234567890
+GCC: (GNU) 4.8
+gold 1.11
+aeabi
+ARM v7
+.shstrtab
+.interp
+.dynsym
+.dynstr
+.hash
+.rel.dyn
+.rel.plt
+.text
+.note.android.ident
+.ARM.exidx
+.ARM.extab
+.rodata
+.data.rel.ro.local
+.preinit_array
+.init_array
+.fini_array
+.dynamic
+.got
+.data
+.bss
+.comment
+.note.gnu.gold-version
+.ARM.attributes

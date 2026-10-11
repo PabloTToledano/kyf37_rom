@@ -1,0 +1,334 @@
+
+/home/pablo/kyf37-rom/stock-system/lib/libmmcamera_interface.so:     file format elf32-littlearm
+
+
+Disassembly of section .text:
+
+00003730 <get_num_of_cameras>:
+    3730:	e92d 4ff0 	stmdb	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, lr}
+    3734:	f5ad 7d5b 	sub.w	sp, sp, #876	; 0x36c
+    3738:	4dac      	ldr	r5, [pc, #688]	; (39ec <get_num_of_cameras+0x2bc>)
+    373a:	ac15      	add	r4, sp, #84	; 0x54
+    373c:	4bac      	ldr	r3, [pc, #688]	; (39f0 <get_num_of_cameras+0x2c0>)
+    373e:	4621      	mov	r1, r4
+    3740:	447d      	add	r5, pc
+    3742:	4aac      	ldr	r2, [pc, #688]	; (39f4 <get_num_of_cameras+0x2c4>)
+    3744:	58ee      	ldr	r6, [r5, r3]
+    3746:	447a      	add	r2, pc
+    3748:	6830      	ldr	r0, [r6, #0]
+    374a:	90d9      	str	r0, [sp, #868]	; 0x364
+    374c:	48aa      	ldr	r0, [pc, #680]	; (39f8 <get_num_of_cameras+0x2c8>)
+    374e:	4478      	add	r0, pc
+    3750:	f7ff e8e8 	blx	2924 <property_get@plt>
+    3754:	4620      	mov	r0, r4
+    3756:	f7ff e8ec 	blx	2930 <atoi@plt>
+    375a:	49a8      	ldr	r1, [pc, #672]	; (39fc <get_num_of_cameras+0x2cc>)
+    375c:	f010 0202 	ands.w	r2, r0, #2
+    3760:	9603      	str	r6, [sp, #12]
+    3762:	586d      	ldr	r5, [r5, r1]
+    3764:	4621      	mov	r1, r4
+    3766:	bf1a      	itte	ne
+    3768:	0f00      	lsrne	r0, r0, #28
+    376a:	6028      	strne	r0, [r5, #0]
+    376c:	602a      	streq	r2, [r5, #0]
+    376e:	48a4      	ldr	r0, [pc, #656]	; (3a00 <get_num_of_cameras+0x2d0>)
+    3770:	4aa4      	ldr	r2, [pc, #656]	; (3a04 <get_num_of_cameras+0x2d4>)
+    3772:	4478      	add	r0, pc
+    3774:	447a      	add	r2, pc
+    3776:	f7ff e8d6 	blx	2924 <property_get@plt>
+    377a:	4620      	mov	r0, r4
+    377c:	f7ff e8d8 	blx	2930 <atoi@plt>
+    3780:	2801      	cmp	r0, #1
+    3782:	f000 8121 	beq.w	39c8 <get_num_of_cameras+0x298>
+    3786:	48a0      	ldr	r0, [pc, #640]	; (3a08 <get_num_of_cameras+0x2d8>)
+    3788:	2600      	movs	r6, #0
+    378a:	f8df 8280 	ldr.w	r8, [pc, #640]	; 3a0c <get_num_of_cameras+0x2dc>
+    378e:	4fa0      	ldr	r7, [pc, #640]	; (3a10 <get_num_of_cameras+0x2e0>)
+    3790:	4478      	add	r0, pc
+    3792:	44f8      	add	r8, pc
+    3794:	f7ff e86c 	blx	2870 <pthread_mutex_lock@plt>
+    3798:	447f      	add	r7, pc
+    379a:	ac2c      	add	r4, sp, #176	; 0xb0
+    379c:	2120      	movs	r1, #32
+    379e:	4642      	mov	r2, r8
+    37a0:	4633      	mov	r3, r6
+    37a2:	4620      	mov	r0, r4
+    37a4:	f7ff e87c 	blx	28a0 <snprintf@plt>
+    37a8:	4620      	mov	r0, r4
+    37aa:	f640 0102 	movw	r1, #2050	; 0x802
+    37ae:	f7ff e87e 	blx	28ac <open@plt>
+    37b2:	1e05      	subs	r5, r0, #0
+    37b4:	db68      	blt.n	3888 <get_num_of_cameras+0x158>
+    37b6:	498a      	ldr	r1, [pc, #552]	; (39e0 <get_num_of_cameras+0x2b0>)
+    37b8:	f50d 79b2 	add.w	r9, sp, #356	; 0x164
+    37bc:	464a      	mov	r2, r9
+    37be:	3601      	adds	r6, #1
+    37c0:	f7ff e880 	blx	28c4 <ioctl@plt>
+    37c4:	2800      	cmp	r0, #0
+    37c6:	da10      	bge.n	37ea <get_num_of_cameras+0xba>
+    37c8:	f7ff e882 	blx	28d0 <__errno@plt>
+    37cc:	6800      	ldr	r0, [r0, #0]
+    37ce:	f7ff e886 	blx	28dc <strerror@plt>
+    37d2:	4990      	ldr	r1, [pc, #576]	; (3a14 <get_num_of_cameras+0x2e4>)
+    37d4:	4603      	mov	r3, r0
+    37d6:	4a90      	ldr	r2, [pc, #576]	; (3a18 <get_num_of_cameras+0x2e8>)
+    37d8:	2006      	movs	r0, #6
+    37da:	4479      	add	r1, pc
+    37dc:	447a      	add	r2, pc
+    37de:	f7ff e884 	blx	28e8 <__android_log_print@plt>
+    37e2:	4628      	mov	r0, r5
+    37e4:	f7ff e886 	blx	28f4 <close@plt>
+    37e8:	e04e      	b.n	3888 <get_num_of_cameras+0x158>
+    37ea:	f899 3010 	ldrb.w	r3, [r9, #16]
+    37ee:	2b6d      	cmp	r3, #109	; 0x6d
+    37f0:	d146      	bne.n	3880 <get_num_of_cameras+0x150>
+    37f2:	f8df a228 	ldr.w	sl, [pc, #552]	; 3a1c <get_num_of_cameras+0x2ec>
+    37f6:	2301      	movs	r3, #1
+    37f8:	f8df b224 	ldr.w	fp, [pc, #548]	; 3a20 <get_num_of_cameras+0x2f0>
+    37fc:	44fa      	add	sl, pc
+    37fe:	44fb      	add	fp, pc
+    3800:	9302      	str	r3, [sp, #8]
+    3802:	ac99      	add	r4, sp, #612	; 0x264
+    3804:	2100      	movs	r1, #0
+    3806:	f44f 7280 	mov.w	r2, #256	; 0x100
+    380a:	4620      	mov	r0, r4
+    380c:	f7ff e854 	blx	28b8 <memset@plt>
+    3810:	9b02      	ldr	r3, [sp, #8]
+    3812:	4639      	mov	r1, r7
+    3814:	4652      	mov	r2, sl
+    3816:	2006      	movs	r0, #6
+    3818:	6023      	str	r3, [r4, #0]
+    381a:	f103 0901 	add.w	r9, r3, #1
+    381e:	f7ff e864 	blx	28e8 <__android_log_print@plt>
+    3822:	4970      	ldr	r1, [pc, #448]	; (39e4 <get_num_of_cameras+0x2b4>)
+    3824:	4628      	mov	r0, r5
+    3826:	4622      	mov	r2, r4
+    3828:	f7ff e84c 	blx	28c4 <ioctl@plt>
+    382c:	2800      	cmp	r0, #0
+    382e:	da06      	bge.n	383e <get_num_of_cameras+0x10e>
+    3830:	4a7c      	ldr	r2, [pc, #496]	; (3a24 <get_num_of_cameras+0x2f4>)
+    3832:	4639      	mov	r1, r7
+    3834:	2006      	movs	r0, #6
+    3836:	447a      	add	r2, pc
+    3838:	f7ff e856 	blx	28e8 <__android_log_print@plt>
+    383c:	e020      	b.n	3880 <get_num_of_cameras+0x150>
+    383e:	98a2      	ldr	r0, [sp, #648]	; 0x288
+    3840:	f104 0c04 	add.w	ip, r4, #4
+    3844:	9aa5      	ldr	r2, [sp, #660]	; 0x294
+    3846:	4639      	mov	r1, r7
+    3848:	9000      	str	r0, [sp, #0]
+    384a:	4663      	mov	r3, ip
+    384c:	9201      	str	r2, [sp, #4]
+    384e:	2006      	movs	r0, #6
+    3850:	f8cd c008 	str.w	ip, [sp, #8]
+    3854:	465a      	mov	r2, fp
+    3856:	f7ff e848 	blx	28e8 <__android_log_print@plt>
+    385a:	99a2      	ldr	r1, [sp, #648]	; 0x288
+    385c:	f8dd c008 	ldr.w	ip, [sp, #8]
+    3860:	f5b1 3f00 	cmp.w	r1, #131072	; 0x20000
+    3864:	d10a      	bne.n	387c <get_num_of_cameras+0x14c>
+    3866:	6b23      	ldr	r3, [r4, #48]	; 0x30
+    3868:	2b0e      	cmp	r3, #14
+    386a:	d107      	bne.n	387c <get_num_of_cameras+0x14c>
+    386c:	4a6e      	ldr	r2, [pc, #440]	; (3a28 <get_num_of_cameras+0x2f8>)
+    386e:	a805      	add	r0, sp, #20
+    3870:	2120      	movs	r1, #32
+    3872:	4663      	mov	r3, ip
+    3874:	447a      	add	r2, pc
+    3876:	f7ff e814 	blx	28a0 <snprintf@plt>
+    387a:	e001      	b.n	3880 <get_num_of_cameras+0x150>
+    387c:	464b      	mov	r3, r9
+    387e:	e7bf      	b.n	3800 <get_num_of_cameras+0xd0>
+    3880:	4628      	mov	r0, r5
+    3882:	f7ff e838 	blx	28f4 <close@plt>
+    3886:	e788      	b.n	379a <get_num_of_cameras+0x6a>
+    3888:	a805      	add	r0, sp, #20
+    388a:	2102      	movs	r1, #2
+    388c:	f7ff e80e 	blx	28ac <open@plt>
+    3890:	f1b0 0800 	subs.w	r8, r0, #0
+    3894:	da07      	bge.n	38a6 <get_num_of_cameras+0x176>
+    3896:	4965      	ldr	r1, [pc, #404]	; (3a2c <get_num_of_cameras+0x2fc>)
+    3898:	2006      	movs	r0, #6
+    389a:	4a65      	ldr	r2, [pc, #404]	; (3a30 <get_num_of_cameras+0x300>)
+    389c:	4479      	add	r1, pc
+    389e:	447a      	add	r2, pc
+    38a0:	f7ff e822 	blx	28e8 <__android_log_print@plt>
+    38a4:	e090      	b.n	39c8 <get_num_of_cameras+0x298>
+    38a6:	4950      	ldr	r1, [pc, #320]	; (39e8 <get_num_of_cameras+0x2b8>)
+    38a8:	2702      	movs	r7, #2
+    38aa:	6027      	str	r7, [r4, #0]
+    38ac:	2500      	movs	r5, #0
+    38ae:	f8c4 50b0 	str.w	r5, [r4, #176]	; 0xb0
+    38b2:	4622      	mov	r2, r4
+    38b4:	f7ff e806 	blx	28c4 <ioctl@plt>
+    38b8:	2800      	cmp	r0, #0
+    38ba:	da06      	bge.n	38ca <get_num_of_cameras+0x19a>
+    38bc:	495d      	ldr	r1, [pc, #372]	; (3a34 <get_num_of_cameras+0x304>)
+    38be:	2006      	movs	r0, #6
+    38c0:	4a5d      	ldr	r2, [pc, #372]	; (3a38 <get_num_of_cameras+0x308>)
+    38c2:	4479      	add	r1, pc
+    38c4:	447a      	add	r2, pc
+    38c6:	f7ff e810 	blx	28e8 <__android_log_print@plt>
+    38ca:	2400      	movs	r4, #0
+    38cc:	ad99      	add	r5, sp, #612	; 0x264
+    38ce:	4640      	mov	r0, r8
+    38d0:	4627      	mov	r7, r4
+    38d2:	f105 0b04 	add.w	fp, r5, #4
+    38d6:	f7ff e80e 	blx	28f4 <close@plt>
+    38da:	4a58      	ldr	r2, [pc, #352]	; (3a3c <get_num_of_cameras+0x30c>)
+    38dc:	ae0d      	add	r6, sp, #52	; 0x34
+    38de:	2120      	movs	r1, #32
+    38e0:	463b      	mov	r3, r7
+    38e2:	447a      	add	r2, pc
+    38e4:	4630      	mov	r0, r6
+    38e6:	f7fe efdc 	blx	28a0 <snprintf@plt>
+    38ea:	4630      	mov	r0, r6
+    38ec:	f640 0102 	movw	r1, #2050	; 0x802
+    38f0:	f7fe efdc 	blx	28ac <open@plt>
+    38f4:	f1b0 0900 	subs.w	r9, r0, #0
+    38f8:	dd57      	ble.n	39aa <get_num_of_cameras+0x27a>
+    38fa:	f50d 7ab2 	add.w	sl, sp, #356	; 0x164
+    38fe:	2100      	movs	r1, #0
+    3900:	f44f 7280 	mov.w	r2, #256	; 0x100
+    3904:	4650      	mov	r0, sl
+    3906:	f7fe efd8 	blx	28b8 <memset@plt>
+    390a:	4935      	ldr	r1, [pc, #212]	; (39e0 <get_num_of_cameras+0x2b0>)
+    390c:	4648      	mov	r0, r9
+    390e:	4652      	mov	r2, sl
+    3910:	3701      	adds	r7, #1
+    3912:	f7fe efd8 	blx	28c4 <ioctl@plt>
+    3916:	2800      	cmp	r0, #0
+    3918:	da11      	bge.n	393e <get_num_of_cameras+0x20e>
+    391a:	f7fe efda 	blx	28d0 <__errno@plt>
+    391e:	6800      	ldr	r0, [r0, #0]
+    3920:	2400      	movs	r4, #0
+    3922:	f7fe efdc 	blx	28dc <strerror@plt>
+    3926:	4946      	ldr	r1, [pc, #280]	; (3a40 <get_num_of_cameras+0x310>)
+    3928:	4603      	mov	r3, r0
+    392a:	4a46      	ldr	r2, [pc, #280]	; (3a44 <get_num_of_cameras+0x314>)
+    392c:	2006      	movs	r0, #6
+    392e:	4479      	add	r1, pc
+    3930:	447a      	add	r2, pc
+    3932:	f7fe efda 	blx	28e8 <__android_log_print@plt>
+    3936:	4648      	mov	r0, r9
+    3938:	f7fe efdc 	blx	28f4 <close@plt>
+    393c:	e035      	b.n	39aa <get_num_of_cameras+0x27a>
+    393e:	4942      	ldr	r1, [pc, #264]	; (3a48 <get_num_of_cameras+0x318>)
+    3940:	a85d      	add	r0, sp, #372	; 0x174
+    3942:	2220      	movs	r2, #32
+    3944:	4479      	add	r1, pc
+    3946:	f7fe efdc 	blx	2900 <strncmp@plt>
+    394a:	bb50      	cbnz	r0, 39a2 <get_num_of_cameras+0x272>
+    394c:	f04f 0801 	mov.w	r8, #1
+    3950:	2100      	movs	r1, #0
+    3952:	f44f 7280 	mov.w	r2, #256	; 0x100
+    3956:	4628      	mov	r0, r5
+    3958:	f108 0601 	add.w	r6, r8, #1
+    395c:	f7fe efac 	blx	28b8 <memset@plt>
+    3960:	4920      	ldr	r1, [pc, #128]	; (39e4 <get_num_of_cameras+0x2b4>)
+    3962:	4648      	mov	r0, r9
+    3964:	f8c5 8000 	str.w	r8, [r5]
+    3968:	462a      	mov	r2, r5
+    396a:	f7fe efac 	blx	28c4 <ioctl@plt>
+    396e:	2800      	cmp	r0, #0
+    3970:	db15      	blt.n	399e <get_num_of_cameras+0x26e>
+    3972:	6a68      	ldr	r0, [r5, #36]	; 0x24
+    3974:	f1b0 1f01 	cmp.w	r0, #65537	; 0x10001
+    3978:	d10f      	bne.n	399a <get_num_of_cameras+0x26a>
+    397a:	6b2a      	ldr	r2, [r5, #48]	; 0x30
+    397c:	2a02      	cmp	r2, #2
+    397e:	d10c      	bne.n	399a <get_num_of_cameras+0x26a>
+    3980:	f8df e0c8 	ldr.w	lr, [pc, #200]	; 3a4c <get_num_of_cameras+0x31c>
+    3984:	b261      	sxtb	r1, r4
+    3986:	2220      	movs	r2, #32
+    3988:	44fe      	add	lr, pc
+    398a:	eb0e 1c41 	add.w	ip, lr, r1, lsl #5
+    398e:	4659      	mov	r1, fp
+    3990:	f10c 0001 	add.w	r0, ip, #1
+    3994:	f7fe efd2 	blx	293c <strncpy@plt>
+    3998:	e001      	b.n	399e <get_num_of_cameras+0x26e>
+    399a:	46b0      	mov	r8, r6
+    399c:	e7d8      	b.n	3950 <get_num_of_cameras+0x220>
+    399e:	3401      	adds	r4, #1
+    39a0:	b2e4      	uxtb	r4, r4
+    39a2:	4648      	mov	r0, r9
+    39a4:	f7fe efa6 	blx	28f4 <close@plt>
+    39a8:	e797      	b.n	38da <get_num_of_cameras+0x1aa>
+    39aa:	4d29      	ldr	r5, [pc, #164]	; (3a50 <get_num_of_cameras+0x320>)
+    39ac:	447d      	add	r5, pc
+    39ae:	702c      	strb	r4, [r5, #0]
+    39b0:	f7ff fda8 	bl	3504 <get_sensor_info>
+    39b4:	f995 0000 	ldrsb.w	r0, [r5]
+    39b8:	f7ff fe3a 	bl	3630 <sort_camera_info>
+    39bc:	4825      	ldr	r0, [pc, #148]	; (3a54 <get_num_of_cameras+0x324>)
+    39be:	4478      	add	r0, pc
+    39c0:	f7fe ef5c 	blx	287c <pthread_mutex_unlock@plt>
+    39c4:	7828      	ldrb	r0, [r5, #0]
+    39c6:	e000      	b.n	39ca <get_num_of_cameras+0x29a>
+    39c8:	2000      	movs	r0, #0
+    39ca:	9b03      	ldr	r3, [sp, #12]
+    39cc:	9fd9      	ldr	r7, [sp, #868]	; 0x364
+    39ce:	681e      	ldr	r6, [r3, #0]
+    39d0:	42b7      	cmp	r7, r6
+    39d2:	d001      	beq.n	39d8 <get_num_of_cameras+0x2a8>
+    39d4:	f7fe ef9a 	blx	290c <__stack_chk_fail@plt>
+    39d8:	f50d 7d5b 	add.w	sp, sp, #876	; 0x36c
+    39dc:	e8bd 8ff0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, pc}
+    39e0:	7c00      	ldrb	r0, [r0, #16]
+    39e2:	c100      	stmia	r1!, {}
+    39e4:	7c01      	ldrb	r1, [r0, #16]
+    39e6:	c100      	stmia	r1!, {}
+    39e8:	56ca      	ldrsb	r2, [r1, r3]
+    39ea:	c0b4      	stmia	r0!, {r2, r4, r5, r7}
+    39ec:	87fc      	strh	r4, [r7, #62]	; 0x3e
+    39ee:	0000      	movs	r0, r0
+    39f0:	fff8 ffff 			; <UNDEFINED> instruction: 0xfff8ffff
+    39f4:	5c62      	ldrb	r2, [r4, r1]
+    39f6:	0000      	movs	r0, r0
+    39f8:	5c3c      	ldrb	r4, [r7, r0]
+    39fa:	0000      	movs	r0, r0
+    39fc:	fffc ffff 			; <UNDEFINED> instruction: 0xfffcffff
+    3a00:	5c40      	ldrb	r0, [r0, r1]
+    3a02:	0000      	movs	r0, r0
+    3a04:	5c4b      	ldrb	r3, [r1, r1]
+    3a06:	0000      	movs	r0, r0
+    3a08:	89f8      	ldrh	r0, [r7, #14]
+    3a0a:	0000      	movs	r0, r0
+    3a0c:	5bae      	ldrh	r6, [r5, r6]
+    3a0e:	0000      	movs	r0, r0
+    3a10:	5bb5      	ldrh	r5, [r6, r6]
+    3a12:	0000      	movs	r0, r0
+    3a14:	5b73      	ldrh	r3, [r6, r5]
+    3a16:	0000      	movs	r0, r0
+    3a18:	5b80      	ldrh	r0, [r0, r6]
+    3a1a:	0000      	movs	r0, r0
+    3a1c:	5bc5      	ldrh	r5, [r0, r7]
+    3a1e:	0000      	movs	r0, r0
+    3a20:	5bf0      	ldrh	r0, [r6, r7]
+    3a22:	0000      	movs	r0, r0
+    3a24:	5b98      	ldrh	r0, [r3, r6]
+    3a26:	0000      	movs	r0, r0
+    3a28:	5b9d      	ldrh	r5, [r3, r6]
+    3a2a:	0000      	movs	r0, r0
+    3a2c:	5ab1      	ldrh	r1, [r6, r2]
+    3a2e:	0000      	movs	r0, r0
+    3a30:	5b7b      	ldrh	r3, [r7, r5]
+    3a32:	0000      	movs	r0, r0
+    3a34:	5a8b      	ldrh	r3, [r1, r2]
+    3a36:	0000      	movs	r0, r0
+    3a38:	5b74      	ldrh	r4, [r6, r5]
+    3a3a:	0000      	movs	r0, r0
+    3a3c:	5a5e      	ldrh	r6, [r3, r1]
+    3a3e:	0000      	movs	r0, r0
+    3a40:	5a1f      	ldrh	r7, [r3, r0]
+    3a42:	0000      	movs	r0, r0
+    3a44:	5a2c      	ldrh	r4, [r5, r0]
+    3a46:	0000      	movs	r0, r0
+    3a48:	5afb      	ldrh	r3, [r7, r3]
+    3a4a:	0000      	movs	r0, r0
+    3a4c:	86f8      	strh	r0, [r7, #54]	; 0x36
+    3a4e:	0000      	movs	r0, r0
+    3a50:	86d4      	strh	r4, [r2, #54]	; 0x36
+    3a52:	0000      	movs	r0, r0
+    3a54:	87ca      	strh	r2, [r1, #62]	; 0x3e
+	...

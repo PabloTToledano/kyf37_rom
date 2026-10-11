@@ -1,0 +1,18 @@
+{
+  "about_page": {
+    "device_reproduction": "Null WifiManager.getFactoryMacAddresses in About preference controller",
+    "source_build": "passed",
+    "data_apk_install": "passed",
+    "device_activity_launch": "passed",
+    "visual_proof": "device-inspection/settings-about-fixed.png",
+    "apk_sha256": "bac67d04a55097df4196b418a5f8db216e0a24c96ad6a6da28c0a1d74a217000",
+    "host_regression": "blocked during Robolectric application setup: missing /system/framework/org.lineageos.platform-res.apk; five tests did not reach assertions"
+  },
+  "tearing": {
+    "owner_report": "only physical display; horizontal tearing",
+    "gpu": "Qualcomm Adreno304 GLES3 hardware active",
+    "force_client_composition": "owner reported still tearing; reverted",
+    "acquire_fence_wait": "compiled and temporarily loaded; debug.hwc.kyf37_sync_wait=1; owner outcome pending",
+    "persistent_graphics_defaults_changed": false
+  }
+}

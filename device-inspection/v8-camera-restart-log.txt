@@ -1,0 +1,59 @@
+
+10-07 22:12:21.209 31193 31193 I mm-qcamera-daem: type=1400 audit(0.0:4631): avc: denied { ioctl } for uid=1006 path="/dev/media0" dev="tmpfs" ino=6910 ioctlcmd=7c00 scontext=u:r:init:s0 tcontext=u:object_r:device:s0 tclass=chr_file permissive=1
+10-07 22:12:21.219 31193 31193 I mm-qcamera-daem: type=1400 audit(0.0:4632): avc: denied { read write } for uid=1006 name="video0" dev="tmpfs" ino=6096 scontext=u:r:init:s0 tcontext=u:object_r:video_device:s0 tclass=chr_file permissive=1
+10-07 22:12:21.225 31193 31193 E mm-camera-sensor: sensor_probe:173 failed: to load ov8856
+10-07 22:12:21.225 31193 31193 E mm-camera-sensor: sensor_init_probe:166 failed: to load ov8856
+10-07 22:12:21.477 31193 31193 E mm-camera: isp_util_gen_hws_caps: integrating kernel vfe is pending
+10-07 22:12:21.480 31193 31193 E mm-camera: isp_tintless_create: using BG stats for tintless!, isp version = 20
+10-07 22:12:21.481 31193 31193 E mm-camera: c2d_module_init:33 name=c2d
+10-07 22:12:21.482 31193 31193 E mm-camera-img: wd_comp_load:1895] Error opening WD library
+10-07 22:12:21.482 31193 31193 E mm-camera: module_wnr_init:1425] Error rc -6
+10-07 22:12:21.482 31193 31193 E mm-camera: pproc_module_init:2653] wnr module create failed
+10-07 22:12:21.482 31193 31193 E mm-camera-img: hdr_comp_load:1191] Error opening hdr library
+10-07 22:12:21.482 31193 31193 E mm-camera: pproc_module_init:2658] hdr module create failed
+10-07 22:12:21.483 31193 31193 E mm-camera-img: frameproc_comp_load:828] Error opening frameproc library libmmcamera_llvd.so
+10-07 22:12:21.483 31193 31193 E mm-camera: module_imgbase_init_llvd:1442] Error rc -6
+10-07 22:12:21.483 31193 31193 E mm-camera: pproc_module_init:2668] llvd module create failed
+10-07 22:12:21.484 31193 31193 E mm-camera: module_afs_load:1339] Error opening Frame algo library
+10-07 22:12:21.484 31193 31193 E mm-camera: module_afs_init:1544 failed -6
+10-07 22:12:21.484 31193 31193 E mm-camera-img: module_imglib_create_topology:649] Can not init the module imglib_afs
+10-07 22:12:21.484 31193 31193 E mm-camera-img: faceproc_comp_eng_load:110] Error opening libmmcamera_faceproc.so lib
+10-07 22:12:21.484 31193 31193 E mm-camera: module_faceproc_init:1583] Error rc -1
+10-07 22:12:21.484 31193 31193 E mm-camera-img: module_imglib_create_topology:649] Can not init the module imglib_faceproc
+10-07 22:12:21.485 31193 31193 E mm-camera-img: frameproc_comp_load:828] Error opening frameproc library libmmcamera_chromaflash_lib.so
+10-07 22:12:21.485 31193 31193 E mm-camera: module_imgbase_init_imglib_chroma_flash:1442] Error rc -6
+10-07 22:12:21.485 31193 31193 E mm-camera-img: module_imglib_create_topology:649] Can not init the module imglib_chroma_flash
+10-07 22:12:21.485 31193 31193 E mm-camera-img: frameproc_comp_load:828] Error opening frameproc library libmmcamera_optizoom_lib.so
+10-07 22:12:21.485 31193 31193 E mm-camera: module_imgbase_init_imglib_optizoom:1442] Error rc -6
+10-07 22:12:21.485 31193 31193 E mm-camera-img: module_imglib_create_topology:649] Can not init the module imglib_optizoom
+10-07 22:12:21.486 31193 31193 E mm-camera-img: frameproc_comp_load:828] Error opening frameproc library libmmcamera_ubifocus_lib.so
+10-07 22:12:21.486 31193 31193 E mm-camera: module_imgbase_init_imglib_ubifocus:1442] Error rc -6
+10-07 22:12:21.486 31193 31193 E mm-camera-img: module_imglib_create_topology:649] Can not init the module imglib_ubifocus
+10-07 22:12:21.486 31193 31193 E mm-camera-img: frameproc_comp_load:828] Error opening frameproc library libmmcamera_trueportrait_lib.so
+10-07 22:12:21.486 31193 31193 E mm-camera: module_imgbase_init_imglib_trueportrait:1442] Error rc -6
+10-07 22:12:21.486 31193 31193 E mm-camera-img: module_imglib_create_topology:649] Can not init the module imglib_trueportrait
+10-07 22:12:21.487 31193 31193 E mm-camera-img: frameproc_comp_load:828] Error opening frameproc library libmmcamera_fssr_lib.so
+10-07 22:12:21.487 31193 31193 E mm-camera: module_imgbase_init_imglib_fssr:1442] Error rc -6
+10-07 22:12:21.487 31193 31193 E mm-camera-img: module_imglib_create_topology:649] Can not init the module imglib_fssr
+10-07 22:12:21.487 31193 31193 E mm-camera-img: frameproc_comp_load:828] Error opening frameproc library libmmcamera_multitouchfocus_lib.so
+10-07 22:12:21.487 31193 31193 E mm-camera: module_imgbase_init_imglib_multitouchfocus:1442] Error rc -6
+10-07 22:12:21.487 31193 31193 E mm-camera-img: module_imglib_create_topology:649] Can not init the module imglib_multitouchfocus
+10-07 22:12:21.487 31193 31193 E mm-camera-img: frameproc_comp_load:828] Error opening frameproc library libmmcamera_ubifocus_lib.so
+10-07 22:12:21.487 31193 31193 E mm-camera: module_imgbase_init_imglib_refocus:1442] Error rc -6
+10-07 22:12:21.487 31193 31193 E mm-camera-img: module_imglib_create_topology:649] Can not init the module imglib_refocus
+10-07 22:12:21.511 31194 31194 E mm-camera-intf: entity id 1
+10-07 22:12:21.511 31194 31194 E mm-camera-intf: entity name video0 type 65537 group id 2
+10-07 22:12:21.511 31194 31194 E mm-camera-intf: entity id 2
+10-07 22:12:21.511 31194 31194 E mm-camera-intf: entity name v4l-subdev0 type 131072 group id 0
+10-07 22:12:21.511 31194 31194 E mm-camera-intf: entity id 3
+10-07 22:12:21.511 31194 31194 E mm-camera-intf: entity name v4l-subdev1 type 131072 group id 1
+10-07 22:12:21.511 31194 31194 E mm-camera-intf: entity id 4
+10-07 22:12:21.511 31194 31194 E mm-camera-intf: entity name v4l-subdev2 type 131072 group id 1
+10-07 22:12:21.511 31194 31194 E mm-camera-intf: entity id 5
+10-07 22:12:21.511 31194 31194 E mm-camera-intf: entity name v4l-subdev3 type 131072 group id 7
+10-07 22:12:21.511 31194 31194 E mm-camera-intf: entity id 6
+10-07 22:12:21.511 31194 31194 E mm-camera-intf: entity name v4l-subdev4 type 131072 group id 8
+10-07 22:12:21.511 31194 31194 E mm-camera-intf: entity id 7
+10-07 22:12:21.511 31194 31194 E mm-camera-intf: entity name v4l-subdev5 type 131072 group id 14
+10-07 22:12:21.511 31194 31194 I CamPrvdr@2.4-legacy: Loaded "QCamera Module" camera module
+

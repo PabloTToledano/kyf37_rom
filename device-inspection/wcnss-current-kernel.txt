@@ -1,0 +1,64 @@
+false
+--------- beginning of system
+--------- beginning of crash
+--------- beginning of main
+[ 2843.671423] healthd: battery l=99 v=4271 t=39.0 h=2 st=2 chg=u
+[ 2843.711250] healthd: battery l=99 v=4258 t=38.9 h=2 st=2 chg=u
+[ 2843.737283] healthd: battery l=99 v=4263 t=39.0 h=2 st=2 chg=u
+[ 2843.761524] init: Received control message 'interface_start' for 'android.hardware.radio@1.1::IRadio/slot1' from pid: 236 (/system/bin/hwservicemanager)
+[ 2843.770539] init: Could not find 'android.hardware.radio@1.1::IRadio/slot1' for ctl.interface_start
+[ 2843.782065] healthd: battery l=99 v=4260 t=39.0 h=2 st=2 chg=u
+[ 2843.982443] healthd: battery l=99 v=4283 t=38.9 h=2 st=2 chg=u
+[ 2844.023062] healthd: battery l=99 v=4270 t=38.8 h=2 st=2 chg=u
+[ 2844.098916] healthd: battery l=99 v=4287 t=38.9 h=2 st=2 chg=u
+[ 2844.136976] healthd: battery l=99 v=4272 t=38.9 h=2 st=2 chg=u
+[ 2844.157464] healthd: battery l=99 v=4272 t=39.0 h=2 st=2 chg=u
+[ 2844.200864] healthd: battery l=99 v=4273 t=39.0 h=2 st=2 chg=u
+[ 2844.366216] migrate_irqs: 4816 callbacks suppressed
+[ 2844.422594] healthd: battery l=99 v=4295 t=38.8 h=2 st=2 chg=u
+[ 2844.458202] healthd: battery l=99 v=4282 t=38.9 h=2 st=2 chg=u
+[ 2844.499065] healthd: battery l=99 v=4275 t=39.0 h=2 st=2 chg=u
+[ 2844.543117] healthd: battery l=99 v=4259 t=39.0 h=2 st=2 chg=u
+[ 2844.546389] init: File /system/bin/qseecomd (labeled "u:object_r:system_file:s0") has incorrect label or no domain transition from u:r:init:s0 to another SELinux domain defined. Have you configured your service correctly? https://source.android.com/security/selinux/device-policy#label_new_services_and_address_denials
+[ 2844.556779] init: starting service 'qseecomd'...
+[ 2844.563406] healthd: battery l=99 v=4259 t=39.0 h=2 st=2 chg=u
+[ 2844.589142] healthd: battery l=99 v=4260 t=39.0 h=2 st=2 chg=u
+[ 2844.623424] init: Service 'qseecomd' (pid 23137) exited with status 255
+[ 2844.626731] init: Sending signal 9 to service 'qseecomd' (pid 23137) process group...
+[ 2844.629151] libprocessgroup: Successfully killed process cgroup uid 0 pid 23137 in 0ms
+[ 2844.716075] init: updatable process 'qseecomd' exited 4 times in 4 minutes
+[ 2844.718683] init: Unable to set property 'ro.init.updatable_crashing_process_name' to 'qseecomd' from uid:0 gid:0 pid:1: Read-only property was already set
+[ 2844.721418] init: Unable to set property 'ro.init.updatable_crashing' to '1' from uid:0 gid:0 pid:1: Read-only property was already set
+[ 2844.759598] init: Received control message 'interface_start' for 'android.hardware.radio@1.1::IRadio/slot1' from pid: 236 (/system/bin/hwservicemanager)
+[ 2844.762098] init: Could not find 'android.hardware.radio@1.1::IRadio/slot1' for ctl.interface_start
+[ 2844.832397] healthd: battery l=99 v=4299 t=38.8 h=2 st=2 chg=u
+[ 2844.869527] healthd: battery l=99 v=4298 t=38.8 h=2 st=2 chg=u
+[ 2844.899002] healthd: battery l=99 v=4275 t=38.9 h=2 st=2 chg=u
+[ 2844.942801] healthd: battery l=99 v=4272 t=38.9 h=2 st=2 chg=u
+[ 2844.984788] healthd: battery l=99 v=4273 t=38.9 h=2 st=2 chg=u
+[ 2845.016109] healthd: battery l=99 v=4278 t=39.0 h=2 st=2 chg=u
+[ 2845.209137] healthd: battery l=99 v=4290 t=38.8 h=2 st=2 chg=u
+[ 2845.289866] healthd: battery l=99 v=4279 t=38.8 h=2 st=2 chg=u
+[ 2845.318434] healthd: battery l=99 v=4274 t=39.0 h=2 st=2 chg=u
+[ 2845.356412] healthd: battery l=99 v=4267 t=39.0 h=2 st=2 chg=u
+[ 2845.385844] healthd: battery l=99 v=4272 t=39.0 h=2 st=2 chg=u
+[ 2845.422342] healthd: battery l=99 v=4262 t=39.0 h=2 st=2 chg=u
+[ 2845.575420] smd_pkt_open: 20 callbacks suppressed
+[ 2845.575564] smd_pkt_open: DATA5_CNTL open failed -19
+[ 2845.580991] smd_pkt_open: DATA5_CNTL open failed -19
+[ 2845.583688] smd_pkt_open: DATA5_CNTL open failed -19
+[ 2845.584080] selinux: SELinux:  Could not stat /sys/bus/platform/drivers/DATA5_CNTL: No such file or directory.\x0a
+[ 2845.707395] logd: logdr: UID=0 GID=0 PID=23196 n tail=0 logMask=19 pid=0 start=0ns timeout=0ns
+[ 2845.760152] init: Received control message 'interface_start' for 'android.hardware.radio@1.1::IRadio/slot1' from pid: 236 (/system/bin/hwservicemanager)
+[ 2845.762330] init: Could not find 'android.hardware.radio@1.1::IRadio/slot1' for ctl.interface_start
+[ 2845.825316] healthd: battery l=99 v=4291 t=38.8 h=2 st=2 chg=u
+[ 2845.893598] healthd: battery l=99 v=4273 t=38.9 h=2 st=2 chg=u
+[ 2845.938432] healthd: battery l=99 v=4263 t=39.0 h=2 st=2 chg=u
+[ 2845.965125] healthd: battery l=99 v=4265 t=39.0 h=2 st=2 chg=u
+[ 2845.992946] healthd: battery l=99 v=4269 t=38.9 h=2 st=2 chg=u
+[ 2846.039109] healthd: battery l=99 v=4262 t=39.0 h=2 st=2 chg=u
+[ 2846.065028] type=1400 audit(1791450181.059:7372): avc: denied { getattr } for uid=0 comm="storaged" path="/sys/devices/soc.0/7824900.sdhci/mmc_host/mmc0/mmc0:0001/block/mmcblk0/stat" dev="sysfs" ino=14398 scontext=u:r:storaged:s0 tcontext=u:object_r:sysfs:s0 tclass=file permissive=1
+[ 2846.065085] type=1400 audit(1791450195.719:7373): avc: denied { module_request } for uid=0 comm="netmgrd" kmod="netdev-rmnet0" scontext=u:r:init:s0 tcontext=u:r:kernel:s0 tclass=system permissive=1
+[ 2846.089709] smd_pkt_open: DATA5_CNTL open failed -19
+[ 2846.093427] smd_pkt_open: DATA5_CNTL open failed -19
+[ 2846.097969] smd_pkt_open: DATA5_CNTL open failed -19

@@ -1,0 +1,8 @@
+App identity before requesting root:
+
+uid=10116(u0_a116) gid=10116(u0_a116) context=u:r:init_shell:s0
+
+Identity granted by su:
+
+uid=0(root) gid=0(root) context=u:r:init_shell:s0
+

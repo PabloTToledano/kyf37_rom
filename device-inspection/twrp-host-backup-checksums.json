@@ -1,0 +1,27 @@
+[
+  {
+    "file": "phone-backup\\twrp\\kyf37-final-recovery\\boot.emmc.win",
+    "md5": "03f4157ba5b1e15dfa8e53e10209f926",
+    "verified": true
+  },
+  {
+    "file": "phone-backup\\twrp\\kyf37-final-recovery\\recovery.emmc.win",
+    "md5": "7c564a1e8bac242b14d99a7f2f9b0c5c",
+    "verified": true
+  },
+  {
+    "file": "phone-backup\\twrp\\kyf37-first-recovery-backup\\boot.emmc.win",
+    "md5": "03f4157ba5b1e15dfa8e53e10209f926",
+    "verified": true
+  },
+  {
+    "file": "phone-backup\\twrp\\kyf37-first-recovery-backup\\data.ext4.win",
+    "md5": "62b029cfbc1a0609e082b639c4b31aae",
+    "verified": true
+  },
+  {
+    "file": "phone-backup\\twrp\\kyf37-first-recovery-backup\\recovery.emmc.win",
+    "md5": "8d1a6b529ac1fe514eccf607bf890048",
+    "verified": true
+  }
+]

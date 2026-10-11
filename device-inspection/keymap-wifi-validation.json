@@ -1,0 +1,10 @@
+{
+  "matrix_keypad_67.kl": "71170c1c24890a6a10a2a91864d4841f4ab46c1f25ea60521e57318a1b79b671",
+  "swic_hs_key.kl": "6a7f51e7a870b62ab7ad35b48736d734b736aa301835447620206dfe6cbb58f2",
+  "gpio-keys.kl": "e1adaf14ce949e4f879dab1ade89b81fbd73ab6f9bbe45ef47106f5440ccca70",
+  "qpnp_pon.kl": "f89ba9eae697637ba4b9daf4dc25434b488b435e7e3cdc0ab0573a116b11967a",
+  "key_maps_build_verified": true,
+  "side_key_owner_verified": true,
+  "wifi_ui_device_verified": true,
+  "wifi_hardware_verified": false
+}

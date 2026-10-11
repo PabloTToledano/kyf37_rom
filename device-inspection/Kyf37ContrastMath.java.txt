@@ -1,0 +1,19 @@
+package org.kyf37.home;
+
+/** Pure contrast math, also executable in the host-side regression check. */
+public final class ContrastMath {
+    public static final int DARK=0xFF111827, LIGHT=0xFFFFFFFF;
+    private static double linear(int n){double x=n/255.0;return x<=0.04045?x/12.92:Math.pow((x+0.055)/1.055,2.4);}
+    public static double luminance(int rgb){return .2126*linear((rgb>>16)&255)+.7152*linear((rgb>>8)&255)+.0722*linear(rgb&255);}
+    private static double ratio(double a,double b){return (Math.max(a,b)+.05)/(Math.min(a,b)+.05);}
+    public static int colorFor(double[] samples){
+        if(samples.length==0)return LIGHT;
+        double[] dark=new double[samples.length],light=new double[samples.length];
+        double dl=luminance(DARK);
+        for(int i=0;i<samples.length;i++){dark[i]=ratio(dl,samples[i]);light[i]=ratio(1,samples[i]);}
+        java.util.Arrays.sort(dark);java.util.Arrays.sort(light);
+        // Favor the typical letter background, with a penalty for poorly contrasted patches.
+        int q=samples.length/4,m=samples.length/2;
+        return .7*dark[m]+.3*dark[q]>=.7*light[m]+.3*light[q]?DARK:LIGHT;
+    }
+}

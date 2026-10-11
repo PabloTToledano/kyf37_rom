@@ -1,0 +1,762 @@
+{
+  "skipped": [],
+  "files": [
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v19\\system-android10.raw.img",
+      "bytes": 1612709888,
+      "reason": "Regenerable staging image; verified matching release ZIP retained",
+      "last_write_ticks": 639271739576284563
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v19\\system-android10.sparse.img",
+      "bytes": 1474920908,
+      "reason": "Regenerable staging image; verified matching release ZIP retained",
+      "last_write_ticks": 639271739776117952
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v20\\system-android10.raw.img",
+      "bytes": 1612709888,
+      "reason": "Regenerable staging image; verified matching release ZIP retained",
+      "last_write_ticks": 639272722060504311
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v20\\system-android10.sparse.img",
+      "bytes": 1475432908,
+      "reason": "Regenerable staging image; verified matching release ZIP retained",
+      "last_write_ticks": 639272722176254561
+    },
+    {
+      "path": "kyf37-rom\\kyf37-android10-go-20261007-twrp-v10.zip",
+      "bytes": 774539939,
+      "reason": "Obsolete pre-v19 installer; v19/v20 rollback and validated v22 retained",
+      "last_write_ticks": 639270600355306752
+    },
+    {
+      "path": "kyf37-rom\\kyf37-android10-go-20261007-twrp-v10.zip.sha256",
+      "bytes": 108,
+      "reason": "Checksum of retired installer",
+      "last_write_ticks": 639270600485483131
+    },
+    {
+      "path": "kyf37-rom\\kyf37-android10-go-20261007-twrp-v11.zip",
+      "bytes": 774536473,
+      "reason": "Obsolete pre-v19 installer; v19/v20 rollback and validated v22 retained",
+      "last_write_ticks": 639270627836109429
+    },
+    {
+      "path": "kyf37-rom\\kyf37-android10-go-20261007-twrp-v11.zip.sha256",
+      "bytes": 108,
+      "reason": "Checksum of retired installer",
+      "last_write_ticks": 639270627952064722
+    },
+    {
+      "path": "kyf37-rom\\kyf37-android10-go-20261007-twrp-v12.zip",
+      "bytes": 774539946,
+      "reason": "Obsolete pre-v19 installer; v19/v20 rollback and validated v22 retained",
+      "last_write_ticks": 639270656017317764
+    },
+    {
+      "path": "kyf37-rom\\kyf37-android10-go-20261007-twrp-v12.zip.sha256",
+      "bytes": 108,
+      "reason": "Checksum of retired installer",
+      "last_write_ticks": 639270656158484455
+    },
+    {
+      "path": "kyf37-rom\\kyf37-android10-go-20261007-twrp-v13.zip",
+      "bytes": 825551834,
+      "reason": "Obsolete pre-v19 installer; v19/v20 rollback and validated v22 retained",
+      "last_write_ticks": 639270660180942377
+    },
+    {
+      "path": "kyf37-rom\\kyf37-android10-go-20261007-twrp-v13.zip.sha256",
+      "bytes": 108,
+      "reason": "Checksum of retired installer",
+      "last_write_ticks": 639270660320017669
+    },
+    {
+      "path": "kyf37-rom\\kyf37-android10-go-20261007-twrp-v14.zip",
+      "bytes": 878777224,
+      "reason": "Obsolete pre-v19 installer; v19/v20 rollback and validated v22 retained",
+      "last_write_ticks": 639270773766332315
+    },
+    {
+      "path": "kyf37-rom\\kyf37-android10-go-20261007-twrp-v14.zip.sha256",
+      "bytes": 108,
+      "reason": "Checksum of retired installer",
+      "last_write_ticks": 639270773920118933
+    },
+    {
+      "path": "kyf37-rom\\kyf37-android10-go-20261007-twrp-v15.zip",
+      "bytes": 885756683,
+      "reason": "Obsolete pre-v19 installer; v19/v20 rollback and validated v22 retained",
+      "last_write_ticks": 639270779995032315
+    },
+    {
+      "path": "kyf37-rom\\kyf37-android10-go-20261007-twrp-v15.zip.sha256",
+      "bytes": 108,
+      "reason": "Checksum of retired installer",
+      "last_write_ticks": 639270780133543414
+    },
+    {
+      "path": "kyf37-rom\\kyf37-android10-go-20261007-twrp-v17.zip",
+      "bytes": 900211519,
+      "reason": "Obsolete pre-v19 installer; v19/v20 rollback and validated v22 retained",
+      "last_write_ticks": 639270858657228036
+    },
+    {
+      "path": "kyf37-rom\\kyf37-android10-go-20261007-twrp-v17.zip.sha256",
+      "bytes": 108,
+      "reason": "Checksum of retired installer",
+      "last_write_ticks": 639270858818961864
+    },
+    {
+      "path": "kyf37-rom\\kyf37-android10-go-20261007-twrp-v18.zip",
+      "bytes": 918818313,
+      "reason": "Obsolete pre-v19 installer; v19/v20 rollback and validated v22 retained",
+      "last_write_ticks": 639271630579234988
+    },
+    {
+      "path": "kyf37-rom\\kyf37-android10-go-20261007-twrp-v18.zip.sha256",
+      "bytes": 108,
+      "reason": "Checksum of retired installer",
+      "last_write_ticks": 639271630753661429
+    },
+    {
+      "path": "kyf37-rom\\systemui-loop\\apk\\SystemUI-iter1.apk",
+      "bytes": 20990465,
+      "reason": "Superseded SystemUI test iteration; original rollback, m8 and current release retained",
+      "last_write_ticks": 639272530344343991
+    },
+    {
+      "path": "kyf37-rom\\systemui-loop\\apk\\SystemUI-iter2.apk",
+      "bytes": 20994561,
+      "reason": "Superseded SystemUI test iteration; original rollback, m8 and current release retained",
+      "last_write_ticks": 639272538598967295
+    },
+    {
+      "path": "kyf37-rom\\systemui-loop\\apk\\SystemUI-iter3.apk",
+      "bytes": 20994561,
+      "reason": "Superseded SystemUI test iteration; original rollback, m8 and current release retained",
+      "last_write_ticks": 639272545073281460
+    },
+    {
+      "path": "kyf37-rom\\systemui-loop\\apk\\SystemUI-iter4.apk",
+      "bytes": 20994561,
+      "reason": "Superseded SystemUI test iteration; original rollback, m8 and current release retained",
+      "last_write_ticks": 639272546933802764
+    },
+    {
+      "path": "kyf37-rom\\systemui-loop\\apk\\SystemUI-iter5.apk",
+      "bytes": 20994561,
+      "reason": "Superseded SystemUI test iteration; original rollback, m8 and current release retained",
+      "last_write_ticks": 639272549752075182
+    },
+    {
+      "path": "kyf37-rom\\systemui-loop\\apk\\SystemUI-iter6.apk",
+      "bytes": 20994561,
+      "reason": "Superseded SystemUI test iteration; original rollback, m8 and current release retained",
+      "last_write_ticks": 639272552881050706
+    },
+    {
+      "path": "kyf37-rom\\systemui-loop\\apk\\SystemUI-iter7.apk",
+      "bytes": 20994561,
+      "reason": "Superseded SystemUI test iteration; original rollback, m8 and current release retained",
+      "last_write_ticks": 639272556634212036
+    },
+    {
+      "path": "kyf37-rom\\systemui-loop\\apk\\SystemUI-iter8.apk",
+      "bytes": 20994561,
+      "reason": "Superseded SystemUI test iteration; original rollback, m8 and current release retained",
+      "last_write_ticks": 639272562816179161
+    },
+    {
+      "path": "kyf37-rom\\systemui-loop\\apk\\SystemUI-m1.apk",
+      "bytes": 21002828,
+      "reason": "Superseded SystemUI test iteration; original rollback, m8 and current release retained",
+      "last_write_ticks": 639272737816596084
+    },
+    {
+      "path": "kyf37-rom\\systemui-loop\\apk\\SystemUI-m2.apk",
+      "bytes": 21002903,
+      "reason": "Superseded SystemUI test iteration; original rollback, m8 and current release retained",
+      "last_write_ticks": 639272744675395220
+    },
+    {
+      "path": "kyf37-rom\\systemui-loop\\apk\\SystemUI-m3.apk",
+      "bytes": 21003062,
+      "reason": "Superseded SystemUI test iteration; original rollback, m8 and current release retained",
+      "last_write_ticks": 639272753589259185
+    },
+    {
+      "path": "kyf37-rom\\systemui-loop\\apk\\SystemUI-m4.apk",
+      "bytes": 21007158,
+      "reason": "Superseded SystemUI test iteration; original rollback, m8 and current release retained",
+      "last_write_ticks": 639272759645238412
+    },
+    {
+      "path": "kyf37-rom\\systemui-loop\\apk\\SystemUI-m5.apk",
+      "bytes": 21007158,
+      "reason": "Superseded SystemUI test iteration; original rollback, m8 and current release retained",
+      "last_write_ticks": 639272762792446728
+    },
+    {
+      "path": "kyf37-rom\\systemui-loop\\apk\\SystemUI-m6.apk",
+      "bytes": 21007158,
+      "reason": "Superseded SystemUI test iteration; original rollback, m8 and current release retained",
+      "last_write_ticks": 639272765525742501
+    },
+    {
+      "path": "kyf37-rom\\systemui-loop\\apk\\SystemUI-m7.apk",
+      "bytes": 21007158,
+      "reason": "Superseded SystemUI test iteration; original rollback, m8 and current release retained",
+      "last_write_ticks": 639272768036211798
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v10\\android10-boot-verification.json",
+      "bytes": 3184,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270598620000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v10\\android10-e2fsck.txt",
+      "bytes": 293,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270598690000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v10\\android10-filesystem-header.txt",
+      "bytes": 1565,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270598690000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v10\\android10-image-validation.json",
+      "bytes": 5580,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270598700000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v10\\android10-installed-vendor-symbol-audit.json",
+      "bytes": 652007,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270598940000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v10\\android10-kernel-module-audit.json",
+      "bytes": 7174,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270501480000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v10\\android10-system-sparse-verification.json",
+      "bytes": 455,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270598620000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v10\\boot-android10-owner-signed.img",
+      "bytes": 16777216,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270599559415596
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v10\\boot-android10-owner-signed.signing.json",
+      "bytes": 639,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270599559521215
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v10\\boot-android10-unsigned.img",
+      "bytes": 8960000,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270599244021459
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v10\\BoringSSL-LICENSE.txt",
+      "bytes": 12517,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270600084612400
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v11\\android10-boot-verification.json",
+      "bytes": 3184,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270626920000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v11\\android10-e2fsck.txt",
+      "bytes": 293,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270626970000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v11\\android10-filesystem-header.txt",
+      "bytes": 1565,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270626970000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v11\\android10-image-validation.json",
+      "bytes": 5580,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270626980000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v11\\android10-installed-vendor-symbol-audit.json",
+      "bytes": 652007,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270627090000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v11\\android10-kernel-module-audit.json",
+      "bytes": 7174,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270501480000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v11\\android10-system-sparse-verification.json",
+      "bytes": 455,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270626920000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v11\\boot-android10-owner-signed.img",
+      "bytes": 16777216,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270627527857913
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v11\\boot-android10-owner-signed.signing.json",
+      "bytes": 639,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270627527940380
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v11\\boot-android10-unsigned.img",
+      "bytes": 8960000,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270627218739856
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v11\\BoringSSL-LICENSE.txt",
+      "bytes": 12517,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270627524240704
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v12\\android10-boot-verification.json",
+      "bytes": 3184,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270655140000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v12\\android10-e2fsck.txt",
+      "bytes": 293,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270655220000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v12\\android10-filesystem-header.txt",
+      "bytes": 1565,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270655220000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v12\\android10-image-validation.json",
+      "bytes": 5580,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270655250000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v12\\android10-installed-vendor-symbol-audit.json",
+      "bytes": 652007,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270655420000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v12\\android10-kernel-module-audit.json",
+      "bytes": 7174,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270501480000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v12\\android10-system-sparse-verification.json",
+      "bytes": 455,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270655150000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v12\\boot-android10-owner-signed.img",
+      "bytes": 16777216,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270655713437955
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v12\\boot-android10-owner-signed.signing.json",
+      "bytes": 639,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270655713478172
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v12\\boot-android10-unsigned.img",
+      "bytes": 8960000,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270655428444615
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v12\\BoringSSL-LICENSE.txt",
+      "bytes": 12517,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270655705273610
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v13\\android10-boot-verification.json",
+      "bytes": 3184,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270659320000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v13\\android10-e2fsck.txt",
+      "bytes": 293,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270659370000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v13\\android10-filesystem-header.txt",
+      "bytes": 1565,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270659370000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v13\\android10-image-validation.json",
+      "bytes": 5580,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270659380000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v13\\android10-installed-vendor-symbol-audit.json",
+      "bytes": 652007,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270659570000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v13\\android10-kernel-module-audit.json",
+      "bytes": 7174,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270501480000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v13\\android10-system-sparse-verification.json",
+      "bytes": 455,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270659320000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v13\\boot-android10-owner-signed.img",
+      "bytes": 16777216,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270659846233989
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v13\\boot-android10-owner-signed.signing.json",
+      "bytes": 639,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270659846291291
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v13\\boot-android10-unsigned.img",
+      "bytes": 8960000,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270659573622198
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v13\\BoringSSL-LICENSE.txt",
+      "bytes": 12517,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270659843542182
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v14\\android10-boot-verification.json",
+      "bytes": 3184,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270772750000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v14\\android10-e2fsck.txt",
+      "bytes": 293,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270772820000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v14\\android10-filesystem-header.txt",
+      "bytes": 1565,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270772820000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v14\\android10-image-validation.json",
+      "bytes": 5580,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270772840000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v14\\android10-installed-vendor-symbol-audit.json",
+      "bytes": 655153,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270772910000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v14\\android10-kernel-module-audit.json",
+      "bytes": 7174,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270501480000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v14\\android10-system-sparse-verification.json",
+      "bytes": 455,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270772760000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v14\\boot-android10-owner-signed.img",
+      "bytes": 16777216,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270773244331963
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v14\\boot-android10-owner-signed.signing.json",
+      "bytes": 639,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270773244331963
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v14\\boot-android10-unsigned.img",
+      "bytes": 8960000,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270772920583088
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v14\\BoringSSL-LICENSE.txt",
+      "bytes": 12517,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270773397884444
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v15\\android10-boot-verification.json",
+      "bytes": 3184,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270779170000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v15\\android10-e2fsck.txt",
+      "bytes": 293,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270779230000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v15\\android10-filesystem-header.txt",
+      "bytes": 1565,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270779230000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v15\\android10-image-validation.json",
+      "bytes": 5580,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270779240000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v15\\android10-installed-vendor-symbol-audit.json",
+      "bytes": 655153,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270779390000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v15\\android10-kernel-module-audit.json",
+      "bytes": 7174,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270501480000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v15\\android10-system-sparse-verification.json",
+      "bytes": 455,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270779170000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v15\\boot-android10-owner-signed.img",
+      "bytes": 16777216,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270779651966869
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v15\\boot-android10-owner-signed.signing.json",
+      "bytes": 639,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270779652018365
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v15\\boot-android10-unsigned.img",
+      "bytes": 8960000,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270779400476567
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v15\\BoringSSL-LICENSE.txt",
+      "bytes": 12517,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270779649604019
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v17\\android10-boot-verification.json",
+      "bytes": 3184,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270856380000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v17\\android10-e2fsck.txt",
+      "bytes": 293,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270856460000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v17\\android10-filesystem-header.txt",
+      "bytes": 1565,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270856460000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v17\\android10-image-validation.json",
+      "bytes": 5818,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270856480000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v17\\android10-installed-vendor-symbol-audit.json",
+      "bytes": 665254,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270811200000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v17\\android10-kernel-module-audit.json",
+      "bytes": 7174,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270501480000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v17\\android10-system-sparse-verification.json",
+      "bytes": 455,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270856400000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v17\\boot-android10-owner-signed.img",
+      "bytes": 16777216,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270857432788049
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v17\\boot-android10-owner-signed.signing.json",
+      "bytes": 639,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270857432859630
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v17\\boot-android10-unsigned.img",
+      "bytes": 8960000,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270856749793218
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v17\\BoringSSL-LICENSE.txt",
+      "bytes": 12517,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270857344732293
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v18\\android10-boot-verification.json",
+      "bytes": 3184,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639271595240000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v18\\android10-e2fsck.txt",
+      "bytes": 293,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639271595320000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v18\\android10-filesystem-header.txt",
+      "bytes": 1565,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639271595320000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v18\\android10-image-validation.json",
+      "bytes": 7368,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639271595350000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v18\\android10-installed-vendor-symbol-audit.json",
+      "bytes": 720731,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639271595630000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v18\\android10-kernel-module-audit.json",
+      "bytes": 7174,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639270501480000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v18\\android10-system-sparse-verification.json",
+      "bytes": 455,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639271595260000000
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v18\\boot-android10-owner-signed.img",
+      "bytes": 16777216,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639271596163458246
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v18\\boot-android10-owner-signed.signing.json",
+      "bytes": 639,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639271596163564599
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v18\\boot-android10-unsigned.img",
+      "bytes": 8978432,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639271595635903012
+    },
+    {
+      "path": "kyf37-rom\\android10-go-candidate-20261007-v18\\BoringSSL-LICENSE.txt",
+      "bytes": 12517,
+      "reason": "Retired pre-v19 staging artifact; metadata checksummed in history archive, v19/v20 rollback retained",
+      "last_write_ticks": 639271596049280401
+    },
+    {
+      "path": "kyf37-rom\\system-lineage-final.img",
+      "bytes": 571089384,
+      "reason": "Obsolete Android 7 experimental system image; no current build-script consumers, stock and Android 10 rollback retained",
+      "last_write_ticks": 639269476761676449
+    }
+  ],
+  "applied": true,
+  "timestamp": "2026-10-11T10:46:49.8390791+02:00",
+  "bytes": 14006059349.0,
+  "removed_empty_directories": [
+    "C:\\Users\\pablo\\Documents\\ChatGPT\\flipphone_roms\\kyf37-rom\\android10-go-candidate-20261007-v10",
+    "C:\\Users\\pablo\\Documents\\ChatGPT\\flipphone_roms\\kyf37-rom\\android10-go-candidate-20261007-v11",
+    "C:\\Users\\pablo\\Documents\\ChatGPT\\flipphone_roms\\kyf37-rom\\android10-go-candidate-20261007-v12",
+    "C:\\Users\\pablo\\Documents\\ChatGPT\\flipphone_roms\\kyf37-rom\\android10-go-candidate-20261007-v13",
+    "C:\\Users\\pablo\\Documents\\ChatGPT\\flipphone_roms\\kyf37-rom\\android10-go-candidate-20261007-v14",
+    "C:\\Users\\pablo\\Documents\\ChatGPT\\flipphone_roms\\kyf37-rom\\android10-go-candidate-20261007-v15",
+    "C:\\Users\\pablo\\Documents\\ChatGPT\\flipphone_roms\\kyf37-rom\\android10-go-candidate-20261007-v17",
+    "C:\\Users\\pablo\\Documents\\ChatGPT\\flipphone_roms\\kyf37-rom\\android10-go-candidate-20261007-v18"
+  ]
+}

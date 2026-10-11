@@ -1,0 +1,31 @@
+Traceback (most recent call last):
+  File "C:\Users\pablo\Documents\ChatGPT\flipphone_roms\device-inspection\probe_admin.py", line 10, in <module>
+    runpy.run_path(str(root / 'probe_diag.py'), run_name='__main__')
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen runpy>", line 287, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\pablo\Documents\ChatGPT\flipphone_roms\device-inspection\probe_diag.py", line 44, in <module>
+    usb.util.claim_interface(device, 0)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\pablo\Documents\ChatGPT\flipphone_roms\device-inspection\.venv\Lib\site-packages\usb\util.py", line 203, in claim_interface
+    device._ctx.managed_claim_interface(device, interface)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pablo\Documents\ChatGPT\flipphone_roms\device-inspection\.venv\Lib\site-packages\usb\core.py", line 113, in wrapper
+    return f(self, *args, **kwargs)
+  File "C:\Users\pablo\Documents\ChatGPT\flipphone_roms\device-inspection\.venv\Lib\site-packages\usb\core.py", line 172, in managed_claim_interface
+    self.managed_open()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\pablo\Documents\ChatGPT\flipphone_roms\device-inspection\.venv\Lib\site-packages\usb\core.py", line 113, in wrapper
+    return f(self, *args, **kwargs)
+  File "C:\Users\pablo\Documents\ChatGPT\flipphone_roms\device-inspection\.venv\Lib\site-packages\usb\core.py", line 132, in managed_open
+    self.handle = self.backend.open_device(self.dev)
+                  ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\pablo\Documents\ChatGPT\flipphone_roms\device-inspection\.venv\Lib\site-packages\usb\backend\libusb1.py", line 808, in open_device
+    return _DeviceHandle(dev)
+  File "C:\Users\pablo\Documents\ChatGPT\flipphone_roms\device-inspection\.venv\Lib\site-packages\usb\backend\libusb1.py", line 656, in __init__
+    _check(_lib.libusb_open(self.devid, byref(self.handle)))
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pablo\Documents\ChatGPT\flipphone_roms\device-inspection\.venv\Lib\site-packages\usb\backend\libusb1.py", line 604, in _check
+    raise USBError(_strerror(ret), ret, _libusb_errno[ret])
+usb.core.USBError: [Errno 13] Access denied (insufficient permissions)

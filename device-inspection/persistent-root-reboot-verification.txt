@@ -1,0 +1,18 @@
+1
+
+stopped
+
+uid=0(root) gid=0(root) context=u:r:init_shell:s0
+
+KYF37 root startup: Thu Aug  1 19:57:03 JST 2019
+
+KYF37 root startup: Thu Aug  1 19:57:33 JST 2019
+
+lrwxrwxrwx root     root              2019-08-01 19:57 su -> magisk
+
+Root setup exit=0
+
+uid=0(root) gid=0(root) context=u:r:init_shell:s0
+
+1
+

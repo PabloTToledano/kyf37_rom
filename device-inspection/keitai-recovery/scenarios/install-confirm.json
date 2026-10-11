@@ -1,0 +1,6 @@
+[
+ {"key": "1"}, {"key": "1"}, {"key": "down", "n": 2}, {"key": "enter"}, {"shot": "30-install-confirm"},
+ {"key": "down", "n": 2}, {"key": "enter"}, {"shot": "31-verify-toggled"},
+ {"key": "back"}, {"shot": "32-back-cancels"},
+ {"expect_log": "queuezip"}
+]

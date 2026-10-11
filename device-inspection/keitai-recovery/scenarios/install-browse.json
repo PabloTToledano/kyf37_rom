@@ -1,0 +1,9 @@
+[
+ {"key": "1"}, {"key": "1"}, {"shot": "20-install-pick"},
+ {"key": "down"}, {"key": "enter"}, {"shot": "21-install-confirm"},
+ {"key": "down"}, {"key": "enter"}, {"shot": "22-verify-toggled"},
+ {"key": "back"}, {"shot": "23-back-to-list"},
+ {"key": "back"}, {"shot": "24-back-to-main"},
+ {"key": "6"}, {"shot": "25-file-browser"}, {"key": "enter"}, {"shot": "26-into-folder"}, {"key": "back"}, {"shot": "27-up-one-dir"},
+ {"expect_log": "queuezip"}
+]

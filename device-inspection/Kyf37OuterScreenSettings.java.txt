@@ -1,0 +1,133 @@
+package org.kyf37.phonesettings;
+
+import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.StateListDrawable;
+import android.os.Bundle;
+import android.provider.Settings;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+/**
+ * Outer 128x36 screen options. Values live in Settings.Global (kyf37_outer_*), so they survive
+ * reboots and ROM updates; OuterScreenService observes them and applies changes immediately.
+ * Keypad use: up/down select a row, left/right (or OK) change the value.
+ */
+public final class OuterScreenSettings extends Activity {
+    private static final String[] KEYS = {
+        "kyf37_outer_clock_size", "kyf37_outer_time_format", "kyf37_outer_seconds",
+        "kyf37_outer_battery", "kyf37_outer_timeout", "kyf37_outer_animation", "kyf37_outer_badapple" };
+    private static final String[] TITLES = {
+        "Clock size", "Time format", "Show seconds", "Battery display",
+        "Screen-off timeout", "Animations", "Bad Apple (hold side key)" };
+    private static final int[] DEFAULTS = {2, 0, 0, 3, 10, 1, 1};
+    private static final int[][] VALUES = {
+        {0, 1, 2}, {0, 1}, {0, 1}, {0, 1, 2, 3}, {5, 10, 20, 30, 60, 0}, {0, 1}, {0, 1} };
+    private static final String[][] NAMES = {
+        {"Small", "Medium", "Large"}, {"24-hour", "12-hour"}, {"Off", "On"},
+        {"Off", "Icon", "Percentage", "Icon + percentage"},
+        {"5 seconds", "10 seconds", "20 seconds", "30 seconds", "1 minute", "Always on"},
+        {"Off", "On"}, {"Off", "On"} };
+
+    private final TextView[] valueViews = new TextView[KEYS.length];
+    private final LinearLayout[] rows = new LinearLayout[KEYS.length];
+
+    private int index(int row) {
+        int v = Settings.Global.getInt(getContentResolver(), KEYS[row], DEFAULTS[row]);
+        for (int i = 0; i < VALUES[row].length; i++) if (VALUES[row][i] == v) return i;
+        return 0;
+    }
+
+    private void step(int row, int delta) {
+        int n = VALUES[row].length;
+        int next = (index(row) + delta + n) % n;
+        try {
+            if (!Settings.Global.putInt(getContentResolver(), KEYS[row], VALUES[row][next]))
+                throw new IllegalStateException("write rejected");
+        } catch (RuntimeException e) {
+            Toast.makeText(this, "Could not save setting", Toast.LENGTH_LONG).show();
+            android.util.Log.e("Kyf37OuterSettings", "save failed", e);
+        }
+        show(row);
+    }
+
+    private void show(int row) {
+        valueViews[row].setText("◄ " + NAMES[row][index(row)] + " ►");
+    }
+
+    private int dp(int v) { return Math.round(v * getResources().getDisplayMetrics().density); }
+
+    @Override public void onCreate(Bundle state) {
+        super.onCreate(state);
+        setTitle("Outer screen");
+        LinearLayout page = new LinearLayout(this);
+        page.setOrientation(LinearLayout.VERTICAL);
+        page.setBackgroundColor(0xFF10151B);
+        int pad = dp(14);
+        page.setPadding(pad, pad, pad, pad);
+        TextView title = new TextView(this);
+        title.setText("Outer screen"); title.setTextColor(Color.WHITE); title.setTextSize(22);
+        title.setTypeface(android.graphics.Typeface.DEFAULT_BOLD);
+        page.addView(title);
+        TextView hint = new TextView(this);
+        hint.setText("▲▼ choose, ◄► or OK change. Applies instantly; close the lid to see it.");
+        hint.setTextColor(0xFFB8C2CC); hint.setTextSize(13); hint.setPadding(0, dp(4), 0, dp(8));
+        page.addView(hint);
+        LinearLayout list = new LinearLayout(this);
+        list.setOrientation(LinearLayout.VERTICAL);
+        for (int i = 0; i < KEYS.length; i++) {
+            final int row = i;
+            LinearLayout r = new LinearLayout(this);
+            r.setOrientation(LinearLayout.VERTICAL);
+            r.setFocusable(true);
+            r.setClickable(true);
+            r.setPadding(dp(10), dp(8), dp(10), dp(8));
+            StateListDrawable bg = new StateListDrawable();
+            GradientDrawable focused = new GradientDrawable();
+            focused.setColor(0xFF1E3A6B); focused.setStroke(dp(3), 0xFFFFD54A); focused.setCornerRadius(dp(6));
+            GradientDrawable normal = new GradientDrawable();
+            normal.setColor(0xFF18202A); normal.setStroke(dp(1), 0xFF26303A); normal.setCornerRadius(dp(6));
+            if (!Kyf37FocusCompat.has()) bg.addState(new int[] {android.R.attr.state_focused}, focused);
+            bg.addState(new int[] {}, normal);
+            r.setBackground(bg);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-1, -2);
+            lp.setMargins(0, 0, 0, dp(6));
+            TextView t = new TextView(this);
+            t.setText(TITLES[i]); t.setTextColor(0xFFB8C2CC); t.setTextSize(14);
+            TextView v = new TextView(this);
+            v.setTextColor(Color.WHITE); v.setTextSize(19);
+            r.addView(t); r.addView(v);
+            valueViews[i] = v; rows[i] = r;
+            r.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View view) { step(row, 1); }
+            });
+            r.setOnKeyListener(new View.OnKeyListener() {
+                @Override public boolean onKey(View view, int code, KeyEvent e) {
+                    if (e.getAction() != KeyEvent.ACTION_DOWN) return false;
+                    if (code == KeyEvent.KEYCODE_DPAD_RIGHT) { step(row, 1); return true; }
+                    if (code == KeyEvent.KEYCODE_DPAD_LEFT) { step(row, -1); return true; }
+                    return false;
+                }
+            });
+            list.addView(r, lp);
+            show(i);
+        }
+        ScrollView scroll = new ScrollView(this);
+        scroll.setFillViewport(true);
+        scroll.addView(list);
+        page.addView(scroll, new LinearLayout.LayoutParams(-1, 0, 1f));
+        setContentView(page);
+        rows[0].requestFocus();
+    }
+
+    @Override public void onResume() {
+        super.onResume();
+        for (int i = 0; i < KEYS.length; i++) show(i);
+    }
+}

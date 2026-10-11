@@ -1,0 +1,118 @@
+0x50000 artition table not found
+
+0x5001c ERROR: Invalid boot image pagesize. Device pagesize: %d, Image pagesize: %d
+
+0x5006c Integer overflow detected in bootimage header fields
+
+0x500d8 ERROR: Cannot read kernel image
+
+0x500fc ERROR: Cannot read ramdisk image
+
+0x50120 ERROR: Cannot read the Device Tree Table
+
+0x5014c ERROR: Cannot read device tree
+
+0x5016c Neither '%s' nor '%s' partition found
+
+0x50194 Reading MMC failed
+
+0x501a8 PW Key,Check Init
+0x501bc PW Key,Judge
+0x501cc VIB flag is ON
+0x501dc LED flag is ON
+0x501ec VIB OFF
+0x501f4 LED OFF
+0x501fc Screen display is skipped in order to boot only by USB supply.
+
+0x5023c error in emmc_recovery_init
+
+0x5025c ERROR: Could not do normal boot. Reverting to fastboot mode.
+
+0x5029c Failed aboot_init
+0x502b0 reset_device_info called.
+0x502cc set_device_root called.
+0x502e4 unlock device to use this command
+0x50308 invalid bootimage header
+0x50324 bootimage: incomplete or not signed
+0x50348 dtb not found
+0x50358 partition table doesn't exist
+0x50378 unknown partition name
+0x50390 failed to erase partition
+0x503ac unlock device to erase keystore
+0x503cc Partition table doesn't exist
+
+0x503ec failed to erase partition
+
+0x50408 device is locked. Cannot erase
+0x50428 cannot flash this partition in verified state
+0x50458 frp-unlock
+0x50464 Secret key is invalid, please update the bootloader with secret key
+0x504a8 Attempt to write partition image.
+
+0x504cc failed to write partition
+0x504e8 unlock device to flash keystore
+0x50508 image is not a keystore file
+0x50528 image is not a boot image
+0x50544 size too large
+0x50554 flash write failure
+0x50568 size too low
+0x50578 buffer overreads occured due to invalid sparse header
+0x505b0 chunk header size mismatch
+0x505cc sparse header size mismatch
+0x505e8 Bogus size sparse and chunk header
+0x5060c Chunk data size exceeds partition size
+0x50634 Bogus chunk size for chunk type Raw
+0x50658 Bogus size for RAW chunk type
+0x50678 Bogus chunk size for chunk type FILL
+0x506a0 Malloc failed for: CHUNK_TYPE_FILL
+0x506c4 Chunk data size for fill type exceeds partition size
+0x506fc bogus size for chunk DONT CARE type
+0x50720 Bogus chunk size for chunk type Dont Care
+0x5074c bogus size for chunk CRC type
+0x5076c integer overflow occured
+0x50788 Unkown chunk type: %x
+
+0x507a0 Unknown chunk type
+0x507b4 Wrote %d blocks, expected to write %d blocks
+
+0x507e4 sparse image write failure
+0x50800 tqs
+0x50804 ERROR: Encryption Failure
+
+0x50820 ERROR: scm_protect_keystore Failed
+
+0x50844 ERROR: Decryption Failure
+
+0x50860 ERROR: Invalid secure image
+
+0x50880 INVALID SVC Version
+
+0x50898 device is locked. Cannot flash images
+0x508c0 UBI#
+0x508c8 writing %d bytes to '%s'
+
+0x508e4 partition '%s' updated
+
+0x508fc rebooting the device
+
+0x50914 Enabling charger screen check
+
+0x50934 Disabling charger screen check
+
+0x50954 Selecting display panel %s
+
+0x50970 oem unlock is not allowed
+0x5098c oem unlock is been issued
+
+0x509a8 Need wipe userdata. Do 'fastboot oem unlock-go'
+0x509d8 recovery
+--wipe_data
+0x50a50 SPLASH!!
+0x50a5c splash
+0x50a64 ERROR: splash Partition not found
+
+0x50a88 ERROR: Boot image header invalid
+
+0x50aac Logo config doesn't match with fb config. Fall back to default logo
+
+0x50af4 ERROR: Canno

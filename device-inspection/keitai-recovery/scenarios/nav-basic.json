@@ -1,0 +1,21 @@
+[
+ {"shot": "00-first-page"},
+ {"key": "1"}, {"shot": "01-main-menu"},
+ {"key": "down", "n": 2}, {"shot": "02-main-focus-restore"},
+ {"key": "up", "n": 3}, {"shot": "03-main-wrap-up"},
+ {"key": "4"}, {"shot": "04-wipe-menu"},
+ {"key": "down"}, {"key": "enter"}, {"shot": "05-confirm1-factory"},
+ {"key": "2"}, {"shot": "06-confirm2-factory"},
+ {"key": "enter"}, {"shot": "07-ok-on-cancel-returns-wipe"},
+ {"key": "back"}, {"shot": "08-back-to-main"},
+ {"key": "2"}, {"shot": "09-backup-setup"},
+ {"key": "down", "n": 3}, {"key": "enter"}, {"shot": "10-storage-toggled"},
+ {"key": "f1"}, {"shot": "11-f1-main"},
+ {"key": "8"}, {"shot": "12-reboot-menu"},
+ {"key": "back"}, {"key": "7"}, {"key": "enter"}, {"shot": "13-log-view"},
+ {"key": "up", "n": 3}, {"shot": "14-log-scrolled"},
+ {"key": "star"}, {"shot": "15-log-top"},
+ {"key": "back"}, {"key": "back"}, {"shot": "16-main-again"},
+ {"key": "9"}, {"shot": "17-tools"}, {"key": "4"}, {"shot": "18-keyhelp"},
+ {"expect_log": "Set page: 'main2'"}
+]

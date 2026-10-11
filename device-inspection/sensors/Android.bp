@@ -1,0 +1,9 @@
+cc_library_shared {
+    name: "sensors.kyf37_extra",
+    vendor: true,
+    relative_install_path: "hw",
+    srcs: ["sensors.cpp"],
+    shared_libs: ["liblog"],
+    header_libs: ["libhardware_headers"],
+    cflags: ["-Wall", "-Wextra", "-Werror"],
+}

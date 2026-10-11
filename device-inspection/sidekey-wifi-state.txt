@@ -1,0 +1,141 @@
+true
+KYF37
+feature:reqGlEsVersion=0x0
+feature:android.hardware.audio.output
+feature:android.hardware.bluetooth
+feature:android.hardware.camera
+feature:android.hardware.location
+feature:android.hardware.location.network
+feature:android.hardware.microphone
+feature:android.hardware.ram.low
+feature:android.hardware.screen.landscape
+feature:android.hardware.screen.portrait
+feature:android.hardware.sensor.accelerometer
+feature:android.hardware.sensor.compass
+feature:android.hardware.touchscreen
+feature:android.software.app_widgets
+feature:android.software.autofill
+feature:android.software.backup
+feature:android.software.cant_save_state
+feature:android.software.companion_device_setup
+feature:android.software.connectionservice
+feature:android.software.cts
+feature:android.software.device_admin
+feature:android.software.home_screen
+feature:android.software.input_methods
+feature:android.software.live_wallpaper
+feature:android.software.print
+feature:android.software.secure_lock_screen
+feature:android.software.sip
+feature:android.software.sip.voip
+feature:android.software.webview
+feature:android.sofware.nfc.beam
+feature:org.lineageos.android
+feature:org.lineageos.audio
+feature:org.lineageos.hardware
+feature:org.lineageos.livedisplay
+feature:org.lineageos.performance
+feature:org.lineageos.profiles
+feature:org.lineageos.settings
+feature:org.lineageos.trust
+dummy0
+lo
+sit0
+[init.svc.vendor.wifi_hal_legacy]: [running]
+[init.svc.wificond]: [running]
+[net.tcp.buffersize.wifi]: [524288,2097152,4194304,262144,524288,1048576]
+[ro.boottime.vendor.wifi_hal_legacy]: [6599465570]
+[ro.boottime.wificond]: [9884456246]
+[ro.wifi.channels]: []
+[sys.wifitracing.started]: [1]
+[wifi.interface]: [wlan0]
+add device 1: /dev/input/event10
+  name:     "msm8909-pm8916-snd-card Headset Jack"
+  events:
+    SW  (0005): SW_HEADPHONE_INSERT   SW_MICROPHONE_INSERT  SW_LINEOUT_INSERT     SW_MUTE_DEVICE       
+                SW_PEN_INSERTED       0010                 
+  input props:
+    <none>
+add device 2: /dev/input/event9
+  name:     "msm8909-pm8916-snd-card Button Jack"
+  events:
+    KEY (0001): KEY_VOLUMEDOWN        KEY_VOLUMEUP          KEY_MEDIA             BTN_4                
+                KEY_VOICECOMMAND     
+  input props:
+    <none>
+add device 3: /dev/input/event6
+  name:     "vhdetect"
+  events:
+  input props:
+    <none>
+add device 4: /dev/input/event4
+  name:     "accelerometer"
+  events:
+    ABS (0003): ABS_X                 : value 0, min -39226200, max 39226200, fuzz 0, flat 0, resolution 0
+                ABS_Y                 : value 0, min -39226200, max 39226200, fuzz 0, flat 0, resolution 0
+                ABS_Z                 : value 0, min -39226200, max 39226200, fuzz 0, flat 0, resolution 0
+                ABS_RX                : value 0, min -39226200, max 39226200, fuzz 0, flat 0, resolution 0
+                ABS_RY                : value 0, min -39226200, max 39226200, fuzz 0, flat 0, resolution 0
+                ABS_RZ                : value 0, min -39226200, max 39226200, fuzz 0, flat 0, resolution 0
+                ABS_THROTTLE          : value 0, min -2147483648, max 2147483647, fuzz 0, flat 0, resolution 0
+                ABS_RUDDER            : value 0, min 0, max 0, fuzz 0, flat 0, resolution 0
+                ABS_MISC              : value 0, min -2147483648, max 2147483647, fuzz 0, flat 0, resolution 0
+                0029                  : value 0, min -2147483648, max 2147483647, fuzz 0, flat 0, resolution 0
+                002a                  : value 0, min -2147483648, max 2147483647, fuzz 0, flat 0, resolution 0
+  input props:
+    <none>
+add device 5: /dev/input/event2
+  name:     "qpnp_pon"
+  events:
+    KEY (0001): KEY_POWER             00fe                 
+  input props:
+    INPUT_PROP_TOPBUTTONPAD
+add device 6: /dev/input/event7
+  name:     "kc_motion_sensor"
+  events:
+  input props:
+    <none>
+add device 7: /dev/input/event5
+  name:     "sensor_ext"
+  events:
+    ABS (0003): ABS_X                 : value 0, min -2147483648, max 2147483647, fuzz 0, flat 0, resolution 0
+                ABS_Y                 : value 0, min -2147483648, max 2147483647, fuzz 0, flat 0, resolution 0
+                ABS_Z                 : value 0, min -2147483648, max 2147483647, fuzz 0, flat 0, resolution 0
+                ABS_RX                : value 0, min -2147483648, max 2147483647, fuzz 0, flat 0, resolution 0
+                ABS_MISC              : value 0, min -2147483648, max 2147483647, fuzz 0, flat 0, resolution 0
+                0029                  : value 0, min -2147483648, max 2147483647, fuzz 0, flat 0, resolution 0
+                002a                  : value 0, min -2147483648, max 2147483647, fuzz 0, flat 0, resolution 0
+  input props:
+    <none>
+add device 8: /dev/input/event3
+  name:     "sensor_com"
+  events:
+  input props:
+    <none>
+add device 9: /dev/input/event0
+  name:     "swic_hs_key"
+  events:
+    KEY (0001): KEY_MEDIA            
+  input props:
+    INPUT_PROP_TOPBUTTONPAD
+add device 10: /dev/input/event1
+  name:     "matrix_keypad.67"
+  events:
+    KEY (0001): KEY_1                 KEY_2                 KEY_3                 KEY_4                
+                KEY_5                 KEY_6                 KEY_7                 KEY_8                
+                KEY_9                 KEY_0                 KEY_ENTER             KEY_KPASTERISK       
+                KEY_F1                KEY_F2                KEY_F3                KEY_F4               
+                KEY_F5                KEY_F6                KEY_F7                KEY_UP               
+                KEY_LEFT              KEY_RIGHT             KEY_DOWN              KEY_SEND             
+                00fd                  BTN_TOUCH             KEY_CLEAR            
+    ABS (0003): ABS_X                 : value 0, min 0, max 480, fuzz 0, flat 0, resolution 0
+                ABS_Y                 : value 0, min 0, max 854, fuzz 0, flat 0, resolution 0
+  input props:
+    INPUT_PROP_POINTER
+    INPUT_PROP_TOPBUTTONPAD
+add device 11: /dev/input/event8
+  name:     "gpio-keys"
+  events:
+    SW  (0005): SW_LID               
+  input props:
+    INPUT_PROP_TOPBUTTONPAD

@@ -1,0 +1,7 @@
+Starting: Intent { act=android.settings.DEVICE_INFO_SETTINGS }
+Status: ok
+LaunchState: UNKNOWN (-1)
+Activity: org.kyf37.home/.Home
+WaitTime: 1892
+Complete
+--------- beginning of system

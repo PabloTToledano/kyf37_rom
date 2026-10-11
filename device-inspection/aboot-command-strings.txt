@@ -1,0 +1,84 @@
+0x50f54 mmc read failure %s %d
+
+0x50f6c reset-device-info
+0x50f80 root-detect
+0x50f8c mmc write failure %s %d
+
+0x50fa8 No '%s' partition found
+
+0x50fc4 Write request out of '%s' boundaries
+
+0x50fec Writing MMC failed
+
+0x51000 Partition table not found
+
+0x5101c Writing flash failed
+
+0x51034 Invalid size argument passed to get_ffbm
+
+0x51060 Failed to alloc buffer for ffbm cookie
+
+0x51088 Read request out of '%s' boundaries
+
+0x510b0 Misc partition not supported for NAND targets.
+
+0x510e0 Invalid string in misc partition
+
+0x51104 Error reading MISC partition
+
+0x51124 ffbm-
+0x5112c du_mmcblk_read: Err : addr is not sector aligned: 0x%08X
+
+0x51168 du_mmcblk_read: Err : size is not a block : 0x%08X
+
+0x5119c fotamng
+0x511a4 du_mmcblk_read: Err : addr is not in valid range : 0x%08X
+
+0x511e0 du_mmcblk_read: Err : No fotamng partition found
+
+0x51214 du_mmcblk_read: Err : Cannot read the block
+
+0x51244 du_flash_read: Err : buffer_ptr is null
+
+0x51270 du_flash_read: Err : size is 0
+
+0x51290 du_flash_read: Err : failed to allocate
+0x512b8 du_flash_read: Err : mmcblk error : rtn %d
+
+0x512e4 du_check_fota_mng_magicid: Err : du_mng_ptr is NULL
+
+0x5131c FOTA_MNG_MAGICID
+0x51330 du_check_fota_mng_magicid: Err : magic number is incorrect %0.16s
+
+0x51374 du_check_fota_mng_magicid: Err : tail magic number is incorrect %0.16s
+
+0x513bc FOTA_MNG_MGCTAIL
+0x513d0 du_get_fota_mng: Err : failed to read ORIG FOTA MNG (addr = 0x%08x
+)
+0x51418 du_get_fota_mng: Err : ORIG FOTA MNG is corrupted
+
+0x5144c du_get_fota_mng: Err : failed to read COPY FOTA MNG
+
+0x51484 du_get_fota_mng: Err : COPY FOTA MNG is corrupted
+
+0x514b8  androidboot.fota_ua_mode=sddl
+0x514d8  androidboot.sddl_sumc_flag=false
+0x514fc  androidboot.sddl_sumc_flag=true
+0x51520  androidboot.sddl_poff_flag=true
+0x51544  androidboot.sddl_poff_flag=false
+0x51568 boot_into_fota_ua_mode: Err : failed to get FOTA MNG
+
+0x515a0 boot_into_fota_ua_mode: du_mng_ptr->step[0x%08x] = 0x%08x
+
+0x515dc  androidboot.fota_ua_mode=fota
+0x515fc du_mmcblk_write: Err : addr is not sector aligned: 0x%08X
+
+0x51638 du_mmcblk_write: Err : size is not a block : 0x%08X
+
+0x51670 du_mmcblk_write: Err : addr is not in valid range : 0x%08X
+
+0x516ac du_mmcblk_write: Err : No fotamng partition found
+
+0x516e0 du_mmcblk_write: Err : Cannot read the block
+
+0x51710 du_flash_write: Err : buffer_ptr is null

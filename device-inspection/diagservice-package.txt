@@ -1,0 +1,332 @@
+Receiver Resolver Table:
+
+  Non-Data Actions:
+
+      android.intent.action.BOOT_COMPLETED:
+
+        581446f jp.kyocera.diagservice/.BootCompletedReceiver
+
+
+
+Service Resolver Table:
+
+  Non-Data Actions:
+
+      jp.kyocera.diagservice.DIAG_SERVICE:
+
+        17be257c jp.kyocera.diagservice/.DiagService
+
+
+
+Key Set Manager:
+
+  [jp.kyocera.diagservice]
+
+      Signing KeySets: 1
+
+
+
+Packages:
+
+  Package [jp.kyocera.diagservice] (3a3ea2a3):
+
+    userId=1000 gids=[]
+
+    sharedUser=SharedUserSetting{549ee05 android.uid.system/1000}
+
+    pkg=Package{23de0e5a jp.kyocera.diagservice}
+
+    codePath=/system/app/DiagService
+
+    resourcePath=/system/app/DiagService
+
+    legacyNativeLibraryDir=/system/app/DiagService/lib
+
+    primaryCpuAbi=armeabi-v7a
+
+    secondaryCpuAbi=null
+
+    versionCode=22 targetSdk=22
+
+    versionName=5.1.1-104.0.2600
+
+    splits=[base]
+
+    applicationInfo=ApplicationInfo{2187b88b jp.kyocera.diagservice}
+
+    flags=[ SYSTEM HAS_CODE PERSISTENT ALLOW_CLEAR_USER_DATA ALLOW_BACKUP ]
+
+    dataDir=/data/data/jp.kyocera.diagservice
+
+    supportsScreens=[small, medium, large, xlarge, resizeable, anyDensity]
+
+    timeStamp=2019-05-30 02:07:02
+
+    firstInstallTime=2019-05-30 02:07:02
+
+    lastUpdateTime=2019-05-30 02:07:02
+
+    signatures=PackageSignatures{27861d68 [17806581]}
+
+    permissionsFixed=false haveGids=true installStatus=1
+
+    pkgFlags=[ SYSTEM HAS_CODE PERSISTENT ALLOW_CLEAR_USER_DATA ALLOW_BACKUP ]
+
+    User 0:  installed=true hidden=false stopped=false notLaunched=false enabled=0
+
+
+
+Shared users:
+
+  SharedUser [android.uid.system] (549ee05):
+
+    userId=1000 gids=[3002, 1023, 3001, 3007, 1028, 1015, 3003, 1021, 3004, 3005, 1000, 3009, 1010, 1007]
+
+    grantedPermissions:
+
+      android.permission.REAL_GET_TASKS
+
+      android.permission.BIND_INCALL_SERVICE
+
+      android.permission.WRITE_SETTINGS
+
+      android.permission.CONFIGURE_WIFI_DISPLAY
+
+      android.permission.ACCESS_WIMAX_STATE
+
+      android.permission.READ_CALL_LOG
+
+      android.permission.ACCESS_FINE_LOCATION
+
+      android.permission.USE_CREDENTIALS
+
+      android.permission.MODIFY_AUDIO_SETTINGS
+
+      android.permission.ACCESS_CHECKIN_PROPERTIES
+
+      android.permission.INSTALL_LOCATION_PROVIDER
+
+      com.nextfp.android.permission.KEY_NOTIFIER
+
+      android.permission.CONTROL_LOCATION_UPDATES
+
+      android.permission.RECEIVE_WAP_PUSH
+
+      android.permission.CLEAR_APP_USER_DATA
+
+      android.permission.BROADCAST_CALLLOG_INFO
+
+      com.kddi.android.permission.MANAGE_CPA
+
+      android.permission.SHUTDOWN
+
+      android.permission.CHANGE_COMPONENT_ENABLED_STATE
+
+      android.permission.NFC
+
+      android.permission.BROADCAST_SMS
+
+      android.permission.CALL_PRIVILEGED
+
+      android.permission.CHANGE_NETWORK_STATE
+
+      android.permission.MASTER_CLEAR
+
+      android.permission.WRITE_SYNC_SETTINGS
+
+      android.permission.RECEIVE_BOOT_COMPLETED
+
+      android.permission.clomask.GET
+
+      android.permission.clomask.SET
+
+      android.permission.DEVICE_POWER
+
+      android.permission.RECEIVE_SMS
+
+      jp.kyocera.pedometer.READ_PREFERENCES
+
+      android.permission.READ_PROFILE
+
+      android.permission.BLUETOOTH
+
+      android.permission.WRITE_MEDIA_STORAGE
+
+      android.permission.GET_TASKS
+
+      android.permission.ACCESS_SURFACE_FLINGER
+
+      android.permission.INTERNET
+
+      android.permission.BLUETOOTH_ADMIN
+
+      android.permission.CONTROL_VPN
+
+      jp.kyocera.weather.KYOCERA_WEATHER_PROVIDER_READ
+
+      com.qualcomm.permission.IZAT
+
+      android.permission.BIND_CONNECTION_SERVICE
+
+      android.permission.READ_EXTERNAL_STORAGE
+
+      android.permission.GET_PACKAGE_SIZE
+
+      android.permission.MANAGE_USB
+
+      android.permission.INTERACT_ACROSS_USERS_FULL
+
+      android.permission.STOP_APP_SWITCHES
+
+      android.permission.BATTERY_STATS
+
+      android.permission.PACKAGE_USAGE_STATS
+
+      android.permission.MOUNT_UNMOUNT_FILESYSTEMS
+
+      android.permission.WRITE_SECURE_SETTINGS
+
+      android.permission.ACCESS_COARSE_LOCATION
+
+      android.permission.MOVE_PACKAGE
+
+      android.permission.SET_ACTIVITY_WATCHER
+
+      jp.kyocera.camera.permission.READ_PREFERENCES_PROVIDER
+
+      com.qualcomm.permission.wfd.QC_WFD
+
+      android.permission.READ_SEARCH_INDEXABLES
+
+      android.permission.READ_PHONE_STATE
+
+      android.permission.ACCESS_LOCATION_EXTRA_COMMANDS
+
+      android.permission.ACCESS_DOWNLOAD_MANAGER
+
+      android.permission.BROADCAST_STICKY
+
+      android.permission.BLUETOOTH_PRIVILEGED
+
+      android.permission.CALL_PHONE
+
+      android.permission.HARDWARE_TEST
+
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE
+
+      android.permission.WRITE_CONTACTS
+
+      android.permission.BIND_JOB_SERVICE
+
+      android.permission.CONFIRM_FULL_BACKUP
+
+      android.permission.SET_TIME
+
+      android.permission.WRITE_APN_SETTINGS
+
+      android.permission.CHANGE_WIFI_STATE
+
+      android.permission.MANAGE_USERS
+
+      android.permission.ACCESS_NETWORK_STATE
+
+      android.permission.DISABLE_KEYGUARD
+
+      android.permission.BACKUP
+
+      jp.kyocera.permission.simlock.SAVE
+
+      android.permission.CAMERA
+
+      android.permission.CHANGE_CONFIGURATION
+
+      android.permission.READ_LOGS
+
+      android.permission.COPY_PROTECTED_DATA
+
+      android.permission.INTERACT_ACROSS_USERS
+
+      android.permission.SET_KEYBOARD_LAYOUT
+
+      android.permission.WRITE_CALL_LOG
+
+      android.permission.READ_DREAM_STATE
+
+      android.permission.KILL_BACKGROUND_PROCESSES
+
+      android.permission.WRITE_USER_DICTIONARY
+
+      android.permission.READ_SYNC_STATS
+
+      android.permission.WRITE_DREAM_STATE
+
+      broadcast.cne.permission
+
+      android.permission.REBOOT
+
+      android.permission.PROCESS_OUTGOING_CALLS
+
+      android.permission.OEM_UNLOCK_STATE
+
+      android.permission.MANAGE_DEVICE_ADMINS
+
+      android.permission.MANAGE_DOCUMENTS
+
+      android.permission.MANAGE_NETWORK_POLICY
+
+      android.permission.SET_POINTER_SPEED
+
+      android.permission.CHANGE_BACKGROUND_DATA_SETTING
+
+      android.permission.CONNECTIVITY_INTERNAL
+
+      android.permission.READ_SYNC_SETTINGS
+
+      android.permission.GET_ACCOUNTS
+
+      jp.kyocera.emgbuzz.permission.EMG_BUZZER_CONTROL
+
+      android.permission.FORCE_STOP_PACKAGES
+
+      android.permission.HIDE_NON_SYSTEM_OVERLAY_WINDOWS
+
+      android.permission.ACCESS_NOTIFICATIONS
+
+      android.permission.WRITE_EXTERNAL_STORAGE
+
+      android.permission.VIBRATE
+
+      com.android.certinstaller.INSTALL_AS_USER
+
+      android.permission.READ_USER_DICTIONARY
+
+      com.kddi.android.email.permission.AUTO_SEND
+
+      android.permission.RECEIVE_EMERGENCY_BROADCAST
+
+      android.permission.READ_PHONE_BLACKLIST
+
+      android.permission.MODIFY_NETWORK_ACCOUNTING
+
+      android.permission.CHANGE_PHONE_BLACKLIST
+
+      android.permission.ACCESS_WIFI_STATE
+
+      android.permission.CHANGE_WIMAX_STATE
+
+      android.permission.MODIFY_PHONE_STATE
+
+      android.permission.STATUS_BAR
+
+      android.permission.READ_FRAME_BUFFER
+
+      android.permission.RECORD_AUDIO
+
+      android.permission.LOCATION_HARDWARE
+
+      android.permission.WAKE_LOCK
+
+      android.permission.READ_CONTACTS
+
+      android.permission.INJECT_EVENTS
+

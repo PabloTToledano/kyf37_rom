@@ -1,0 +1,4 @@
+[    2796.387333] EV_KEY       00fe                 DOWN                
+[    2796.387333] EV_SYN       SYN_REPORT           00000000            
+[    2796.638463] EV_KEY       00fe                 UP                  
+[    2796.638463] EV_SYN       SYN_REPORT           00000000            

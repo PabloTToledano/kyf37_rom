@@ -1,0 +1,48 @@
+Backup folder set to 'kyf37-final-recovery'
+
+Setting backup options:
+
+Boot
+
+Recovery
+
+Updating partition details...
+
+...done
+
+ * Total number of partitions to back up: 2
+
+ * Total size of all data: 32MB
+
+ * Available space: 3564MB
+
+[BACKUP STARTED]
+
+ * Backup Folder: /data/media/0/TWRP/BACKUPS/981108631314/kyf37-final-recovery
+
+Backing up Boot...
+
+ * Generating digest...
+
+ * Digest Created.
+
+Backing up Recovery...
+
+ * Generating digest...
+
+ * Digest Created.
+
+Average backup rate for imaged drives: 16 MB/sec
+
+[32 MB TOTAL BACKED UP]
+
+Updating partition details...
+
+...done
+
+[BACKUP COMPLETED IN 4 SECONDS]
+
+Backup Complete
+
+Done processing script file
+

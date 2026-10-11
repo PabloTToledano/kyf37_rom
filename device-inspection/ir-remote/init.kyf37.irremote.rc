@@ -1,0 +1,9 @@
+service kyf37-ir-remote /system/bin/sh /system/bin/kyf37-ir-start.sh
+    class late_start
+    user root
+    group root system
+    disabled
+    seclabel u:r:init:s0
+
+on property:sys.boot_completed=1
+    start kyf37-ir-remote

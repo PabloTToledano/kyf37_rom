@@ -1,0 +1,145 @@
+package com.android.systemui.qs.tileimpl;
+
+import android.app.Activity;
+import android.content.Context;
+import android.os.Bundle;
+import android.os.Build;
+import android.service.quicksettings.Tile;
+import android.view.Gravity;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.graphics.Typeface;
+
+import com.android.systemui.Kyf37Material;
+import com.android.systemui.R;
+import com.android.systemui.plugins.qs.QSTile;
+
+/**
+ * Developer preview of the Keitai Material You components (userdebug only; refuses to start on user builds).
+ * Needed because a SIM-PIN keyguard hides the real shade on the test phone: renders the real QSTileView / selection /
+ * card drawables on a backdrop.
+ *   am start -n com.android.systemui/.egg.MLandActivity --ez kyf37_preview true --ei sel N
+ * (hosted in the existing, exported MLandActivity because a live-installed SystemUI cannot gain new manifest components)
+ * sel: 0-5 expanded tile, 100-105 header chip, 50/51 notification card, 60 Clear-all pill.
+ */
+public class Kyf37MaterialPreview {
+    private Context c;
+    private int dp(float v) { return Math.round(Kyf37Material.dp(c, v)); }
+
+    /** Called from MLandActivity.onCreate when started with extra kyf37_preview on a debuggable build. */
+    public void show(Activity act) {
+        if (!Build.IS_DEBUGGABLE) { act.finish(); return; }
+        c = act;
+        act.setShowWhenLocked(true);
+        act.setTurnScreenOn(true);
+        int sel = act.getIntent().getIntExtra("sel", 1);
+        ScrollView sv = new ScrollView(c);
+        sv.setBackgroundColor(Kyf37Material.backdrop(c));
+        LinearLayout root = new LinearLayout(c);
+        root.setOrientation(LinearLayout.VERTICAL);
+        root.setPadding(dp(6), dp(30), dp(6), dp(8));
+        sv.addView(root);
+
+        // header card with big date + battery chip + collapsed chips
+        LinearLayout card = new LinearLayout(c);
+        card.setOrientation(LinearLayout.VERTICAL);
+        card.setBackgroundResource(R.drawable.qs_background_primary);
+        card.setPadding(dp(14), dp(10), dp(14), dp(12));
+        LinearLayout hdr = new LinearLayout(c);
+        hdr.setGravity(Gravity.CENTER_VERTICAL);
+        TextView date = new TextView(c);
+        date.setText("Sun, Oct 11");
+        date.setTextAppearance(R.style.TextAppearance_QS_Status);
+        date.setTextSize(19);
+        date.setTextColor(Kyf37Material.onSurface(c));
+        hdr.addView(date, new LinearLayout.LayoutParams(0, -2, 1));
+        TextView bat = new TextView(c);
+        bat.setText("  100%  ");
+        bat.setTextAppearance(R.style.TextAppearance_QS_Status);
+        bat.setBackgroundResource(R.drawable.kyf37_m_chip);
+        bat.setPadding(dp(8), dp(4), dp(8), dp(4));
+        hdr.addView(bat);
+        card.addView(hdr);
+        LinearLayout chips = new LinearLayout(c);
+        chips.setPadding(0, dp(10), 0, 0);
+        for (int i = 0; i < 6; i++) {
+            QSTileBaseView t = new QSTileBaseView(c, new QSIconViewImpl(c), true);
+            t.handleStateChanged(state(ICONS[i], LABELS[i], STATES[i]));
+            chips.addView(t, new LinearLayout.LayoutParams(0, dp(48), 1));
+            if (sel == 100 + i) t.setForeground(Kyf37Material.selection(c, 28));
+        }
+        card.addView(chips);
+        LinearLayout.LayoutParams lpc = new LinearLayout.LayoutParams(-1, -2);
+        lpc.bottomMargin = dp(8);
+        root.addView(card, lpc);
+
+        // expanded grid card
+        LinearLayout grid = new LinearLayout(c);
+        grid.setOrientation(LinearLayout.VERTICAL);
+        grid.setBackgroundResource(R.drawable.qs_background_primary);
+        grid.setPadding(dp(8), dp(10), dp(8), dp(8));
+        int n = 0;
+        for (int r = 0; r < 2; r++) {
+            LinearLayout row = new LinearLayout(c);
+            for (int k = 0; k < 3; k++, n++) {
+                QSTileView t = new QSTileView(c, new QSIconViewImpl(c), false);
+                t.handleStateChanged(state(ICONS[n], LABELS[n], STATES[n]));
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, (int) c.getResources().getDimension(R.dimen.qs_tile_height), 1);
+                lp.setMargins(dp(5), dp(4), dp(5), dp(4));
+                row.addView(t, lp);
+                if (sel == n) t.setForeground(Kyf37Material.selection(c, 28));
+            }
+            grid.addView(row);
+        }
+        root.addView(grid, lpc);
+
+        // notification cards
+        for (int i = 0; i < 2; i++) {
+            LinearLayout nr = new LinearLayout(c);
+            nr.setOrientation(LinearLayout.VERTICAL);
+            nr.setBackgroundResource(R.drawable.notification_material_bg);
+            nr.setPadding(dp(16), dp(10), dp(16), dp(12));
+            TextView h = new TextView(c); h.setText("Messages now"); h.setTextSize(12);
+            h.setTextColor(Kyf37Material.onSurfaceVariant(c));
+            TextView t1 = new TextView(c); t1.setText(i == 0 ? "Hana" : "Dad"); t1.setTextSize(16);
+            t1.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL)); t1.setTextColor(Kyf37Material.onSurface(c));
+            TextView t2 = new TextView(c); t2.setText("See you at the station at 7!"); t2.setTextSize(14);
+            t2.setTextColor(Kyf37Material.onSurfaceVariant(c));
+            nr.addView(h); nr.addView(t1); nr.addView(t2);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-1, -2);
+            lp.bottomMargin = dp(6);
+            root.addView(nr, lp);
+            if (sel == 50 + i) nr.setForeground(Kyf37Material.selection(c, 20));
+        }
+        TextView pill = new TextView(c);
+        pill.setText("Clear all");
+        pill.setGravity(Gravity.CENTER);
+        pill.setTextSize(16);
+        pill.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
+        pill.setTextColor(Kyf37Material.onPrimaryContainer(c));
+        pill.setBackgroundResource(R.drawable.kyf37_m_pill);
+        LinearLayout.LayoutParams lpp = new LinearLayout.LayoutParams(-1, dp(48));
+        lpp.topMargin = dp(4);
+        root.addView(pill, lpp);
+        if (sel == 60) pill.setForeground(Kyf37Material.selection(c, 28));
+        act.setContentView(sv);
+    }
+
+    private static final int[] ICONS = { R.drawable.ic_qs_wifi_disconnected, R.drawable.ic_qs_bluetooth_on, R.drawable.ic_qs_dnd_on,
+            R.drawable.ic_qs_nfc, R.drawable.ic_qs_signal_in, R.drawable.ic_qs_no_sim };
+    private static final String[] LABELS = { "Wi-Fi", "Bluetooth", "Do Not Disturb", "NFC", "Mobile data", "No SIM" };
+    private static final int[] STATES = { Tile.STATE_ACTIVE, Tile.STATE_ACTIVE, Tile.STATE_INACTIVE, Tile.STATE_INACTIVE,
+            Tile.STATE_INACTIVE, Tile.STATE_UNAVAILABLE };
+
+    private static QSTile.BooleanState state(int icon, String label, int st) {
+        QSTile.BooleanState s = new QSTile.BooleanState();
+        s.icon = QSTileImpl.ResourceIcon.get(icon);
+        s.label = label;
+        s.secondaryLabel = st == Tile.STATE_ACTIVE ? "On" : st == Tile.STATE_UNAVAILABLE ? "Unavailable" : "Off";
+        s.state = st;
+        s.value = st == Tile.STATE_ACTIVE;
+        s.contentDescription = label;
+        return s;
+    }
+}

@@ -1,0 +1,147 @@
+package org.kyf37.phonesettings;
+
+import android.app.Activity;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Bundle;
+import android.provider.Settings;
+import android.view.Gravity;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
+import java.lang.reflect.Method;
+
+/**
+ * Appearance: icon theme (Settings.Global kyf37_icon_theme 0/1/2) and keypad selection colour
+ * (Settings.Global kyf37_focus_theme, palettes owned by android.view.Kyf37FocusTheme in the
+ * framework). Reachable from Phone settings > Appearance and Android Settings > Appearance.
+ */
+public final class AppearanceSettings extends Activity {
+    private static final String ICON_KEY = "kyf37_icon_theme";
+    private static final String FOCUS_KEY = "kyf37_focus_theme";
+    private static final String[] FALLBACK_NAMES = {"Sky blue", "Pink", "Mint green", "Orange",
+        "Purple", "Monochrome (high contrast)", "Bold (high visibility)"};
+    private static final int[] FALLBACK_ACCENT = {0xFF1E88E5, 0xFFE91E8C, 0xFF0FA678, 0xFFF57C00,
+        0xFF7E57C2, 0xFF000000, 0xFF000000};
+    private static final int[] FALLBACK_EDGE = {-1, -1, -1, -1, -1, -1, 0xFF00E5FF};
+
+    // ---- palette access through the framework helper (hidden class; platform-signed app) ----
+    private static String[] names() {
+        try { return (String[]) Class.forName("android.view.Kyf37FocusTheme").getField("NAMES").get(null); }
+        catch (Throwable t) { return FALLBACK_NAMES; }
+    }
+    private static int colour(String method, int id, int fallback) {
+        try {
+            Method m = Class.forName("android.view.Kyf37FocusTheme").getMethod(method, int.class);
+            return (Integer) m.invoke(null, id);
+        } catch (Throwable t) { return fallback; }
+    }
+
+    private int pad;
+
+    @Override public void onCreate(Bundle state) {
+        super.onCreate(state);
+        pad = Math.round(18 * getResources().getDisplayMetrics().density);
+        ScrollView scroll = new ScrollView(this);
+        scroll.setBackgroundColor(0xFF10151B);
+        scroll.setFillViewport(true);
+        LinearLayout page = new LinearLayout(this);
+        page.setOrientation(LinearLayout.VERTICAL);
+        page.setPadding(pad, pad, pad, pad);
+        scroll.addView(page);
+
+        page.addView(text("Appearance", 24, 0xFFFFFFFF, 0));
+        page.addView(text("Choose with ▲▼ and OK. Changes apply immediately.", 14, 0xFFB8C2CC, pad / 2));
+
+        // ---------------- icon theme ----------------
+        page.addView(text("Icon theme", 18, 0xFF9FD0FF, pad));
+        RadioGroup icons = new RadioGroup(this);
+        String[] iconNames = {"Standard", "Pastel Star", "Sky Star", "Kyocera Classic"};
+        for (int i = 0; i < iconNames.length; i++) icons.addView(option(100 + i, iconNames[i], null),
+                new LinearLayout.LayoutParams(-1, -2));
+        final int iconCurrent = Math.max(0, Math.min(3, Settings.Global.getInt(getContentResolver(), ICON_KEY, 1)));
+        icons.check(100 + iconCurrent);
+        icons.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override public void onCheckedChanged(RadioGroup group, int checked) {
+                if (checked < 100 || checked > 103) return;
+                save(ICON_KEY, checked - 100, new String[]{"Standard icons", "Pastel Star icons", "Sky Star icons", "Kyocera Classic icons"}[checked - 100]);
+            }
+        });
+        page.addView(icons);
+
+        // ---------------- selection colour ----------------
+        page.addView(text("Selection colour", 18, 0xFF9FD0FF, pad));
+        page.addView(text("Colour of the outline around the selected item in every app.", 13, 0xFFB8C2CC, 0));
+        RadioGroup colours = new RadioGroup(this);
+        final String[] focusNames = names();
+        for (int i = 0; i < focusNames.length; i++) {
+            int accent = colour("accentOf", i, FALLBACK_ACCENT[Math.min(i, 6)]);
+            int edge = colour("edgeOf", i, FALLBACK_EDGE[Math.min(i, 6)]);
+            colours.addView(option(200 + i, focusNames[i], swatch(accent, edge)),
+                    new LinearLayout.LayoutParams(-1, -2));
+        }
+        int stored = Settings.Global.getInt(getContentResolver(), FOCUS_KEY, 0);
+        final int focusCurrent = stored < 0 || stored >= focusNames.length ? 0 : stored;
+        colours.check(200 + focusCurrent);
+        colours.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override public void onCheckedChanged(RadioGroup group, int checked) {
+                if (checked < 200 || checked >= 200 + focusNames.length) return;
+                save(FOCUS_KEY, checked - 200, "Selection colour: " + focusNames[checked - 200]);
+            }
+        });
+        page.addView(colours);
+
+        page.addView(text("Home uses larger icons and adjusts text contrast to your wallpaper in every theme.", 14, 0xFFB8C2CC, pad));
+        setContentView(scroll);
+        icons.findViewById(100 + iconCurrent).requestFocus();
+    }
+
+    private TextView text(String s, int sp, int colour, int top) {
+        TextView t = new TextView(this);
+        t.setText(s); t.setTextColor(colour); t.setTextSize(sp); t.setPadding(0, top, 0, 0);
+        return t;
+    }
+
+    private RadioButton option(int id, String label, android.graphics.drawable.Drawable end) {
+        RadioButton o = new RadioButton(this);
+        o.setId(id); o.setText(label); o.setTextSize(20); o.setTextColor(0xFFFFFFFF);
+        o.setMinHeight(pad * 3); o.setFocusable(true);
+        if (end != null) { o.setCompoundDrawablePadding(pad / 2); o.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, end, null); }
+        return o;
+    }
+
+    private android.graphics.drawable.Drawable swatch(int accent, int edge) {
+        int size = Math.round(26 * getResources().getDisplayMetrics().density);
+        GradientDrawable g = new GradientDrawable();
+        g.setShape(GradientDrawable.RECTANGLE);
+        g.setCornerRadius(size / 5f);
+        g.setColor(0xFF10151B);
+        g.setStroke(Math.round(getResources().getDisplayMetrics().density * 5), accent);
+        g.setSize(size, size);
+        if (edge == -1) edge = 0xFFFFFFFF;
+        GradientDrawable outer = new GradientDrawable();
+        outer.setShape(GradientDrawable.RECTANGLE);
+        outer.setCornerRadius(size / 5f);
+        outer.setColor(0);
+        outer.setStroke(Math.round(getResources().getDisplayMetrics().density * 2), edge);
+        android.graphics.drawable.LayerDrawable l = new android.graphics.drawable.LayerDrawable(
+                new android.graphics.drawable.Drawable[]{outer, g});
+        int in = Math.round(getResources().getDisplayMetrics().density * 2);
+        l.setLayerInset(1, in, in, in, in);
+        l.setBounds(0, 0, size, size);
+        return l;
+    }
+
+    private void save(String key, int value, String message) {
+        try {
+            if (!Settings.Global.putInt(getContentResolver(), key, value))
+                throw new IllegalStateException("Setting write rejected");
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        } catch (RuntimeException e) {
+            Toast.makeText(this, "Could not save", Toast.LENGTH_LONG).show();
+            android.util.Log.e("Kyf37Appearance", "Save failed: " + key, e);
+        }
+    }
+}

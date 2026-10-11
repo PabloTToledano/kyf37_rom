@@ -1,0 +1,30 @@
+package org.kyf37.dialer;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.telecom.Call;
+
+/** Registered only while Telecom binds the native in-call service. */
+final class Kyf37LidCallReceiver extends BroadcastReceiver {
+    static final String ACTION = "lineageos.intent.action.LID_STATE_CHANGED";
+    static final String EXTRA = "lineageos.intent.extra.LID_STATE";
+
+    @Override public void onReceive(Context context, Intent intent) {
+        if (!ACTION.equals(intent.getAction()) || intent.getIntExtra(EXTRA, -1) != 0) return;
+        // A close transition ends existing calls; new calls while closed still ring.
+        for (Call call : KeitaiInCallService.calls()) {
+            if (call.getParent() != null) continue; // disconnect the conference parent once
+            switch (call.getState()) {
+                case Call.STATE_RINGING: call.reject(false, null); break;
+                case Call.STATE_NEW:
+                case Call.STATE_SELECT_PHONE_ACCOUNT:
+                case Call.STATE_CONNECTING:
+                case Call.STATE_DIALING:
+                case Call.STATE_ACTIVE:
+                case Call.STATE_HOLDING: call.disconnect(); break;
+                default: break;
+            }
+        }
+    }
+}

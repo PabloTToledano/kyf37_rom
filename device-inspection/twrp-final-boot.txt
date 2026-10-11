@@ -1,0 +1,26 @@
+3.7.0_9-0
+
+Using fbdev graphics.
+
+I:Processing '/misc'
+
+/misc | /dev/block/mmcblk0p21 | Size: 1MB
+
+   Display_Name: misc
+
+   Storage_Name: misc
+
+   Backup_Path: /misc
+
+   Backup_Name: misc
+
+   Backup_Display_Name: misc
+
+   Storage_Path: /misc
+
+ro.bootloader=unknown
+
+7c564a1e8bac242b14d99a7f2f9b0c5c  /dev/block/bootdevice/by-name/recovery
+
+Done processing script file
+

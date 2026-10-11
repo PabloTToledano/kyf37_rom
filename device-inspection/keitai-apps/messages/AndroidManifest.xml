@@ -1,0 +1,116 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.kyf37.messages">
+    <uses-sdk android:minSdkVersion="28" android:targetSdkVersion="28" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_MMS" />
+    <uses-permission android:name="android.permission.RECEIVE_WAP_PUSH" />
+    <uses-permission android:name="android.permission.WRITE_SMS" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.MANAGE_ROLE_HOLDERS" />
+    <application android:label="Messages" android:icon="@drawable/ic_launcher" android:allowBackup="false"
+            android:theme="@android:style/Theme.Material.NoActionBar">
+
+        <activity android:name=".ConversationListActivity" android:label="Messages" android:exported="true"
+                android:launchMode="singleTop">
+            <intent-filter android:priority="100">
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.APP_MESSAGING" />
+            </intent-filter>
+            <intent-filter android:priority="100">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.dir/mms" />
+                <data android:mimeType="vnd.android.cursor.dir/sms" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ThreadActivity" android:label="Message" android:exported="true"
+                android:windowSoftInputMode="adjustResize|stateHidden" android:launchMode="singleTop">
+            <intent-filter android:priority="100">
+                <action android:name="android.intent.action.SENDTO" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="sms" />
+                <data android:scheme="smsto" />
+                <data android:scheme="mms" />
+                <data android:scheme="mmsto" />
+            </intent-filter>
+            <intent-filter android:priority="100">
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+            <intent-filter android:priority="100">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="sms" />
+                <data android:scheme="smsto" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".SettingsActivity" android:label="Message settings" android:exported="true" />
+
+        <!-- Default SMS app contract (RoleManager SMS role): all four components are required. -->
+        <receiver android:name=".SmsReceiver" android:exported="true"
+                android:permission="android.permission.BROADCAST_SMS">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_DELIVER" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".MmsReceiver" android:exported="true"
+                android:permission="android.permission.BROADCAST_WAP_PUSH">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.WAP_PUSH_DELIVER" />
+                <data android:mimeType="application/vnd.wap.mms-message" />
+            </intent-filter>
+        </receiver>
+        <service android:name=".RespondViaMessageService" android:exported="true"
+                android:permission="android.permission.SEND_RESPOND_VIA_MESSAGE">
+            <intent-filter>
+                <action android:name="android.intent.action.RESPOND_VIA_MESSAGE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="sms" />
+                <data android:scheme="smsto" />
+                <data android:scheme="mms" />
+                <data android:scheme="mmsto" />
+            </intent-filter>
+        </service>
+
+        <!-- Results of our own sends / downloads and notification buttons: no permission, not exported. -->
+        <receiver android:name=".StatusReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="org.kyf37.messages.SENT" />
+                <action android:name="org.kyf37.messages.DELIVERED" />
+                <action android:name="org.kyf37.messages.MARK_READ" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".MmsReceiver$Status" android:exported="false" />
+
+        <provider android:name=".MmsFileProvider" android:authorities="org.kyf37.messages.mms"
+                android:exported="true" android:permission="android.permission.MODIFY_PHONE_STATE"
+                android:grantUriPermissions="true" />
+
+        <!-- Debug only: ignored on "user" builds. -->
+        <receiver android:name=".StatusReceiver$Debug" android:exported="true">
+            <intent-filter>
+                <action android:name="org.kyf37.messages.DEBUG_RECEIVE" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".RoleBoot" android:exported="false">
+            <meta-data android:name="org.kyf37.ROLE" android:value="android.app.role.SMS" />
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>

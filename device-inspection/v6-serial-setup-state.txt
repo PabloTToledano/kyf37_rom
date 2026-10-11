@@ -1,0 +1,846 @@
+Thu Oct  8 06:47:53 GMT 2026
+ro.build.version.release=10
+sys.boot_completed=
+sys.usb.config=adb
+sys.usb.state=adb
+sys.usb.configfs=0
+sys.usb.ffs.ready=1
+init.svc.adbd=running
+init.svc.audioserver=running
+init.svc.surfaceflinger=running
+USB enable:
+1
+USB functions:
+ffs
+USB state:
+CONFIGURED
+USB idVendor:
+18d1
+USB idProduct:
+4ee7
+USB f_ffs/aliases:
+adb
+total 0
+-rw------- 1 shell shell 0 1970-01-01 01:08 ep0
+-rw------- 1 shell shell 0 1970-01-01 01:08 ep1
+-rw------- 1 shell shell 0 1970-01-01 01:08 ep2
+/dev/block/mmcblk0p1 on /firmware type vfat (ro,context=u:object_r:kyf37_firmware_file:s0,relatime,uid=1000,gid=1026,fmask=0337,dmask=0227,codepage=437,iocharset=iso8859-1,shortname=lower,errors=remount-ro)
+ 0 [msm8909pm8916sn]: msm8909-pm8916- - msm8909-pm8916-snd-card
+                      msm8909-pm8916-snd-card
+USER           PID  PPID     VSZ    RSS WCHAN            ADDR S NAME                       
+root             1     0   28160   5388 SyS_epoll_wait ab2cec68 S init
+root             2     0       0      0 kthreadd            0 S [kthreadd]
+root             3     2       0      0 smpboot_thread_fn   0 S [ksoftirqd/0]
+root             4     2       0      0 worker_thread       0 S [kworker/0:0]
+root             5     2       0      0 worker_thread       0 S [kworker/0:0H]
+root             6     2       0      0 msm_mpm_work_fn     0 D [kworker/u8:0]
+root             7     2       0      0 rcu_gp_kthread      0 S [rcu_preempt]
+root             8     2       0      0 rcu_gp_kthread      0 S [rcu_bh]
+root             9     2       0      0 rcu_gp_kthread      0 S [rcu_sched]
+root            10     2       0      0 smpboot_thread_fn   0 S [migration/0]
+root            11     2       0      0 smpboot_thread_fn   0 S [migration/1]
+root            12     2       0      0 smpboot_thread_fn   0 S [ksoftirqd/1]
+root            13     2       0      0 worker_thread       0 S [kworker/1:0]
+root            14     2       0      0 worker_thread       0 S [kworker/1:0H]
+root            15     2       0      0 smpboot_thread_fn   0 S [migration/2]
+root            16     2       0      0 smpboot_thread_fn   0 S [ksoftirqd/2]
+root            17     2       0      0 worker_thread       0 S [kworker/2:0]
+root            18     2       0      0 worker_thread       0 S [kworker/2:0H]
+root            19     2       0      0 smpboot_thread_fn   0 S [migration/3]
+root            20     2       0      0 smpboot_thread_fn   0 S [ksoftirqd/3]
+root            21     2       0      0 worker_thread       0 S [kworker/3:0]
+root            22     2       0      0 worker_thread       0 S [kworker/3:0H]
+root            23     2       0      0 rescuer_thread      0 S [khelper]
+root            24     2       0      0 rescuer_thread      0 S [netns]
+root            25     2       0      0 worker_thread       0 S [kworker/1:1]
+root            26     2       0      0 worker_thread       0 S [kworker/0:1]
+root            27     2       0      0 worker_thread       0 S [kworker/2:1]
+root            28     2       0      0 worker_thread       0 S [kworker/3:1]
+root            29     2       0      0 worker_thread       0 S [kworker/0:1H]
+root            30     2       0      0 rescuer_thread      0 S [smd_channel_clo]
+root            31     2       0      0 rescuer_thread      0 S [smsm_cb_wq]
+root            32     2       0      0 worker_thread       0 S [kworker/u8:1]
+root            33     2       0      0 msm_rpm_smd_work    0 D [kworker/u9:0]
+root            34     2       0      0 rescuer_thread      0 S [rpm-smd]
+root            35     2       0      0 worker_thread       0 S [kworker/u9:1]
+root            36     2       0      0 irq_thread          0 S [irq/47-cpr]
+root            37     2       0      0 rescuer_thread      0 S [deferwq]
+root            38     2       0      0 rescuer_thread      0 S [mpm]
+root            39     2       0      0 worker_thread       0 S [kworker/u8:2]
+root            40     2       0      0 worker_thread       0 S [kworker/u8:3]
+root            57     2       0      0 rescuer_thread      0 S [writeback]
+root            58     2       0      0 rescuer_thread      0 S [bioset]
+root            59     2       0      0 rescuer_thread      0 S [crypto]
+root            60     2       0      0 rescuer_thread      0 S [kblockd]
+root            61     2       0      0 hub_thread          0 S [khubd]
+root            62     2       0      0 ion_heap_deferred_free 0 S [system]
+root            63     2       0      0 irq_thread          0 S [irq/107-msm_iom]
+root            64     2       0      0 irq_thread          0 S [irq/105-msm_iom]
+root            65     2       0      0 irq_thread          0 S [irq/273-msm_iom]
+root            66     2       0      0 irq_thread          0 S [irq/274-msm_iom]
+root            67     2       0      0 irq_thread          0 S [irq/135-msm_iom]
+root            68     2       0      0 irq_thread          0 S [irq/136-msm_iom]
+root            69     2       0      0 irq_thread          0 S [irq/137-msm_iom]
+root            70     2       0      0 irq_thread          0 S [irq/138-msm_iom]
+root            71     2       0      0 irq_thread          0 S [irq/142-msm_iom]
+root            72     2       0      0 irq_thread          0 S [irq/143-msm_iom]
+root            73     2       0      0 irq_thread          0 S [irq/144-msm_iom]
+root            74     2       0      0 irq_thread          0 S [irq/153-msm_iom]
+root            75     2       0      0 irq_thread          0 S [irq/154-msm_iom]
+root            76     2       0      0 irq_thread          0 S [irq/255-msm_iom]
+root            77     2       0      0 irq_thread          0 S [irq/256-msm_iom]
+root            78     2       0      0 irq_thread          0 S [irq/257-msm_iom]
+root            79     2       0      0 irq_thread          0 S [irq/260-msm_iom]
+root            80     2       0      0 irq_thread          0 S [irq/261-msm_iom]
+root            81     2       0      0 irq_thread          0 S [irq/262-msm_iom]
+root            82     2       0      0 irq_thread          0 S [irq/263-msm_iom]
+root            83     2       0      0 irq_thread          0 S [irq/264-msm_iom]
+root            84     2       0      0 irq_thread          0 S [irq/265-msm_iom]
+root            85     2       0      0 irq_thread          0 S [irq/182-msm_iom]
+root            86     2       0      0 irq_thread          0 S [irq/145-msm_iom]
+root            87     2       0      0 irq_thread          0 S [irq/152-msm_iom]
+root            88     2       0      0 rescuer_thread      0 S [devfreq_wq]
+root            89     2       0      0 rescuer_thread      0 S [cfg80211]
+root            90     2       0      0 kswapd              0 S [kswapd0]
+root            91     2       0      0 fsnotify_mark_destroy 0 S [fsnotify_mark]
+root           110     2       0      0 dsi_event_thread    0 D [mdss_dsi_event]
+root           111     2       0      0 rescuer_thread      0 S [apr_driver]
+root           112     2       0      0 rescuer_thread      0 S [pil_vote_wq]
+root           113     2       0      0 rescuer_thread      0 S [mem_share_svc]
+root           114     2       0      0 rescuer_thread      0 S [qmi_hndl0000000]
+root           115     2       0      0 rescuer_thread      0 S [msm_ipc_router]
+root           116     2       0      0 add_hwgenerator_randomness 0 S [hwrng]
+root           117     2       0      0 rescuer_thread      0 S [diag_real_time_]
+root           118     2       0      0 rescuer_thread      0 S [diag_modem_data]
+root           119     2       0      0 rescuer_thread      0 S [diag_lpass_data]
+root           120     2       0      0 rescuer_thread      0 S [diag_wcnss_data]
+root           121     2       0      0 rescuer_thread      0 S [diag_sensors_da]
+root           122     2       0      0 rescuer_thread      0 S [diag_wq]
+root           123     2       0      0 rescuer_thread      0 S [DIAG_USB_diag]
+root           124     2       0      0 rescuer_thread      0 S [diag_cntl_wq]
+root           125     2       0      0 rescuer_thread      0 S [diag_dci_wq]
+root           126     2       0      0 rescuer_thread      0 S [kgsl-3d0]
+root           127     2       0      0 rescuer_thread      0 S [kgsl-events]
+root           128     2       0      0 rescuer_thread      0 S [governor_msm_ad]
+root           129     2       0      0 rescuer_thread      0 S [kgsl_devfreq_wq]
+root           130     2       0      0 rescuer_thread      0 S [proximity_als]
+root           131     2       0      0 worker_thread       0 S [kworker/1:2]
+root           132     2       0      0 kthread_worker_fn   0 S [spi1]
+root           137     2       0      0 rescuer_thread      0 S [usbnet]
+root           138     2       0      0 rescuer_thread      0 S [sharedmem_qmi_w]
+root           139     2       0      0 rescuer_thread      0 S [qmi_hndl0000000]
+root           140     2       0      0 rescuer_thread      0 S [k_gserial]
+root           141     2       0      0 rescuer_thread      0 S [uether]
+root           142     2       0      0 irq_thread          0 S [irq/425-matrix-]
+root           143     2       0      0 irq_thread          0 S [irq/426-matrix-]
+root           144     2       0      0 irq_thread          0 S [irq/427-matrix-]
+root           145     2       0      0 irq_thread          0 S [irq/428-matrix-]
+root           146     2       0      0 irq_thread          0 S [irq/429-matrix-]
+root           147     2       0      0 irq_thread          0 S [irq/430-matrix-]
+root           148     2       0      0 rescuer_thread      0 S [kc_ts_touch_eve]
+root           151     2       0      0 rescuer_thread      0 S [dm_bufio_cache]
+root           152     2       0      0 cpufreq_interactive_speedchange_task 0 S [cfinteractive]
+root           153     2       0      0 irq_thread          0 S [irq/170-7824900]
+root           154     2       0      0 irq_thread          0 S [irq/253-7864900]
+root           155     2       0      0 rescuer_thread      0 S [LV5216]
+root           176     2       0      0 rescuer_thread      0 S [binder]
+root           177     2       0      0 mmc_queue_thread    0 S [mmcqd/0]
+root           178     2       0      0 mmc_queue_thread    0 S [mmcqd/0rpmb]
+root           179     2       0      0 mmc_queue_thread    0 S [mmcqd/1]
+root           180     2       0      0 rescuer_thread      0 S [usb_bam_wq]
+root           181     2       0      0 irq_thread          0 S [irq/224-spdm_bw]
+root           183     2       0      0 rescuer_thread      0 S [sns_wq_int]
+root           184     2       0      0 rescuer_thread      0 S [sns_wq]
+root           185     2       0      0 rescuer_thread      0 S [acc_poll_wq]
+root           186     2       0      0 rescuer_thread      0 S [accsns_cal_wq]
+root           188     2       0      0 irq_thread          0 S [irq/433-wcnss]
+root           189     2       0      0 irq_thread          0 S [irq/465-modem]
+root           190     2       0      0 rescuer_thread      0 S [msm_vidc_worker]
+root           191     2       0      0 rescuer_thread      0 S [pm_workerq_venu]
+root           192     2       0      0 worker_thread       0 S [kworker/u8:4]
+root           193     2       0      0 irq_thread          0 S [irq/326-smb135x]
+root           194     2       0      0 irq_thread          0 S [irq/309-fifo_up]
+root           195     2       0      0 irq_thread          0 S [irq/310-fsm_sta]
+root           196     2       0      0 worker_thread       0 S [kworker/0:2]
+root           197     2       0      0 rescuer_thread      0 S [rq_stats]
+root           198     2       0      0 rescuer_thread      0 S [bam_dmux_rx]
+root           199     2       0      0 rescuer_thread      0 S [bam_dmux_tx]
+root           200     2       0      0 worker_thread       0 S [kworker/1:1H]
+root           201     2       0      0 rescuer_thread      0 S [k_bam_data]
+root           202     2       0      0 rescuer_thread      0 S [f_mtp]
+root           203     2       0      0 sleep_thread        0 S [file-storage]
+root           204     2       0      0 do_hotplug          0 S [msm_thermal:hot]
+root           205     2       0      0 do_freq_mitigation  0 S [msm_thermal:fre]
+root           206     2       0      0 do_thermal_monitor  0 S [msm_thermal:the]
+root           209     2       0      0 kjournald2          0 S [jbd2/mmcblk0p17]
+root           210     2       0      0 rescuer_thread      0 S [ext4-dio-unwrit]
+root           211     2       0      0 rescuer_thread      0 S [ext4-dio-unwrit]
+root           217     1   13296   3748 poll_schedule_timeout a852de40 S init
+root           220     1   11888   3496 poll_schedule_timeout aa61ae40 S init
+root           223     2       0      0 worker_thread       0 S [kworker/3:1H]
+root           224     2       0      0 worker_thread       0 S [kworker/2:1H]
+root           225     2       0      0 worker_thread       0 S [kworker/1:3]
+root           228     1   13168   3940 poll_schedule_timeout b4d2ce40 S ueventd
+logd           234     1   18176   2580 sigsuspend   b5118f78 S logd
+system         235     1    9396   2028 binder_thread_read b48e8da8 S servicemanager
+system         236     1   14100   3448 SyS_epoll_wait a9742c68 S hwservicemanager
+system         237     1    9396   1776 binder_thread_read ad05eda8 S vndservicemanager
+root           242     2       0      0 kauditd_thread      0 S [kauditd]
+root           245     1   22172   4204 binder_thread_read ac1a9da8 S vold
+root           250     2       0      0 kjournald2          0 S [jbd2/mmcblk0p18]
+root           251     2       0      0 rescuer_thread      0 S [ext4-dio-unwrit]
+root           256     2       0      0 kjournald2          0 S [jbd2/mmcblk0p35]
+root           257     2       0      0 rescuer_thread      0 S [ext4-dio-unwrit]
+root           262     2       0      0 kjournald2          0 S [jbd2/mmcblk0p36]
+root           263     2       0      0 rescuer_thread      0 S [ext4-dio-unwrit]
+system         266     1   17244   3800 binder_thread_read a87ffda8 S android.system.suspend@1.0-service
+nobody         267     1   11796   3012 binder_thread_read acbcbda8 S android.hardware.keymaster@3.0-service
+root           275     1   17172   3740 futex_wait_queue_me a7b74184 S apexd
+root           292     1    8552   1960 __skb_recv_datagram aba82cb4 S logcat
+root           293     1    7760   1456 sigsuspend   b3a22f78 S sh
+root           294     1    7760   1540 sigsuspend   af462f78 S sh
+root           295   293    9644   1648 hrtimer_nanosleep ad079abc S sleep
+root           306     1   31656   4540 binder_thread_read b44e0da8 S netd
+root           307     1 1102152  78924 poll_schedule_timeout a8b97e40 S zygote
+root           329     2       0      0 rescuer_thread      0 S [IPCRTR]
+root           330     2       0      0 rescuer_thread      0 S [modem_IPCRTR]
+root           331     2       0      0 irq_thread          0 S [irq/318-mbhc sw]
+root           332     2       0      0 irq_thread          0 S [irq/316-Button ]
+root           333     2       0      0 irq_thread          0 S [irq/315-Button ]
+root           334     2       0      0 irq_thread          0 S [irq/314-Elect I]
+root           335     2       0      0 irq_thread          0 S [irq/317-Elect R]
+root           336     2       0      0 irq_thread          0 S [irq/321-HPH_L O]
+root           337     2       0      0 irq_thread          0 S [irq/320-HPH_R O]
+system         338     1   10116   2172 binder_thread_read b4be4da8 S android.hidl.allocator@1.0-service
+audioserver    339     1   27768   7504 binder_thread_read aab7dda8 S android.hardware.audio@2.0-service
+bluetooth      340     1   13320   2476 binder_thread_read acb59da8 S android.hardware.bluetooth@1.0-service
+cameraserver   341     1   26144   7616 binder_thread_read b4796da8 S android.hardware.camera.provider@2.4-service
+root           342     2       0      0 rescuer_thread      0 S [qmi_hndl0000000]
+media          343     1   14192   3176 binder_thread_read aa7cbda8 S android.hardware.cas@1.1-service
+system         344     1   13488   2468 binder_thread_read af4e9da8 S android.hardware.configstore@1.1-service
+gps            345     1   12924   3188 binder_thread_read adc28da8 S android.hardware.gnss@1.0-service
+system         347     1   16000   4192 binder_thread_read a730bda8 S android.hardware.graphics.allocator@2.0-service
+system         348     1   47396  10400 binder_thread_read a6d43da8 S android.hardware.graphics.composer@2.1-service
+system         349     1   10424   2480 SyS_epoll_wait b4bacc68 S android.hardware.health@2.0-service
+system         350     1   10280   2276 binder_thread_read aedd6da8 S android.hardware.light@2.0-service
+system         351     1   10292   2300 binder_thread_read adf7fda8 S android.hardware.memtrack@1.0-service
+system         352     1   10324   2380 binder_thread_read a6a4ada8 S android.hardware.power@1.0-service
+system         353     1   12064   3076 hrtimer_nanosleep b3743abc S android.hardware.sensors@1.0-service
+system         354     1   10296   2300 binder_thread_read a7be1da8 S android.hardware.vibrator@1.0-service
+wifi           355     1   12452   3348 binder_thread_read af0fcda8 S android.hardware.wifi@1.0-service
+3012           360     1   10540   1832 poll_schedule_timeout aac23e40 S tftp_server
+system         367     1   17552   2460 do_sigtimedwait b37ddf98 S pm-service
+root           371     1   11144   1952 hrtimer_nanosleep b5899abc S uimd
+root           373     1    9272   1732 hrtimer_nanosleep ac02fabc S disp_ctrl
+root           376     1    9288   1732 hrtimer_nanosleep ab549abc S kflcd
+root           384     1   14884   2076 hrtimer_nanosleep aea86abc S akscd
+nobody         387     1    9708   2072 binder_thread_read af4c7da8 S ashmemd
+audioserver    389     1   45060  13864 binder_thread_read ae836da8 S audioserver
+gpu_service    390     1   14672   3320 binder_thread_read a6c57da8 S gpuservice
+lmkd           395     1    8396   1620 SyS_epoll_wait aae6bc68 S lmkd
+system         398     1   52820  15780 2yS_epoll_wait a645b184 R surfaceflinger
+nobody         410     1   15572   1592 poll_schedule_timeout a796ae90 S rmt_storage
+root           415     1    9408   1992 hrtimer_nanosleep acd69abc S sensors_fwup
+root           419     2       0      0 worker_thread       0 S [kworker/u8:5]
+root           423     2       0      0 sync_fence_wait     0 S [mdss_fb0]
+shell          447     1   17112   3452 futex_wait_queue_me aae9d184 S adbd
+nobody         454     1   11852   1804 poll_schedule_timeout b4be3e40 S traced
+nobody         456     1   11852   1808 poll_schedule_timeout a931ce40 S traced_probes
+root           460     1   15288   3268 poll_schedule_timeout b4cfae40 S qcom-system-daemon
+root           479     1   43560   2524 sigsuspend   a8473f78 S thermal-engine
+root           485     1   12644   2172 binder_thread_read b3244da8 S adb_root
+cameraserver   489     1   33680  10268 binder_thread_read a9e9dda8 S cameraserver
+drm            491     1   24192   7456 binder_thread_read ae028da8 S drmserver
+system         493     1   21636   5992 binder_thread_read a89e2da8 S idmap2d
+incidentd      495     1   14828   2892 SyS_epoll_wait b005dc68 S incidentd
+root           497     1   17932   3392 binder_thread_read aaf1fda8 S installd
+keystore       499     1   17536   4312 binder_thread_read b573dda8 S keystore
+media          501     1   15624   3972 binder_thread_read ad381da8 S mediadrmserver
+mediaex        504     1   42940  12468 binder_thread_read a705dda8 S media.extractor
+media          506     1   24452   7384 binder_thread_read b4a22da8 S media.metrics
+root           511   306    9416   1744 pipe_wait    adf89c24 S iptables-restore
+root           513   306    9428   2004 pipe_wait    b4702c24 S ip6tables-restore
+media          541     1   53588  10564 binder_thread_read b24b1da8 S mediaserver
+statsd         542     1   21552   4048 SyS_epoll_wait b620ec68 S statsd
+root           543     1   15204   3064 binder_thread_read adb37da8 S storaged
+wifi           544     1   11856   2552 SyS_epoll_wait b3183c68 S wificond
+mediacodec     545     1   20788   5284 binder_thread_read a9667da8 S media.codec
+mediacodec     550     1   33996   7212 binder_thread_read b5804da8 S media.swcodec
+system         552     1   13908   1960 __skb_recv_datagram b5809cfc S cnss-daemon
+camera         556     1   13736   3968 poll_schedule_timeout af922e90 S mm-qcamera-daemon
+system         557     1   15088   2152 futex_wait_queue_me aabba184 S time_daemon
+system         566     1   25296   7352 binder_thread_read ac6edda8 S audiod
+system         589     1   13804   3364 binder_thread_read a69bada8 S gatekeeperd
+tombstoned     590     1    7924   1444 SyS_epoll_wait a7c7dc68 S tombstoned
+radio          614     1   10220   1968 smd_pkt_open a91d6e18 S qmuxd
+graphics       625     1   67212  21844 binder_thread_read b30cdda8 S bootanimation
+root           631     1   13972   2400 hrtimer_nanosleep ab674abc S netmgrd
+system         697   307 1187368  77488 futex_wait_queue_me a8b5b184 S system_server
+root           788     2       0      0 worker_thread       0 S [kworker/3:2]
+root           868   294    9644   1900 0            a930bc24 R ps
+Thu Oct  8 06:48:34 GMT 2026
+ro.build.version.release=10
+sys.boot_completed=
+sys.usb.config=adb
+sys.usb.state=adb
+sys.usb.configfs=0
+sys.usb.ffs.ready=1
+init.svc.adbd=running
+init.svc.audioserver=running
+init.svc.surfaceflinger=running
+USB enable:
+1
+USB functions:
+ffs
+USB state:
+CONFIGURED
+USB idVendor:
+18d1
+USB idProduct:
+4ee7
+USB f_ffs/aliases:
+adb
+total 0
+-rw------- 1 shell shell 0 1970-01-01 01:08 ep0
+-rw------- 1 shell shell 0 1970-01-01 01:08 ep1
+-rw------- 1 shell shell 0 1970-01-01 01:08 ep2
+/dev/block/mmcblk0p1 on /firmware type vfat (ro,context=u:object_r:kyf37_firmware_file:s0,relatime,uid=1000,gid=1026,fmask=0337,dmask=0227,codepage=437,iocharset=iso8859-1,shortname=lower,errors=remount-ro)
+ 0 [msm8909pm8916sn]: msm8909-pm8916- - msm8909-pm8916-snd-card
+                      msm8909-pm8916-snd-card
+USER           PID  PPID     VSZ    RSS WCHAN            ADDR S NAME                       
+root             1     0   28160   5376 SyS_epoll_wait ab2cec68 S init
+root             2     0       0      0 kthreadd            0 S [kthreadd]
+root             3     2       0      0 smpboot_thread_fn   0 S [ksoftirqd/0]
+root             4     2       0      0 worker_thread       0 S [kworker/0:0]
+root             5     2       0      0 worker_thread       0 S [kworker/0:0H]
+root             6     2       0      0 msm_mpm_work_fn     0 D [kworker/u8:0]
+root             7     2       0      0 rcu_gp_kthread      0 S [rcu_preempt]
+root             8     2       0      0 rcu_gp_kthread      0 S [rcu_bh]
+root             9     2       0      0 rcu_gp_kthread      0 S [rcu_sched]
+root            10     2       0      0 smpboot_thread_fn   0 S [migration/0]
+root            11     2       0      0 smpboot_thread_fn   0 S [migration/1]
+root            12     2       0      0 smpboot_thread_fn   0 S [ksoftirqd/1]
+root            13     2       0      0 worker_thread       0 S [kworker/1:0]
+root            14     2       0      0 worker_thread       0 S [kworker/1:0H]
+root            15     2       0      0 smpboot_thread_fn   0 S [migration/2]
+root            16     2       0      0 smpboot_thread_fn   0 S [ksoftirqd/2]
+root            17     2       0      0 worker_thread       0 S [kworker/2:0]
+root            18     2       0      0 worker_thread       0 S [kworker/2:0H]
+root            19     2       0      0 smpboot_thread_fn   0 S [migration/3]
+root            20     2       0      0 smpboot_thread_fn   0 S [ksoftirqd/3]
+root            21     2       0      0 worker_thread       0 S [kworker/3:0]
+root            22     2       0      0 worker_thread       0 S [kworker/3:0H]
+root            23     2       0      0 rescuer_thread      0 S [khelper]
+root            24     2       0      0 rescuer_thread      0 S [netns]
+root            25     2       0      0 worker_thread       0 S [kworker/1:1]
+root            26     2       0      0 worker_thread       0 S [kworker/0:1]
+root            27     2       0      0 worker_thread       0 S [kworker/2:1]
+root            28     2       0      0 worker_thread       0 S [kworker/3:1]
+root            29     2       0      0 worker_thread       0 S [kworker/0:1H]
+root            30     2       0      0 rescuer_thread      0 S [smd_channel_clo]
+root            31     2       0      0 rescuer_thread      0 S [smsm_cb_wq]
+root            32     2       0      0 worker_thread       0 S [kworker/u8:1]
+root            33     2       0      0 msm_rpm_smd_work    0 D [kworker/u9:0]
+root            34     2       0      0 rescuer_thread      0 S [rpm-smd]
+root            35     2       0      0 worker_thread       0 S [kworker/u9:1]
+root            36     2       0      0 irq_thread          0 S [irq/47-cpr]
+root            37     2       0      0 rescuer_thread      0 S [deferwq]
+root            38     2       0      0 rescuer_thread      0 S [mpm]
+root            39     2       0      0 worker_thread       0 S [kworker/u8:2]
+root            40     2       0      0 worker_thread       0 S [kworker/u8:3]
+root            57     2       0      0 rescuer_thread      0 S [writeback]
+root            58     2       0      0 rescuer_thread      0 S [bioset]
+root            59     2       0      0 rescuer_thread      0 S [crypto]
+root            60     2       0      0 rescuer_thread      0 S [kblockd]
+root            61     2       0      0 hub_thread          0 S [khubd]
+root            62     2       0      0 ion_heap_deferred_free 0 S [system]
+root            63     2       0      0 irq_thread          0 S [irq/107-msm_iom]
+root            64     2       0      0 irq_thread          0 S [irq/105-msm_iom]
+root            65     2       0      0 irq_thread          0 S [irq/273-msm_iom]
+root            66     2       0      0 irq_thread          0 S [irq/274-msm_iom]
+root            67     2       0      0 irq_thread          0 S [irq/135-msm_iom]
+root            68     2       0      0 irq_thread          0 S [irq/136-msm_iom]
+root            69     2       0      0 irq_thread          0 S [irq/137-msm_iom]
+root            70     2       0      0 irq_thread          0 S [irq/138-msm_iom]
+root            71     2       0      0 irq_thread          0 S [irq/142-msm_iom]
+root            72     2       0      0 irq_thread          0 S [irq/143-msm_iom]
+root            73     2       0      0 irq_thread          0 S [irq/144-msm_iom]
+root            74     2       0      0 irq_thread          0 S [irq/153-msm_iom]
+root            75     2       0      0 irq_thread          0 S [irq/154-msm_iom]
+root            76     2       0      0 irq_thread          0 S [irq/255-msm_iom]
+root            77     2       0      0 irq_thread          0 S [irq/256-msm_iom]
+root            78     2       0      0 irq_thread          0 S [irq/257-msm_iom]
+root            79     2       0      0 irq_thread          0 S [irq/260-msm_iom]
+root            80     2       0      0 irq_thread          0 S [irq/261-msm_iom]
+root            81     2       0      0 irq_thread          0 S [irq/262-msm_iom]
+root            82     2       0      0 irq_thread          0 S [irq/263-msm_iom]
+root            83     2       0      0 irq_thread          0 S [irq/264-msm_iom]
+root            84     2       0      0 irq_thread          0 S [irq/265-msm_iom]
+root            85     2       0      0 irq_thread          0 S [irq/182-msm_iom]
+root            86     2       0      0 irq_thread          0 S [irq/145-msm_iom]
+root            87     2       0      0 irq_thread          0 S [irq/152-msm_iom]
+root            88     2       0      0 rescuer_thread      0 S [devfreq_wq]
+root            89     2       0      0 rescuer_thread      0 S [cfg80211]
+root            90     2       0      0 kswapd              0 S [kswapd0]
+root            91     2       0      0 fsnotify_mark_destroy 0 S [fsnotify_mark]
+root           110     2       0      0 dsi_event_thread    0 D [mdss_dsi_event]
+root           111     2       0      0 rescuer_thread      0 S [apr_driver]
+root           112     2       0      0 rescuer_thread      0 S [pil_vote_wq]
+root           113     2       0      0 rescuer_thread      0 S [mem_share_svc]
+root           114     2       0      0 rescuer_thread      0 S [qmi_hndl0000000]
+root           115     2       0      0 rescuer_thread      0 S [msm_ipc_router]
+root           116     2       0      0 add_hwgenerator_randomness 0 S [hwrng]
+root           117     2       0      0 rescuer_thread      0 S [diag_real_time_]
+root           118     2       0      0 rescuer_thread      0 S [diag_modem_data]
+root           119     2       0      0 rescuer_thread      0 S [diag_lpass_data]
+root           120     2       0      0 rescuer_thread      0 S [diag_wcnss_data]
+root           121     2       0      0 rescuer_thread      0 S [diag_sensors_da]
+root           122     2       0      0 rescuer_thread      0 S [diag_wq]
+root           123     2       0      0 rescuer_thread      0 S [DIAG_USB_diag]
+root           124     2       0      0 rescuer_thread      0 S [diag_cntl_wq]
+root           125     2       0      0 rescuer_thread      0 S [diag_dci_wq]
+root           126     2       0      0 rescuer_thread      0 S [kgsl-3d0]
+root           127     2       0      0 rescuer_thread      0 S [kgsl-events]
+root           128     2       0      0 rescuer_thread      0 S [governor_msm_ad]
+root           129     2       0      0 rescuer_thread      0 S [kgsl_devfreq_wq]
+root           130     2       0      0 rescuer_thread      0 S [proximity_als]
+root           131     2       0      0 worker_thread       0 S [kworker/1:2]
+root           132     2       0      0 kthread_worker_fn   0 S [spi1]
+root           137     2       0      0 rescuer_thread      0 S [usbnet]
+root           138     2       0      0 rescuer_thread      0 S [sharedmem_qmi_w]
+root           139     2       0      0 rescuer_thread      0 S [qmi_hndl0000000]
+root           140     2       0      0 rescuer_thread      0 S [k_gserial]
+root           141     2       0      0 rescuer_thread      0 S [uether]
+root           142     2       0      0 irq_thread          0 S [irq/425-matrix-]
+root           143     2       0      0 irq_thread          0 S [irq/426-matrix-]
+root           144     2       0      0 irq_thread          0 S [irq/427-matrix-]
+root           145     2       0      0 irq_thread          0 S [irq/428-matrix-]
+root           146     2       0      0 irq_thread          0 S [irq/429-matrix-]
+root           147     2       0      0 irq_thread          0 S [irq/430-matrix-]
+root           148     2       0      0 rescuer_thread      0 S [kc_ts_touch_eve]
+root           151     2       0      0 rescuer_thread      0 S [dm_bufio_cache]
+root           152     2       0      0 cpufreq_interactive_speedchange_task 0 S [cfinteractive]
+root           153     2       0      0 irq_thread          0 S [irq/170-7824900]
+root           154     2       0      0 irq_thread          0 S [irq/253-7864900]
+root           155     2       0      0 rescuer_thread      0 S [LV5216]
+root           176     2       0      0 rescuer_thread      0 S [binder]
+root           177     2       0      0 mmc_queue_thread    0 S [mmcqd/0]
+root           178     2       0      0 mmc_queue_thread    0 S [mmcqd/0rpmb]
+root           179     2       0      0 mmc_queue_thread    0 S [mmcqd/1]
+root           180     2       0      0 rescuer_thread      0 S [usb_bam_wq]
+root           181     2       0      0 irq_thread          0 S [irq/224-spdm_bw]
+root           183     2       0      0 rescuer_thread      0 S [sns_wq_int]
+root           184     2       0      0 rescuer_thread      0 S [sns_wq]
+root           185     2       0      0 rescuer_thread      0 S [acc_poll_wq]
+root           186     2       0      0 rescuer_thread      0 S [accsns_cal_wq]
+root           188     2       0      0 irq_thread          0 S [irq/433-wcnss]
+root           189     2       0      0 irq_thread          0 S [irq/465-modem]
+root           190     2       0      0 rescuer_thread      0 S [msm_vidc_worker]
+root           191     2       0      0 rescuer_thread      0 S [pm_workerq_venu]
+root           192     2       0      0 worker_thread       0 S [kworker/u8:4]
+root           193     2       0      0 irq_thread          0 S [irq/326-smb135x]
+root           194     2       0      0 irq_thread          0 S [irq/309-fifo_up]
+root           195     2       0      0 irq_thread          0 S [irq/310-fsm_sta]
+root           196     2       0      0 worker_thread       0 S [kworker/0:2]
+root           197     2       0      0 rescuer_thread      0 S [rq_stats]
+root           198     2       0      0 rescuer_thread      0 S [bam_dmux_rx]
+root           199     2       0      0 rescuer_thread      0 S [bam_dmux_tx]
+root           200     2       0      0 worker_thread       0 S [kworker/1:1H]
+root           201     2       0      0 rescuer_thread      0 S [k_bam_data]
+root           202     2       0      0 rescuer_thread      0 S [f_mtp]
+root           203     2       0      0 sleep_thread        0 S [file-storage]
+root           204     2       0      0 do_hotplug          0 S [msm_thermal:hot]
+root           205     2       0      0 do_freq_mitigation  0 S [msm_thermal:fre]
+root           206     2       0      0 do_thermal_monitor  0 S [msm_thermal:the]
+root           209     2       0      0 kjournald2          0 S [jbd2/mmcblk0p17]
+root           210     2       0      0 rescuer_thread      0 S [ext4-dio-unwrit]
+root           211     2       0      0 rescuer_thread      0 S [ext4-dio-unwrit]
+root           217     1   13296   3748 poll_schedule_timeout a852de40 S init
+root           220     1   11888   3496 poll_schedule_timeout aa61ae40 S init
+root           223     2       0      0 worker_thread       0 S [kworker/3:1H]
+root           224     2       0      0 worker_thread       0 S [kworker/2:1H]
+root           225     2       0      0 worker_thread       0 S [kworker/1:3]
+root           228     1   13168   3940 poll_schedule_timeout b4d2ce40 S ueventd
+logd           234     1   18176   2488 sigsuspend   b5118f78 S logd
+system         235     1    9396   2028 binder_thread_read b48e8da8 S servicemanager
+system         236     1   14100   3412 SyS_epoll_wait a9742c68 S hwservicemanager
+system         237     1    9396   1776 binder_thread_read ad05eda8 S vndservicemanager
+root           242     2       0      0 kauditd_thread      0 S [kauditd]
+root           245     1   22172   4204 binder_thread_read ac1a9da8 S vold
+root           250     2       0      0 kjournald2          0 S [jbd2/mmcblk0p18]
+root           251     2       0      0 rescuer_thread      0 S [ext4-dio-unwrit]
+root           256     2       0      0 kjournald2          0 S [jbd2/mmcblk0p35]
+root           257     2       0      0 rescuer_thread      0 S [ext4-dio-unwrit]
+root           262     2       0      0 kjournald2          0 S [jbd2/mmcblk0p36]
+root           263     2       0      0 rescuer_thread      0 S [ext4-dio-unwrit]
+system         266     1   17244   3800 binder_thread_read a87ffda8 S android.system.suspend@1.0-service
+nobody         267     1   11796   3012 binder_thread_read acbcbda8 S android.hardware.keymaster@3.0-service
+root           275     1   17172   4000 binder_thread_read a7bb0da8 S apexd
+root           292     1    8552   1960 __skb_recv_datagram aba82cb4 S logcat
+root           293     1    7760   1456 sigsuspend   b3a22f78 S sh
+root           294     1    7760   1540 sigsuspend   af462f78 S sh
+root           295   293    9644   1648 hrtimer_nanosleep ad079abc S sleep
+root           306     1   31656   4540 binder_thread_read b44e0da8 S netd
+root           307     1 1102152  78924 poll_schedule_timeout a8b97e40 S zygote
+root           329     2       0      0 rescuer_thread      0 S [IPCRTR]
+root           330     2       0      0 rescuer_thread      0 S [modem_IPCRTR]
+root           331     2       0      0 irq_thread          0 S [irq/318-mbhc sw]
+root           332     2       0      0 irq_thread          0 S [irq/316-Button ]
+root           333     2       0      0 irq_thread          0 S [irq/315-Button ]
+root           334     2       0      0 irq_thread          0 S [irq/314-Elect I]
+root           335     2       0      0 irq_thread          0 S [irq/317-Elect R]
+root           336     2       0      0 irq_thread          0 S [irq/321-HPH_L O]
+root           337     2       0      0 irq_thread          0 S [irq/320-HPH_R O]
+system         338     1   10116   2172 binder_thread_read b4be4da8 S android.hidl.allocator@1.0-service
+audioserver    339     1   27768   7504 binder_thread_read aab7dda8 S android.hardware.audio@2.0-service
+bluetooth      340     1   13320   2476 binder_thread_read acb59da8 S android.hardware.bluetooth@1.0-service
+cameraserver   341     1   26144   7616 binder_thread_read b4796da8 S android.hardware.camera.provider@2.4-service
+root           342     2       0      0 rescuer_thread      0 S [qmi_hndl0000000]
+media          343     1   14192   3176 binder_thread_read aa7cbda8 S android.hardware.cas@1.1-service
+system         344     1   13488   2468 binder_thread_read af4e9da8 S android.hardware.configstore@1.1-service
+gps            345     1   12924   3188 binder_thread_read adc28da8 S android.hardware.gnss@1.0-service
+system         347     1   16000   4192 binder_thread_read a730bda8 S android.hardware.graphics.allocator@2.0-service
+system         348     1   47396  10400 binder_thread_read a6d43da8 S android.hardware.graphics.composer@2.1-service
+system         349     1   10424   2480 SyS_epoll_wait b4bacc68 S android.hardware.health@2.0-service
+system         350     1   10280   2276 binder_thread_read aedd6da8 S android.hardware.light@2.0-service
+system         351     1   10292   2300 binder_thread_read adf7fda8 S android.hardware.memtrack@1.0-service
+system         352     1   10324   2380 binder_thread_read a6a4ada8 S android.hardware.power@1.0-service
+system         353     1   12064   3076 hrtimer_nanosleep b3743abc S android.hardware.sensors@1.0-service
+system         354     1   10296   2300 binder_thread_read a7be1da8 S android.hardware.vibrator@1.0-service
+wifi           355     1   12452   3348 binder_thread_read af0fcda8 S android.hardware.wifi@1.0-service
+3012           360     1   10540   1832 poll_schedule_timeout aac23e40 S tftp_server
+system         367     1   17552   2460 do_sigtimedwait b37ddf98 S pm-service
+root           371     1   11144   1952 hrtimer_nanosleep b5899abc S uimd
+root           373     1    9272   1732 hrtimer_nanosleep ac02fabc S disp_ctrl
+root           376     1    9288   1732 hrtimer_nanosleep ab549abc S kflcd
+root           384     1   14884   2076 hrtimer_nanosleep aea86abc S akscd
+nobody         387     1    9708   2072 binder_thread_read af4c7da8 S ashmemd
+audioserver    389     1   45060  13864 binder_thread_read ae836da8 S audioserver
+gpu_service    390     1   14672   3320 binder_thread_read a6c57da8 S gpuservice
+lmkd           395     1    8396   1620 SyS_epoll_wait aae6bc68 S lmkd
+system         398     1   52820  15860 SyS_epoll_wait a6497c68 S surfaceflinger
+nobody         410     1   15572   1592 poll_schedule_timeout a796ae90 S rmt_storage
+root           415     1    9408   1992 hrtimer_nanosleep acd69abc S sensors_fwup
+root           419     2       0      0 worker_thread       0 S [kworker/u8:5]
+root           423     2       0      0 __mdss_fb_display_thread 0 D [mdss_fb0]
+shell          447     1   17112   3452 futex_wait_queue_me aae9d184 S adbd
+nobody         454     1   11852   1804 poll_schedule_timeout b4be3e40 S traced
+nobody         456     1   11852   1808 poll_schedule_timeout a931ce40 S traced_probes
+root           460     1   15288   3268 poll_schedule_timeout b4cfae40 S qcom-system-daemon
+root           479     1   43560   2524 sigsuspend   a8473f78 S thermal-engine
+root           485     1   12644   2172 binder_thread_read b3244da8 S adb_root
+cameraserver   489     1   33680  10268 binder_thread_read a9e9dda8 S cameraserver
+drm            491     1   24192   7456 binder_thread_read ae028da8 S drmserver
+incidentd      495     1   14828   2892 SyS_epoll_wait b005dc68 S incidentd
+root           497     1   17932   3392 binder_thread_read aaf1fda8 S installd
+keystore       499     1   17536   4312 binder_thread_read b573dda8 S keystore
+media          501     1   15624   3972 binder_thread_read ad381da8 S mediadrmserver
+mediaex        504     1   42940  12468 binder_thread_read a705dda8 S media.extractor
+media          506     1   24452   7384 binder_thread_read b4a22da8 S media.metrics
+root           511   306    9416   1744 pipe_wait    adf89c24 S iptables-restore
+root           513   306    9428   2004 pipe_wait    b4702c24 S ip6tables-restore
+media          541     1   53588  10564 binder_thread_read b24b1da8 S mediaserver
+statsd         542     1   21552   4048 SyS_epoll_wait b620ec68 S statsd
+root           543     1   15204   3064 binder_thread_read adb37da8 S storaged
+wifi           544     1   11856   2552 SyS_epoll_wait b3183c68 S wificond
+mediacodec     545     1   20788   5284 binder_thread_read a9667da8 S media.codec
+mediacodec     550     1   33996   7212 binder_thread_read b5804da8 S media.swcodec
+system         552     1   13908   1960 __skb_recv_datagram b5809cfc S cnss-daemon
+camera         556     1   13736   3968 poll_schedule_timeout af922e90 S mm-qcamera-daemon
+system         557     1   15088   2152 futex_wait_queue_me aabba184 S time_daemon
+system         566     1   25296   7352 binder_thread_read ac6edda8 S audiod
+system         589     1   13804   3364 binder_thread_read a69bada8 S gatekeeperd
+tombstoned     590     1    7924   1444 SyS_epoll_wait a7c7dc68 S tombstoned
+radio          614     1   10220   1968 smd_pkt_open a91d6e18 S qmuxd
+graphics       625     1   67212  21844 binder_thread_read b30cdda8 S bootanimation
+root           631     1   13972   2400 hrtimer_nanosleep ab674abc S netmgrd
+system         697   307 1187424  77488 futex_wait_queue_me a8b5b184 S system_server
+root           788     2       0      0 worker_thread       0 S [kworker/3:2]
+root          1069   294    9644   1896 0            b327cc24 R ps
+Thu Oct  8 06:49:14 GMT 2026
+ro.build.version.release=10
+sys.boot_completed=
+sys.usb.config=adb
+sys.usb.state=adb
+sys.usb.configfs=0
+sys.usb.ffs.ready=1
+init.svc.adbd=running
+init.svc.audioserver=running
+init.svc.surfaceflinger=running
+USB enable:
+1
+USB functions:
+ffs
+USB state:
+CONFIGURED
+USB idVendor:
+18d1
+USB idProduct:
+4ee7
+USB f_ffs/aliases:
+adb
+total 0
+-rw------- 1 shell shell 0 1970-01-01 01:08 ep0
+-rw------- 1 shell shell 0 1970-01-01 01:08 ep1
+-rw------- 1 shell shell 0 1970-01-01 01:08 ep2
+/dev/block/mmcblk0p1 on /firmware type vfat (ro,context=u:object_r:kyf37_firmware_file:s0,relatime,uid=1000,gid=1026,fmask=0337,dmask=0227,codepage=437,iocharset=iso8859-1,shortname=lower,errors=remount-ro)
+ 0 [msm8909pm8916sn]: msm8909-pm8916- - msm8909-pm8916-snd-card
+                      msm8909-pm8916-snd-card
+USER           PID  PPID     VSZ    RSS WCHAN            ADDR S NAME                       
+root             1     0   28160   5368 jbd2_log_wait_commit ab2cf4dc D init
+root             2     0       0      0 kthreadd            0 S [kthreadd]
+root             3     2       0      0 smpboot_thread_fn   0 S [ksoftirqd/0]
+root             4     2       0      0 worker_thread       0 S [kworker/0:0]
+root             5     2       0      0 worker_thread       0 S [kworker/0:0H]
+root             6     2       0      0 msm_mpm_work_fn     0 D [kworker/u8:0]
+root             7     2       0      0 rcu_gp_kthread      0 S [rcu_preempt]
+root             8     2       0      0 rcu_gp_kthread      0 S [rcu_bh]
+root             9     2       0      0 rcu_gp_kthread      0 S [rcu_sched]
+root            10     2       0      0 smpboot_thread_fn   0 S [migration/0]
+root            11     2       0      0 smpboot_thread_fn   0 S [migration/1]
+root            12     2       0      0 smpboot_thread_fn   0 S [ksoftirqd/1]
+root            13     2       0      0 worker_thread       0 S [kworker/1:0]
+root            14     2       0      0 worker_thread       0 S [kworker/1:0H]
+root            15     2       0      0 smpboot_thread_fn   0 S [migration/2]
+root            16     2       0      0 smpboot_thread_fn   0 S [ksoftirqd/2]
+root            17     2       0      0 worker_thread       0 S [kworker/2:0]
+root            18     2       0      0 worker_thread       0 S [kworker/2:0H]
+root            19     2       0      0 smpboot_thread_fn   0 S [migration/3]
+root            20     2       0      0 smpboot_thread_fn   0 S [ksoftirqd/3]
+root            21     2       0      0 worker_thread       0 S [kworker/3:0]
+root            22     2       0      0 worker_thread       0 S [kworker/3:0H]
+root            23     2       0      0 rescuer_thread      0 S [khelper]
+root            24     2       0      0 rescuer_thread      0 S [netns]
+root            25     2       0      0 worker_thread       0 S [kworker/1:1]
+root            26     2       0      0 worker_thread       0 S [kworker/0:1]
+root            27     2       0      0 worker_thread       0 S [kworker/2:1]
+root            28     2       0      0 worker_thread       0 S [kworker/3:1]
+root            29     2       0      0 worker_thread       0 S [kworker/0:1H]
+root            30     2       0      0 rescuer_thread      0 S [smd_channel_clo]
+root            31     2       0      0 rescuer_thread      0 S [smsm_cb_wq]
+root            32     2       0      0 worker_thread       0 S [kworker/u8:1]
+root            33     2       0      0 msm_rpm_smd_work    0 D [kworker/u9:0]
+root            34     2       0      0 rescuer_thread      0 S [rpm-smd]
+root            35     2       0      0 worker_thread       0 S [kworker/u9:1]
+root            36     2       0      0 irq_thread          0 S [irq/47-cpr]
+root            37     2       0      0 rescuer_thread      0 S [deferwq]
+root            38     2       0      0 rescuer_thread      0 S [mpm]
+root            39     2       0      0 worker_thread       0 S [kworker/u8:2]
+root            40     2       0      0 worker_thread       0 S [kworker/u8:3]
+root            57     2       0      0 rescuer_thread      0 S [writeback]
+root            58     2       0      0 rescuer_thread      0 S [bioset]
+root            59     2       0      0 rescuer_thread      0 S [crypto]
+root            60     2       0      0 rescuer_thread      0 S [kblockd]
+root            61     2       0      0 hub_thread          0 S [khubd]
+root            62     2       0      0 ion_heap_deferred_free 0 S [system]
+root            63     2       0      0 irq_thread          0 S [irq/107-msm_iom]
+root            64     2       0      0 irq_thread          0 S [irq/105-msm_iom]
+root            65     2       0      0 irq_thread          0 S [irq/273-msm_iom]
+root            66     2       0      0 irq_thread          0 S [irq/274-msm_iom]
+root            67     2       0      0 irq_thread          0 S [irq/135-msm_iom]
+root            68     2       0      0 irq_thread          0 S [irq/136-msm_iom]
+root            69     2       0      0 irq_thread          0 S [irq/137-msm_iom]
+root            70     2       0      0 irq_thread          0 S [irq/138-msm_iom]
+root            71     2       0      0 irq_thread          0 S [irq/142-msm_iom]
+root            72     2       0      0 irq_thread          0 S [irq/143-msm_iom]
+root            73     2       0      0 irq_thread          0 S [irq/144-msm_iom]
+root            74     2       0      0 irq_thread          0 S [irq/153-msm_iom]
+root            75     2       0      0 irq_thread          0 S [irq/154-msm_iom]
+root            76     2       0      0 irq_thread          0 S [irq/255-msm_iom]
+root            77     2       0      0 irq_thread          0 S [irq/256-msm_iom]
+root            78     2       0      0 irq_thread          0 S [irq/257-msm_iom]
+root            79     2       0      0 irq_thread          0 S [irq/260-msm_iom]
+root            80     2       0      0 irq_thread          0 S [irq/261-msm_iom]
+root            81     2       0      0 irq_thread          0 S [irq/262-msm_iom]
+root            82     2       0      0 irq_thread          0 S [irq/263-msm_iom]
+root            83     2       0      0 irq_thread          0 S [irq/264-msm_iom]
+root            84     2       0      0 irq_thread          0 S [irq/265-msm_iom]
+root            85     2       0      0 irq_thread          0 S [irq/182-msm_iom]
+root            86     2       0      0 irq_thread          0 S [irq/145-msm_iom]
+root            87     2       0      0 irq_thread          0 S [irq/152-msm_iom]
+root            88     2       0      0 rescuer_thread      0 S [devfreq_wq]
+root            89     2       0      0 rescuer_thread      0 S [cfg80211]
+root            90     2       0      0 kswapd              0 S [kswapd0]
+root            91     2       0      0 fsnotify_mark_destroy 0 S [fsnotify_mark]
+root           110     2       0      0 dsi_event_thread    0 D [mdss_dsi_event]
+root           111     2       0      0 rescuer_thread      0 S [apr_driver]
+root           112     2       0      0 rescuer_thread      0 S [pil_vote_wq]
+root           113     2       0      0 rescuer_thread      0 S [mem_share_svc]
+root           114     2       0      0 rescuer_thread      0 S [qmi_hndl0000000]
+root           115     2       0      0 rescuer_thread      0 S [msm_ipc_router]
+root           116     2       0      0 add_hwgenerator_randomness 0 S [hwrng]
+root           117     2       0      0 rescuer_thread      0 S [diag_real_time_]
+root           118     2       0      0 rescuer_thread      0 S [diag_modem_data]
+root           119     2       0      0 rescuer_thread      0 S [diag_lpass_data]
+root           120     2       0      0 rescuer_thread      0 S [diag_wcnss_data]
+root           121     2       0      0 rescuer_thread      0 S [diag_sensors_da]
+root           122     2       0      0 rescuer_thread      0 S [diag_wq]
+root           123     2       0      0 rescuer_thread      0 S [DIAG_USB_diag]
+root           124     2       0      0 rescuer_thread      0 S [diag_cntl_wq]
+root           125     2       0      0 rescuer_thread      0 S [diag_dci_wq]
+root           126     2       0      0 rescuer_thread      0 S [kgsl-3d0]
+root           127     2       0      0 rescuer_thread      0 S [kgsl-events]
+root           128     2       0      0 rescuer_thread      0 S [governor_msm_ad]
+root           129     2       0      0 rescuer_thread      0 S [kgsl_devfreq_wq]
+root           130     2       0      0 rescuer_thread      0 S [proximity_als]
+root           131     2       0      0 worker_thread       0 S [kworker/1:2]
+root           132     2       0      0 kthread_worker_fn   0 S [spi1]
+root           137     2       0      0 rescuer_thread      0 S [usbnet]
+root           138     2       0      0 rescuer_thread      0 S [sharedmem_qmi_w]
+root           139     2       0      0 rescuer_thread      0 S [qmi_hndl0000000]
+root           140     2       0      0 rescuer_thread      0 S [k_gserial]
+root           141     2       0      0 rescuer_thread      0 S [uether]
+root           142     2       0      0 irq_thread          0 S [irq/425-matrix-]
+root           143     2       0      0 irq_thread          0 S [irq/426-matrix-]
+root           144     2       0      0 irq_thread          0 S [irq/427-matrix-]
+root           145     2       0      0 irq_thread          0 S [irq/428-matrix-]
+root           146     2       0      0 irq_thread          0 S [irq/429-matrix-]
+root           147     2       0      0 irq_thread          0 S [irq/430-matrix-]
+root           148     2       0      0 rescuer_thread      0 S [kc_ts_touch_eve]
+root           151     2       0      0 rescuer_thread      0 S [dm_bufio_cache]
+root           152     2       0      0 cpufreq_interactive_speedchange_task 0 S [cfinteractive]
+root           153     2       0      0 irq_thread          0 S [irq/170-7824900]
+root           154     2       0      0 irq_thread          0 S [irq/253-7864900]
+root           155     2       0      0 rescuer_thread      0 S [LV5216]
+root           176     2       0      0 rescuer_thread      0 S [binder]
+root           177     2       0      0 mmc_queue_thread    0 S [mmcqd/0]
+root           178     2       0      0 mmc_queue_thread    0 S [mmcqd/0rpmb]
+root           179     2       0      0 mmc_queue_thread    0 S [mmcqd/1]
+root           180     2       0      0 rescuer_thread      0 S [usb_bam_wq]
+root           181     2       0      0 irq_thread          0 S [irq/224-spdm_bw]
+root           183     2       0      0 rescuer_thread      0 S [sns_wq_int]
+root           184     2       0      0 rescuer_thread      0 S [sns_wq]
+root           185     2       0      0 rescuer_thread      0 S [acc_poll_wq]
+root           186     2       0      0 rescuer_thread      0 S [accsns_cal_wq]
+root           188     2       0      0 irq_thread          0 S [irq/433-wcnss]
+root           189     2       0      0 irq_thread          0 S [irq/465-modem]
+root           190     2       0      0 rescuer_thread      0 S [msm_vidc_worker]
+root           191     2       0      0 rescuer_thread      0 S [pm_workerq_venu]
+root           192     2       0      0 worker_thread       0 S [kworker/u8:4]
+root           193     2       0      0 irq_thread          0 S [irq/326-smb135x]
+root           194     2       0      0 irq_thread          0 S [irq/309-fifo_up]
+root           195     2       0      0 irq_thread          0 S [irq/310-fsm_sta]
+root           196     2       0      0 worker_thread       0 S [kworker/0:2]
+root           197     2       0      0 rescuer_thread      0 S [rq_stats]
+root           198     2       0      0 rescuer_thread      0 S [bam_dmux_rx]
+root           199     2       0      0 rescuer_thread      0 S [bam_dmux_tx]
+root           200     2       0      0 worker_thread       0 S [kworker/1:1H]
+root           201     2       0      0 rescuer_thread      0 S [k_bam_data]
+root           202     2       0      0 rescuer_thread      0 S [f_mtp]
+root           203     2       0      0 sleep_thread        0 S [file-storage]
+root           204     2       0      0 do_hotplug          0 S [msm_thermal:hot]
+root           205     2       0      0 do_freq_mitigation  0 S [msm_thermal:fre]
+root           206     2       0      0 do_thermal_monitor  0 S [msm_thermal:the]
+root           209     2       0      0 kjournald2          0 S [jbd2/mmcblk0p17]
+root           210     2       0      0 rescuer_thread      0 S [ext4-dio-unwrit]
+root           211     2       0      0 rescuer_thread      0 S [ext4-dio-unwrit]
+root           217     1   13296   3748 poll_schedule_timeout a852de40 S init
+root           220     1   11888   3496 poll_schedule_timeout aa61ae40 S init
+root           223     2       0      0 worker_thread       0 S [kworker/3:1H]
+root           224     2       0      0 worker_thread       0 S [kworker/2:1H]
+root           225     2       0      0 worker_thread       0 S [kworker/1:3]
+root           228     1   13168   3940 poll_schedule_timeout b4d2ce40 S ueventd
+logd           234     1   18176   2800 sigsuspend   b5118f78 S logd
+system         235     1    9396   2028 binder_thread_read b48e8da8 S servicemanager
+system         236     1   14100   3492 SyS_epoll_wait a9742c68 S hwservicemanager
+system         237     1    9396   1776 binder_thread_read ad05eda8 S vndservicemanager
+root           242     2       0      0 kauditd_thread      0 S [kauditd]
+root           245     1   23220   4204 binder_thread_read ac1a9da8 S vold
+root           250     2       0      0 kjournald2          0 S [jbd2/mmcblk0p18]
+root           251     2       0      0 rescuer_thread      0 S [ext4-dio-unwrit]
+root           256     2       0      0 kjournald2          0 S [jbd2/mmcblk0p35]
+root           257     2       0      0 rescuer_thread      0 S [ext4-dio-unwrit]
+root           262     2       0      0 kjournald2          0 S [jbd2/mmcblk0p36]
+root           263     2       0      0 rescuer_thread      0 S [ext4-dio-unwrit]
+system         266     1   17244   3800 binder_thread_read a87ffda8 S android.system.suspend@1.0-service
+nobody         267     1   11796   3012 binder_thread_read acbcbda8 S android.hardware.keymaster@3.0-service
+root           275     1   17172   4000 binder_thread_read a7bb0da8 S apexd
+root           292     1    8552   1960 0            aba78e08 R logcat
+root           293     1    7760   1456 sigsuspend   b3a22f78 S sh
+root           294     1    7760   1540 sigsuspend   af462f78 S sh
+root           295   293    9644   1648 hrtimer_nanosleep ad079abc S sleep
+root           306     1   32704   4540 binder_thread_read b44e0da8 S netd
+root           307     1 1102152  79044 poll_schedule_timeout a8b97e40 S zygote
+root           329     2       0      0 rescuer_thread      0 S [IPCRTR]
+root           330     2       0      0 rescuer_thread      0 S [modem_IPCRTR]
+root           331     2       0      0 irq_thread          0 S [irq/318-mbhc sw]
+root           332     2       0      0 irq_thread          0 S [irq/316-Button ]
+root           333     2       0      0 irq_thread          0 S [irq/315-Button ]
+root           334     2       0      0 irq_thread          0 S [irq/314-Elect I]
+root           335     2       0      0 irq_thread          0 S [irq/317-Elect R]
+root           336     2       0      0 irq_thread          0 S [irq/321-HPH_L O]
+root           337     2       0      0 irq_thread          0 S [irq/320-HPH_R O]
+system         338     1   10116   2172 binder_thread_read b4be4da8 S android.hidl.allocator@1.0-service
+audioserver    339     1   29864   7504 binder_thread_read aab7dda8 S android.hardware.audio@2.0-service
+cameraserver   341     1   27192   7616 binder_thread_read b4796da8 S android.hardware.camera.provider@2.4-service
+root           342     2       0      0 rescuer_thread      0 S [qmi_hndl0000000]
+media          343     1   14192   3176 binder_thread_read aa7cbda8 S android.hardware.cas@1.1-service
+system         344     1   13488   2468 binder_thread_read af4e9da8 S android.hardware.configstore@1.1-service
+gps            345     1   20508   4232 hrtimer_nanosleep adc29abc S android.hardware.gnss@1.0-service
+system         347     1   17048   4220 binder_thread_read a730bda8 S android.hardware.graphics.allocator@2.0-service
+system         348     1   49492  10416 binder_thread_read a6d43da8 S android.hardware.graphics.composer@2.1-service
+system         349     1   10424   2480 SyS_epoll_wait b4bacc68 S android.hardware.health@2.0-service
+system         350     1   10280   2276 binder_thread_read aedd6da8 S android.hardware.light@2.0-service
+system         351     1   10292   2300 binder_thread_read adf7fda8 S android.hardware.memtrack@1.0-service
+system         352     1   10324   2380 binder_thread_read a6a4ada8 S android.hardware.power@1.0-service
+system         353     1   15164   3500 binder_thread_read b3742da8 S android.hardware.sensors@1.0-service
+system         354     1   10296   2300 binder_thread_read a7be1da8 S android.hardware.vibrator@1.0-service
+wifi           355     1   12452   3348 binder_thread_read af0fcda8 S android.hardware.wifi@1.0-service
+3012           360     1   10540   1832 poll_schedule_timeout aac23e40 S tftp_server
+system         367     1   17552   2460 do_sigtimedwait b37ddf98 S pm-service
+root           371     1   11144   1952 hrtimer_nanosleep b5899abc S uimd
+root           376     1    9288   1732 hrtimer_nanosleep ab549abc S kflcd
+root           384     1   14884   2076 hrtimer_nanosleep aea86abc S akscd
+nobody         387     1    9708   2072 binder_thread_read af4c7da8 S ashmemd
+audioserver    389     1   47156  13864 binder_thread_read ae836da8 S audioserver
+gpu_service    390     1   14672   3320 binder_thread_read a6c57da8 S gpuservice
+lmkd           395     1    8396   1620 SyS_epoll_wait aae6bc68 S lmkd
+system         398     1   58692  15852 SyS_epoll_wait a6497c68 S surfaceflinger
+nobody         410     1   15572   1592 poll_schedule_timeout a796ae90 S rmt_storage
+root           419     2       0      0 worker_thread       0 S [kworker/u8:5]
+root           423     2       0      0 __mdss_fb_display_thread 0 D [mdss_fb0]
+shell          447     1   17112   3452 futex_wait_queue_me aae9d184 S adbd
+nobody         454     1   11852   1804 poll_schedule_timeout b4be3e40 S traced
+nobody         456     1   11852   1808 poll_schedule_timeout a931ce40 S traced_probes
+root           460     1   15288   3268 poll_schedule_timeout b4cfae40 S qcom-system-daemon
+root           479     1   43560   2524 sigsuspend   a8473f78 S thermal-engine
+root           485     1   12644   2172 binder_thread_read b3244da8 S adb_root
+cameraserver   489     1   35904  10464 binder_thread_read a9e9dda8 S cameraserver
+drm            491     1   25240   7456 binder_thread_read ae028da8 S drmserver
+incidentd      495     1   15084   2892 SyS_epoll_wait b005dc68 S incidentd
+root           497     1   17932   3392 binder_thread_read aaf1fda8 S installd
+keystore       499     1   17568   4568 binder_thread_read b573dda8 S keystore
+media          501     1   16672   3972 binder_thread_read ad381da8 S mediadrmserver
+mediaex        504     1   51456  13744 binder_thread_read a705dda8 S media.extractor
+media          506     1   25500   7472 binder_thread_read b4a22da8 S media.metrics
+root           511   306    9416   1744 pipe_wait    adf89c24 S iptables-restore
+root           513   306    9428   2056 pipe_wait    b4702c24 S ip6tables-restore
+media          541     1   57100  11916 binder_thread_read b24b1da8 S mediaserver
+statsd         542     1   23648   4132 SyS_epoll_wait b620ec68 S statsd
+root           543     1   15204   3064 binder_thread_read adb37da8 S storaged
+wifi           544     1   11856   2552 SyS_epoll_wait b3183c68 S wificond
+mediacodec     545     1   20960   5748 binder_thread_read a9667da8 S media.codec
+mediacodec     550     1   69760  11672 binder_thread_read b5804da8 S media.swcodec
+system         552     1   13908   1960 __skb_recv_datagram b5809cfc S cnss-daemon
+camera         556     1   13736   3968 poll_schedule_timeout af922e90 S mm-qcamera-daemon
+system         557     1   15088   2152 futex_wait_queue_me aabba184 S time_daemon
+system         566     1   25296   7352 binder_thread_read ac6edda8 S audiod
+system         589     1   13804   3364 binder_thread_read a69bada8 S gatekeeperd
+tombstoned     590     1    8180   1444 SyS_epoll_wait a7c7dc68 S tombstoned
+radio          614     1   10220   1968 smd_pkt_open a91d6e18 S qmuxd
+graphics       625     1   67280  21844 binder_thread_read b30cdda8 S bootanimation
+root           631     1   13972   2400 hrtimer_nanosleep ab674abc S netmgrd
+system         697   307 1399516 132840 SyS_epoll_wait a8b97c68 S system_server
+root           788     2       0      0 worker_thread       0 S [kworker/3:2]
+u0_a102       1385   307  929340  74232 binder_thread_read a8b97da8 S com.android.systemui
+radio         1454   307  864040  47692 futex_wait_queue_me a8b5b184 S com.android.phone
+system        1459   307  908308  53236 SyS_epoll_wait a8b97c68 S com.android.settings
+u0_a64        1507   307  846904  39840 SyS_epoll_wait a8b97c68 S android.ext.services
+u0_a112       1550   307  859936  51772 SyS_epoll_wait a8b97c68 S com.android.inputmethod.latin
+bluetooth     1618     1       0      0 do_exit             0 Z [bluetooth@1.0-s]
+system        1647     1   18260   4936 binder_thread_read af931da8 S idmap2d
+bluetooth     1674   307  880036  51744 ptrace_stop  a8b97c68 t com.android.bluetooth
+bluetooth     1731     1       0      0 do_exit             0 Z [crash_dump32]
+bluetooth     1733     1       0      0 do_exit             0 Z [HwBinder:1618_1]
+root          1737     1       0      0 do_exit             0 Z [qseecomd]
+root          1739   294    9644   1896 0            b2669c24 R ps

@@ -1,0 +1,30 @@
+{
+  "pcm_config_deep_buffer": {
+    "size": 36,
+    "fields": {
+      "channels": 2,
+      "rate": 48000,
+      "period_size": 960,
+      "period_count": 4,
+      "format": 0,
+      "start_threshold": 240,
+      "stop_threshold": 2147483647,
+      "silence_threshold": 0,
+      "avail_min": 240
+    }
+  },
+  "pcm_config_low_latency": {
+    "size": 36,
+    "fields": {
+      "channels": 2,
+      "rate": 48000,
+      "period_size": 240,
+      "period_count": 2,
+      "format": 0,
+      "start_threshold": 60,
+      "stop_threshold": 2147483647,
+      "silence_threshold": 0,
+      "avail_min": 60
+    }
+  }
+}

@@ -1,0 +1,555 @@
+package com.android.systemui.statusbar.phone;
+
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.Paint;
+import android.graphics.PixelFormat;
+import android.graphics.Rect;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityNodeInfo;
+import com.android.systemui.R;
+import com.android.systemui.plugins.qs.QSTileView;
+import com.android.systemui.statusbar.notification.row.ExpandableNotificationRow;
+import com.android.systemui.statusbar.notification.stack.NotificationStackScrollLayout;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
+/**
+ * KYF37 keitai shade navigation (SystemUI shade + QS loop). One selection, driven only by physical keys.
+ *
+ * Notification mode (QS collapsed):  [header quick tiles 1..5]  ->  [notification rows]  ->  [Clear all]
+ *   Up/Down move along that list, Left/Right move between header tiles or expand/collapse a row,
+ *   OK opens/activates, DEL dismisses a row, digits 1..5 activate header tiles.
+ * Quick settings mode (Menu/F2):     [tiles 1..9 numbered, spatial grid]  ->  [brightness]  ->  [edit / user / settings]
+ *   D-pad moves spatially, OK activates, hold OK = detail page, digits 1..9 activate tiles, Left/Right on the
+ *   brightness slider changes brightness. Detail pages and the tile editor use ordinary Android focus (Back closes).
+ */
+final class Kyf37KeitaiKeys {
+    static Kyf37KeitaiKeys latest;
+    Kyf37KeitaiKeys() { latest = this; }
+    private View sel;
+    private CharSequence dateOrig;
+    private android.widget.TextView dateView;
+    private Drawable selFg;
+    private boolean longFired;
+    private final ArrayList<View> badged = new ArrayList<>();
+    private final ArrayList<Drawable> badges = new ArrayList<>();
+
+    // ---------------------------------------------------------------- helpers
+    private static boolean shown(View v) {
+        if (v == null || !v.isShown()) return false;
+        View p = v;
+        while (p != null) {
+            if (p.getAlpha() < 0.1f) return false;
+            if (!(p.getParent() instanceof View)) break;
+            p = (View) p.getParent();
+        }
+        Rect r = new Rect();
+        return v.getGlobalVisibleRect(r) && r.width() > 2 && r.height() > 2;
+    }
+    /** Visible on screen, ignoring the fade alpha of header containers. */
+    private static boolean flat(View v) {
+        if (v == null || !v.isShown()) return false;
+        Rect r = new Rect();
+        return v.getGlobalVisibleRect(r) && r.width() > 2 && r.height() > 2;
+    }
+    private static void tiles(View view, ArrayList<View> out) {
+        if (view == null || view.getVisibility() != View.VISIBLE) return;
+        if (view instanceof QSTileView) { if (shown(view)) out.add(view); return; }
+        if (view instanceof ViewGroup) {
+            ViewGroup g = (ViewGroup) view;
+            for (int i = 0; i < g.getChildCount(); i++) tiles(g.getChildAt(i), out);
+        }
+    }
+    private static ArrayList<View> topItems(StatusBarWindowView window) {
+        ArrayList<View> top = new ArrayList<>();
+        View hdr = window.findViewById(R.id.quick_status_bar_system_icons);
+        View clock = hdr == null ? null : hdr.findViewById(R.id.clock);
+        if (clock != null && clock.isClickable() && flat(clock)) top.add(clock);
+        int[] ids = { R.id.alarm_container, R.id.ringer_container };
+        for (int id : ids) {
+            View v = window.findViewById(id);
+            if (v != null && v.isClickable() && shown(v)) top.add(v);
+        }
+        sortGrid(top);
+        return top;
+    }
+    private void setCaption(StatusBarWindowView window, View tile) {
+        try {
+            android.widget.TextView d = window.findViewById(R.id.date);
+            if (d == null) return;
+            if (dateView != d || dateOrig == null) { dateView = d; dateOrig = d.getText(); }
+            if (tile == null) { d.setText(dateOrig); return; }
+            CharSequence cd = tile.getContentDescription();
+            String t = cd == null ? "" : cd.toString();
+            t = t.replaceAll("[\u200e\u200f\u202a-\u202e]", "").replace(".,", " - ").replace(",", " ").replaceAll("[.\\s]+$", "").trim();
+            d.setText(t);
+        } catch (Throwable ignored) { }
+    }
+    private void restoreCaption() {
+        try { if (dateView != null && dateOrig != null) dateView.setText(dateOrig); } catch (Throwable ignored) { }
+        dateOrig = null;
+    }
+    private static int[] center(View v) {
+        int[] o = new int[2]; v.getLocationOnScreen(o);
+        return new int[] { o[0] + v.getWidth() / 2, o[1] + v.getHeight() / 2 };
+    }
+    private static void sortGrid(ArrayList<View> list) {
+        Collections.sort(list, new Comparator<View>() {
+            @Override public int compare(View a, View b) {
+                int[] ca = center(a), cb = center(b);
+                int rowA = ca[1] / 40, rowB = cb[1] / 40;
+                if (rowA != rowB) return rowA - rowB;
+                return ca[0] - cb[0];
+            }
+        });
+    }
+    private static String describe(View v) {
+        CharSequence cd = v.getContentDescription();
+        String name = v.getClass().getSimpleName();
+        if (cd == null && v instanceof android.widget.TextView) cd = ((android.widget.TextView) v).getText();
+        if (cd == null && v instanceof ViewGroup) cd = firstText((ViewGroup) v);
+        int[] o = new int[2]; v.getLocationOnScreen(o);
+        return name + "|" + (cd == null ? "" : cd.toString().replace((char) 10, (char) 32)) + "|" + o[0] + "," + o[1];
+    }
+    private static CharSequence firstText(ViewGroup g) {
+        for (int i = 0; i < g.getChildCount(); i++) {
+            View c = g.getChildAt(i);
+            if (c instanceof android.widget.TextView && ((android.widget.TextView) c).getText().length() > 0)
+                return ((android.widget.TextView) c).getText();
+            if (c instanceof ViewGroup) { CharSequence t = firstText((ViewGroup) c); if (t != null) return t; }
+        }
+        return null;
+    }
+    private void select(StatusBarWindowView window, View v) {
+        if (v == sel) return;
+        android.util.Log.i("Kyf37Shade", "select " + describe(v));
+        unselect();
+        sel = v;
+        selFg = v.getForeground();
+        v.setForeground(android.view.Kyf37FocusTheme.selection(window.getContext()));
+        NotificationPanelView panel = window.findViewById(R.id.notification_panel);
+        if (v instanceof QSTileView && panel != null && !panel.isQsExpanded()) setCaption(window, v);
+    }
+    private void unselect() {
+        if (sel != null) { try { sel.setForeground(selFg); } catch (Throwable t) { } }
+        sel = null; selFg = null; longFired = false;
+        restoreCaption();
+    }
+    void clear() { unselect(); clearBadges(); }
+    /** Called by the shade backdrop while the shade is visible so the number badges are on screen at rest. */
+    static void refresh(View anyShadeView) {
+        Kyf37KeitaiKeys k = latest;
+        if (k == null) return;
+        View root = anyShadeView.getRootView();
+        if (!(root instanceof StatusBarWindowView)) return;
+        StatusBarWindowView w = (StatusBarWindowView) root;
+        NotificationPanelView panel = w.findViewById(R.id.notification_panel);
+        if (panel == null || panel.isFullyCollapsed()) { k.clearBadges(); return; }
+        if (panel.isQsExpanded()) {
+            if (panel.isQsDetailShowing()) { k.clearBadges(); return; }
+            ArrayList<View> t = new ArrayList<>(); tiles(w.findViewById(R.id.quick_settings_panel), t); sortGrid(t);
+            if (!k.badgesOk(t)) k.showBadges(t, 9);
+        } else {
+            ArrayList<View> t = new ArrayList<>(); tiles(w.findViewById(R.id.quick_qs_panel), t); sortGrid(t);
+            if (!k.badgesOk(t)) k.showBadges(t, 9);
+        }
+    }
+
+    // ---------------------------------------------------------------- number badges
+    private static final class Badge extends Drawable {
+        private final View owner; private final String text; private final Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
+        Badge(View owner, String text) { this.owner = owner; this.text = text; }
+        @Override public void draw(Canvas c) {
+            float d = owner.getResources().getDisplayMetrics().density;
+            float r = 9 * d, cx = 6 * d + r, cy = 4 * d + r;
+            p.setStyle(Paint.Style.FILL); p.setColor(0xe0102030);
+            c.drawCircle(cx, cy, r, p);
+            p.setColor(0xffffffff); p.setTextAlign(Paint.Align.CENTER);
+            p.setTypeface(Typeface.DEFAULT_BOLD); p.setTextSize(12 * d);
+            c.drawText(text, cx, cy - (p.ascent() + p.descent()) / 2f, p);
+        }
+        @Override public void setAlpha(int a) { }
+        @Override public void setColorFilter(ColorFilter f) { }
+        @Override public int getOpacity() { return PixelFormat.TRANSLUCENT; }
+    }
+    private void showBadges(ArrayList<View> items, int max) {
+        clearBadges();
+        for (int i = 0; i < items.size() && i < max; i++) {
+            View v = items.get(i);
+            Badge b = new Badge(v, String.valueOf(i + 1));
+            b.setBounds(0, 0, Math.max(1, v.getWidth()), Math.max(1, v.getHeight()));
+            v.getOverlay().add(b); v.invalidate();
+            badged.add(v); badges.add(b);
+        }
+    }
+    private void clearBadges() {
+        for (int i = 0; i < badged.size(); i++) {
+            try { badged.get(i).getOverlay().remove(badges.get(i)); badged.get(i).invalidate(); } catch (Throwable t) { }
+        }
+        badged.clear(); badges.clear();
+    }
+    private boolean badgesOk(ArrayList<View> items) {
+        if (badged.size() != Math.min(items.size(), 9)) return false;
+        for (int i = 0; i < badged.size(); i++) if (badged.get(i) != items.get(i)) return false;
+        return true;
+    }
+
+    // ---------------------------------------------------------------- activation
+    private void activate(View v) {
+        if (v instanceof android.widget.SeekBar || findSeek(v) != null) return;
+        android.util.Log.i("Kyf37Shade", "activate " + describe(v));
+        v.performClick();
+        unselect();
+    }
+    /** Hold OK: the in-shade detail page when the tile has one (the label/arrow area), else the tile's long-press (its Settings page). */
+    private static void detail(View tile) {
+        View sec = secondary(tile, tile);
+        if (sec != null) { android.util.Log.i("Kyf37Shade", "detail " + describe(tile)); sec.performClick(); return; }
+        android.util.Log.i("Kyf37Shade", "longclick " + describe(tile));
+        tile.performLongClick();
+    }
+    private static View secondary(View root, View tile) {
+        if (root instanceof ViewGroup) {
+            ViewGroup g = (ViewGroup) root;
+            for (int i = 0; i < g.getChildCount(); i++) {
+                View c = g.getChildAt(i);
+                if (c.getVisibility() == View.VISIBLE && c != tile && c.isClickable() && c.hasOnClickListeners()) return c;
+                View r = secondary(c, tile); if (r != null) return r;
+            }
+        }
+        return null;
+    }
+    private static boolean isOk(int k) { return k == KeyEvent.KEYCODE_DPAD_CENTER || k == KeyEvent.KEYCODE_ENTER; }
+
+    // ---------------------------------------------------------------- entry point
+    boolean handle(StatusBarWindowView window, KeyEvent event) {
+        NotificationPanelView panel = window.findViewById(R.id.notification_panel);
+        if (panel == null || panel.isFullyCollapsed()) { clear(); return false; }
+        int key = event.getKeyCode();
+        boolean down = event.getAction() == KeyEvent.ACTION_DOWN;
+        // Detail pages and the tile editor use stock Android focus; Back/Menu are handled by StatusBar.
+        View custom = window.findViewById(R.id.qs_customize);
+        if (panel.isQsExpanded() && custom != null && custom.getVisibility() == View.VISIBLE) {
+            return containerKeys(window, event, custom);
+        }
+        if (panel.isQsExpanded() && panel.isQsDetailShowing()) {
+            View detail = window.findViewById(R.id.qs_detail);
+            if (detail != null) return containerKeys(window, event, detail);
+        }
+        if (key == KeyEvent.KEYCODE_F2 || key == KeyEvent.KEYCODE_MENU) {
+            if (down && event.getRepeatCount() == 0) {
+                boolean toQs = !panel.isQsExpanded();
+                clear();
+                if (toQs) panel.expandWithQs(); else panel.expandWithoutQs();
+            }
+            return true;
+        }
+        boolean dpad = key == KeyEvent.KEYCODE_DPAD_UP || key == KeyEvent.KEYCODE_DPAD_DOWN
+                || key == KeyEvent.KEYCODE_DPAD_LEFT || key == KeyEvent.KEYCODE_DPAD_RIGHT;
+        boolean digit = key >= KeyEvent.KEYCODE_1 && key <= KeyEvent.KEYCODE_9;
+        if (!dpad && !isOk(key) && key != KeyEvent.KEYCODE_DEL && !digit) return false;
+        return panel.isQsExpanded() ? qsKeys(window, event, key, down, digit) : shadeKeys(window, event, panel, key, down, digit);
+    }
+
+    // ---------------------------------------------------------------- detail pages / tile editor
+    private static void clickables(View v, View root, ArrayList<View> out) {
+        if (v == null || v.getVisibility() != View.VISIBLE) return;
+        if (v != root && v.isClickable() && v.isEnabled() && v.isShown() && v.getWidth() > 8) { out.add(v); return; }
+        if (v instanceof ViewGroup) {
+            ViewGroup g = (ViewGroup) v;
+            for (int i = 0; i < g.getChildCount(); i++) clickables(g.getChildAt(i), root, out);
+        }
+    }
+    /** Keypad model for the in-shade detail page (Wi-Fi list, Bluetooth, ...) and the tile editor: list of clickables. */
+    private boolean containerKeys(StatusBarWindowView window, KeyEvent event, View root) {
+        int key = event.getKeyCode();
+        boolean down = event.getAction() == KeyEvent.ACTION_DOWN;
+        boolean dpad = key == KeyEvent.KEYCODE_DPAD_UP || key == KeyEvent.KEYCODE_DPAD_DOWN
+                || key == KeyEvent.KEYCODE_DPAD_LEFT || key == KeyEvent.KEYCODE_DPAD_RIGHT;
+        if (!dpad && !isOk(key)) return false;
+        clearBadges();
+        ArrayList<View> items = new ArrayList<>();
+        clickables(root, root, items);
+        sortGrid(items);
+        if (items.isEmpty()) return false;
+        if (sel != null && !items.contains(sel)) unselect();
+        if (!down) return true;
+        if (sel == null) { select(window, items.get(0)); sel.requestRectangleOnScreen(new Rect(0, 0, sel.getWidth(), sel.getHeight())); return true; }
+        if (isOk(key)) {
+            if (event.getRepeatCount() == 0) {
+                View v = sel; android.util.Log.i("Kyf37Shade", "activate " + describe(v)); v.performClick();
+                // the detail list may be rebuilt; reselect on the next key
+                if (!(v instanceof android.widget.Checkable)) unselect();
+            }
+            return true;
+        }
+        int[] c = center(sel); int best = Integer.MAX_VALUE; View target = null;
+        boolean horiz = key == KeyEvent.KEYCODE_DPAD_LEFT || key == KeyEvent.KEYCODE_DPAD_RIGHT;
+        boolean fwd = key == KeyEvent.KEYCODE_DPAD_DOWN || key == KeyEvent.KEYCODE_DPAD_RIGHT;
+        for (View v : items) {
+            if (v == sel) continue;
+            int[] t = center(v);
+            int along = horiz ? t[0] - c[0] : t[1] - c[1];
+            int across = horiz ? t[1] - c[1] : t[0] - c[0];
+            if (!fwd) along = -along;
+            if (along < 6) continue;
+            if (horiz && Math.abs(across) > 40) continue;
+            int score = along + (horiz ? 4 : 1) * Math.abs(across);
+            if (score < best) { best = score; target = v; }
+        }
+        if (target != null) { select(window, target); sel.requestRectangleOnScreen(new Rect(0, 0, sel.getWidth(), sel.getHeight())); }
+        return true;
+    }
+
+    // ---------------------------------------------------------------- quick settings mode
+    private boolean qsKeys(StatusBarWindowView window, KeyEvent event, int key, boolean down, boolean digit) {
+        ArrayList<View> tiles = new ArrayList<>();
+        tiles(window.findViewById(R.id.quick_settings_panel), tiles);
+        sortGrid(tiles);
+        ArrayList<View> top = topItems(window);
+        ArrayList<View> items = new ArrayList<>(top);
+        items.addAll(tiles);
+        View slider = window.findViewById(R.id.brightness_slider);
+        if (shown(slider)) items.add(slider);
+        View edit = window.findViewById(android.R.id.edit);
+        View user = window.findViewById(R.id.multi_user_switch);
+        View settings = window.findViewById(R.id.settings_button);
+        ArrayList<View> foot = new ArrayList<>();
+        if (shown(edit)) foot.add(edit);
+        if (shown(user)) foot.add(user);
+        if (shown(settings)) foot.add(settings);
+        items.addAll(foot);
+        if (items.isEmpty()) return true;
+        if (!badgesOk(tiles)) showBadges(tiles, 9);
+        for (View t : tiles) if (!items.contains(t)) items.add(t);
+        if (sel != null && (!items.contains(sel))) unselect();
+
+        if (digit) {
+            if (down && event.getRepeatCount() == 0) {
+                int n = key - KeyEvent.KEYCODE_1;
+                if (n < tiles.size()) { select(window, tiles.get(n)); activate(tiles.get(n)); }
+            }
+            return true;
+        }
+        View firstItem = tiles.isEmpty() ? items.get(0) : tiles.get(0);
+        if (isOk(key)) {
+            if (sel == null) { if (down) select(window, firstItem); return true; }
+            if (down && event.getRepeatCount() == 0) longFired = false;
+            if (down && event.getRepeatCount() == 1 && !longFired && sel != null) {
+                longFired = true; detail(sel); unselect(); return true;
+            }
+            if (!down && !longFired && sel != null) activate(sel);
+            if (!down) longFired = false;
+            return true;
+        }
+        if (!down) return true;
+        if (key == KeyEvent.KEYCODE_DEL) return true;
+        if (sel == null) { select(window, firstItem); return true; }
+        // slider: left/right change the value
+        if (sel == slider && (key == KeyEvent.KEYCODE_DPAD_LEFT || key == KeyEvent.KEYCODE_DPAD_RIGHT)) {
+            android.widget.SeekBar bar = findSeek(slider);
+            if (bar != null) bar.performAccessibilityAction(key == KeyEvent.KEYCODE_DPAD_RIGHT
+                    ? AccessibilityNodeInfo.ACTION_SCROLL_FORWARD : AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD, null);
+            return true;
+        }
+        int idx = items.indexOf(sel);
+        int target = idx;
+        boolean tileSel = tiles.contains(sel);
+        if (top.contains(sel)) {
+            int gi = top.indexOf(sel);
+            if (key == KeyEvent.KEYCODE_DPAD_DOWN) { select(window, firstItem); return true; }
+            if (key == KeyEvent.KEYCODE_DPAD_RIGHT) select(window, top.get(Math.min(top.size() - 1, gi + 1)));
+            if (key == KeyEvent.KEYCODE_DPAD_LEFT) select(window, top.get(Math.max(0, gi - 1)));
+            return true;
+        }
+        if (key == KeyEvent.KEYCODE_DPAD_DOWN || key == KeyEvent.KEYCODE_DPAD_UP) {
+            boolean dn = key == KeyEvent.KEYCODE_DPAD_DOWN;
+            if (tileSel) {
+                int[] c = center(sel); int best = Integer.MAX_VALUE;
+                for (int i = 0; i < tiles.size(); i++) {
+                    if (tiles.get(i) == sel) continue;
+                    int[] t = center(tiles.get(i)); int along = dn ? t[1] - c[1] : c[1] - t[1];
+                    if (along < 8) continue;
+                    int score = along + 4 * Math.abs(t[0] - c[0]);
+                    if (score < best) { best = score; target = items.indexOf(tiles.get(i)); }
+                }
+                if (target == idx) { // no tile row further: go to the next group
+                    if (dn) target = items.indexOf(slider != null && items.contains(slider) ? slider : (foot.isEmpty() ? sel : foot.get(0)));
+                    else if (!top.isEmpty()) target = items.indexOf(top.get(0));
+                }
+            } else if (sel == slider) {
+                if (dn) target = foot.isEmpty() ? idx : items.indexOf(foot.get(0));
+                else target = tiles.isEmpty() ? idx : items.indexOf(tiles.get(lastRowNearest(tiles, center(sel)[0])));
+            } else { // footer buttons
+                if (!dn) target = slider != null && items.contains(slider) ? items.indexOf(slider)
+                        : (tiles.isEmpty() ? idx : items.indexOf(tiles.get(lastRowNearest(tiles, center(sel)[0]))));
+            }
+        } else { // left / right
+            boolean r = key == KeyEvent.KEYCODE_DPAD_RIGHT;
+            ArrayList<View> group = tileSel ? tiles : foot;
+            if (group.contains(sel)) {
+                int gi = group.indexOf(sel);
+                if (tileSel) {
+                    // same row neighbour, else previous/next page, else wrap to previous/next tile
+                    int[] c = center(sel); int best = Integer.MAX_VALUE; int found = -1;
+                    for (int i = 0; i < tiles.size(); i++) {
+                        View t = tiles.get(i); if (t == sel) continue;
+                        int[] tc = center(t);
+                        if (Math.abs(tc[1] - c[1]) > 30) continue;
+                        int along = r ? tc[0] - c[0] : c[0] - tc[0];
+                        if (along > 4 && along < best) { best = along; found = i; }
+                    }
+                    if (found >= 0) target = items.indexOf(tiles.get(found));
+                    else if (pagePage(window, r)) { clear(); return true; }
+                    else if (!r && gi > 0) target = items.indexOf(tiles.get(gi - 1));
+                    else if (r && gi < tiles.size() - 1) target = items.indexOf(tiles.get(gi + 1));
+                } else {
+                    int ni = r ? Math.min(group.size() - 1, gi + 1) : Math.max(0, gi - 1);
+                    target = items.indexOf(group.get(ni));
+                }
+            }
+        }
+        select(window, items.get(target));
+        return true;
+    }
+    private static int lastRowNearest(ArrayList<View> tiles, int x) {
+        int maxY = Integer.MIN_VALUE;
+        for (View v : tiles) maxY = Math.max(maxY, center(v)[1]);
+        int best = 0, bd = Integer.MAX_VALUE;
+        for (int i = 0; i < tiles.size(); i++) {
+            int[] c = center(tiles.get(i));
+            if (Math.abs(c[1] - maxY) > 30) continue;
+            int d = Math.abs(c[0] - x); if (d < bd) { bd = d; best = i; }
+        }
+        return best;
+    }
+    private static android.widget.SeekBar findSeek(View v) {
+        if (v instanceof android.widget.SeekBar) return (android.widget.SeekBar) v;
+        if (v instanceof ViewGroup) {
+            ViewGroup g = (ViewGroup) v;
+            for (int i = 0; i < g.getChildCount(); i++) {
+                android.widget.SeekBar s = findSeek(g.getChildAt(i)); if (s != null) return s;
+            }
+        }
+        return null;
+    }
+    /** Pages of the tile grid (PagedTileLayout is a ViewPager). */
+    private boolean pagePage(StatusBarWindowView window, boolean next) {
+        View pager = findPager(window.findViewById(R.id.quick_settings_panel));
+        if (!(pager instanceof androidx.viewpager.widget.ViewPager)) return false;
+        androidx.viewpager.widget.ViewPager vp = (androidx.viewpager.widget.ViewPager) pager;
+        int cur = vp.getCurrentItem(), cnt = vp.getAdapter() == null ? 0 : vp.getAdapter().getCount();
+        int n = next ? cur + 1 : cur - 1;
+        if (n < 0 || n >= cnt) return false;
+        vp.setCurrentItem(n, true);
+        return true;
+    }
+    private static View findPager(View v) {
+        if (v instanceof androidx.viewpager.widget.ViewPager) return v;
+        if (v instanceof ViewGroup) {
+            ViewGroup g = (ViewGroup) v;
+            for (int i = 0; i < g.getChildCount(); i++) { View f = findPager(g.getChildAt(i)); if (f != null) return f; }
+        }
+        return null;
+    }
+
+    // ---------------------------------------------------------------- notification mode
+    private boolean shadeKeys(StatusBarWindowView window, KeyEvent event, NotificationPanelView panel,
+            int key, boolean down, boolean digit) {
+        ArrayList<View> head = new ArrayList<>();
+        tiles(window.findViewById(R.id.quick_qs_panel), head);
+        sortGrid(head);
+        NotificationStackScrollLayout stack = window.findViewById(R.id.notification_stack_scroller);
+        ArrayList<ExpandableNotificationRow> rows = new ArrayList<>();
+        View clearAll = null;
+        if (stack != null) {
+            for (int i = 0; i < stack.getChildCount(); i++) {
+                View child = stack.getChildAt(i);
+                if (child instanceof ExpandableNotificationRow && child.getVisibility() == View.VISIBLE) {
+                    ExpandableNotificationRow row = (ExpandableNotificationRow) child;
+                    rows.add(row);
+                    if (row.areChildrenExpanded() && row.getNotificationChildren() != null)
+                        for (ExpandableNotificationRow nested : row.getNotificationChildren())
+                            if (nested.getVisibility() == View.VISIBLE) rows.add(nested);
+                }
+            }
+            View d = stack.findViewById(R.id.dismiss_text);
+            if (d != null && d.getVisibility() == View.VISIBLE && d.isShown()) clearAll = d;
+        }
+        ArrayList<View> top = topItems(window);
+        ArrayList<View> list = new ArrayList<>(top);
+        list.addAll(head);
+        list.addAll(rows);
+        if (clearAll != null) list.add(clearAll);
+        if (list.isEmpty()) { clear(); return false; }
+        if (!badgesOk(head)) showBadges(head, 9);
+        if (sel != null && !list.contains(sel)) unselect();
+
+        if (digit) {
+            if (down && event.getRepeatCount() == 0) {
+                int n = key - KeyEvent.KEYCODE_1;
+                if (n < head.size()) { select(window, head.get(n)); activate(head.get(n)); }
+            }
+            return true;
+        }
+        if (isOk(key)) {
+            if (sel == null) { if (down) select(window, head.isEmpty() ? list.get(top.size()) : head.get(0)); return true; }
+            if (!down) return true;
+            if (event.getRepeatCount() == 0) longFired = false;
+            if (event.getRepeatCount() == 1 && !longFired && head.contains(sel)) {
+                longFired = true; detail(sel); unselect(); return true;
+            }
+            if (event.getRepeatCount() == 0) {
+                if (sel instanceof ExpandableNotificationRow) sel.performClick();
+                else if (head.contains(sel) || top.contains(sel)) { View v = sel; android.util.Log.i("Kyf37Shade", "activate " + describe(v)); v.performClick(); unselect(); }
+                else { View v = sel; unselect(); v.performClick(); }
+            }
+            return true;
+        }
+        if (!down) return true;
+        if (sel == null) { select(window, head.isEmpty() ? list.get(top.size()) : head.get(0)); return true; }
+        int idx = list.indexOf(sel);
+        int firstRow = top.size() + head.size();
+        if (key == KeyEvent.KEYCODE_DPAD_DOWN) {
+            if (top.contains(sel)) idx = head.isEmpty() ? Math.min(list.size() - 1, firstRow) : top.size();
+            else if (head.contains(sel)) { if (list.size() > firstRow) idx = firstRow; }
+            else idx = Math.min(list.size() - 1, idx + 1);
+        } else if (key == KeyEvent.KEYCODE_DPAD_UP) {
+            if (idx > firstRow) idx--;
+            else if (idx == firstRow && !head.isEmpty()) idx = top.size();
+            else if ((head.contains(sel) || idx == firstRow) && !top.isEmpty()) idx = 0;
+        } else if (top.contains(sel)) {
+            int gi = top.indexOf(sel);
+            idx = key == KeyEvent.KEYCODE_DPAD_RIGHT ? Math.min(top.size() - 1, gi + 1) : Math.max(0, gi - 1);
+        } else if (head.contains(sel)) {
+            int gi = head.indexOf(sel);
+            idx = top.size() + (key == KeyEvent.KEYCODE_DPAD_RIGHT ? Math.min(head.size() - 1, gi + 1) : Math.max(0, gi - 1));
+        } else if (sel instanceof ExpandableNotificationRow && event.getRepeatCount() == 0) {
+            ExpandableNotificationRow row = (ExpandableNotificationRow) sel;
+            boolean exp = key == KeyEvent.KEYCODE_DPAD_RIGHT;
+            if (row.isSummaryWithChildren()) row.setChildrenExpanded(exp, true); else row.setUserExpanded(exp, true);
+            return true;
+        } else if (key == KeyEvent.KEYCODE_DEL) {
+            // handled below
+        }
+        if (key == KeyEvent.KEYCODE_DEL) {
+            if (sel instanceof ExpandableNotificationRow && event.getRepeatCount() == 0) {
+                ExpandableNotificationRow row = (ExpandableNotificationRow) sel;
+                if (row.getEntry().isClearable()) { unselect(); row.performDismiss(false); }
+            }
+            return true;
+        }
+        View next = list.get(idx);
+        select(window, next);
+
+        if (stack != null && next instanceof com.android.systemui.statusbar.notification.row.ExpandableView)
+            stack.scrollTo((com.android.systemui.statusbar.notification.row.ExpandableView) next);
+        return true;
+    }
+}

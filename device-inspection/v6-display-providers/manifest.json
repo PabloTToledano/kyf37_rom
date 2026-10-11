@@ -1,0 +1,52 @@
+[
+  {
+    "path": "lib/liboverlay.so",
+    "previous_sha256": "6c054fc6aa7d833a7b8e48d46d30f4bc068b534c6edcc062d2feeecd0a701791",
+    "new_sha256": "3f5edf1d137ba9ee869a3a61cabf854af83889e90cb0a0e4d87527de54eba31d"
+  },
+  {
+    "path": "lib/libhdmi.so",
+    "previous_sha256": "875c7827120aaba3225129451585d47c5680fa0fe206aede0de7cf80ca6ed8ba",
+    "new_sha256": "87c7cfea41965838dcabd0bf31572aabf9d30960ef049389bf0b8ffb24549f40"
+  },
+  {
+    "path": "lib/libqdutils.so",
+    "previous_sha256": "9edefb2e0417b91e6e10c29cb19b23ea284d962dad370979000457685db2ffbd",
+    "new_sha256": "e69243e85a60f061bf038fd0a830904de0c13d2956a62d8d5e1d303833cdd6da"
+  },
+  {
+    "path": "lib/libmemalloc.so",
+    "previous_sha256": "46db99914b29f4de17b022458fe69eef3aee71cea8418c3f5d7f8af5233be050",
+    "new_sha256": "3570380ac3c4baf22541a00420db94ad908bb2b482b19ad58192618efb1222e9"
+  },
+  {
+    "path": "lib/libqdMetaData.so",
+    "previous_sha256": "e70a53925d03f98bab5dc76fe0f614f77a6359e97243e2dd8029ec51f21f4b39",
+    "new_sha256": "70fc4d54581939670c117beb2a9918fdd75d3ec17fb0666bab56a3b55f37160c"
+  },
+  {
+    "path": "lib/libqservice.so",
+    "previous_sha256": "9f1b6a7a8d1866d6191cc79eb8c471b893bafc93e7572249063dacaa6fcff0c9",
+    "new_sha256": "803aff49e258b654090de8a0b3714cce20d66e35c5fca54bb7eb10e1f1638fe2"
+  },
+  {
+    "path": "lib/hw/hwcomposer.msm8909.so",
+    "previous_sha256": "499bbd536bbf2a96fe611ba300b8f7aeb0dbdaf33cada7dc19af6cf1b880acbd",
+    "new_sha256": "d5013a7173d1b229ccf6658ee3a03cffc07a8794c0085d0f23073b9daa02f269"
+  },
+  {
+    "path": "lib/hw/gralloc.msm8909.so",
+    "previous_sha256": "c3297037e49580bc1ec8250fd023c949aa2ac43d340be941567a76d2fe505844",
+    "new_sha256": "34cee9437c17f3c1e37dd2f68f0b2c9f234d7db6f1641f0538255d284d527bde"
+  },
+  {
+    "path": "lib/hw/copybit.msm8909.so",
+    "previous_sha256": "56a5df8b26d7bf3412533dbd526fb1120db42f997a27c93ac5eeb155e62d2aef",
+    "new_sha256": "cf40d5802defbad61241c49ab5a6c991f651ccc6eedf49192b9c23cf59e69454"
+  },
+  {
+    "path": "lib/hw/memtrack.msm8909.so",
+    "previous_sha256": "bbf47cc31d68817b0e3c07b4afb34e728dc15f5572ddf12769a2653e8e3546b4",
+    "new_sha256": "e2c240a9d368525764df6e433a59667be29ff16d5c09cddb24d54464ca626112"
+  }
+]

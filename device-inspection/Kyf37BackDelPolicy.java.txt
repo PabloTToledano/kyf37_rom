@@ -1,0 +1,40 @@
+package android.view;
+
+/**
+ * Pure decision logic for "Clear/Back deletes a character when a text box has text".
+ * No Android dependencies so it is unit-tested on the host (test-kyf37-back-del.sh).
+ *
+ * @hide
+ */
+public final class Kyf37BackDelPolicy {
+    public static final int NONE = 0;          // perform the normal Back action
+    public static final int DEL = 1;           // KEYCODE_DEL (backspace)
+    public static final int FORWARD_DEL = 2;   // KEYCODE_FORWARD_DEL (cursor at the very start)
+    public static final int KEYCODE_BACK = 4, KEYCODE_DEL = 67, KEYCODE_FORWARD_DEL = 112;
+    public static final int SCAN_CLEAR = 355;
+
+    private Kyf37BackDelPolicy() { }
+
+    /**
+     * @param editable    focused view is an editable text field (not read-only)
+     * @param hasSelection a range is selected (DEL deletes it)
+     * @param before      characters before the cursor / selection start (includes any
+     *                    composing text, because composing text lives in the same buffer)
+     * @param after       characters after the cursor / selection end
+     */
+    public static int decide(boolean editable, boolean hasSelection, int before, int after) {
+        if (!editable) return NONE;
+        if (hasSelection || before > 0) return DEL;
+        if (after > 0) return FORWARD_DEL;   // field has text but cursor is at the start
+        return NONE;                         // empty field: normal Back
+    }
+
+    /** Only the physical Clear key (scan 355) is rewritten; debug override for adb tests. */
+    public static boolean isClearKey(int keyCode, int scanCode, boolean anySource) {
+        return keyCode == KEYCODE_BACK && (scanCode == SCAN_CLEAR || anySource);
+    }
+
+    public static int keyCodeFor(int mode) {
+        return mode == DEL ? KEYCODE_DEL : mode == FORWARD_DEL ? KEYCODE_FORWARD_DEL : 0;
+    }
+}

@@ -1,0 +1,14 @@
+{
+  "source": "C:\\Users\\pablo\\Downloads\\bootanimation_icoca_kirby_480x854.zip",
+  "sha256": "d77270027c825e9387978f660ad0140e7888abc9830fc19599c4f7240d6ffb49",
+  "bytes": 7858587,
+  "desc": "480 854 12\np 0 0 part0\n",
+  "frames": 16,
+  "frame_dimensions": {
+    "480x854": 16
+  },
+  "compression_methods": [
+    0
+  ],
+  "crc_verified": true
+}

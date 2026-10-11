@@ -1,0 +1,445 @@
+package org.kyf37.home;
+
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.StateListDrawable;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextClock;
+import android.widget.TextView;
+import android.widget.Toast;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+
+/** Icon-grid home screen: 3 columns, native D-pad focus, digits 1-9 launch the first nine tiles. */
+public final class Home extends Activity {
+    private static final class Tile {
+        String label;
+        Drawable icon;
+        Intent intent;
+        String folderId;
+    }
+
+    private final ArrayList<Tile> tiles = new ArrayList<Tile>();
+    private GridView grid;
+    private WallpaperContrast wallpaperContrast;
+    private TextClock clockText,dateText;
+    private boolean contrastUpdatePosted;
+    private final android.database.ContentObserver themeObserver = new android.database.ContentObserver(new android.os.Handler()) {
+        @Override public void onChange(boolean self) { recreate(); }
+    };
+    private final BaseAdapter adapter = new BaseAdapter() {
+        @Override public int getCount() { return tiles.size(); }
+        @Override public Object getItem(int i) { return tiles.get(i); }
+        @Override public long getItemId(int i) { return i; }
+        @Override public View getView(int position, View convert, ViewGroup parent) {
+            float d = getResources().getDisplayMetrics().density;
+            LinearLayout cell;
+            ImageView icon;
+            TextView label;
+            if (convert == null) {
+                cell = new LinearLayout(Home.this);
+                cell.setOrientation(LinearLayout.VERTICAL);
+                cell.setGravity(Gravity.CENTER_HORIZONTAL);
+                cell.setPadding((int) (4 * d), (int) (8 * d), (int) (4 * d), (int) (6 * d));
+                icon = new ImageView(Home.this);
+                icon.setId(1);
+                cell.addView(icon, new LinearLayout.LayoutParams((int) (72 * d), (int) (72 * d)));
+                label = new TextView(Home.this);
+                label.setId(2);
+                label.setTextColor(Color.WHITE);
+                label.setShadowLayer(3f * d, 0, d, 0xFF233C50);
+                label.setTextSize(12);
+                label.setGravity(Gravity.CENTER);
+                label.setSingleLine(true);
+                label.setEllipsize(android.text.TextUtils.TruncateAt.END);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                lp.topMargin = (int) (4 * d);
+                cell.addView(label, lp);
+                cell.setLayoutParams(new GridView.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT, (int) (110 * d)));
+                cell.setWillNotDraw(false); // else View.draw() is skipped and the themed selection never paints
+            } else {
+                cell = (LinearLayout) convert;
+                icon = (ImageView) cell.findViewById(1);
+                label = (TextView) cell.findViewById(2);
+            }
+            Tile t = tiles.get(position);
+            icon.setImageDrawable(t.icon);
+            label.setText(position < 9 ? (position + 1) + " " + t.label : t.label);
+            scheduleContrast();
+            return cell;
+        }
+    };
+
+    @Override public void onCreate(Bundle state) {
+        super.onCreate(state);
+        wallpaperContrast=new WallpaperContrast(this,new Runnable(){ public void run(){scheduleContrast();} });
+        float d = getResources().getDisplayMetrics().density;
+        LinearLayout root = new LinearLayout(this);
+        root.setOrientation(LinearLayout.VERTICAL);
+        getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_SHOW_WALLPAPER);
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        root.setBackgroundColor(Color.TRANSPARENT);
+        LinearLayout header = new LinearLayout(this);
+        header.setOrientation(LinearLayout.VERTICAL);
+        header.setGravity(Gravity.CENTER_HORIZONTAL);
+        header.setPadding(0, (int) (6 * d), 0, (int) (6 * d));
+        TextClock time = new TextClock(this);
+        clockText=time;
+        time.setFormat12Hour("h:mm");
+        time.setFormat24Hour("HH:mm");
+        time.setTextColor(Color.WHITE);
+        time.setShadowLayer(3f * d, 0, d, 0xFF233C50);
+        time.setTextSize(34);
+        time.setTypeface(Typeface.DEFAULT_BOLD);
+        header.addView(time);
+        TextClock date = new TextClock(this);
+        dateText=date;
+        date.setFormat12Hour("EEEE, d MMMM");
+        date.setFormat24Hour("EEEE, d MMMM");
+        date.setTextColor(Color.WHITE);
+        date.setShadowLayer(3f * d, 0, d, 0xFF233C50);
+        date.setTextSize(13);
+        header.addView(date);
+        root.addView(header, new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        folderTitle=new TextView(this);
+        folderTitle.setTextColor(Color.WHITE);folderTitle.setTextSize(18);
+        folderTitle.setGravity(Gravity.CENTER);folderTitle.setShadowLayer(3*d,0,d,0xff233c50);
+        folderTitle.setPadding(0,(int)(8*d),0,(int)(8*d));folderTitle.setVisibility(View.GONE);
+        root.addView(folderTitle);
+        grid = new GridView(this);
+        grid.setNumColumns(3);
+        grid.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
+        grid.setVerticalSpacing((int) (2 * d));
+        grid.setHorizontalSpacing((int) (2 * d));
+        grid.setPadding((int) (6 * d), 0, (int) (6 * d), 0);
+        grid.setClipToPadding(false);
+        grid.setSelector(selector(d));
+        grid.setDrawSelectorOnTop(false);
+        grid.setVerticalScrollBarEnabled(false);
+        grid.setAdapter(adapter);
+        grid.setOnScrollListener(new android.widget.AbsListView.OnScrollListener(){
+            public void onScrollStateChanged(android.widget.AbsListView v,int state){scheduleContrast();}
+            public void onScroll(android.widget.AbsListView v,int first,int visible,int total){scheduleContrast();}
+        });
+        grid.setOnItemLongClickListener((parent,view,pos,id)->{grid.setSelection(pos);folderMenu();return true;});
+        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override public void onItemClick(AdapterView<?> p, View v, int pos, long id) {
+                activate(tiles.get(pos));
+            }
+        });
+        root.addView(grid, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
+        setContentView(root);
+        grid.requestFocus();
+    }
+
+    @Override protected void onStart() {
+        super.onStart();
+        wallpaperContrast.start();
+        getContentResolver().registerContentObserver(android.provider.Settings.Global.getUriFor("kyf37_icon_theme"),false,themeObserver);
+    }
+    @Override protected void onStop() {
+        wallpaperContrast.stop();
+        getContentResolver().unregisterContentObserver(themeObserver);
+        super.onStop();
+    }
+    private void scheduleContrast() {
+        if(grid==null||contrastUpdatePosted)return;
+        contrastUpdatePosted=true;
+        grid.post(new Runnable(){ public void run(){
+            contrastUpdatePosted=false;
+            wallpaperContrast.apply(clockText);wallpaperContrast.apply(dateText);
+              if(folderTitle!=null)wallpaperContrast.apply(folderTitle);
+            for(int i=0;i<grid.getChildCount();i++)
+                wallpaperContrast.apply((TextView)grid.getChildAt(i).findViewById(2));
+        }});
+    }
+
+    private Drawable selector(float d) {
+        // With the focus-theme framework the themed outline (android.view.Kyf37FocusTheme) is the
+        // only selection look; on older ROMs keep the legacy blue selector so focus stays visible.
+        if (Kyf37FocusCompat.has()) return new ColorDrawable(Color.TRANSPARENT);
+        GradientDrawable focused = new GradientDrawable();
+        focused.setColor(0x553D8BFF);
+        focused.setStroke((int) (2 * d), 0xFF6AA9FF);
+        focused.setCornerRadius(10 * d);
+        StateListDrawable s = new StateListDrawable();
+        s.addState(new int[] { android.R.attr.state_pressed }, focused);
+        s.addState(new int[] { android.R.attr.state_focused }, focused);
+        s.addState(new int[] { android.R.attr.state_selected }, focused);
+        s.addState(new int[] {}, new ColorDrawable(Color.TRANSPARENT));
+        return s;
+    }
+
+    @Override public void onResume() {
+        super.onResume();
+        wallpaperContrast.refresh();
+        scheduleContrast();
+        PackageManager pm = getPackageManager();
+        tiles.clear();
+        HashSet<String> seen = new HashSet<String>();
+        seen.add(getPackageName());
+        addFixed(pm, seen, "Phone", new Intent(Intent.ACTION_DIAL));
+        addFixed(pm, seen, "Messages", new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_APP_MESSAGING).setPackage(installed(pm, "org.kyf37.messages") ? "org.kyf37.messages" : null));
+        addFixed(pm, seen, "Contacts", new Intent(Intent.ACTION_VIEW, Uri.parse("content://contacts/people")).setPackage(installed(pm, "org.kyf37.contacts") ? "org.kyf37.contacts" : null));
+        addFixed(pm, seen, "Camera", new Intent(android.provider.MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA).setPackage(installed(pm,"com.android.camera2") ? "com.android.camera2" : (installed(pm,"jp.kyocera.camera") ? "jp.kyocera.camera" : null)));
+        addFixed(pm, seen, "Settings", new Intent(android.provider.Settings.ACTION_SETTINGS));
+        // Kyf37 keitai apps: hide the stock Lineage tiles when the keitai replacements are installed.
+        hideLegacy(pm, seen, "org.kyf37.dialer", "com.android.dialer");
+        hideLegacy(pm, seen, "org.kyf37.messages", "com.android.messaging");
+        hideLegacy(pm, seen, "org.kyf37.contacts", "com.android.contacts");
+        seen.add("org.lineageos.audiofx"); // utility app, not useful on the keypad grid
+        Intent query = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER);
+        ArrayList<ResolveInfo> apps = new ArrayList<ResolveInfo>(pm.queryIntentActivities(query, 0));
+        final PackageManager fpm = pm;
+        Collections.sort(apps, new Comparator<ResolveInfo>() {
+            public int compare(ResolveInfo a, ResolveInfo b) {
+                return a.loadLabel(fpm).toString().compareToIgnoreCase(b.loadLabel(fpm).toString());
+            }
+        });
+        for (ResolveInfo info : apps) {
+            String pkg = info.activityInfo.packageName;
+            if (!seen.add(pkg)) continue;
+            Tile t = new Tile();
+            t.label = info.loadLabel(pm).toString();
+            t.icon = android.provider.Settings.Global.getInt(getContentResolver(),"kyf37_icon_theme",1)==0
+                    ? info.loadIcon(pm) : PastelIcons.get(this, info.activityInfo.packageName);
+        if (t.icon == null) t.icon = info.loadIcon(pm);
+            t.intent = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
+                    .setComponent(new ComponentName(pkg, info.activityInfo.name));
+            tiles.add(t);
+        }
+        int selected=grid.getSelectedItemPosition();
+        allApps.clear();allApps.addAll(tiles);loadFolders();showFolder(openFolder,selected);
+        adapter.notifyDataSetChanged();
+        grid.requestFocus();
+        if (grid.getSelectedItemPosition() < 0) grid.setSelection(0);
+        grid.post(new Runnable() { public void run() {
+            if (grid.getCount() > 0 && grid.getSelectedItemPosition() < 0) grid.setSelection(0);
+            grid.invalidate();
+        }});
+    }
+
+    private static boolean installed(PackageManager pm, String pkg) {
+        try { pm.getPackageInfo(pkg, 0); return true; } catch (PackageManager.NameNotFoundException e) { return false; }
+    }
+
+    private void hideLegacy(PackageManager pm, HashSet<String> seen, String keitai, String legacy) {
+        try {
+            pm.getPackageInfo(keitai, 0);
+            seen.add(legacy);
+        } catch (PackageManager.NameNotFoundException e) {
+            // keitai app absent: leave the stock one visible
+        }
+    }
+
+    private void addFixed(PackageManager pm, HashSet<String> seen, String label, Intent intent) {
+        ResolveInfo info = pm.resolveActivity(intent, 0);
+        if (info == null || info.activityInfo == null) return;
+        Tile t = new Tile();
+        t.label = label;
+        t.icon = android.provider.Settings.Global.getInt(getContentResolver(),"kyf37_icon_theme",1)==0
+                    ? info.loadIcon(pm) : PastelIcons.get(this, info.activityInfo.packageName);
+        if (t.icon == null) t.icon = info.loadIcon(pm);
+        t.intent = new Intent(intent).setComponent(new ComponentName(info.activityInfo.packageName, info.activityInfo.name));
+        tiles.add(t);
+        seen.add(info.activityInfo.packageName);
+    }
+
+    private void launch(Intent action) {
+        try {
+            startActivity(new Intent(action).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(this, "Application unavailable", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override public boolean onKeyDown(int code, KeyEvent event) {
+        int n = tiles.size(), sel = grid.getSelectedItemPosition();
+        if (n > 0 && sel >= 0) {
+            // GridView returns unhandled only at the edges: wrap around (keitai style).
+            if (code == KeyEvent.KEYCODE_DPAD_UP && sel < 3) { grid.setSelection(n - 1); return true; }
+            if (code == KeyEvent.KEYCODE_DPAD_DOWN && sel / 3 == (n - 1) / 3) { grid.setSelection(Math.min(sel % 3, n - 1)); return true; }
+        }
+        if (event.getRepeatCount() == 0) {
+            if(code==KeyEvent.KEYCODE_STAR){folderMenu();return true;}
+            if (code == KeyEvent.KEYCODE_CALL) {
+                launch(new Intent(Intent.ACTION_DIAL));
+                return true;
+            }
+            if (code == KeyEvent.KEYCODE_MENU || code == KeyEvent.KEYCODE_F1) {
+                launch(new Intent(android.provider.Settings.ACTION_SETTINGS));
+                return true;
+            }
+            if (code >= KeyEvent.KEYCODE_1 && code <= KeyEvent.KEYCODE_9) {
+                int i = code - KeyEvent.KEYCODE_1;
+                if (i < tiles.size()) {
+                    activate(tiles.get(i));
+                    return true;
+                }
+            }
+        }
+        return super.onKeyDown(code, event);
+    }
+
+    @Override public void onBackPressed() {
+        if(openFolder!=null)showFolder(null,homePosition);else grid.setSelection(0);
+    }
+    // Persistent launcher folders: component membership never changes installed apps.
+    private final ArrayList<Tile> allApps = new ArrayList<Tile>();
+    private org.json.JSONObject folders;
+    private String openFolder;
+    private int homePosition;
+    private TextView folderTitle;
+    @Override protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if(intent.hasCategory(Intent.CATEGORY_HOME) && folders!=null)showFolder(null,homePosition);
+    }
+    private android.content.SharedPreferences folderPrefs() { return getSharedPreferences("folders", MODE_PRIVATE); }
+    private String component(Tile t) { return t.intent == null || t.intent.getComponent() == null ? "" : t.intent.getComponent().flattenToString(); }
+    private void saveFolders() { folderPrefs().edit().putString("layout",folders.toString()).apply(); }
+    private void loadFolders() {
+        if (folders != null) return;
+        try { folders = new org.json.JSONObject(folderPrefs().getString("layout","{}")); }
+        catch (org.json.JSONException e) { folders = new org.json.JSONObject(); }
+        if (!folderPrefs().getBoolean("seeded", false)) {
+            try {
+                org.json.JSONObject f = new org.json.JSONObject();
+                f.put("name", "Kyocera Apps");
+                org.json.JSONArray members = new org.json.JSONArray();
+                java.util.Set<String> ports = new java.util.HashSet<String>(java.util.Arrays.asList(
+                    "com.kyocera.calculator2", "jp.kyocera.charactercheck", "jp.kyocera.datafolder",
+                    "jp.kyocera.camera", "jp.kyocera.memo", "jp.kyocera.kc_soundrecorder",
+                    "jp.kyocera.barcodereader", "org.kyf37.dialerxx"));
+                for (Tile t : allApps) if(t.intent != null && t.intent.getComponent() != null
+                        && ports.contains(t.intent.getComponent().getPackageName())) members.put(component(t));
+                f.put("members", members); folders.put("kyocera", f); saveFolders();
+                folderPrefs().edit().putBoolean("seeded",true).apply();
+            } catch (org.json.JSONException impossible) { throw new IllegalStateException(impossible); }
+        }
+    }
+    private String owner(Tile t) {
+        String key=component(t);
+        java.util.Iterator<String> ids=folders.keys();
+        while(ids.hasNext()) {
+            String id=ids.next(); org.json.JSONArray a=folders.optJSONObject(id).optJSONArray("members");
+            if(a!=null)for(int i=0;i<a.length();i++)if(key.equals(a.optString(i)))return id;
+        }
+        return null;
+    }
+    private void showFolder(String id, int selection) {
+        openFolder=id; tiles.clear();
+        if(id!=null && !folders.has(id))openFolder=null;
+        if(openFolder==null) {
+            for(Tile t:allApps)if(owner(t)==null)tiles.add(t);
+            java.util.Iterator<String> ids=folders.keys();
+            ArrayList<String> ordered=new ArrayList<String>();while(ids.hasNext())ordered.add(ids.next());
+            Collections.sort(ordered);
+            for(String fid:ordered) {
+                Tile t=new Tile();t.folderId=fid;t.label=folders.optJSONObject(fid).optString("name","Folder");
+                t.icon=new FolderIcon(fid); tiles.add(Math.min(5,tiles.size()),t);
+            }
+        } else for(Tile t:allApps)if(openFolder.equals(owner(t)))tiles.add(t);
+        folderTitle.setVisibility(openFolder==null?View.GONE:View.VISIBLE);
+        folderTitle.setText(openFolder==null?"":folders.optJSONObject(openFolder).optString("name")+"  ·  Back: Home");
+        adapter.notifyDataSetChanged(); grid.requestFocus();
+        grid.setSelection(Math.max(0,Math.min(selection,tiles.size()-1)));scheduleContrast();
+    }
+    private void activate(Tile t) {
+        if(t.folderId!=null){homePosition=tiles.indexOf(t);showFolder(t.folderId,0);}
+        else launch(t.intent);
+    }
+    private void move(Tile tile,String id) {
+        try {
+            String key=component(tile); java.util.Iterator<String> ids=folders.keys();
+            while(ids.hasNext()) {
+                org.json.JSONObject f=folders.getJSONObject(ids.next());
+                org.json.JSONArray old=f.optJSONArray("members"), next=new org.json.JSONArray();
+                if(old!=null)for(int i=0;i<old.length();i++)if(!key.equals(old.optString(i)))next.put(old.optString(i));
+                f.put("members",next);
+            }
+            if(id!=null)folders.getJSONObject(id).getJSONArray("members").put(key);
+            saveFolders();showFolder(openFolder,0);
+        }catch(org.json.JSONException e){throw new IllegalStateException(e);}
+    }
+    private void nameFolder(final String id, final Tile app) {
+        final android.widget.EditText edit=new android.widget.EditText(this);
+        edit.setSingleLine(true);edit.setFilters(new android.text.InputFilter[]{new android.text.InputFilter.LengthFilter(40)});
+        edit.setText(id==null?"":folders.optJSONObject(id).optString("name"));edit.setSelectAllOnFocus(true);
+        new android.app.AlertDialog.Builder(this).setTitle(id==null?"New folder":"Rename folder").setView(edit)
+            .setPositiveButton("Save",(dialog,which)->{
+                String name=edit.getText().toString().trim();if(name.isEmpty())return;
+                try {
+                    String fid=id==null?java.util.UUID.randomUUID().toString():id;
+                    if(id==null)folders.put(fid,new org.json.JSONObject().put("members",new org.json.JSONArray()));
+                    folders.getJSONObject(fid).put("name",name);saveFolders();
+                    if(app!=null && app.folderId==null)move(app,fid);else showFolder(openFolder,0);
+                }catch(org.json.JSONException e){throw new IllegalStateException(e);}
+            }).setNegativeButton(android.R.string.cancel,null).show();
+    }
+    private void folderMenu() {
+        int pos=grid.getSelectedItemPosition();final Tile app=pos>=0&&pos<tiles.size()?tiles.get(pos):null;
+        final String fid=app!=null&&app.folderId!=null?app.folderId:openFolder;
+        ArrayList<String> choices=new ArrayList<String>();choices.add("New folder");
+        if(app!=null&&app.folderId==null)choices.add("Move app to folder / Home");
+        if(fid!=null){choices.add("Rename folder");choices.add("Remove folder (keep apps)");}
+        final String[] labels=choices.toArray(new String[0]);
+        new android.app.AlertDialog.Builder(this).setTitle("Folders · * / hold OK")
+            .setItems(labels,(d,which)->{
+                String action=labels[which];
+                if(action.equals("New folder")){nameFolder(null,app);return;}
+                if(action.startsWith("Move")) {
+                    final ArrayList<String> ids=new ArrayList<String>();final ArrayList<String> names=new ArrayList<String>();
+                    ids.add(null);names.add("Home");java.util.Iterator<String> it=folders.keys();
+                    while(it.hasNext()){String id=it.next();ids.add(id);names.add(folders.optJSONObject(id).optString("name"));}
+                    new android.app.AlertDialog.Builder(this).setTitle("Move "+app.label)
+                        .setItems(names.toArray(new String[0]),(x,n)->move(app,ids.get(n))).show();return;
+                }
+                if(action.startsWith("Rename")){nameFolder(fid,null);return;}
+                new android.app.AlertDialog.Builder(this).setMessage("Remove folder? Apps return to Home.")
+                    .setPositiveButton("Remove",(x,n)->{folders.remove(fid);saveFolders();showFolder(null,homePosition);})
+                    .setNegativeButton(android.R.string.cancel,null).show();
+            }).show();
+    }
+    private final class FolderIcon extends android.graphics.drawable.Drawable {
+        final String id;final android.graphics.Paint paint=new android.graphics.Paint(3);
+        FolderIcon(String id){this.id=id;}
+        public void draw(android.graphics.Canvas canvas) {
+            android.graphics.Rect b=getBounds();float w=b.width(),h=b.height();int save=canvas.save();canvas.translate(b.left,b.top);
+            paint.setColor(0xeedbe9ff);canvas.drawRoundRect(0,0,w,h,w*.24f,w*.24f,paint);
+            int i=0;for(Tile t:allApps)if(id.equals(owner(t))&&i<4){
+                float x=w*(.12f+(i%2)*.43f),y=h*(.12f+(i/2)*.43f);
+                android.graphics.Rect old=new android.graphics.Rect(t.icon.getBounds());
+                t.icon.setBounds((int)x,(int)y,(int)(x+w*.33f),(int)(y+h*.33f));t.icon.draw(canvas);t.icon.setBounds(old);i++;
+            }
+            if(i==0){paint.setColor(0xff31588a);paint.setTextSize(w*.48f);canvas.drawText("+",w*.32f,h*.66f,paint);}
+            canvas.restoreToCount(save);
+        }
+        public void setAlpha(int a){}public void setColorFilter(android.graphics.ColorFilter f){}
+        public int getOpacity(){return android.graphics.PixelFormat.TRANSLUCENT;}
+    }
+
+}

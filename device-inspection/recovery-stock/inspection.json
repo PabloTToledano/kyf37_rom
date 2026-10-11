@@ -1,0 +1,284 @@
+{
+  "source_sha256": "e70e7bd89f031dae6de1d9f45b54bd376a35a06b6ecc8eb97fef00d2f94a4b36",
+  "partition_bytes": 16777216,
+  "kernel_bytes": 6844280,
+  "ramdisk_bytes": 1142337,
+  "dt_bytes": 6531072,
+  "page_size": 2048,
+  "kernel_address": "0x80008000",
+  "ramdisk_address": "0x81000000",
+  "tags_address": "0x80000100",
+  "cmdline": "console=ttyHSL0,115200,n8 no_console_suspend=1 androidboot.console=ttyHSL0 androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x3F ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci lpm_levels.sleep_disabled=1 earlyprintk",
+  "entries": [
+    {
+      "name": "charger",
+      "bytes": 13,
+      "mode": "0o120644"
+    },
+    {
+      "name": "data",
+      "bytes": 0,
+      "mode": "0o40771"
+    },
+    {
+      "name": "default.prop",
+      "bytes": 7747,
+      "mode": "0o100644"
+    },
+    {
+      "name": "dev",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "name": "etc",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "name": "etc/recovery.fstab",
+      "bytes": 2619,
+      "mode": "0o100644"
+    },
+    {
+      "name": "file_contexts",
+      "bytes": 45583,
+      "mode": "0o100644"
+    },
+    {
+      "name": "fstab.qcom",
+      "bytes": 1515,
+      "mode": "0o100640"
+    },
+    {
+      "name": "init",
+      "bytes": 240008,
+      "mode": "0o100750"
+    },
+    {
+      "name": "init.class_main.sh",
+      "bytes": 3265,
+      "mode": "0o100750"
+    },
+    {
+      "name": "init.kc.sensor.sh",
+      "bytes": 7339,
+      "mode": "0o100750"
+    },
+    {
+      "name": "init.kc.usb.sh",
+      "bytes": 4390,
+      "mode": "0o100750"
+    },
+    {
+      "name": "init.mdm.sh",
+      "bytes": 1730,
+      "mode": "0o100750"
+    },
+    {
+      "name": "init.qcom.bms.sh",
+      "bytes": 2078,
+      "mode": "0o100750"
+    },
+    {
+      "name": "init.qcom.class_core.sh",
+      "bytes": 7054,
+      "mode": "0o100750"
+    },
+    {
+      "name": "init.qcom.early_boot.sh",
+      "bytes": 6920,
+      "mode": "0o100750"
+    },
+    {
+      "name": "init.qcom.sh",
+      "bytes": 8402,
+      "mode": "0o100750"
+    },
+    {
+      "name": "init.qcom.syspart_fixup.sh",
+      "bytes": 2962,
+      "mode": "0o100750"
+    },
+    {
+      "name": "init.rc",
+      "bytes": 3098,
+      "mode": "0o100750"
+    },
+    {
+      "name": "proc",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "name": "property_contexts",
+      "bytes": 4607,
+      "mode": "0o100644"
+    },
+    {
+      "name": "pstore",
+      "bytes": 0,
+      "mode": "0o40771"
+    },
+    {
+      "name": "recovery.mount.pstore",
+      "bytes": 513,
+      "mode": "0o100644"
+    },
+    {
+      "name": "res",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "name": "res/images",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "name": "res/images/erasing_text.png",
+      "bytes": 29674,
+      "mode": "0o100644"
+    },
+    {
+      "name": "res/images/error_text.png",
+      "bytes": 16599,
+      "mode": "0o100644"
+    },
+    {
+      "name": "res/images/font.png",
+      "bytes": 14431,
+      "mode": "0o100644"
+    },
+    {
+      "name": "res/images/icon_error.png",
+      "bytes": 8984,
+      "mode": "0o100644"
+    },
+    {
+      "name": "res/images/icon_installing.png",
+      "bytes": 26557,
+      "mode": "0o100644"
+    },
+    {
+      "name": "res/images/installing_text.png",
+      "bytes": 63220,
+      "mode": "0o100644"
+    },
+    {
+      "name": "res/images/no_command_text.png",
+      "bytes": 37222,
+      "mode": "0o100644"
+    },
+    {
+      "name": "res/images/progress_empty.png",
+      "bytes": 118,
+      "mode": "0o100644"
+    },
+    {
+      "name": "res/images/progress_fill.png",
+      "bytes": 404,
+      "mode": "0o100644"
+    },
+    {
+      "name": "res/images/stage_empty.png",
+      "bytes": 322,
+      "mode": "0o100644"
+    },
+    {
+      "name": "res/images/stage_fill.png",
+      "bytes": 258,
+      "mode": "0o100644"
+    },
+    {
+      "name": "res/keys",
+      "bytes": 1387,
+      "mode": "0o100644"
+    },
+    {
+      "name": "sbin",
+      "bytes": 0,
+      "mode": "0o40750"
+    },
+    {
+      "name": "sbin/adbd",
+      "bytes": 236048,
+      "mode": "0o100750"
+    },
+    {
+      "name": "sbin/healthd",
+      "bytes": 324904,
+      "mode": "0o100750"
+    },
+    {
+      "name": "sbin/recovery",
+      "bytes": 538304,
+      "mode": "0o100750"
+    },
+    {
+      "name": "sbin/ueventd",
+      "bytes": 7,
+      "mode": "0o120750"
+    },
+    {
+      "name": "sbin/watchdogd",
+      "bytes": 7,
+      "mode": "0o120750"
+    },
+    {
+      "name": "seapp_contexts",
+      "bytes": 1079,
+      "mode": "0o100644"
+    },
+    {
+      "name": "selinux_version",
+      "bytes": 69,
+      "mode": "0o100644"
+    },
+    {
+      "name": "sepolicy",
+      "bytes": 237502,
+      "mode": "0o100644"
+    },
+    {
+      "name": "service_contexts",
+      "bytes": 13138,
+      "mode": "0o100644"
+    },
+    {
+      "name": "sys",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "name": "system",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "name": "tmp",
+      "bytes": 0,
+      "mode": "0o40755"
+    },
+    {
+      "name": "ueventd.qcom.rc",
+      "bytes": 11930,
+      "mode": "0o100644"
+    },
+    {
+      "name": "ueventd.rc",
+      "bytes": 5562,
+      "mode": "0o100644"
+    },
+    {
+      "name": "verity_key",
+      "bytes": 524,
+      "mode": "0o100644"
+    },
+    {
+      "name": "TRAILER!!!",
+      "bytes": 0,
+      "mode": "0o644"
+    }
+  ]
+}

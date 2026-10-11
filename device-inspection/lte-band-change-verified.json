@@ -1,0 +1,17 @@
+{
+  "original_mask": "0x02000001",
+  "enabled_preference_mask": "0xa0800c5",
+  "bands": [
+    1,
+    3,
+    7,
+    8,
+    20,
+    26,
+    28
+  ],
+  "permanent_change_requested": true,
+  "independent_readback_verified": true,
+  "hardware_reception_tested": false,
+  "reboot_persistence_verified": true
+}

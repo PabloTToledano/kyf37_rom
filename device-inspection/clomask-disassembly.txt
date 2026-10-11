@@ -1,0 +1,672 @@
+
+Ljp/kyocera/internal/clomask/ITransferService; get (Ljava/lang/String;)Ljava/lang/String;
+
+Ljp/kyocera/internal/clomask/ITransferService; getDefaultValue (Ljava/lang/String;)Ljava/lang/String;
+
+Ljp/kyocera/internal/clomask/ITransferService; set (Ljava/lang/String; Ljava/lang/String;)V
+
+Ljp/kyocera/internal/clomask/ITransferService$Stub$Proxy; <init> (Landroid/os/IBinder;)V
+invoke-direct v0, Ljava/lang/Object;-><init>()V
+iput-object v1, v0, Ljp/kyocera/internal/clomask/ITransferService$Stub$Proxy;->mRemote Landroid/os/IBinder;
+return-void 
+
+Ljp/kyocera/internal/clomask/ITransferService$Stub$Proxy; asBinder ()Landroid/os/IBinder;
+iget-object v0, v1, Ljp/kyocera/internal/clomask/ITransferService$Stub$Proxy;->mRemote Landroid/os/IBinder;
+return-object v0
+
+Ljp/kyocera/internal/clomask/ITransferService$Stub$Proxy; get (Ljava/lang/String;)Ljava/lang/String;
+invoke-static Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
+move-result-object v0
+invoke-static Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
+move-result-object v1
+const-string v3, "jp.kyocera.internal.clomask.ITransferService"
+invoke-virtual v0, v3, Landroid/os/Parcel;->writeInterfaceToken(Ljava/lang/String;)V
+invoke-virtual v0, v7, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
+iget-object v3, v6, Ljp/kyocera/internal/clomask/ITransferService$Stub$Proxy;->mRemote Landroid/os/IBinder;
+const/4 v4, 1
+const/4 v5, 0
+invoke-interface v3, v4, v0, v1, v5, Landroid/os/IBinder;->transact(I Landroid/os/Parcel; Landroid/os/Parcel; I)Z
+invoke-virtual v1, Landroid/os/Parcel;->readException()V
+invoke-virtual v1, Landroid/os/Parcel;->readString()Ljava/lang/String;
+move-result-object v2
+invoke-virtual v1, Landroid/os/Parcel;->recycle()V
+invoke-virtual v0, Landroid/os/Parcel;->recycle()V
+return-object v2
+move-exception v3
+invoke-virtual v1, Landroid/os/Parcel;->recycle()V
+invoke-virtual v0, Landroid/os/Parcel;->recycle()V
+throw v3
+
+Ljp/kyocera/internal/clomask/ITransferService$Stub$Proxy; getDefaultValue (Ljava/lang/String;)Ljava/lang/String;
+invoke-static Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
+move-result-object v0
+invoke-static Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
+move-result-object v1
+const-string v3, "jp.kyocera.internal.clomask.ITransferService"
+invoke-virtual v0, v3, Landroid/os/Parcel;->writeInterfaceToken(Ljava/lang/String;)V
+invoke-virtual v0, v7, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
+iget-object v3, v6, Ljp/kyocera/internal/clomask/ITransferService$Stub$Proxy;->mRemote Landroid/os/IBinder;
+const/4 v4, 2
+const/4 v5, 0
+invoke-interface v3, v4, v0, v1, v5, Landroid/os/IBinder;->transact(I Landroid/os/Parcel; Landroid/os/Parcel; I)Z
+invoke-virtual v1, Landroid/os/Parcel;->readException()V
+invoke-virtual v1, Landroid/os/Parcel;->readString()Ljava/lang/String;
+move-result-object v2
+invoke-virtual v1, Landroid/os/Parcel;->recycle()V
+invoke-virtual v0, Landroid/os/Parcel;->recycle()V
+return-object v2
+move-exception v3
+invoke-virtual v1, Landroid/os/Parcel;->recycle()V
+invoke-virtual v0, Landroid/os/Parcel;->recycle()V
+throw v3
+
+Ljp/kyocera/internal/clomask/ITransferService$Stub$Proxy; getInterfaceDescriptor ()Ljava/lang/String;
+const-string v0, "jp.kyocera.internal.clomask.ITransferService"
+return-object v0
+
+Ljp/kyocera/internal/clomask/ITransferService$Stub$Proxy; set (Ljava/lang/String; Ljava/lang/String;)V
+invoke-static Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
+move-result-object v0
+invoke-static Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
+move-result-object v1
+const-string v2, "jp.kyocera.internal.clomask.ITransferService"
+invoke-virtual v0, v2, Landroid/os/Parcel;->writeInterfaceToken(Ljava/lang/String;)V
+invoke-virtual v0, v6, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
+invoke-virtual v0, v7, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
+iget-object v2, v5, Ljp/kyocera/internal/clomask/ITransferService$Stub$Proxy;->mRemote Landroid/os/IBinder;
+const/4 v3, 3
+const/4 v4, 0
+invoke-interface v2, v3, v0, v1, v4, Landroid/os/IBinder;->transact(I Landroid/os/Parcel; Landroid/os/Parcel; I)Z
+invoke-virtual v1, Landroid/os/Parcel;->readException()V
+invoke-virtual v1, Landroid/os/Parcel;->recycle()V
+invoke-virtual v0, Landroid/os/Parcel;->recycle()V
+return-void 
+move-exception v2
+invoke-virtual v1, Landroid/os/Parcel;->recycle()V
+invoke-virtual v0, Landroid/os/Parcel;->recycle()V
+throw v2
+
+Ljp/kyocera/internal/clomask/ITransferService$Stub; <init> ()V
+invoke-direct v1, Landroid/os/Binder;-><init>()V
+const-string v0, "jp.kyocera.internal.clomask.ITransferService"
+invoke-virtual v1, v1, v0, Ljp/kyocera/internal/clomask/ITransferService$Stub;->attachInterface(Landroid/os/IInterface; Ljava/lang/String;)V
+return-void 
+
+Ljp/kyocera/internal/clomask/ITransferService$Stub; asInterface (Landroid/os/IBinder;)Ljp/kyocera/internal/clomask/ITransferService;
+if-nez v2, +004h
+const/4 v0, 0
+return-object v0
+const-string v1, "jp.kyocera.internal.clomask.ITransferService"
+invoke-interface v2, v1, Landroid/os/IBinder;->queryLocalInterface(Ljava/lang/String;)Landroid/os/IInterface;
+move-result-object v0
+if-eqz v0, +009h
+instance-of v1, v0, Ljp/kyocera/internal/clomask/ITransferService;
+if-eqz v1, +005h
+check-cast v0, Ljp/kyocera/internal/clomask/ITransferService;
+goto -fh
+new-instance v0, Ljp/kyocera/internal/clomask/ITransferService$Stub$Proxy;
+invoke-direct v0, v2, Ljp/kyocera/internal/clomask/ITransferService$Stub$Proxy;-><init>(Landroid/os/IBinder;)V
+goto -15h
+
+Ljp/kyocera/internal/clomask/ITransferService$Stub; asBinder ()Landroid/os/IBinder;
+return-object v0
+
+Ljp/kyocera/internal/clomask/ITransferService$Stub; onTransact (I Landroid/os/Parcel; Landroid/os/Parcel; I)Z
+const/4 v3, 1
+sparse-switch v6, +000004bh
+invoke-super v5, v6, v7, v8, v9, Landroid/os/Binder;->onTransact(I Landroid/os/Parcel; Landroid/os/Parcel; I)Z
+move-result v3
+return v3
+const-string v4, "jp.kyocera.internal.clomask.ITransferService"
+invoke-virtual v8, v4, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
+goto -6h
+const-string v4, "jp.kyocera.internal.clomask.ITransferService"
+invoke-virtual v7, v4, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+invoke-virtual v7, Landroid/os/Parcel;->readString()Ljava/lang/String;
+move-result-object v0
+invoke-virtual v5, v0, Ljp/kyocera/internal/clomask/ITransferService$Stub;->get(Ljava/lang/String;)Ljava/lang/String;
+move-result-object v2
+invoke-virtual v8, Landroid/os/Parcel;->writeNoException()V
+invoke-virtual v8, v2, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
+goto -1ah
+const-string v4, "jp.kyocera.internal.clomask.ITransferService"
+invoke-virtual v7, v4, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+invoke-virtual v7, Landroid/os/Parcel;->readString()Ljava/lang/String;
+move-result-object v0
+invoke-virtual v5, v0, Ljp/kyocera/internal/clomask/ITransferService$Stub;->getDefaultValue(Ljava/lang/String;)Ljava/lang/String;
+move-result-object v2
+invoke-virtual v8, Landroid/os/Parcel;->writeNoException()V
+invoke-virtual v8, v2, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
+goto -2eh
+const-string v4, "jp.kyocera.internal.clomask.ITransferService"
+invoke-virtual v7, v4, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+invoke-virtual v7, Landroid/os/Parcel;->readString()Ljava/lang/String;
+move-result-object v0
+invoke-virtual v7, Landroid/os/Parcel;->readString()Ljava/lang/String;
+move-result-object v1
+invoke-virtual v5, v0, v1, Ljp/kyocera/internal/clomask/ITransferService$Stub;->set(Ljava/lang/String; Ljava/lang/String;)V
+invoke-virtual v8, Landroid/os/Parcel;->writeNoException()V
+goto -42h
+nop 
+sparse-switch-payload 1 2 3 5f4e5446
+
+Ljp/kyocera/internal/clomask/Transfer; <init> ()V
+invoke-direct v0, Ljava/lang/Object;-><init>()V
+return-void 
+
+Ljp/kyocera/internal/clomask/Transfer; get (Landroid/content/Context; Ljava/lang/String;)Ljava/lang/String;
+const-string v1, ""
+if-nez v6, +00ah
+new-instance v3, Ljava/io/IOException;
+const-string v4, "parameter: null err"
+invoke-direct v3, v4, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
+throw v3
+const-string v3, "UTF8"
+invoke-virtual v6, v3, Ljava/lang/String;->getBytes(Ljava/lang/String;)[B
+move-result-object v3
+array-length v3, v3
+if-eqz v3, +00dh
+const-string v3, "UTF8"
+invoke-virtual v6, v3, Ljava/lang/String;->getBytes(Ljava/lang/String;)[B
+move-result-object v3
+array-length v3, v3
+const/16 v4, 40
+if-le v3, v4, +00ah
+new-instance v3, Ljava/io/IOException;
+const-string v4, "parameter: bytes err"
+invoke-direct v3, v4, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
+throw v3
+const-string v3, "transfer"
+invoke-static v3, Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;
+move-result-object v3
+invoke-static v3, Ljp/kyocera/internal/clomask/ITransferService$Stub;->asInterface(Landroid/os/IBinder;)Ljp/kyocera/internal/clomask/ITransferService;
+move-result-object v2
+if-nez v2, +00ah
+new-instance v3, Ljava/io/IOException;
+const-string v4, "get error null"
+invoke-direct v3, v4, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
+throw v3
+invoke-interface v2, v6, Ljp/kyocera/internal/clomask/ITransferService;->get(Ljava/lang/String;)Ljava/lang/String;
+move-result-object v1
+if-nez v1, +013h
+new-instance v3, Ljava/io/IOException;
+const-string v4, "Deadly err"
+invoke-direct v3, v4, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
+throw v3
+move-exception v0
+new-instance v3, Ljava/io/IOException;
+const-string v4, "get error"
+invoke-direct v3, v4, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
+throw v3
+return-object v1
+
+Ljp/kyocera/internal/clomask/Transfer; get (Landroid/content/Context; Ljava/lang/String; Ljava/lang/String;)Ljava/lang/String;
+const-string v1, ""
+invoke-static v3, v4, Ljp/kyocera/internal/clomask/Transfer;->get(Landroid/content/Context; Ljava/lang/String;)Ljava/lang/String;
+move-result-object v2
+return-object v2
+move-exception v0
+move-object v1, v5
+move-object v2, v1
+goto -4h
+
+Ljp/kyocera/internal/clomask/Transfer; get (Ljava/lang/String;)Ljava/lang/String;
+const/4 v0, 0
+check-cast v0, Landroid/content/Context;
+invoke-static v0, v1, Ljp/kyocera/internal/clomask/Transfer;->get(Landroid/content/Context; Ljava/lang/String;)Ljava/lang/String;
+move-result-object v0
+return-object v0
+
+Ljp/kyocera/internal/clomask/Transfer; get (Ljava/lang/String; Ljava/lang/String;)Ljava/lang/String;
+const-string v1, ""
+const/4 v2, 0
+check-cast v2, Landroid/content/Context;
+invoke-static v2, v3, Ljp/kyocera/internal/clomask/Transfer;->get(Landroid/content/Context; Ljava/lang/String;)Ljava/lang/String;
+move-result-object v2
+return-object v2
+move-exception v0
+move-object v1, v4
+move-object v2, v1
+goto -4h
+
+Ljp/kyocera/internal/clomask/Transfer; getDefaultValue (Landroid/content/Context; Ljava/lang/String;)Ljava/lang/String;
+if-nez v6, +00ah
+new-instance v3, Ljava/io/IOException;
+const-string v4, "parameter null err"
+invoke-direct v3, v4, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
+throw v3
+const-string v3, "UTF8"
+invoke-virtual v6, v3, Ljava/lang/String;->getBytes(Ljava/lang/String;)[B
+move-result-object v3
+array-length v3, v3
+if-eqz v3, +00dh
+const-string v3, "UTF8"
+invoke-virtual v6, v3, Ljava/lang/String;->getBytes(Ljava/lang/String;)[B
+move-result-object v3
+array-length v3, v3
+const/16 v4, 40
+if-le v3, v4, +00ah
+new-instance v3, Ljava/io/IOException;
+const-string v4, "parameter bytes err"
+invoke-direct v3, v4, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
+throw v3
+const/4 v0, 0
+const-string v3, "transfer"
+invoke-static v3, Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;
+move-result-object v3
+invoke-static v3, Ljp/kyocera/internal/clomask/ITransferService$Stub;->asInterface(Landroid/os/IBinder;)Ljp/kyocera/internal/clomask/ITransferService;
+move-result-object v2
+if-nez v2, +00ah
+new-instance v3, Ljava/io/IOException;
+const-string v4, "get error null"
+invoke-direct v3, v4, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
+throw v3
+invoke-interface v2, v6, Ljp/kyocera/internal/clomask/ITransferService;->getDefaultValue(Ljava/lang/String;)Ljava/lang/String;
+move-result-object v0
+if-nez v0, +013h
+new-instance v3, Ljava/io/IOException;
+const-string v4, "Deadly err"
+invoke-direct v3, v4, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
+throw v3
+move-exception v1
+new-instance v3, Ljava/io/IOException;
+const-string v4, "get error"
+invoke-direct v3, v4, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
+throw v3
+return-object v0
+
+Ljp/kyocera/internal/clomask/Transfer; getDefaultValue (Landroid/content/Context; Ljava/lang/String; Ljava/lang/String;)Ljava/lang/String;
+const-string v1, ""
+invoke-static v3, v4, Ljp/kyocera/internal/clomask/Transfer;->getDefaultValue(Landroid/content/Context; Ljava/lang/String;)Ljava/lang/String;
+move-result-object v2
+return-object v2
+move-exception v0
+move-object v1, v5
+move-object v2, v1
+goto -4h
+
+Ljp/kyocera/internal/clomask/Transfer; getDefaultValue (Ljava/lang/String;)Ljava/lang/String;
+const/4 v0, 0
+check-cast v0, Landroid/content/Context;
+invoke-static v0, v1, Ljp/kyocera/internal/clomask/Transfer;->getDefaultValue(Landroid/content/Context; Ljava/lang/String;)Ljava/lang/String;
+move-result-object v0
+return-object v0
+
+Ljp/kyocera/internal/clomask/Transfer; getDefaultValue (Ljava/lang/String; Ljava/lang/String;)Ljava/lang/String;
+const-string v1, ""
+const/4 v2, 0
+check-cast v2, Landroid/content/Context;
+invoke-static v2, v3, Ljp/kyocera/internal/clomask/Transfer;->getDefaultValue(Landroid/content/Context; Ljava/lang/String;)Ljava/lang/String;
+move-result-object v2
+return-object v2
+move-exception v0
+move-object v1, v4
+move-object v2, v1
+goto -4h
+
+Ljp/kyocera/internal/clomask/Transfer; set (Landroid/content/Context; Ljava/lang/String; Ljava/lang/String;)V
+if-eqz v5, +004h
+if-nez v6, +00ah
+new-instance v2, Ljava/io/IOException;
+const-string v3, "parameter null err"
+invoke-direct v2, v3, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
+throw v2
+const-string v2, "UTF8"
+invoke-virtual v6, v2, Ljava/lang/String;->getBytes(Ljava/lang/String;)[B
+move-result-object v2
+array-length v2, v2
+const/16 v3, 1024
+if-gt v2, v3, +016h
+const-string v2, "UTF8"
+invoke-virtual v5, v2, Ljava/lang/String;->getBytes(Ljava/lang/String;)[B
+move-result-object v2
+array-length v2, v2
+if-eqz v2, +00dh
+const-string v2, "UTF8"
+invoke-virtual v5, v2, Ljava/lang/String;->getBytes(Ljava/lang/String;)[B
+move-result-object v2
+array-length v2, v2
+const/16 v3, 40
+if-le v2, v3, +00ah
+new-instance v2, Ljava/io/IOException;
+const-string v3, "parameter bytes err"
+invoke-direct v2, v3, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
+throw v2
+const-string v2, "transfer"
+invoke-static v2, Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;
+move-result-object v2
+invoke-static v2, Ljp/kyocera/internal/clomask/ITransferService$Stub;->asInterface(Landroid/os/IBinder;)Ljp/kyocera/internal/clomask/ITransferService;
+move-result-object v1
+if-nez v1, +00ah
+new-instance v2, Ljava/io/IOException;
+const-string v3, "get error null"
+invoke-direct v2, v3, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
+throw v2
+invoke-interface v1, v5, v6, Ljp/kyocera/internal/clomask/ITransferService;->set(Ljava/lang/String; Ljava/lang/String;)V
+return-void 
+move-exception v0
+new-instance v2, Ljava/io/IOException;
+const-string v3, "get error"
+invoke-direct v2, v3, Ljava/io/IOException;-><init>(Ljava/lang/String;)V
+throw v2
+
+Ljp/kyocera/internal/clomask/Transfer; set (Ljava/lang/String; Ljava/lang/String;)V
+const/4 v0, 0
+invoke-static v0, v1, v2, Ljp/kyocera/internal/clomask/Transfer;->set(Landroid/content/Context; Ljava/lang/String; Ljava/lang/String;)V
+return-void 
+
+Ljp/kyocera/internal/clomask/TransferReceiver; <init> ()V
+invoke-direct v0, Landroid/content/BroadcastReceiver;-><init>()V
+return-void 
+
+Ljp/kyocera/internal/clomask/TransferReceiver; onReceive (Landroid/content/Context; Landroid/content/Intent;)V
+invoke-virtual v7, Landroid/content/Intent;->getAction()Ljava/lang/String;
+move-result-object v0
+const-string v2, "android.intent.action.MASTER_CLEAR_NOTIFICATION"
+invoke-virtual v0, v2, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+move-result v2
+if-eqz v2, +028h
+const-string v2, "rw_extprop_resetcall_factory"
+const-string v3, "ZtJCNMXM58NV0sJe"
+invoke-static v6, v2, v3, Ljp/kyocera/internal/clomask/Transfer;->set(Landroid/content/Context; Ljava/lang/String; Ljava/lang/String;)V
+return-void 
+move-exception v1
+const-string v2, "TransferReceiver"
+new-instance v3, Ljava/lang/StringBuilder;
+invoke-direct v3, Ljava/lang/StringBuilder;-><init>()V
+const-string v4, "Failed write to extprop FactoryReset:"
+invoke-virtual v3, v4, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+move-result-object v3
+invoke-virtual v1, Ljava/lang/Exception;->getMessage()Ljava/lang/String;
+move-result-object v4
+invoke-virtual v3, v4, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+move-result-object v3
+invoke-virtual v3, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+move-result-object v3
+invoke-static v2, v3, Landroid/util/Log;->e(Ljava/lang/String; Ljava/lang/String;)I
+goto -1eh
+const-string v2, "TransferReceiver"
+new-instance v3, Ljava/lang/StringBuilder;
+invoke-direct v3, Ljava/lang/StringBuilder;-><init>()V
+const-string v4, "Invalid action:"
+invoke-virtual v3, v4, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+move-result-object v3
+invoke-virtual v3, v0, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+move-result-object v3
+invoke-virtual v3, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+move-result-object v3
+invoke-static v2, v3, Landroid/util/Log;->e(Ljava/lang/String; Ljava/lang/String;)I
+goto -37h
+
+Ljp/kyocera/internal/clomask/TransferService; <clinit> ()V
+const-string v0, "predtm"
+invoke-static v0, Ljava/lang/System;->loadLibrary(Ljava/lang/String;)V
+return-void 
+
+Ljp/kyocera/internal/clomask/TransferService; <init> (Landroid/content/Context;)V
+invoke-direct v0, Ljp/kyocera/internal/clomask/ITransferService$Stub;-><init>()V
+iput-object v1, v0, Ljp/kyocera/internal/clomask/TransferService;->mContext Landroid/content/Context;
+return-void 
+
+Ljp/kyocera/internal/clomask/TransferService; checkUidPermission (I)Z
+const/16 v8, 1000
+const/16 v11, 128
+const/4 v7, 1
+const/4 v6, 0
+const/4 v0, 0
+const/4 v3, 0
+if-eq v13, v8, +040h
+const-string v8, "package"
+invoke-static v8, Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;
+move-result-object v8
+invoke-static v8, Landroid/content/pm/IPackageManager$Stub;->asInterface(Landroid/os/IBinder;)Landroid/content/pm/IPackageManager;
+move-result-object v4
+invoke-interface v4, v13, Landroid/content/pm/IPackageManager;->getPackagesForUid(I)[Ljava/lang/String;
+move-result-object v3
+if-nez v3, +003h
+return v6
+const/4 v2, 0
+array-length v8, v3
+if-ge v2, v8, +02bh
+if-eqz v4, +00eh
+aget-object v8, v3, v2
+const/16 v9, 128
+invoke-static v13, Landroid/os/UserHandle;->getUserId(I)I
+move-result v10
+invoke-interface v4, v8, v9, v10, Landroid/content/pm/IPackageManager;->getApplicationInfo(Ljava/lang/String; I I)Landroid/content/pm/ApplicationInfo;
+move-result-object v0
+if-eqz v0, -013h
+iget v8, v0, Landroid/content/pm/ApplicationInfo;->flags I
+and-int/lit8 v8, v8, 1
+if-eq v8, v7, +010h
+iget v8, v0, Landroid/content/pm/ApplicationInfo;->flags I
+and-int/lit16 v8, v8, 128
+if-eq v8, v11, +00ah
+const/16 v8, 1000
+invoke-interface v4, v13, v8, Landroid/content/pm/IPackageManager;->checkUidSignatures(I I)I
+move-result v5
+if-nez v5, -027h
+add-int/lit8 v2, v2, 1
+goto -29h
+move-exception v1
+goto -2dh
+move v6, v7
+goto -2fh
+
+Ljp/kyocera/internal/clomask/TransferService; init (Landroid/content/Context;)Ljp/kyocera/internal/clomask/TransferService;
+const-class v1, Ljp/kyocera/internal/clomask/TransferService;
+monitor-enter v1
+sget-object v0, Ljp/kyocera/internal/clomask/TransferService;->sInstance Ljp/kyocera/internal/clomask/TransferService;
+if-nez v0, +009h
+new-instance v0, Ljp/kyocera/internal/clomask/TransferService;
+invoke-direct v0, v2, Ljp/kyocera/internal/clomask/TransferService;-><init>(Landroid/content/Context;)V
+sput-object v0, Ljp/kyocera/internal/clomask/TransferService;->sInstance Ljp/kyocera/internal/clomask/TransferService;
+sget-object v0, Ljp/kyocera/internal/clomask/TransferService;->sInstance Ljp/kyocera/internal/clomask/TransferService;
+monitor-exit v1
+return-object v0
+move-exception v0
+monitor-exit v1
+throw v0
+
+Ljp/kyocera/internal/clomask/TransferService; native_command (I Ljava/lang/String; Ljava/lang/String; Z)Ljava/lang/String;
+
+Ljp/kyocera/internal/clomask/TransferService; get (Ljava/lang/String;)Ljava/lang/String;
+const-string v3, ""
+const/4 v0, 0
+if-nez v8, +013h
+new-instance v4, Landroid/os/RemoteException;
+const-string v5, "parameter: null err"
+invoke-direct v4, v5, Landroid/os/RemoteException;-><init>(Ljava/lang/String;)V
+throw v4
+move-exception v1
+new-instance v4, Landroid/os/RemoteException;
+const-string v5, "parameter: bytes err IOException"
+invoke-direct v4, v5, Landroid/os/RemoteException;-><init>(Ljava/lang/String;)V
+throw v4
+const-string v4, "UTF8"
+invoke-virtual v8, v4, Ljava/lang/String;->getBytes(Ljava/lang/String;)[B
+move-result-object v4
+array-length v4, v4
+if-eqz v4, +00dh
+const-string v4, "UTF8"
+invoke-virtual v8, v4, Ljava/lang/String;->getBytes(Ljava/lang/String;)[B
+move-result-object v4
+array-length v4, v4
+const/16 v5, 40
+if-le v4, v5, +00ah
+new-instance v4, Landroid/os/RemoteException;
+const-string v5, "parameter: bytes err"
+invoke-direct v4, v5, Landroid/os/RemoteException;-><init>(Ljava/lang/String;)V
+throw v4
+iget-object v4, v7, Ljp/kyocera/internal/clomask/TransferService;->mContext Landroid/content/Context;
+const-string v5, "android.permission.clomask.GET"
+const-string v6, "Requires Permission"
+invoke-virtual v4, v5, v6, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String; Ljava/lang/String;)V
+const/4 v0, 1
+const/4 v4, 1
+const/4 v5, 0
+invoke-static v4, v8, v5, v0, Ljp/kyocera/internal/clomask/TransferService;->native_command(I Ljava/lang/String; Ljava/lang/String; Z)Ljava/lang/String;
+move-result-object v3
+if-nez v3, +026h
+new-instance v4, Landroid/os/RemoteException;
+const-string v5, "Deadly err"
+invoke-direct v4, v5, Landroid/os/RemoteException;-><init>(Ljava/lang/String;)V
+throw v4
+move-exception v1
+invoke-static Landroid/os/Binder;->getCallingUid()I
+move-result v4
+invoke-direct v7, v4, Ljp/kyocera/internal/clomask/TransferService;->checkUidPermission(I)Z
+move-result v4
+if-nez v4, +004h
+const/4 v0, 0
+goto -1ch
+const/4 v0, 1
+goto -1eh
+move-exception v2
+invoke-static Landroid/os/Binder;->getCallingUid()I
+move-result v4
+const/16 v5, 1000
+if-ne v4, v5, +004h
+const/4 v0, 1
+goto -29h
+const/4 v0, 0
+goto -2bh
+return-object v3
+
+Ljp/kyocera/internal/clomask/TransferService; get (Ljava/lang/String; Ljava/lang/String;)Ljava/lang/String;
+const-string v1, ""
+invoke-virtual v3, v4, Ljp/kyocera/internal/clomask/TransferService;->get(Ljava/lang/String;)Ljava/lang/String;
+move-result-object v2
+return-object v2
+move-exception v0
+move-object v1, v5
+move-object v2, v1
+goto -4h
+
+Ljp/kyocera/internal/clomask/TransferService; getDefaultValue (Ljava/lang/String;)Ljava/lang/String;
+const/4 v0, 0
+if-nez v8, +013h
+new-instance v4, Landroid/os/RemoteException;
+const-string v5, "parameter: null err"
+invoke-direct v4, v5, Landroid/os/RemoteException;-><init>(Ljava/lang/String;)V
+throw v4
+move-exception v2
+new-instance v4, Landroid/os/RemoteException;
+const-string v5, "parameter: bytes err IOException"
+invoke-direct v4, v5, Landroid/os/RemoteException;-><init>(Ljava/lang/String;)V
+throw v4
+const-string v4, "UTF8"
+invoke-virtual v8, v4, Ljava/lang/String;->getBytes(Ljava/lang/String;)[B
+move-result-object v4
+array-length v4, v4
+if-eqz v4, +00dh
+const-string v4, "UTF8"
+invoke-virtual v8, v4, Ljava/lang/String;->getBytes(Ljava/lang/String;)[B
+move-result-object v4
+array-length v4, v4
+const/16 v5, 40
+if-le v4, v5, +00ah
+new-instance v4, Landroid/os/RemoteException;
+const-string v5, "parameter: bytes err"
+invoke-direct v4, v5, Landroid/os/RemoteException;-><init>(Ljava/lang/String;)V
+throw v4
+iget-object v4, v7, Ljp/kyocera/internal/clomask/TransferService;->mContext Landroid/content/Context;
+const-string v5, "android.permission.clomask.GET"
+const-string v6, "Requires Permission"
+invoke-virtual v4, v5, v6, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String; Ljava/lang/String;)V
+const/4 v0, 1
+const/4 v1, 0
+const/4 v4, 0
+const/4 v5, 0
+invoke-static v4, v8, v5, v0, Ljp/kyocera/internal/clomask/TransferService;->native_command(I Ljava/lang/String; Ljava/lang/String; Z)Ljava/lang/String;
+move-result-object v1
+if-nez v1, +026h
+new-instance v4, Landroid/os/RemoteException;
+const-string v5, "Deadly err"
+invoke-direct v4, v5, Landroid/os/RemoteException;-><init>(Ljava/lang/String;)V
+throw v4
+move-exception v2
+invoke-static Landroid/os/Binder;->getCallingUid()I
+move-result v4
+invoke-direct v7, v4, Ljp/kyocera/internal/clomask/TransferService;->checkUidPermission(I)Z
+move-result v4
+if-nez v4, +004h
+const/4 v0, 0
+goto -1dh
+const/4 v0, 1
+goto -1fh
+move-exception v3
+invoke-static Landroid/os/Binder;->getCallingUid()I
+move-result v4
+const/16 v5, 1000
+if-ne v4, v5, +004h
+const/4 v0, 1
+goto -2ah
+const/4 v0, 0
+goto -2ch
+return-object v1
+
+Ljp/kyocera/internal/clomask/TransferService; getDefaultValue (Ljava/lang/String; Ljava/lang/String;)Ljava/lang/String;
+const-string v1, ""
+invoke-virtual v3, v4, Ljp/kyocera/internal/clomask/TransferService;->getDefaultValue(Ljava/lang/String;)Ljava/lang/String;
+move-result-object v2
+return-object v2
+move-exception v0
+move-object v1, v5
+move-object v2, v1
+goto -4h
+
+Ljp/kyocera/internal/clomask/TransferService; set (Ljava/lang/String; Ljava/lang/String;)V
+if-eqz v6, +004h
+if-nez v7, +013h
+new-instance v2, Landroid/os/RemoteException;
+const-string v3, "parameter null err"
+invoke-direct v2, v3, Landroid/os/RemoteException;-><init>(Ljava/lang/String;)V
+throw v2
+move-exception v0
+new-instance v2, Landroid/os/RemoteException;
+const-string v3, "parameter: bytes err IOException"
+invoke-direct v2, v3, Landroid/os/RemoteException;-><init>(Ljava/lang/String;)V
+throw v2
+const-string v2, "UTF8"
+invoke-virtual v7, v2, Ljava/lang/String;->getBytes(Ljava/lang/String;)[B
+move-result-object v2
+array-length v2, v2
+const/16 v3, 1024
+if-gt v2, v3, +016h
+const-string v2, "UTF8"
+invoke-virtual v6, v2, Ljava/lang/String;->getBytes(Ljava/lang/String;)[B
+move-result-object v2
+array-length v2, v2
+if-eqz v2, +00dh
+const-string v2, "UTF8"
+invoke-virtual v6, v2, Ljava/lang/String;->getBytes(Ljava/lang/String;)[B
+move-result-object v2
+array-length v2, v2
+const/16 v3, 40
+if-le v2, v3, +00ah
+new-instance v2, Landroid/os/RemoteException;
+const-string v3, "parameter bytes err"
+invoke-direct v2, v3, Landroid/os/RemoteException;-><init>(Ljava/lang/String;)V
+throw v2
+iget-object v2, v5, Ljp/kyocera/internal/clomask/TransferService;->mContext Landroid/content/Context;
+const-string v3, "android.permission.clomask.SET"
+const-string v4, "Requires Permission"
+invoke-virtual v2, v3, v4, Landroid/content/Context;->enforceCallingOrSelfPermission(Ljava/lang/String; Ljava/lang/String;)V
+const/4 v2, 2
+const/4 v3, 1
+invoke-static v2, v6, v7, v3, Ljp/kyocera/internal/clomask/TransferService;->native_command(I Ljava/lang/String; Ljava/lang/String; Z)Ljava/lang/String;
+move-result-object v1
+if-nez v1, +016h
+new-instance v2, Landroid/os/RemoteException;
+const-string v3, "Deadly err"
+invoke-direct v2, v3, Landroid/os/RemoteException;-><init>(Ljava/lang/String;)V
+throw v2
+move-exception v0
+invoke-static Landroid/os/Binder;->getCallingUid()I
+move-result v2
+invoke-direct v5, v2, Ljp/kyocera/internal/clomask/TransferService;->checkUidPermission(I)Z
+move-result v2
+if-nez v2, -019h
+goto -1bh
+return-void 

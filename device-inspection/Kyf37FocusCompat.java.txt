@@ -1,0 +1,19 @@
+package @PKG@;
+
+/**
+ * Bridge to the framework focus theme (android.view.Kyf37FocusTheme, hidden class). The apps are
+ * platform-signed, so reflection is allowed. When the class is missing (ROM older than the
+ * focus-theme build) callers fall back to their own selector so selection stays visible.
+ */
+final class Kyf37FocusCompat {
+    private static Boolean present;
+    private Kyf37FocusCompat() { }
+
+    static synchronized boolean has() {
+        if (present == null) {
+            try { Class.forName("android.view.Kyf37FocusTheme"); present = Boolean.TRUE; }
+            catch (Throwable t) { present = Boolean.FALSE; }
+        }
+        return present;
+    }
+}

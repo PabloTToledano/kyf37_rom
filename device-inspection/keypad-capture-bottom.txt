@@ -1,0 +1,22 @@
+add device 1: /dev/input/event10
+  name:     "msm8909-pm8916-snd-card Headset Jack"
+add device 2: /dev/input/event9
+  name:     "msm8909-pm8916-snd-card Button Jack"
+add device 3: /dev/input/event6
+  name:     "vhdetect"
+add device 4: /dev/input/event4
+  name:     "accelerometer"
+add device 5: /dev/input/event2
+  name:     "qpnp_pon"
+add device 6: /dev/input/event7
+  name:     "kc_motion_sensor"
+add device 7: /dev/input/event5
+  name:     "sensor_ext"
+add device 8: /dev/input/event3
+  name:     "sensor_com"
+add device 9: /dev/input/event1
+  name:     "matrix_keypad.67"
+add device 10: /dev/input/event0
+  name:     "swic_hs_key"
+add device 11: /dev/input/event8
+  name:     "gpio-keys"

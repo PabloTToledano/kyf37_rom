@@ -1,0 +1,1208 @@
+Activity Resolver Table:
+
+  Full MIME Types:
+
+      cm/profile:
+
+        253cf14a com.android.settings/.profiles.NFCProfile
+
+      vnd.android.cursor.item/telephony-carrier:
+
+        15b378bb com.android.settings/.ApnEditor
+
+      vnd.android.cursor.dir/telephony-carrier:
+
+        15b378bb com.android.settings/.ApnEditor
+
+
+
+  Base MIME Types:
+
+      vnd.android.cursor.dir:
+
+        15b378bb com.android.settings/.ApnEditor
+
+      vnd.android.cursor.item:
+
+        15b378bb com.android.settings/.ApnEditor
+
+      cm:
+
+        253cf14a com.android.settings/.profiles.NFCProfile
+
+
+
+  Schemes:
+
+      printjob:
+
+        7d591d8 com.android.settings/.Settings$PrintJobSettingsActivity
+
+      package:
+
+        d6f1931 com.android.settings/.applications.InstalledAppDetails
+
+
+
+  Non-Data Actions:
+
+      android.net.wifi.PICK_WIFI_NETWORK:
+
+        3ee0d816 com.android.settings/.wifi.WifiPickerActivity
+
+      android.settings.SHOW_REGULATORY_INFO:
+
+        3e96e597 com.android.settings/.RegulatoryInfoDisplayActivity
+
+      android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS:
+
+        9fdf384 com.android.settings/.Settings$NotificationAccessSettingsActivity
+
+      android.settings.USER_SETTINGS:
+
+        3d6b176d com.android.settings/.Settings$UserSettingsActivity
+
+      android.settings.HOME_SETTINGS:
+
+        130a5fa2 com.android.settings/.Settings$HomeSettingsActivity
+
+      android.settings.DISPLAY_SETTINGS:
+
+        1dda4433 com.android.settings/.Settings$DisplaySettingsActivity
+
+      com.android.settings.PRESET_RINGTONE_PICKER:
+
+        2928c3f0 com.android.settings/.notification.PresetRingtonePickerActivity
+
+      android.settings.LOCATION_SOURCE_SETTINGS:
+
+        2daebd69 com.android.settings/.Settings$LocationSettingsActivity
+
+      android.settings.BLUETOOTH_SETTINGS:
+
+        1952d3ee com.android.settings/.Settings$BluetoothSettingsActivity
+
+      com.android.credentials.INSTALL:
+
+        1ceaf08f com.android.settings/.CredentialStorage
+
+      android.settings.APPLICATION_DEVELOPMENT_SETTINGS:
+
+        2ee2f1c com.android.settings/.Settings$DevelopmentSettingsActivity
+
+      android.provider.Telephony.ACTION_CHANGE_DEFAULT:
+
+        1d6cc725 com.android.settings/.SmsDefaultDialog
+
+      android.settings.SETTINGS:
+
+        179c40fa com.android.settings/.Settings
+
+      com.android.settings.SETUP_LOCK_SCREEN:
+
+        24b006ab com.android.settings/.SetupChooseLockGeneric
+
+      com.android.settings.sim.SIM_SUB_INFO_SETTINGS:
+
+        143d2108 com.android.settings/.Settings$SimSettingsActivity
+
+      android.settings.ADD_ACCOUNT_SETTINGS:
+
+        1247b0a1 com.android.settings/.accounts.AddAccountSettings
+
+      jp.kyocera.settings.ACTION_ENTER_PASSWORD_MANAGER_PASSWORD:
+
+        1ddd72c6 com.android.settings/.passwordmanager.PasswordConfirm
+
+      android.settings.USAGE_ACCESS_SETTINGS:
+
+        3b666287 com.android.settings/.Settings$UsageAccessSettingsActivity
+
+      android.bluetooth.device.action.CONNECTION_ACCESS_CANCEL:
+
+        380745b4 com.android.settings/.bluetooth.BluetoothPermissionActivity
+
+      com.android.settings.TRUSTED_CREDENTIALS_USER:
+
+        2f8db5dd com.android.settings/.Settings$TrustedCredentialsSettingsActivity
+
+      android.app.action.ADD_DEVICE_ADMIN:
+
+        32adf552 com.android.settings/.DeviceAdminAdd
+
+      android.bluetooth.device.action.CONNECTION_ACCESS_REQUEST:
+
+        380745b4 com.android.settings/.bluetooth.BluetoothPermissionActivity
+
+      android.settings.LICENSE:
+
+        243ca023 com.android.settings/.SettingsLicenseActivity
+
+      android.settings.BACKUP_AND_RESET_SETTINGS:
+
+        24ad0920 com.android.settings/.Settings$PrivacySettingsActivity
+
+      android.settings.ACTION_OTHER_SOUND_SETTINGS:
+
+        534d2d9 com.android.settings/.Settings$OtherSoundSettingsActivity
+
+      android.settings.ACCOUNT_SYNC_SETTINGS:
+
+        3c92149e com.android.settings/.Settings$AccountSyncSettingsActivity
+
+      android.intent.action.MAIN:
+
+        9aabac com.android.settings/.MonitoringCertInfoActivity
+
+        13c792d com.android.settings/.deviceinfo.SimStatus
+
+        2a1d66b com.android.settings/.BatteryInfo
+
+        2ee2f1c com.android.settings/.Settings$DevelopmentSettingsActivity
+
+        2fedc38 com.android.settings/.wifi.WifiInfo
+
+        37877ba com.android.settings/.Settings$WifiDisplaySettingsActivity
+
+        46d700c com.android.settings/.Settings$DataUsageSummaryActivity
+
+        4d3c674 com.android.settings/.TestingSettings
+
+        4fac209 com.android.settings/.simapp.SimAppMainActivity
+
+        534d2d9 com.android.settings/.Settings$OtherSoundSettingsActivity
+
+        65b079d com.android.settings/.UsageStatsActivity
+
+        6a07737 com.android.settings/.Settings$AppNotificationSettingsActivity
+
+        8ef6661 com.android.settings/.RadioInfo
+
+        9dcd698 com.android.settings/.Settings$AccessibilityDaltonizerSettingsActivity
+
+        9fdf384 com.android.settings/.Settings$NotificationAccessSettingsActivity
+
+        d056e47 com.android.settings/.BandMode
+
+        df9def1 com.android.settings/.Settings$CaptioningSettingsActivity
+
+        ee58099 com.android.settings/.Settings$ProfilesSettingsActivity
+
+        f265586 com.android.settings/.ProxySelector
+
+        f7b4fd3 com.android.settings/.NfpAppInstallDialog
+
+        11c839fe com.android.settings/.AgpsSettings
+
+        122bdf3f com.android.settings/.Settings$CryptKeeperSettingsActivity
+
+        1247b0a1 com.android.settings/.accounts.AddAccountSettings
+
+        1296c395 com.android.settings/.Settings$WifiSettingsActivity
+
+        130a5fa2 com.android.settings/.Settings$HomeSettingsActivity
+
+        1321162f com.android.settings/.Settings$UseInfoSettingsActivity
+
+        13a3f09b com.android.settings/.Settings$SavedAccessPointsSettingsActivity
+
+        13b7b067 com.android.settings/.Settings$ZenModeSettingsActivity
+
+        1429974c com.android.settings/.Settings$WirelessSettingsActivity
+
+        143c8f5e com.android.settings/.Settings$BlacklistSettingsActivity
+
+        143d2108 com.android.settings/.Settings$SimSettingsActivity
+
+        1531b075 com.android.settings/.Settings$DeviceAdminSettingsActivity
+
+        15f78157 com.android.settings/.deviceinfo.MSimSubscriptionStatus
+
+        1624fa50 com.android.settings/.Settings$WifiP2pSettingsActivity
+
+        1730bc05 com.android.settings/.Settings$InputMethodAndLanguageSettingsActivity
+
+        18947b29 com.android.settings/.MediaFormat
+
+        1952d3ee com.android.settings/.Settings$BluetoothSettingsActivity
+
+        1969f80a com.android.settings/.IccLockSettings
+
+        19797e62 com.android.settings/.deviceinfo.ImeiInformation
+
+        197f66bd com.android.settings/.Settings$ManageApplicationsActivity
+
+        198cd04d com.android.settings/.Settings$ApnSettingsActivity
+
+        1a40b1b9 com.android.settings/.Settings$AppOpsSummaryActivity
+
+        1abbe0b0 com.android.settings/.Settings$StorageSettingsActivity
+
+        1be32449 com.android.settings/.Settings$VpnSettingsActivity
+
+        1c061381 com.android.settings/.inputmethod.InputMethodAndSubtypeEnablerActivity
+
+        1c89305b com.android.settings/.Settings$DreamSettingsActivity
+
+        1caf1b7f com.android.settings/.Settings
+
+        1dda4433 com.android.settings/.Settings$DisplaySettingsActivity
+
+        1ecda9d1 com.android.settings/.Settings$NotificationSettingsActivity
+
+        1f4dcc26 com.android.settings/.Settings$UserDictionarySettingsActivity
+
+        1f751eae com.android.settings/.Settings$QuickLaunchSettingsActivity
+
+        1fba84b2 com.android.settings/.Settings$RunningServicesActivity
+
+        21d98c0e com.android.settings/.Settings$DirectButtonSettingsActivity
+
+        222fb4a4 com.android.settings/.Settings$LabelingComplianceActivity
+
+        2250a0e5 com.android.settings/.Settings$AndroidBeamSettingsActivity
+
+        23dfd5c2 com.android.settings/.sim.SimDialogActivity
+
+        2414c444 com.android.settings/.deviceinfo.Status
+
+        24ad0920 com.android.settings/.Settings$PrivacySettingsActivity
+
+        24e76b7c com.android.settings/.Settings$LocalePickerActivity
+
+        24fdc368 com.android.settings/.Settings$SpellCheckersSettingsActivity
+
+        27d39780 com.android.settings/.Settings$NotificationStationActivity
+
+        29e7c45a com.android.settings/.Settings$VoiceInputSettingsActivity
+
+        2a4e1976 com.android.settings/.wifi.WifiAPITest
+
+        2a84ec03 com.android.settings/.Settings$StorageUseActivity
+
+        2c60455f com.android.settings/.Settings$SecuritySettingsActivity
+
+        2d1e368b com.android.settings/.Settings$KeyboardLayoutPickerActivity
+
+        2daebd69 com.android.settings/.Settings$LocationSettingsActivity
+
+        2e3ae14e com.android.settings/.Settings$DateTimeSettingsActivity
+
+        2ea5d813 com.android.settings/.Settings$FeliCaSettingsActivity
+
+        2f8db5dd com.android.settings/.Settings$TrustedCredentialsSettingsActivity
+
+        2ff52c36 com.android.settings/.Settings$SoundSettingsActivity
+
+        2fff15c8 com.android.settings/.Display
+
+        30048d55 com.android.settings/.SelectSubscription
+
+        300be26f com.android.settings/.DateTimeSettingsSetupWizard
+
+        30fa5702 com.android.settings/.Settings$TetherSettingsActivity
+
+        31824412 com.android.settings/.Settings$PowerUsageSummaryActivity
+
+        31e183e4 com.android.settings/.wifi.WifiApSettings
+
+        3232120d com.android.settings/.sim.MultiSimSoundSettings
+
+        339fae14 com.android.settings/.Settings$DeviceInfoSettingsActivity
+
+        3406dcaa com.android.settings/.Settings$AdvancedWifiSettingsActivity
+
+        348780f8 com.android.settings/.Settings$ConditionProviderSettingsActivity
+
+        34b78ad6 com.android.settings/.Settings$TextToSpeechSettingsActivity
+
+        357657dc com.android.settings/.Settings$PrintSettingsActivity
+
+        3646fb77 com.android.settings/.wifi.WifiStatusTest
+
+        36a0d5e0 com.android.settings/.CryptKeeper
+
+        38ed0411 com.android.settings/.wifi.WifiConfigInfo
+
+        39be436a com.android.settings/.MultiSimSettingTab
+
+        3a057710 com.android.settings/.SettingsCopyrightActivity
+
+        3b666287 com.android.settings/.Settings$UsageAccessSettingsActivity
+
+        3c92149e com.android.settings/.Settings$AccountSyncSettingsActivity
+
+        3ccb444f com.android.settings/.quicklaunch.BookmarkPicker
+
+        3d20a7e3 com.android.settings/.Settings$AccountSettingsActivity
+
+        3d6b176d com.android.settings/.Settings$UserSettingsActivity
+
+        3d6dd87b com.android.settings/.Settings$AccessibilitySettingsActivity
+
+        3ee0d816 com.android.settings/.wifi.WifiPickerActivity
+
+        3f08dbf3 com.android.settings/.deviceinfo.MSimStatus
+
+      android.intent.action.MANAGE_PACKAGE_STORAGE:
+
+        2a84ec03 com.android.settings/.Settings$StorageUseActivity
+
+      android.settings.PROFILES_SETTINGS:
+
+        ee58099 com.android.settings/.Settings$ProfilesSettingsActivity
+
+      android.settings.INTERNAL_STORAGE_SETTINGS:
+
+        1abbe0b0 com.android.settings/.Settings$StorageSettingsActivity
+
+      android.settings.MANAGE_APPLICATIONS_SETTINGS:
+
+        197f66bd com.android.settings/.Settings$ManageApplicationsActivity
+
+      android.settings.SYNC_SETTINGS:
+
+        3d20a7e3 com.android.settings/.Settings$AccountSettingsActivity
+
+      android.settings.APP_OPS_SETTINGS:
+
+        1a40b1b9 com.android.settings/.Settings$AppOpsSummaryActivity
+
+      android.app.action.SET_PROFILE_OWNER:
+
+        1132f43c com.android.settings/.SetProfileOwner
+
+      android.net.scoring.CHANGE_ACTIVE:
+
+        3b8475c5 com.android.settings/.ActiveNetworkScorerDialog
+
+      com.android.settings.TTS_SETTINGS:
+
+        34b78ad6 com.android.settings/.Settings$TextToSpeechSettingsActivity
+
+      android.settings.QUICK_LAUNCH_SETTINGS:
+
+        1f751eae com.android.settings/.Settings$QuickLaunchSettingsActivity
+
+      android.settings.ACTION_APP_NOTIFICATION_REDACTION:
+
+        ea65b1a com.android.settings/.notification.RedactionSettingsStandalone
+
+      android.settings.MEMORY_CARD_SETTINGS:
+
+        1abbe0b0 com.android.settings/.Settings$StorageSettingsActivity
+
+      android.settings.ACCESSIBILITY_SETTINGS:
+
+        3d6dd87b com.android.settings/.Settings$AccessibilitySettingsActivity
+
+      com.android.net.wifi.SETUP_WIFI_NETWORK:
+
+        3cb2e64b com.android.settings/.wifi.WifiSetupActivity
+
+      android.bluetooth.adapter.action.REQUEST_ENABLE:
+
+        3591828 com.android.settings/.bluetooth.RequestPermissionActivity
+
+      com.android.settings.PROFILES_SETTINGS:
+
+        ee58099 com.android.settings/.Settings$ProfilesSettingsActivity
+
+      android.settings.PRIVACY_SETTINGS:
+
+        24ad0920 com.android.settings/.Settings$PrivacySettingsActivity
+
+      com.android.settings.QUICK_LAUNCH_SETTINGS:
+
+        1f751eae com.android.settings/.Settings$QuickLaunchSettingsActivity
+
+      com.android.settings.MONITORING_CERT_INFO:
+
+        9aabac com.android.settings/.MonitoringCertInfoActivity
+
+      android.settings.WIRELESS_SETTINGS:
+
+        1429974c com.android.settings/.Settings$WirelessSettingsActivity
+
+      android.settings.USER_DICTIONARY_SETTINGS:
+
+        1f4dcc26 com.android.settings/.Settings$UserDictionarySettingsActivity
+
+      android.settings.WIFI_IP_SETTINGS:
+
+        3406dcaa com.android.settings/.Settings$AdvancedWifiSettingsActivity
+
+      android.settings.APPLICATION_SETTINGS:
+
+        197f66bd com.android.settings/.Settings$ManageApplicationsActivity
+
+      android.bluetooth.device.action.PAIRING_REQUEST:
+
+        293ba941 com.android.settings/.bluetooth.BluetoothPairingDialog
+
+      com.android.settings.TRUSTED_CREDENTIALS:
+
+        2f8db5dd com.android.settings/.Settings$TrustedCredentialsSettingsActivity
+
+      android.credentials.UNLOCK:
+
+        2c60455f com.android.settings/.Settings$SecuritySettingsActivity
+
+      com.android.credentials.UNLOCK:
+
+        1ceaf08f com.android.settings/.CredentialStorage
+
+      android.intent.action.QUICK_CLOCK:
+
+        2e3ae14e com.android.settings/.Settings$DateTimeSettingsActivity
+
+      android.net.vpn.SETTINGS:
+
+        1be32449 com.android.settings/.Settings$VpnSettingsActivity
+
+      android.settings.DEVICE_INFO_SETTINGS:
+
+        339fae14 com.android.settings/.Settings$DeviceInfoSettingsActivity
+
+      com.android.credentials.RESET:
+
+        1ceaf08f com.android.settings/.CredentialStorage
+
+      android.net.wifi.action.REQUEST_SCAN_ALWAYS_AVAILABLE:
+
+        253f0ee6 com.android.settings/.wifi.WifiScanModeActivity
+
+      android.settings.SECURITY_SETTINGS:
+
+        2c60455f com.android.settings/.Settings$SecuritySettingsActivity
+
+      android.intent.action.POWER_USAGE_SUMMARY:
+
+        31824412 com.android.settings/.Settings$PowerUsageSummaryActivity
+
+      .applications.ProtectedAppsActivity:
+
+        33b8ed4 com.android.settings/.applications.ProtectedAppsActivity
+
+        3e479c27 com.android.settings/.applications.ProtectedAppsActivity
+
+      android.settings.ZEN_MODE_SETTINGS:
+
+        13b7b067 com.android.settings/.Settings$ZenModeSettingsActivity
+
+      android.intent.action.PICK_ACTIVITY:
+
+        11d8987d com.android.settings/.ActivityPicker
+
+      android.settings.MANAGE_ALL_APPLICATIONS_SETTINGS:
+
+        197f66bd com.android.settings/.Settings$ManageApplicationsActivity
+
+      .applications.LockPatternActivity:
+
+        55d3372 com.android.settings/.applications.LockPatternActivity
+
+        2a87d3c3 com.android.settings/.applications.LockPatternActivity
+
+      android.settings.WIFI_SETTINGS:
+
+        1296c395 com.android.settings/.Settings$WifiSettingsActivity
+
+      android.bluetooth.adapter.action.REQUEST_DISCOVERABLE:
+
+        3591828 com.android.settings/.bluetooth.RequestPermissionActivity
+
+      android.settings.APP_NOTIFICATION_SETTINGS:
+
+        6a07737 com.android.settings/.Settings$AppNotificationSettingsActivity
+
+      android.settings.AIRPLANE_MODE_SETTINGS:
+
+        1429974c com.android.settings/.Settings$WirelessSettingsActivity
+
+      android.settings.SOUND_SETTINGS:
+
+        2ff52c36 com.android.settings/.Settings$SoundSettingsActivity
+
+      android.settings.VOICE_INPUT_SETTINGS:
+
+        29e7c45a com.android.settings/.Settings$VoiceInputSettingsActivity
+
+      android.settings.WIFI_DISPLAY_SETTINGS:
+
+        37877ba com.android.settings/.Settings$WifiDisplaySettingsActivity
+
+      android.settings.NFCSHARING_SETTINGS:
+
+        2250a0e5 com.android.settings/.Settings$AndroidBeamSettingsActivity
+
+      android.app.action.CONFIRM_DEVICE_CREDENTIAL:
+
+        a2cc440 com.android.settings/.ConfirmDeviceCredentialActivity
+
+      android.settings.NOTIFICATION_SETTINGS:
+
+        1ecda9d1 com.android.settings/.Settings$NotificationSettingsActivity
+
+      android.settings.DREAM_SETTINGS:
+
+        1c89305b com.android.settings/.Settings$DreamSettingsActivity
+
+      android.settings.INPUT_METHOD_SUBTYPE_SETTINGS:
+
+        1c061381 com.android.settings/.inputmethod.InputMethodAndSubtypeEnablerActivity
+
+      android.settings.CAST_SETTINGS:
+
+        37877ba com.android.settings/.Settings$WifiDisplaySettingsActivity
+
+      com.android.settings.ACCESSIBILITY_COLOR_SPACE_SETTINGS:
+
+        9dcd698 com.android.settings/.Settings$AccessibilityDaltonizerSettingsActivity
+
+      com.android.settings.APPLICATION_DEVELOPMENT_SETTINGS:
+
+        2ee2f1c com.android.settings/.Settings$DevelopmentSettingsActivity
+
+      android.settings.ACTION_PRINT_SETTINGS:
+
+        357657dc com.android.settings/.Settings$PrintSettingsActivity
+
+      android.app.action.START_ENCRYPTION:
+
+        122bdf3f com.android.settings/.Settings$CryptKeeperSettingsActivity
+
+      android.settings.INPUT_METHOD_SETTINGS:
+
+        1730bc05 com.android.settings/.Settings$InputMethodAndLanguageSettingsActivity
+
+      com.android.settings.DISPLAY_SETTINGS:
+
+        1dda4433 com.android.settings/.Settings$DisplaySettingsActivity
+
+      android.settings.LOCALE_SETTINGS:
+
+        24e76b7c com.android.settings/.Settings$LocalePickerActivity
+
+      android.app.action.SET_NEW_PASSWORD:
+
+        25b3f79 com.android.settings/.ChooseLockGeneric
+
+      android.appwidget.action.APPWIDGET_BIND:
+
+        1ec714be com.android.settings/.AllowBindAppWidgetActivity
+
+      android.appwidget.action.APPWIDGET_PICK:
+
+        c09e91f com.android.settings/.AppWidgetPickActivity
+
+      android.settings.WIFI_IF_SETTINGS:
+
+        13a3f09b com.android.settings/.Settings$SavedAccessPointsSettingsActivity
+
+      android.settings.APN_SETTINGS:
+
+        198cd04d com.android.settings/.Settings$ApnSettingsActivity
+
+      com.android.settings.SOUND_SETTINGS:
+
+        2ff52c36 com.android.settings/.Settings$SoundSettingsActivity
+
+      android.settings.CAPTIONING_SETTINGS:
+
+        df9def1 com.android.settings/.Settings$CaptioningSettingsActivity
+
+      android.intent.action.CREATE_SHORTCUT:
+
+        1239e46c com.android.settings/.CreateShortcut
+
+      android.settings.ACTION_CONDITION_PROVIDER_SETTINGS:
+
+        348780f8 com.android.settings/.Settings$ConditionProviderSettingsActivity
+
+      android.bluetooth.devicepicker.action.LAUNCH:
+
+        3dc75a35 com.android.settings/.bluetooth.DevicePickerActivity
+
+      android.settings.DATE_SETTINGS:
+
+        2e3ae14e com.android.settings/.Settings$DateTimeSettingsActivity
+
+      android.settings.NFC_SETTINGS:
+
+        1429974c com.android.settings/.Settings$WirelessSettingsActivity
+
+
+
+  MIME Typed Actions:
+
+      android.intent.action.EDIT:
+
+        15b378bb com.android.settings/.ApnEditor
+
+      android.intent.action.VIEW:
+
+        15b378bb com.android.settings/.ApnEditor
+
+      android.intent.action.INSERT:
+
+        15b378bb com.android.settings/.ApnEditor
+
+      android.nfc.action.NDEF_DISCOVERED:
+
+        253cf14a com.android.settings/.profiles.NFCProfile
+
+
+
+Receiver Resolver Table:
+
+  Schemes:
+
+      android_secret_code:
+
+        55bbeca com.android.settings/.DiagPortBroadcastReceiver
+
+      package:
+
+        166df83b com.android.settings/.NfpAppInstallReceiver
+
+
+
+  Non-Data Actions:
+
+      android.net.wifi.WIFI_STATE_CHANGED:
+
+        716db58 com.android.settings/.widget.SettingsAppWidgetProvider
+
+      android.bluetooth.adapter.action.DISCOVERY_FINISHED:
+
+        39a064b1 com.android.settings/.bluetooth.BluetoothDiscoveryReceiver
+
+      android.bluetooth.adapter.action.STATE_CHANGED:
+
+        716db58 com.android.settings/.widget.SettingsAppWidgetProvider
+
+        39defd96 com.android.settings/.bluetooth.DockEventReceiver
+
+      android.bluetooth.device.action.CONNECTION_ACCESS_CANCEL:
+
+        d39dd17 com.android.settings/.bluetooth.BluetoothPermissionRequest
+
+      android.bluetooth.device.action.CONNECTION_ACCESS_REQUEST:
+
+        d39dd17 com.android.settings/.bluetooth.BluetoothPermissionRequest
+
+      jp.kyocera.settings.action.RESTRICT_COMM_DEBUG_OFF:
+
+        19ca5504 com.android.settings/.NfpDebugReceiver
+
+      android.intent.action.STATISTICS_REPORT:
+
+        26259aed com.android.settings/.DeviceInfo$StatsReportReceiver
+
+      android.action.SETTING_AIRPLANE_MODE_UPDATE:
+
+        33855d22 com.android.settings/.AirplaneModeUpdateReceiver
+
+      android.location.MODE_CHANGED:
+
+        716db58 com.android.settings/.widget.SettingsAppWidgetProvider
+
+      android.hardware.usb.action.USB_STATE:
+
+        55bbeca com.android.settings/.DiagPortBroadcastReceiver
+
+      android.intent.action.USER_INITIALIZE:
+
+        3c7533b3 com.android.settings/.ManagedProfileSetup
+
+      android.bluetooth.device.action.PAIRING_REQUEST:
+
+        2319bd70 com.android.settings/.bluetooth.BluetoothPairingRequest
+
+      android.provider.Contacts.PROFILE_CHANGED:
+
+        3e4df8e9 com.android.settings/.users.ProfileUpdateReceiver
+
+      android.bluetooth.adapter.action.DISCOVERY_STARTED:
+
+        39a064b1 com.android.settings/.bluetooth.BluetoothDiscoveryReceiver
+
+      android.bluetooth.a2dp.action.SINK_STATE_CHANGED:
+
+        39defd96 com.android.settings/.bluetooth.DockEventReceiver
+
+      jp.kyocera.settings.ACTION_BOOT_COMPLETE_END:
+
+        3640296e com.android.settings/.SettingsBootReceiver
+
+      android.net.wifi.WIFI_AP_STATE_CHANGED:
+
+        1f05580f com.android.settings/.HotspotOffReceiver
+
+      android.appwidget.action.APPWIDGET_DISABLED:
+
+        716db58 com.android.settings/.widget.SettingsAppWidgetProvider
+
+      android.net.conn.BACKGROUND_DATA_SETTING_CHANGED:
+
+        716db58 com.android.settings/.widget.SettingsAppWidgetProvider
+
+      android.bluetooth.intent.DISCOVERABLE_TIMEOUT:
+
+        b5409c com.android.settings/.bluetooth.BluetoothDiscoverableTimeoutReceiver
+
+      android.intent.action.PRE_BOOT_COMPLETED:
+
+        1b843aa5 com.android.settings/.SettingsBroadcastReceiver
+
+        3c7533b3 com.android.settings/.ManagedProfileSetup
+
+      android.intent.action.BOOT_COMPLETED:
+
+        1b843aa5 com.android.settings/.SettingsBroadcastReceiver
+
+        3640296e com.android.settings/.SettingsBootReceiver
+
+      cyanogenmod.intent.action.PACKAGE_PROTECTED:
+
+        1c96e7a com.android.settings/.cyanogenmod.ProtectedAppsReceiver
+
+      android.settings.SHOW_INPUT_METHOD_PICKER:
+
+        ec9662b com.android.settings/.inputmethod.InputMethodDialogReceiver
+
+      jp.kyocera.telephony.TETHERING_AUTH_ERROR_ACTION:
+
+        1b843aa5 com.android.settings/.SettingsBroadcastReceiver
+
+      android.bluetooth.headset.action.STATE_CHANGED:
+
+        39defd96 com.android.settings/.bluetooth.DockEventReceiver
+
+      android.bluetooth.device.action.PAIRING_CANCEL:
+
+        2319bd70 com.android.settings/.bluetooth.BluetoothPairingRequest
+
+      android.appwidget.action.APPWIDGET_ENABLED:
+
+        716db58 com.android.settings/.widget.SettingsAppWidgetProvider
+
+      android.appwidget.action.APPWIDGET_UPDATE:
+
+        716db58 com.android.settings/.widget.SettingsAppWidgetProvider
+
+      jp.kyocera.settings.action.RESTRICT_COMM_DEBUG_NON_DIALOG:
+
+        19ca5504 com.android.settings/.NfpDebugReceiver
+
+      android.intent.action.ACTION_SHUTDOWN:
+
+        1923ca88 com.android.settings/.accessibility.LedFlashlightReceiver
+
+        3640296e com.android.settings/.SettingsBootReceiver
+
+      com.android.sync.SYNC_CONN_STATUS_CHANGED:
+
+        716db58 com.android.settings/.widget.SettingsAppWidgetProvider
+
+      android.intent.action.DOCK_EVENT:
+
+        39defd96 com.android.settings/.bluetooth.DockEventReceiver
+
+      android.bluetooth.device.action.BOND_STATE_CHANGED:
+
+        2319bd70 com.android.settings/.bluetooth.BluetoothPairingRequest
+
+
+
+Service Resolver Table:
+
+  Non-Data Actions:
+
+      com.android.settings.wifi.HotsoptService:
+
+        922dc21 com.android.settings/.wifi.HotsoptService
+
+
+
+Provider Resolver Table:
+
+  Non-Data Actions:
+
+      android.content.action.SEARCH_INDEXABLES_PROVIDER:
+
+        256ff846 com.android.settings/.search.SettingsSearchIndexablesProvider
+
+
+
+Permissions:
+
+  Permission [cyanogenmod.permission.PROTECTED_APP] (1a763a07):
+
+    sourcePackage=com.android.settings
+
+    uid=1000 gids=[] type=0 prot=signature|system
+
+    packageSetting=PackageSetting{f69b470 com.android.settings/1000}
+
+    perm=Permission{326f0734 cyanogenmod.permission.PROTECTED_APP}
+
+
+
+Registered ContentProviders:
+
+  com.android.settings/android.support.v4.content.FileProvider:
+
+    Provider{13b0195d com.android.settings/android.support.v4.content.FileProvider}
+
+  com.android.settings/.search.SettingsSearchIndexablesProvider:
+
+    Provider{256ff846 com.android.settings/.search.SettingsSearchIndexablesProvider}
+
+
+
+ContentProvider Authorities:
+
+  [com.android.settings.files]:
+
+    Provider{13b0195d com.android.settings/android.support.v4.content.FileProvider}
+
+      applicationInfo=ApplicationInfo{4a352d2 com.android.settings}
+
+  [com.android.settings]:
+
+    Provider{256ff846 com.android.settings/.search.SettingsSearchIndexablesProvider}
+
+      applicationInfo=ApplicationInfo{4a352d2 com.android.settings}
+
+
+
+Key Set Manager:
+
+  [com.android.settings]
+
+      Signing KeySets: 1
+
+
+
+Packages:
+
+  Package [com.android.settings] (f69b470):
+
+    userId=1000 gids=[]
+
+    sharedUser=SharedUserSetting{549ee05 android.uid.system/1000}
+
+    pkg=Package{1d326fa3 com.android.settings}
+
+    codePath=/system/priv-app/Settings
+
+    resourcePath=/system/priv-app/Settings
+
+    legacyNativeLibraryDir=/system/priv-app/Settings/lib
+
+    primaryCpuAbi=armeabi-v7a
+
+    secondaryCpuAbi=null
+
+    versionCode=22 targetSdk=22
+
+    versionName=5.1.1-104.0.2600
+
+    splits=[base]
+
+    applicationInfo=ApplicationInfo{4a352d2 com.android.settings}
+
+    flags=[ SYSTEM HAS_CODE ALLOW_CLEAR_USER_DATA PRIVILEGED ]
+
+    dataDir=/data/data/com.android.settings
+
+    supportsScreens=[small, medium, large, xlarge, resizeable, anyDensity]
+
+    usesLibraries:
+
+      com.quicinc.cneapiclient
+
+      com.quicinc.cne
+
+    usesLibraryFiles:
+
+      /system/framework/com.quicinc.cne.jar
+
+      /system/framework/cneapiclient.jar
+
+    timeStamp=2019-05-30 02:07:02
+
+    firstInstallTime=2019-05-30 02:07:02
+
+    lastUpdateTime=2019-05-30 02:07:02
+
+    signatures=PackageSignatures{78f62a0 [17806581]}
+
+    permissionsFixed=false haveGids=true installStatus=1
+
+    pkgFlags=[ SYSTEM HAS_CODE ALLOW_CLEAR_USER_DATA PRIVILEGED ]
+
+    User 0:  installed=true hidden=false stopped=false notLaunched=false enabled=0
+
+      disabledComponents:
+
+      com.android.settings.CryptKeeper
+
+
+
+Shared users:
+
+  SharedUser [android.uid.system] (549ee05):
+
+    userId=1000 gids=[3002, 1023, 3001, 3007, 1028, 1015, 3003, 1021, 3004, 3005, 1000, 3009, 1010, 1007]
+
+    grantedPermissions:
+
+      android.permission.REAL_GET_TASKS
+
+      android.permission.BIND_INCALL_SERVICE
+
+      android.permission.WRITE_SETTINGS
+
+      android.permission.CONFIGURE_WIFI_DISPLAY
+
+      android.permission.ACCESS_WIMAX_STATE
+
+      android.permission.READ_CALL_LOG
+
+      android.permission.ACCESS_FINE_LOCATION
+
+      android.permission.USE_CREDENTIALS
+
+      android.permission.MODIFY_AUDIO_SETTINGS
+
+      android.permission.ACCESS_CHECKIN_PROPERTIES
+
+      android.permission.INSTALL_LOCATION_PROVIDER
+
+      com.nextfp.android.permission.KEY_NOTIFIER
+
+      android.permission.CONTROL_LOCATION_UPDATES
+
+      android.permission.RECEIVE_WAP_PUSH
+
+      android.permission.CLEAR_APP_USER_DATA
+
+      android.permission.BROADCAST_CALLLOG_INFO
+
+      com.kddi.android.permission.MANAGE_CPA
+
+      android.permission.SHUTDOWN
+
+      android.permission.CHANGE_COMPONENT_ENABLED_STATE
+
+      android.permission.NFC
+
+      android.permission.BROADCAST_SMS
+
+      android.permission.CALL_PRIVILEGED
+
+      android.permission.CHANGE_NETWORK_STATE
+
+      android.permission.MASTER_CLEAR
+
+      android.permission.WRITE_SYNC_SETTINGS
+
+      android.permission.RECEIVE_BOOT_COMPLETED
+
+      android.permission.clomask.GET
+
+      android.permission.clomask.SET
+
+      android.permission.DEVICE_POWER
+
+      android.permission.RECEIVE_SMS
+
+      jp.kyocera.pedometer.READ_PREFERENCES
+
+      android.permission.READ_PROFILE
+
+      android.permission.BLUETOOTH
+
+      android.permission.WRITE_MEDIA_STORAGE
+
+      android.permission.GET_TASKS
+
+      android.permission.ACCESS_SURFACE_FLINGER
+
+      android.permission.INTERNET
+
+      android.permission.BLUETOOTH_ADMIN
+
+      android.permission.CONTROL_VPN
+
+      jp.kyocera.weather.KYOCERA_WEATHER_PROVIDER_READ
+
+      com.qualcomm.permission.IZAT
+
+      android.permission.BIND_CONNECTION_SERVICE
+
+      android.permission.READ_EXTERNAL_STORAGE
+
+      android.permission.GET_PACKAGE_SIZE
+
+      android.permission.MANAGE_USB
+
+      android.permission.INTERACT_ACROSS_USERS_FULL
+
+      android.permission.STOP_APP_SWITCHES
+
+      android.permission.BATTERY_STATS
+
+      android.permission.PACKAGE_USAGE_STATS
+
+      android.permission.MOUNT_UNMOUNT_FILESYSTEMS
+
+      android.permission.WRITE_SECURE_SETTINGS
+
+      android.permission.ACCESS_COARSE_LOCATION
+
+      android.permission.MOVE_PACKAGE
+
+      android.permission.SET_ACTIVITY_WATCHER
+
+      jp.kyocera.camera.permission.READ_PREFERENCES_PROVIDER
+
+      com.qualcomm.permission.wfd.QC_WFD
+
+      android.permission.READ_SEARCH_INDEXABLES
+
+      android.permission.READ_PHONE_STATE
+
+      android.permission.ACCESS_LOCATION_EXTRA_COMMANDS
+
+      android.permission.ACCESS_DOWNLOAD_MANAGER
+
+      android.permission.BROADCAST_STICKY
+
+      android.permission.BLUETOOTH_PRIVILEGED
+
+      android.permission.CALL_PHONE
+
+      android.permission.HARDWARE_TEST
+
+      android.intent.category.MASTER_CLEAR.permission.C2D_MESSAGE
+
+      android.permission.WRITE_CONTACTS
+
+      android.permission.BIND_JOB_SERVICE
+
+      android.permission.CONFIRM_FULL_BACKUP
+
+      android.permission.SET_TIME
+
+      android.permission.WRITE_APN_SETTINGS
+
+      android.permission.CHANGE_WIFI_STATE
+
+      android.permission.MANAGE_USERS
+
+      android.permission.ACCESS_NETWORK_STATE
+
+      android.permission.DISABLE_KEYGUARD
+
+      android.permission.BACKUP
+
+      jp.kyocera.permission.simlock.SAVE
+
+      android.permission.CAMERA
+
+      android.permission.CHANGE_CONFIGURATION
+
+      android.permission.READ_LOGS
+
+      android.permission.COPY_PROTECTED_DATA
+
+      android.permission.INTERACT_ACROSS_USERS
+
+      android.permission.SET_KEYBOARD_LAYOUT
+
+      android.permission.WRITE_CALL_LOG
+
+      android.permission.READ_DREAM_STATE
+
+      android.permission.KILL_BACKGROUND_PROCESSES
+
+      android.permission.WRITE_USER_DICTIONARY
+
+      android.permission.READ_SYNC_STATS
+
+      android.permission.WRITE_DREAM_STATE
+
+      broadcast.cne.permission
+
+      android.permission.REBOOT
+
+      android.permission.PROCESS_OUTGOING_CALLS
+
+      android.permission.OEM_UNLOCK_STATE
+
+      android.permission.MANAGE_DEVICE_ADMINS
+
+      android.permission.MANAGE_DOCUMENTS
+
+      android.permission.MANAGE_NETWORK_POLICY
+
+      android.permission.SET_POINTER_SPEED
+
+      android.permission.CHANGE_BACKGROUND_DATA_SETTING
+
+      android.permission.CONNECTIVITY_INTERNAL
+
+      android.permission.READ_SYNC_SETTINGS
+
+      android.permission.GET_ACCOUNTS
+
+      jp.kyocera.emgbuzz.permission.EMG_BUZZER_CONTROL
+
+      android.permission.FORCE_STOP_PACKAGES
+
+      android.permission.HIDE_NON_SYSTEM_OVERLAY_WINDOWS
+
+      android.permission.ACCESS_NOTIFICATIONS
+
+      android.permission.WRITE_EXTERNAL_STORAGE
+
+      android.permission.VIBRATE
+
+      com.android.certinstaller.INSTALL_AS_USER
+
+      android.permission.READ_USER_DICTIONARY
+
+      com.kddi.android.email.permission.AUTO_SEND
+
+      android.permission.RECEIVE_EMERGENCY_BROADCAST
+
+      android.permission.READ_PHONE_BLACKLIST
+
+      android.permission.MODIFY_NETWORK_ACCOUNTING
+
+      android.permission.CHANGE_PHONE_BLACKLIST
+
+      android.permission.ACCESS_WIFI_STATE
+
+      android.permission.CHANGE_WIMAX_STATE
+
+      android.permission.MODIFY_PHONE_STATE
+
+      android.permission.STATUS_BAR
+
+      android.permission.READ_FRAME_BUFFER
+
+      android.permission.RECORD_AUDIO
+
+      android.permission.LOCATION_HARDWARE
+
+      android.permission.WAKE_LOCK
+
+      android.permission.READ_CONTACTS
+
+      android.permission.INJECT_EVENTS
+

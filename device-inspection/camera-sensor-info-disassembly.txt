@@ -1,0 +1,124 @@
+
+/home/pablo/kyf37-rom/stock-system/lib/libmmcamera_interface.so:     file format elf32-littlearm
+
+
+Disassembly of section .text:
+
+00003504 <get_sensor_info>:
+    3504:	4b43      	ldr	r3, [pc, #268]	; (3614 <get_sensor_info+0x110>)
+    3506:	4a44      	ldr	r2, [pc, #272]	; (3618 <get_sensor_info+0x114>)
+    3508:	447b      	add	r3, pc
+    350a:	e92d 4ff0 	stmdb	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, lr}
+    350e:	2600      	movs	r6, #0
+    3510:	589b      	ldr	r3, [r3, r2]
+    3512:	f5ad 7d0d 	sub.w	sp, sp, #564	; 0x234
+    3516:	f8df b104 	ldr.w	fp, [pc, #260]	; 361c <get_sensor_info+0x118>
+    351a:	4637      	mov	r7, r6
+    351c:	f8df a100 	ldr.w	sl, [pc, #256]	; 3620 <get_sensor_info+0x11c>
+    3520:	6818      	ldr	r0, [r3, #0]
+    3522:	44fb      	add	fp, pc
+    3524:	44fa      	add	sl, pc
+    3526:	908b      	str	r0, [sp, #556]	; 0x22c
+    3528:	9301      	str	r3, [sp, #4]
+    352a:	ac03      	add	r4, sp, #12
+    352c:	2120      	movs	r1, #32
+    352e:	465a      	mov	r2, fp
+    3530:	463b      	mov	r3, r7
+    3532:	4620      	mov	r0, r4
+    3534:	f7ff e9b4 	blx	28a0 <snprintf@plt>
+    3538:	4620      	mov	r0, r4
+    353a:	f640 0102 	movw	r1, #2050	; 0x802
+    353e:	f7ff e9b6 	blx	28ac <open@plt>
+    3542:	1e05      	subs	r5, r0, #0
+    3544:	dd57      	ble.n	35f6 <get_sensor_info+0xf2>
+    3546:	f10d 082c 	add.w	r8, sp, #44	; 0x2c
+    354a:	2100      	movs	r1, #0
+    354c:	f44f 7280 	mov.w	r2, #256	; 0x100
+    3550:	4640      	mov	r0, r8
+    3552:	f7ff e9b2 	blx	28b8 <memset@plt>
+    3556:	492d      	ldr	r1, [pc, #180]	; (360c <get_sensor_info+0x108>)
+    3558:	4628      	mov	r0, r5
+    355a:	4642      	mov	r2, r8
+    355c:	3701      	adds	r7, #1
+    355e:	f7ff e9b2 	blx	28c4 <ioctl@plt>
+    3562:	2800      	cmp	r0, #0
+    3564:	da10      	bge.n	3588 <get_sensor_info+0x84>
+    3566:	f7ff e9b4 	blx	28d0 <__errno@plt>
+    356a:	6800      	ldr	r0, [r0, #0]
+    356c:	f7ff e9b6 	blx	28dc <strerror@plt>
+    3570:	492c      	ldr	r1, [pc, #176]	; (3624 <get_sensor_info+0x120>)
+    3572:	4603      	mov	r3, r0
+    3574:	4a2c      	ldr	r2, [pc, #176]	; (3628 <get_sensor_info+0x124>)
+    3576:	2006      	movs	r0, #6
+    3578:	4479      	add	r1, pc
+    357a:	447a      	add	r2, pc
+    357c:	f7ff e9b4 	blx	28e8 <__android_log_print@plt>
+    3580:	4628      	mov	r0, r5
+    3582:	f7ff e9b8 	blx	28f4 <close@plt>
+    3586:	e036      	b.n	35f6 <get_sensor_info+0xf2>
+    3588:	4928      	ldr	r1, [pc, #160]	; (362c <get_sensor_info+0x128>)
+    358a:	a80f      	add	r0, sp, #60	; 0x3c
+    358c:	2220      	movs	r2, #32
+    358e:	4479      	add	r1, pc
+    3590:	f7ff e9b6 	blx	2900 <strncmp@plt>
+    3594:	b998      	cbnz	r0, 35be <get_sensor_info+0xba>
+    3596:	f04f 0801 	mov.w	r8, #1
+    359a:	ac4b      	add	r4, sp, #300	; 0x12c
+    359c:	2100      	movs	r1, #0
+    359e:	f44f 7280 	mov.w	r2, #256	; 0x100
+    35a2:	4620      	mov	r0, r4
+    35a4:	f108 0901 	add.w	r9, r8, #1
+    35a8:	f7ff e986 	blx	28b8 <memset@plt>
+    35ac:	4918      	ldr	r1, [pc, #96]	; (3610 <get_sensor_info+0x10c>)
+    35ae:	4628      	mov	r0, r5
+    35b0:	f8c4 8000 	str.w	r8, [r4]
+    35b4:	4622      	mov	r2, r4
+    35b6:	f7ff e986 	blx	28c4 <ioctl@plt>
+    35ba:	2800      	cmp	r0, #0
+    35bc:	da03      	bge.n	35c6 <get_sensor_info+0xc2>
+    35be:	4628      	mov	r0, r5
+    35c0:	f7ff e998 	blx	28f4 <close@plt>
+    35c4:	e7b1      	b.n	352a <get_sensor_info+0x26>
+    35c6:	6a61      	ldr	r1, [r4, #36]	; 0x24
+    35c8:	f5b1 3f00 	cmp.w	r1, #131072	; 0x20000
+    35cc:	d001      	beq.n	35d2 <get_sensor_info+0xce>
+    35ce:	46c8      	mov	r8, r9
+    35d0:	e7e4      	b.n	359c <get_sensor_info+0x98>
+    35d2:	6b22      	ldr	r2, [r4, #48]	; 0x30
+    35d4:	2a06      	cmp	r2, #6
+    35d6:	d1fa      	bne.n	35ce <get_sensor_info+0xca>
+    35d8:	6ae0      	ldr	r0, [r4, #44]	; 0x2c
+    35da:	225a      	movs	r2, #90	; 0x5a
+    35dc:	eb0a 1306 	add.w	r3, sl, r6, lsl #4
+    35e0:	3601      	adds	r6, #1
+    35e2:	f3c0 2c07 	ubfx	ip, r0, #8, #8
+    35e6:	0c01      	lsrs	r1, r0, #16
+    35e8:	fb02 f00c 	mul.w	r0, r2, ip
+    35ec:	f8c3 10b8 	str.w	r1, [r3, #184]	; 0xb8
+    35f0:	f8c3 00bc 	str.w	r0, [r3, #188]	; 0xbc
+    35f4:	e7eb      	b.n	35ce <get_sensor_info+0xca>
+    35f6:	9b01      	ldr	r3, [sp, #4]
+    35f8:	9a8b      	ldr	r2, [sp, #556]	; 0x22c
+    35fa:	6819      	ldr	r1, [r3, #0]
+    35fc:	428a      	cmp	r2, r1
+    35fe:	d001      	beq.n	3604 <get_sensor_info+0x100>
+    3600:	f7ff e984 	blx	290c <__stack_chk_fail@plt>
+    3604:	f50d 7d0d 	add.w	sp, sp, #564	; 0x234
+    3608:	e8bd 8ff0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, pc}
+    360c:	7c00      	ldrb	r0, [r0, #16]
+    360e:	c100      	stmia	r1!, {}
+    3610:	7c01      	ldrb	r1, [r0, #16]
+    3612:	c100      	stmia	r1!, {}
+    3614:	8a34      	ldrh	r4, [r6, #16]
+    3616:	0000      	movs	r0, r0
+    3618:	fff8 ffff 			; <UNDEFINED> instruction: 0xfff8ffff
+    361c:	5e1e      	ldrsh	r6, [r3, r0]
+    361e:	0000      	movs	r0, r0
+    3620:	8b5c      	ldrh	r4, [r3, #26]
+    3622:	0000      	movs	r0, r0
+    3624:	5dd5      	ldrb	r5, [r2, r7]
+    3626:	0000      	movs	r0, r0
+    3628:	5de2      	ldrb	r2, [r4, r7]
+    362a:	0000      	movs	r0, r0
+    362c:	5df1      	ldrb	r1, [r6, r7]
+	...

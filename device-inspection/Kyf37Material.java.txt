@@ -1,0 +1,144 @@
+package com.android.systemui;
+
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.Paint;
+import android.graphics.PixelFormat;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
+import android.service.quicksettings.Tile;
+
+/**
+ * Keitai Material You tokens + shape helpers for SystemUI (KEITAI-MATERIAL.md).
+ * Colours live in res/values{,-night}/colors_kyf37_material.xml (tonal palette of the #1E6FD9 system accent);
+ * shapes are drawn once per state change (no blur, no per-frame allocation).
+ */
+public final class Kyf37Material {
+    private Kyf37Material() { }
+
+    public static boolean on() { return Build.DEVICE.equals("kyf37"); }
+
+    public static float dp(Context c, float v) { return v * c.getResources().getDisplayMetrics().density; }
+
+    public static int primary(Context c) { return c.getColor(R.color.kyf37_m_primary); }
+    public static int onPrimary(Context c) { return c.getColor(R.color.kyf37_m_on_primary); }
+    public static int primaryContainer(Context c) { return c.getColor(R.color.kyf37_m_primary_container); }
+    public static int onPrimaryContainer(Context c) { return c.getColor(R.color.kyf37_m_on_primary_container); }
+    public static int backdrop(Context c) { return c.getColor(R.color.kyf37_m_backdrop); }
+    public static int card(Context c) { return c.getColor(R.color.kyf37_m_card); }
+    public static int cardVariant(Context c) { return c.getColor(R.color.kyf37_m_card_variant); }
+    public static int cardHigh(Context c) { return c.getColor(R.color.kyf37_m_card_high); }
+    public static int onSurface(Context c) { return c.getColor(R.color.kyf37_m_on_surface); }
+    public static int onSurfaceVariant(Context c) { return c.getColor(R.color.kyf37_m_on_surface_variant); }
+
+    public static GradientDrawable fill(int color, float radiusPx) {
+        GradientDrawable g = new GradientDrawable();
+        g.setShape(GradientDrawable.RECTANGLE);
+        g.setColor(color);
+        g.setCornerRadius(radiusPx);
+        return g;
+    }
+
+    /** Rounded tonal card behind a full quick-settings tile. */
+    public static int tileCardColor(Context c, int state) {
+        switch (state) {
+            case Tile.STATE_ACTIVE: return primaryContainer(c);
+            case Tile.STATE_INACTIVE: return cardVariant(c);
+            default: return card(c);
+        }
+    }
+    /** Circle behind the tile icon. */
+    public static int tileCircleColor(Context c, int state) {
+        switch (state) {
+            case Tile.STATE_ACTIVE: return primary(c);
+            case Tile.STATE_INACTIVE: return cardHigh(c);
+            default: return cardVariant(c);
+        }
+    }
+    public static int tileIconColor(Context c, int state) {
+        switch (state) {
+            case Tile.STATE_ACTIVE: return onPrimary(c);
+            case Tile.STATE_INACTIVE: return onSurfaceVariant(c);
+            default: return (onSurfaceVariant(c) & 0x00ffffff) | 0x66000000;
+        }
+    }
+    public static int tileLabelColor(Context c, int state) {
+        switch (state) {
+            case Tile.STATE_ACTIVE: return onPrimaryContainer(c);
+            case Tile.STATE_INACTIVE: return onSurface(c);
+            default: return (onSurface(c) & 0x00ffffff) | 0x80000000;
+        }
+    }
+
+    /** Selection: thick rounded outline in the Appearance focus colour plus a tonal fill (never yellow). */
+    public static Drawable selection(Context c, float radiusDp) {
+        return new Selection(c, radiusDp);
+    }
+
+    private static final class Selection extends Drawable {
+        private final Context ctx; private final float radiusDp;
+        private final Paint p = new Paint(Paint.ANTI_ALIAS_FLAG); private final RectF r = new RectF();
+        Selection(Context c, float radiusDp) { ctx = c; this.radiusDp = radiusDp; }
+        @Override public void draw(Canvas canvas) {
+            Rect b = getBounds();
+            float d = ctx.getResources().getDisplayMetrics().density;
+            int accent = android.view.Kyf37FocusTheme.accent(ctx);
+            int edge = android.view.Kyf37FocusTheme.edge(ctx);
+            float stroke = 3 * d, ring = 1.5f * d;
+            float rad = Math.min(radiusDp * d, Math.min(b.width(), b.height()) / 2f);
+            r.set(b.left + 1.5f * d, b.top + 1.5f * d, b.right - 1.5f * d, b.bottom - 1.5f * d);
+            p.setStyle(Paint.Style.FILL);
+            p.setColor((accent & 0x00ffffff) | 0x38000000);
+            canvas.drawRoundRect(r, rad, rad, p);
+            p.setStyle(Paint.Style.STROKE);
+            p.setStrokeWidth(stroke);
+            p.setColor(accent);
+            canvas.drawRoundRect(r, rad, rad, p);
+            p.setStrokeWidth(ring);
+            p.setColor((edge & 0x00ffffff) | 0xb0000000);
+            r.inset(stroke / 2f + ring / 2f, stroke / 2f + ring / 2f);
+            canvas.drawRoundRect(r, Math.max(0, rad - stroke), Math.max(0, rad - stroke), p);
+        }
+        @Override public void setAlpha(int a) { }
+        @Override public void setColorFilter(ColorFilter f) { }
+        @Override public int getOpacity() { return PixelFormat.TRANSLUCENT; }
+    }
+
+    /** Rounded tonal card for a quick-settings tile; active tiles carry a tiny sparkle (keitai star accent). */
+    public static final class TileCard extends Drawable {
+        private final Context ctx; private final Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
+        private final RectF r = new RectF(); private final android.graphics.Path star = new android.graphics.Path();
+        private int color; private boolean sparkle;
+        public TileCard(Context c) { ctx = c; }
+        public int getColor() { return color; }
+        public void setColor(int c) { if (c != color) { color = c; invalidateSelf(); } }
+        public void setSparkle(boolean on) { if (on != sparkle) { sparkle = on; invalidateSelf(); } }
+        @Override public void draw(Canvas canvas) {
+            Rect b = getBounds();
+            float d = ctx.getResources().getDisplayMetrics().density;
+            float rad = Math.min(28 * d, Math.min(b.width(), b.height()) / 2f);
+            r.set(b);
+            p.setStyle(Paint.Style.FILL); p.setColor(color);
+            canvas.drawRoundRect(r, rad, rad, p);
+            if (sparkle) {
+                float s = 6.5f * d, cx = b.right - 16 * d, cy = b.top + 15 * d;
+                star.rewind();
+                star.moveTo(cx, cy - s);
+                star.quadTo(cx, cy, cx + s, cy);
+                star.quadTo(cx, cy, cx, cy + s);
+                star.quadTo(cx, cy, cx - s, cy);
+                star.quadTo(cx, cy, cx, cy - s);
+                star.close();
+                p.setColor((onPrimaryContainer(ctx) & 0x00ffffff) | 0x99000000);
+                canvas.drawPath(star, p);
+            }
+        }
+        @Override public void setAlpha(int a) { }
+        @Override public void setColorFilter(ColorFilter f) { }
+        @Override public int getOpacity() { return PixelFormat.TRANSLUCENT; }
+    }
+}

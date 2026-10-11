@@ -1,0 +1,115 @@
+package org.kyf37.flashlight;
+
+import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Typeface;
+import android.hardware.camera2.CameraCharacteristics;
+import android.hardware.camera2.CameraManager;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.provider.Settings;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+/** Foreground-only flashlight designed for the KYF37 physical directional pad. */
+public final class Flashlight extends Activity {
+    private CameraManager camera;
+    private String cameraId;
+    private final Handler ui=new Handler();
+    private HandlerThread thread;
+    private Handler worker;
+    private TextView state,detail;
+    private ImageView icon;
+    private boolean active,lit,pending,requested;
+    private int request;
+    private final CameraManager.TorchCallback callback=new CameraManager.TorchCallback(){
+        @Override public void onTorchModeChanged(String id,boolean enabled){
+            if(id.equals(cameraId)){lit=enabled;show();}
+        }
+        @Override public void onTorchModeUnavailable(String id){
+            if(id.equals(cameraId)){lit=false;show();if(active)detail.setText("Light unavailable while the camera is busy.");}
+        }
+    };
+    private final BroadcastReceiver screenOff=new BroadcastReceiver(){
+        @Override public void onReceive(Context c,Intent i){switchLight(false);}
+    };
+    @Override public void onCreate(Bundle saved){
+        super.onCreate(saved);
+        thread=new HandlerThread("Kyf37Flashlight");thread.start();worker=new Handler(thread.getLooper());
+        camera=getSystemService(CameraManager.class);
+        LinearLayout page=new LinearLayout(this);page.setOrientation(LinearLayout.VERTICAL);
+        page.setBackgroundColor(0xff101b29);page.setGravity(Gravity.CENTER_HORIZONTAL);
+        int pad=dp(20);page.setPadding(pad,pad,pad,pad);
+        TextView title=text("Flashlight",27,0xffffffff);title.setTypeface(null,Typeface.BOLD);page.addView(title);
+        icon=new ImageView(this);
+        int theme=Settings.Global.getInt(getContentResolver(),"kyf37_icon_theme",1);
+        icon.setImageResource(theme==2?R.drawable.sky_flashlight:theme==1?R.drawable.pastel_flashlight:android.R.drawable.ic_lock_idle_charging);
+        icon.setContentDescription("Flashlight");
+        LinearLayout.LayoutParams art=new LinearLayout.LayoutParams(dp(160),dp(160));art.topMargin=dp(12);page.addView(icon,art);
+        state=text("OFF",32,0xffb4d7ef);state.setTypeface(Typeface.MONOSPACE,Typeface.BOLD);page.addView(state);
+        detail=text("Press the center button to turn on or off.",18,0xffc5d3e0);
+        detail.setPadding(0,dp(24),0,0);page.addView(detail);
+        TextView hint=text("Back: Off and exit",14,0xffb4d7ef);
+        hint.setPadding(0,dp(24),0,0);page.addView(hint);
+        setContentView(page);
+        registerReceiver(screenOff,new IntentFilter(Intent.ACTION_SCREEN_OFF));
+        try{
+            for(String id:camera.getCameraIdList()){
+                if(Boolean.TRUE.equals(camera.getCameraCharacteristics(id).get(CameraCharacteristics.FLASH_INFO_AVAILABLE))){cameraId=id;break;}
+            }
+            if(cameraId==null){detail.setText("No torch was reported by this phone.");}
+            else camera.registerTorchCallback(callback,ui);
+        }catch(Exception e){error(e);}
+    }
+    private int dp(int n){return Math.round(n*getResources().getDisplayMetrics().density);}
+    private TextView text(String s,int size,int color){TextView t=new TextView(this);t.setText(s);t.setTextSize(size);t.setTextColor(color);t.setGravity(Gravity.CENTER);return t;}
+    @Override protected void onResume(){super.onResume();active=true;}
+    private void switchLight(final boolean enable){
+        if(cameraId==null || (enable && (!active || pending)))return;
+        if(!enable&&!requested&&!lit&&!pending)return;
+        requested=enable;pending=true;final int serial=++request;show();
+        worker.post(()->{
+            try{
+                camera.setTorchMode(cameraId,enable);
+                android.util.Log.i("Kyf37Flashlight","Torch request applied: "+enable);
+                ui.post(()->{if(serial==request){pending=false;lit=enable;show();}});
+            }catch(Exception e){ui.post(()->{if(serial==request){requested=lit;pending=false;error(e);show();}});}
+        });
+    }
+    private void show(){
+        if(state==null)return;
+        state.setText(pending?"CHANGING…":lit?"ON":"OFF");
+        state.setTextColor(lit?0xffffd65a:0xffb4d7ef);
+        if(lit&&active)getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        else getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        icon.setAlpha(lit?1f:0.55f);
+    }
+    private void error(Exception e){
+        android.util.Log.e("Kyf37Flashlight","Torch operation failed",e);
+        if(detail!=null)detail.setText("Cannot switch the light. Close Camera and try again.");
+    }
+    @Override public boolean dispatchKeyEvent(KeyEvent e){
+        int k=e.getKeyCode();
+        if(k==KeyEvent.KEYCODE_DPAD_CENTER||k==KeyEvent.KEYCODE_ENTER){
+            if(e.getAction()==KeyEvent.ACTION_DOWN&&e.getRepeatCount()==0&&!pending)switchLight(!lit);
+            return true;
+        }
+        return super.dispatchKeyEvent(e);
+    }
+    @Override protected void onPause(){active=false;switchLight(false);super.onPause();}
+    @Override public void onBackPressed(){switchLight(false);super.onBackPressed();}
+    @Override protected void onDestroy(){
+        switchLight(false);unregisterReceiver(screenOff);
+        if(cameraId!=null)camera.unregisterTorchCallback(callback);
+        thread.quitSafely();super.onDestroy();
+    }
+}

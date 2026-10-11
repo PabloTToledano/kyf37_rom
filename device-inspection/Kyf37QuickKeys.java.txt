@@ -1,0 +1,190 @@
+package com.android.server.policy;
+
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Handler;
+import android.os.UserHandle;
+import android.provider.MediaStore;
+import android.provider.Settings;
+import android.util.SparseArray;
+import android.view.KeyEvent;
+
+/**
+ * KYF37 quick-launch keys. Scan codes were captured on the real keypad (2026-10-08):
+ * 59 Contacts(book), 60 Camera, 61 Mail, 62 Apps(globe); 63/64/65 bottom F1/F2/F3-POINT;
+ * 355 Clear, 231 Call. Documentation: KEYPAD.md in the project root.
+ *
+ * Short press: Contacts, Camera, Mail, Apps(Home grid). Long press (500 ms): Apps = Recents,
+ * Clear = Memo, Call = Bluetooth pairing. Hold Apps and press a digit 0-9 for a quick-launch
+ * slot (override with Settings.Secure kyf37_quick_N = "package" or "package/Activity").
+ */
+public final class Kyf37QuickKeys {
+    private static final int LONG_MS = 500;
+    private static final int SCAN_CONTACTS = 59, SCAN_CAMERA = 60, SCAN_MAIL = 61, SCAN_APPS = 62;
+    private static final int SCAN_CLEAR = 355, SCAN_CALL = 231;
+    private static final String[] DEFAULT_SLOTS = {
+        /*0*/ "jp.kyocera.barcodereader", /*1*/ "tel:", /*2*/ "sms:", /*3*/ "jp.kyocera.camera",
+        /*4*/ "contacts:", /*5*/ "browser:", /*6*/ "jp.kyocera.memo", /*7*/ "jp.kyocera.kc_soundrecorder",
+        /*8*/ "jp.kyocera.mobilelight", /*9*/ "settings:" };
+
+    private final Context context;
+    private final Handler handler;
+    private final SparseArray<Runnable> pendingLong = new SparseArray<Runnable>();
+    private final SparseArray<Boolean> longFired = new SparseArray<Boolean>();
+    private boolean appsHeld;
+    private boolean appsUsedAsModifier;
+
+    public Kyf37QuickKeys(Context context, Handler handler) {
+        this.context = context;
+        this.handler = handler;
+    }
+
+    /** @return true if the event was consumed and must not reach apps. */
+    public boolean intercept(KeyEvent event, boolean keyguardShowing) {
+        final int scan = event.getScanCode();
+        final int code = event.getKeyCode();
+        final boolean down = event.getAction() == KeyEvent.ACTION_DOWN;
+        final int repeat = event.getRepeatCount();
+
+        // Digits while Apps is held: quick-launch slot.
+        if (appsHeld && code >= KeyEvent.KEYCODE_0 && code <= KeyEvent.KEYCODE_9) {
+            if (down && repeat == 0 && !keyguardShowing) {
+                appsUsedAsModifier = true;
+                launchSlot(code - KeyEvent.KEYCODE_0);
+            }
+            return true;
+        }
+        switch (scan) {
+            case SCAN_CONTACTS:
+            case SCAN_CAMERA:
+            case SCAN_MAIL:
+                if (keyguardShowing) return false;
+                return shortOrLong(scan, down, repeat, false);
+            case SCAN_APPS:
+                if (keyguardShowing) return false;
+                if (down) {
+                    if (repeat == 0) {
+                        appsHeld = true;
+                        appsUsedAsModifier = false;
+                        longFired.put(scan, false);
+                        schedule(scan);
+                    }
+                } else {
+                    appsHeld = false;
+                    cancel(scan);
+                    if (!appsUsedAsModifier && !Boolean.TRUE.equals(longFired.get(scan))) fire(scan, false);
+                }
+                return true;
+            case SCAN_CLEAR:
+            case SCAN_CALL:
+                // Pass the normal Back / Call behaviour through; add a long-press action.
+                if (down && repeat == 0) {
+                    longFired.put(scan, false);
+                    schedule(scan);
+                } else if (!down) {
+                    cancel(scan);
+                    if (Boolean.TRUE.equals(longFired.get(scan))) {
+                        longFired.put(scan, false);
+                        return true; // swallow the release so Back/Call is not also delivered
+                    }
+                }
+                return false;
+            default:
+                return false;
+        }
+    }
+
+    private boolean shortOrLong(int scan, boolean down, int repeat, boolean unused) {
+        if (down) {
+            if (repeat == 0) {
+                longFired.put(scan, false);
+                schedule(scan);
+            }
+        } else {
+            cancel(scan);
+            if (!Boolean.TRUE.equals(longFired.get(scan))) fire(scan, false);
+        }
+        return true;
+    }
+
+    private void schedule(final int scan) {
+        cancel(scan);
+        Runnable r = new Runnable() { public void run() {
+            longFired.put(scan, true);
+            fire(scan, true);
+        }};
+        pendingLong.put(scan, r);
+        handler.postDelayed(r, LONG_MS);
+    }
+
+    private void cancel(int scan) {
+        Runnable r = pendingLong.get(scan);
+        if (r != null) handler.removeCallbacks(r);
+        pendingLong.remove(scan);
+    }
+
+    private void fire(int scan, boolean isLong) {
+        switch (scan) {
+            case SCAN_CONTACTS: launchSlotSpec("contacts:"); break;
+            case SCAN_CAMERA: launchSlotSpec("jp.kyocera.camera"); break;
+            case SCAN_MAIL: launchSlotSpec(isLong ? "email:" : "sms:"); break;
+            case SCAN_APPS:
+                if (isLong) start(new Intent("com.android.systemui.recents.TOGGLE_RECENTS"), true);
+                else start(new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME), false);
+                break;
+            case SCAN_CLEAR: launchSlotSpec("jp.kyocera.memo"); break;
+            case SCAN_CALL: start(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS), false); break;
+            default: break;
+        }
+    }
+
+    private void launchSlot(int digit) {
+        String spec = Settings.Secure.getString(context.getContentResolver(), "kyf37_quick_" + digit);
+        if (spec == null || spec.isEmpty()) spec = DEFAULT_SLOTS[digit];
+        launchSlotSpec(spec);
+    }
+
+    private void launchSlotSpec(String spec) {
+        Intent intent;
+        PackageManager pm = context.getPackageManager();
+        if (spec.equals("tel:")) intent = new Intent(Intent.ACTION_DIAL);
+        else if (spec.equals("sms:")) intent = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_APP_MESSAGING);
+        else if (spec.equals("contacts:")) intent = new Intent(Intent.ACTION_VIEW, Uri.parse("content://contacts/people"));
+        else if (spec.equals("browser:")) intent = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_APP_BROWSER);
+        else if (spec.equals("email:")) intent = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_APP_EMAIL);
+        else if (spec.equals("settings:")) intent = new Intent(Settings.ACTION_SETTINGS);
+        else if (spec.contains("/")) intent = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
+                .setComponent(ComponentName.unflattenFromString(spec));
+        else {
+            intent = pm.getLaunchIntentForPackage(spec);
+            if (intent == null && spec.equals("jp.kyocera.camera"))
+                intent = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
+        }
+        if (intent != null) start(intent, false);
+    }
+
+    private void start(final Intent intent, final boolean broadcast) {
+        handler.post(new Runnable() { public void run() {
+            try {
+                if (broadcast) {
+                    context.sendBroadcastAsUser(intent, UserHandle.CURRENT);
+                } else {
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+                    context.startActivityAsUser(intent, UserHandle.CURRENT);
+                }
+            } catch (RuntimeException e) {
+                android.util.Slog.w("Kyf37QuickKeys", "Cannot launch " + intent, e);
+            }
+        }});
+    }
+
+    /** Reset held-key state, e.g. on lid close or sleep. */
+    public void reset() {
+        appsHeld = false;
+        for (int i = 0; i < pendingLong.size(); i++) handler.removeCallbacks(pendingLong.valueAt(i));
+        pendingLong.clear();
+    }
+}

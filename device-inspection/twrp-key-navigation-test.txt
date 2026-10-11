@@ -1,0 +1,18 @@
+I:Set page: 'main'
+
+I:Set page: 'clear_vars'
+
+I:Set page: 'main2'
+
+I:Set page: 'mount'
+
+I:Set page: 'main2'
+
+I:Set page: 'mount'
+
+I:Set page: 'main'
+
+I:Set page: 'clear_vars'
+
+I:Set page: 'main2'
+

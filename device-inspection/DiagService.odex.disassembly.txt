@@ -1,0 +1,322 @@
+
+Ljp/kyocera/a/a; a ([B)[B
+
+Ljp/kyocera/a/b; a (Landroid/os/IBinder;)Ljp/kyocera/a/a;
+if-nez v2, +004h
+const/4 v0, 0
+return-object v0
+const-string v0, "jp.kyocera.clients_test.IClientsTest"
+invoke-interface v2, v0, Landroid/os/IBinder;->queryLocalInterface(Ljava/lang/String;)Landroid/os/IInterface;
+move-result-object v0
+if-eqz v0, +009h
+instance-of v1, v0, Ljp/kyocera/a/a;
+if-eqz v1, +005h
+check-cast v0, Ljp/kyocera/a/a;
+goto -fh
+new-instance v0, Ljp/kyocera/a/c;
+invoke-direct v0, v2, Ljp/kyocera/a/c;-><init>(Landroid/os/IBinder;)V
+goto -15h
+
+Ljp/kyocera/a/b; onTransact (I Landroid/os/Parcel; Landroid/os/Parcel; I)Z
+const/4 v0, 1
+sparse-switch v3, +0000023h
+invoke-super v2, v3, v4, v5, v6, Landroid/os/Binder;->onTransact(I Landroid/os/Parcel; Landroid/os/Parcel; I)Z
+move-result v0
+return v0
+const-string v1, "jp.kyocera.clients_test.IClientsTest"
+invoke-virtual v5, v1, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
+goto -6h
+const-string v1, "jp.kyocera.clients_test.IClientsTest"
+invoke-virtual v4, v1, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+invoke-virtual v4, Landroid/os/Parcel;->createByteArray()[B
+move-result-object v1
+invoke-virtual v2, v1, Ljp/kyocera/a/b;->a([B)[B
+move-result-object v1
+invoke-virtual v5, Landroid/os/Parcel;->writeNoException()V
+invoke-virtual v5, v1, Landroid/os/Parcel;->writeByteArray([B)V
+goto -1ah
+nop 
+sparse-switch-payload 1 5f4e5446
+
+Ljp/kyocera/a/c; <init> (Landroid/os/IBinder;)V
+invoke-direct v0, Ljava/lang/Object;-><init>()V
+iput-object v1, v0, Ljp/kyocera/a/c;->a Landroid/os/IBinder;
+return-void 
+
+Ljp/kyocera/a/c; a ([B)[B
+invoke-static Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
+move-result-object v1
+invoke-static Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
+move-result-object v2
+const-string v0, "jp.kyocera.clients_test.IClientsTest"
+invoke-virtual v1, v0, Landroid/os/Parcel;->writeInterfaceToken(Ljava/lang/String;)V
+invoke-virtual v1, v6, Landroid/os/Parcel;->writeByteArray([B)V
+iget-object v0, v5, Ljp/kyocera/a/c;->a Landroid/os/IBinder;
+const/4 v3, 1
+const/4 v4, 0
+invoke-interface v0, v3, v1, v2, v4, Landroid/os/IBinder;->transact(I Landroid/os/Parcel; Landroid/os/Parcel; I)Z
+invoke-virtual v2, Landroid/os/Parcel;->readException()V
+invoke-virtual v2, Landroid/os/Parcel;->createByteArray()[B
+move-result-object v0
+invoke-virtual v2, Landroid/os/Parcel;->recycle()V
+invoke-virtual v1, Landroid/os/Parcel;->recycle()V
+return-object v0
+move-exception v0
+invoke-virtual v2, Landroid/os/Parcel;->recycle()V
+invoke-virtual v1, Landroid/os/Parcel;->recycle()V
+throw v0
+
+Ljp/kyocera/a/c; asBinder ()Landroid/os/IBinder;
+iget-object v0, v1, Ljp/kyocera/a/c;->a Landroid/os/IBinder;
+return-object v0
+
+Ljp/kyocera/diagservice/BootCompletedReceiver; <init> ()V
+invoke-direct v0, Landroid/content/BroadcastReceiver;-><init>()V
+return-void 
+
+Ljp/kyocera/diagservice/BootCompletedReceiver; onReceive (Landroid/content/Context; Landroid/content/Intent;)V
+new-instance v0, Landroid/content/Intent;
+const-class v1, Ljp/kyocera/diagservice/DiagService;
+invoke-direct v0, v3, v1, Landroid/content/Intent;-><init>(Landroid/content/Context; Ljava/lang/Class;)V
+invoke-virtual v3, v0, Landroid/content/Context;->startService(Landroid/content/Intent;)Landroid/content/ComponentName;
+return-void 
+
+Ljp/kyocera/diagservice/DiagService; <init> ()V
+invoke-direct v0, Landroid/app/Service;-><init>()V
+return-void 
+
+Ljp/kyocera/diagservice/DiagService; onBind (Landroid/content/Intent;)Landroid/os/IBinder;
+iget-object v0, v1, Ljp/kyocera/diagservice/DiagService;->b Landroid/os/IBinder;
+return-object v0
+
+Ljp/kyocera/diagservice/DiagService; onCreate ()V
+invoke-super v2, Landroid/app/Service;->onCreate()V
+new-instance v0, Ljp/kyocera/diagservice/a;
+invoke-direct v0, v2, Ljp/kyocera/diagservice/a;-><init>(Landroid/content/Context;)V
+iput-object v0, v2, Ljp/kyocera/diagservice/DiagService;->b Landroid/os/IBinder;
+const-string v0, "sys.diagservice"
+const-string v1, "1"
+invoke-static v0, v1, Landroid/os/SystemProperties;->set(Ljava/lang/String; Ljava/lang/String;)V
+const-string v0, "diagservice"
+iget-object v1, v2, Ljp/kyocera/diagservice/DiagService;->b Landroid/os/IBinder;
+invoke-static v0, v1, Landroid/os/ServiceManager;->addService(Ljava/lang/String; Landroid/os/IBinder;)V
+return-void 
+
+Ljp/kyocera/diagservice/DiagService; onDestroy ()V
+const-string v0, "sys.diagservice"
+const-string v1, "0"
+invoke-static v0, v1, Landroid/os/SystemProperties;->set(Ljava/lang/String; Ljava/lang/String;)V
+invoke-super v2, Landroid/app/Service;->onDestroy()V
+return-void 
+
+Ljp/kyocera/diagservice/c; b ([B)[B
+
+Ljp/kyocera/diagservice/d; <init> ()V
+invoke-direct v1, Landroid/os/Binder;-><init>()V
+const-string v0, "jp.kyocera.diagservice.IDiagService"
+invoke-virtual v1, v1, v0, Ljp/kyocera/diagservice/d;->attachInterface(Landroid/os/IInterface; Ljava/lang/String;)V
+return-void 
+
+Ljp/kyocera/diagservice/d; asBinder ()Landroid/os/IBinder;
+return-object v0
+
+Ljp/kyocera/diagservice/d; onTransact (I Landroid/os/Parcel; Landroid/os/Parcel; I)Z
+const/4 v0, 1
+sparse-switch v3, +0000023h
+invoke-super v2, v3, v4, v5, v6, Landroid/os/Binder;->onTransact(I Landroid/os/Parcel; Landroid/os/Parcel; I)Z
+move-result v0
+return v0
+const-string v1, "jp.kyocera.diagservice.IDiagService"
+invoke-virtual v5, v1, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
+goto -6h
+const-string v1, "jp.kyocera.diagservice.IDiagService"
+invoke-virtual v4, v1, Landroid/os/Parcel;->enforceInterface(Ljava/lang/String;)V
+invoke-virtual v4, Landroid/os/Parcel;->createByteArray()[B
+move-result-object v1
+invoke-virtual v2, v1, Ljp/kyocera/diagservice/d;->b([B)[B
+move-result-object v1
+invoke-virtual v5, Landroid/os/Parcel;->writeNoException()V
+invoke-virtual v5, v1, Landroid/os/Parcel;->writeByteArray([B)V
+goto -1ah
+nop 
+sparse-switch-payload 1 5f4e5446
+
+Ljp/kyocera/diagservice/a; <init> (Landroid/content/Context;)V
+const/4 v1, 0
+invoke-direct v4, Ljp/kyocera/diagservice/d;-><init>()V
+iput-object v1, v4, Ljp/kyocera/diagservice/a;->c Ljp/kyocera/a/a;
+new-instance v0, Ljp/kyocera/diagservice/b;
+invoke-direct v0, v4, Ljp/kyocera/diagservice/b;-><init>(Ljp/kyocera/diagservice/a;)V
+iput-object v0, v4, Ljp/kyocera/diagservice/a;->d Landroid/content/ServiceConnection;
+iput-object v1, v4, Ljp/kyocera/diagservice/a;->mContext Landroid/content/Context;
+iput-object v1, v4, Ljp/kyocera/diagservice/a;->e Landroid/app/KeyguardManager;
+iput-object v1, v4, Ljp/kyocera/diagservice/a;->f Landroid/app/KeyguardManager$KeyguardLock;
+iput-object v1, v4, Ljp/kyocera/diagservice/a;->g Landroid/os/PowerManager;
+iput-object v1, v4, Ljp/kyocera/diagservice/a;->h Landroid/os/PowerManager$WakeLock;
+iput-object v5, v4, Ljp/kyocera/diagservice/a;->mContext Landroid/content/Context;
+new-instance v0, Landroid/content/Intent;
+const-string v1, "jp.kyocera.clients_test.ClientsTest"
+invoke-direct v0, v1, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
+const-string v1, "jp.kyocera.clients_test"
+invoke-virtual v0, v1, Landroid/content/Intent;->setPackage(Ljava/lang/String;)Landroid/content/Intent;
+iget-object v1, v4, Ljp/kyocera/diagservice/a;->mContext Landroid/content/Context;
+iget-object v2, v4, Ljp/kyocera/diagservice/a;->d Landroid/content/ServiceConnection;
+iget-object v3, v4, Ljp/kyocera/diagservice/a;->mContext Landroid/content/Context;
+const/4 v3, 1
+invoke-virtual v1, v0, v2, v3, Landroid/content/Context;->bindService(Landroid/content/Intent; Landroid/content/ServiceConnection; I)Z
+iget-object v0, v4, Ljp/kyocera/diagservice/a;->mContext Landroid/content/Context;
+const-string v1, "keyguard"
+invoke-virtual v0, v1, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+move-result-object v0
+check-cast v0, Landroid/app/KeyguardManager;
+iput-object v0, v4, Ljp/kyocera/diagservice/a;->e Landroid/app/KeyguardManager;
+iget-object v0, v4, Ljp/kyocera/diagservice/a;->e Landroid/app/KeyguardManager;
+const-string v1, "testTag"
+invoke-virtual v0, v1, Landroid/app/KeyguardManager;->newKeyguardLock(Ljava/lang/String;)Landroid/app/KeyguardManager$KeyguardLock;
+move-result-object v0
+iput-object v0, v4, Ljp/kyocera/diagservice/a;->f Landroid/app/KeyguardManager$KeyguardLock;
+iget-object v0, v4, Ljp/kyocera/diagservice/a;->mContext Landroid/content/Context;
+const-string v1, "power"
+invoke-virtual v0, v1, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+move-result-object v0
+check-cast v0, Landroid/os/PowerManager;
+iput-object v0, v4, Ljp/kyocera/diagservice/a;->g Landroid/os/PowerManager;
+iget-object v0, v4, Ljp/kyocera/diagservice/a;->g Landroid/os/PowerManager;
+const v1, 536870918
+const-string v2, "testTag"
+invoke-virtual v0, v1, v2, Landroid/os/PowerManager;->newWakeLock(I Ljava/lang/String;)Landroid/os/PowerManager$WakeLock;
+move-result-object v0
+iput-object v0, v4, Ljp/kyocera/diagservice/a;->h Landroid/os/PowerManager$WakeLock;
+return-void 
+
+Ljp/kyocera/diagservice/a; a (B)I
+new-instance v0, Ljava/lang/Integer;
+invoke-direct v0, v2, Ljava/lang/Integer;-><init>(I)V
+invoke-virtual v0, Ljava/lang/Integer;->intValue()I
+move-result v0
+if-gez v0, +007h
+and-int/lit16 v0, v2, 128
+and-int/lit8 v1, v2, 127
+add-int/2addr v0, v1
+return v0
+
+Ljp/kyocera/diagservice/a; a (Ljp/kyocera/diagservice/a; Ljp/kyocera/a/a;)Ljp/kyocera/a/a;
+iput-object v1, v0, Ljp/kyocera/diagservice/a;->c Ljp/kyocera/a/a;
+return-object v1
+
+Ljp/kyocera/diagservice/a; b ([B)[B
+const/high16 v8, 268435456
+const/16 v7, 255
+const/4 v6, 4
+const/4 v1, -1
+const/4 v2, 0
+new-instance v4, Ljava/io/ByteArrayOutputStream;
+invoke-direct v4, Ljava/io/ByteArrayOutputStream;-><init>()V
+if-nez v10, +0a6h
+move v0, v1
+array-length v3, v10
+if-ge v3, v6, +003h
+move v0, v1
+if-eq v0, v1, +09ch
+const/4 v3, 3
+aget-byte v3, v10, v3
+invoke-static v3, Ljp/kyocera/diagservice/a;->a(B)I
+move-result v3
+mul-int/lit16 v3, v3, 256
+const/4 v5, 2
+aget-byte v5, v10, v5
+invoke-static v5, Ljp/kyocera/diagservice/a;->a(B)I
+move-result v5
+add-int/2addr v3, v5
+packed-switch v3, +0000090h
+move v0, v1
+if-ne v0, v1, +07ch
+invoke-virtual v4, v7, Ljava/io/ByteArrayOutputStream;->write(I)V
+invoke-virtual v4, v7, Ljava/io/ByteArrayOutputStream;->write(I)V
+invoke-virtual v4, Ljava/io/ByteArrayOutputStream;->toByteArray()[B
+move-result-object v0
+return-object v0
+iget-object v0, v9, Ljp/kyocera/diagservice/a;->c Ljp/kyocera/a/a;
+if-nez v0, +004h
+move v0, v1
+goto -12h
+iget-object v0, v9, Ljp/kyocera/diagservice/a;->c Ljp/kyocera/a/a;
+invoke-interface v0, v10, Ljp/kyocera/a/a;->a([B)[B
+move-result-object v0
+invoke-virtual v4, v0, Ljava/io/ByteArrayOutputStream;->write([B)V
+invoke-virtual v4, Ljava/io/ByteArrayOutputStream;->toByteArray()[B
+move-result-object v0
+goto -14h
+invoke-virtual v4, v10, v2, v6, Ljava/io/ByteArrayOutputStream;->write([B I I)V
+array-length v3, v10
+const/4 v5, 5
+if-ne v3, v5, +020h
+const/4 v3, 4
+aget-byte v3, v10, v3
+packed-switch v3, +000006dh
+iget-object v3, v9, Ljp/kyocera/diagservice/a;->h Landroid/os/PowerManager$WakeLock;
+invoke-virtual v3, Landroid/os/PowerManager$WakeLock;->release()V
+iget-object v3, v9, Ljp/kyocera/diagservice/a;->f Landroid/app/KeyguardManager$KeyguardLock;
+invoke-virtual v3, Landroid/app/KeyguardManager$KeyguardLock;->reenableKeyguard()V
+goto -38h
+move-exception v0
+goto -3bh
+iget-object v3, v9, Ljp/kyocera/diagservice/a;->f Landroid/app/KeyguardManager$KeyguardLock;
+invoke-virtual v3, Landroid/app/KeyguardManager$KeyguardLock;->disableKeyguard()V
+iget-object v3, v9, Ljp/kyocera/diagservice/a;->h Landroid/os/PowerManager$WakeLock;
+invoke-virtual v3, Landroid/os/PowerManager$WakeLock;->acquire()V
+goto -45h
+move v0, v1
+goto -47h
+invoke-virtual v4, v10, v2, v6, Ljava/io/ByteArrayOutputStream;->write([B I I)V
+new-instance v3, Landroid/content/Intent;
+const-string v5, "android.intent.action.ACTION_REQUEST_SHUTDOWN"
+invoke-direct v3, v5, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
+const-string v5, "android.intent.extra.KEY_CONFIRM"
+invoke-virtual v3, v5, v2, Landroid/content/Intent;->putExtra(Ljava/lang/String; Z)Landroid/content/Intent;
+invoke-virtual v3, v8, Landroid/content/Intent;->setFlags(I)Landroid/content/Intent;
+iget-object v5, v9, Ljp/kyocera/diagservice/a;->mContext Landroid/content/Context;
+sget-object v6, Landroid/os/UserHandle;->CURRENT Landroid/os/UserHandle;
+invoke-virtual v5, v3, v6, Landroid/content/Context;->startActivityAsUser(Landroid/content/Intent; Landroid/os/UserHandle;)V
+goto -61h
+invoke-virtual v4, v10, v2, v6, Ljava/io/ByteArrayOutputStream;->write([B I I)V
+new-instance v3, Landroid/content/Intent;
+const-string v5, "android.intent.action.REBOOT"
+invoke-direct v3, v5, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
+const-string v5, "android.intent.extra.KEY_CONFIRM"
+invoke-virtual v3, v5, v2, Landroid/content/Intent;->putExtra(Ljava/lang/String; Z)Landroid/content/Intent;
+invoke-virtual v3, v8, Landroid/content/Intent;->setFlags(I)Landroid/content/Intent;
+iget-object v5, v9, Ljp/kyocera/diagservice/a;->mContext Landroid/content/Context;
+sget-object v6, Landroid/os/UserHandle;->CURRENT Landroid/os/UserHandle;
+invoke-virtual v5, v3, v6, Landroid/content/Context;->startActivityAsUser(Landroid/content/Intent; Landroid/os/UserHandle;)V
+goto -7bh
+invoke-virtual v4, v2, Ljava/io/ByteArrayOutputStream;->write(I)V
+invoke-virtual v4, v2, Ljava/io/ByteArrayOutputStream;->write(I)V
+goto -7ah
+move-exception v0
+goto -68h
+move v3, v2
+goto/16 -08ah
+move v0, v2
+goto/16 -0a4h
+nop 
+packed-switch-payload 4000 4001 4002 4003
+packed-switch-payload 0
+
+Ljp/kyocera/diagservice/b; <init> (Ljp/kyocera/diagservice/a;)V
+iput-object v1, v0, Ljp/kyocera/diagservice/b;->i Ljp/kyocera/diagservice/a;
+invoke-direct v0, Ljava/lang/Object;-><init>()V
+return-void 
+
+Ljp/kyocera/diagservice/b; onServiceConnected (Landroid/content/ComponentName; Landroid/os/IBinder;)V
+iget-object v0, v2, Ljp/kyocera/diagservice/b;->i Ljp/kyocera/diagservice/a;
+invoke-static v4, Ljp/kyocera/a/b;->a(Landroid/os/IBinder;)Ljp/kyocera/a/a;
+move-result-object v1
+invoke-static v0, v1, Ljp/kyocera/diagservice/a;->a(Ljp/kyocera/diagservice/a; Ljp/kyocera/a/a;)Ljp/kyocera/a/a;
+return-void 
+
+Ljp/kyocera/diagservice/b; onServiceDisconnected (Landroid/content/ComponentName;)V
+iget-object v0, v2, Ljp/kyocera/diagservice/b;->i Ljp/kyocera/diagservice/a;
+const/4 v1, 0
+invoke-static v0, v1, Ljp/kyocera/diagservice/a;->a(Ljp/kyocera/diagservice/a; Ljp/kyocera/a/a;)Ljp/kyocera/a/a;
+return-void 

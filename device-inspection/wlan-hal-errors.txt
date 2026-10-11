@@ -1,0 +1,27 @@
+wlan-prima-caf-123/CORE/WDA/inc/legacy/halTypes.h:121:    eHAL_STATUS_DXE_VIRTUAL_MEM_ALLOC_ERROR,    //
+wlan-prima-caf-123/CORE/WDA/inc/legacy/halTypes.h:122:    eHAL_STATUS_DXE_SHARED_MEM_ALLOC_ERROR,     //
+wlan-prima-caf-123/CORE/WDA/inc/legacy/halTypes.h:126:    eHAL_STATUS_DXE_XFR_QUEUE_ERROR,
+wlan-prima-caf-123/CORE/WDA/inc/legacy/halTypes.h:132:    eHAL_STATUS_DXE_GEN_ERROR,
+wlan-prima-caf-123/CORE/WDA/inc/legacy/halTypes.h:147:    eHAL_STATUS_DEVICE_MEMORY_LENGTH_ERROR,        // memory access is not a multiple of 4 bytes
+wlan-prima-caf-123/CORE/WDA/inc/legacy/halTypes.h:186:    eHAL_STATUS_PMC_SYS_ERROR,
+wlan-prima-caf-123/CORE/WDA/inc/wlan_qct_wda.h:1034:#define WDA_DPU_MIC_ERROR              SIR_HAL_DPU_MIC_ERROR
+wlan-prima-caf-123/CORE/SME/src/pmc/pmcApi.c:1076:*    eHAL_STATUS_PMC_SYS_ERROR - system error that prohibits entering IMPS
+wlan-prima-caf-123/CORE/SME/src/pmc/pmcApi.c:1114:            status = eHAL_STATUS_PMC_SYS_ERROR;
+wlan-prima-caf-123/CORE/MAC/src/pe/lim/limApi.c:771:    vos_trace_setLevel(VOS_MODULE_ID_HAL, VOS_TRACE_LEVEL_ERROR);
+wlan-prima-caf-123/CORE/MAC/src/include/sirParams.h:449:#define SIR_HAL_DPU_MIC_ERROR              (SIR_HAL_ITC_MSG_TYPES_BEGIN + 102)
+wlan-prima-caf-123/CORE/WDI/CP/src/wlan_qct_wdi.c:735:  WDI_ProcessFatalErrorInd,         /* WDI_HAL_FATAL_ERROR_IND  */
+wlan-prima-caf-123/CORE/WDI/CP/src/wlan_qct_wdi.c:24065:  case WLAN_HAL_FATAL_ERROR_IND:
+wlan-prima-caf-123/CORE/WDI/CP/src/wlan_qct_wdi.c:24066:    return WDI_HAL_FATAL_ERROR_IND;
+wlan-prima-caf-123/CORE/WDI/CP/inc/wlan_qct_wdi_i.h:823:  WDI_HAL_FATAL_ERROR_IND             = WDI_HAL_IND_MIN + 4, 
+wlan-prima-caf-123/CORE/MAC/src/cfg/cfgApi.c:197: * @return eSIR_CFG_INVALID_ID:  invalid CFG parameter ID \n
+wlan-prima-caf-123/CORE/MAC/src/cfg/cfgApi.c:289: * @return eSIR_CFG_INVALID_ID:  invalid CFG parameter ID
+wlan-prima-caf-123/CORE/MAC/src/cfg/cfgApi.c:338: * @return eSIR_CFG_INVALID_ID:  invalid CFG parameter ID
+wlan-prima-caf-123/CORE/MAC/src/cfg/cfgApi.c:408: * @return eSIR_CFG_INVALID_ID:  invalid CFG parameter ID
+wlan-prima-caf-123/CORE/MAC/src/cfg/cfgApi.c:474: * @return eSIR_CFG_INVALID_ID:  invalid CFG parameter ID
+wlan-prima-caf-123/CORE/MAC/src/cfg/cfgApi.c:508: * @return eSIR_CFG_INVALID_ID:  invalid CFG parameter ID
+wlan-prima-caf-123/CORE/MAC/src/cfg/cfgApi.c:611: * @return eSIR_CFG_INVALID_ID:  invalid CFG parameter ID
+wlan-prima-caf-123/CORE/MAC/src/cfg/cfgApi.c:695: * @return eSIR_CFG_INVALID_ID:  invalid CFG parameter ID
+wlan-prima-caf-123/CORE/MAC/src/cfg/cfgApi.c:761: * @return eSIR_CFG_INVALID_ID:  invalid CFG parameter ID
+wlan-prima-caf-123/CORE/MAC/inc/sirTypes.h:69:    eSIR_HAL_ERROR_BASE=0x1000,
+wlan-prima-caf-123/CORE/SYS/legacy/src/pal/inc/palApi.h:355:    eHAL_STATUS_DEVICE_MEMORY_LENGTH_ERROR - length of the device memory is not
+wlan-prima-caf-123/CORE/SYS/legacy/src/pal/inc/palApi.h:385:    eHAL_STATUS_DEVICE_MEMORY_LENGTH_ERROR - length of the device memory is not

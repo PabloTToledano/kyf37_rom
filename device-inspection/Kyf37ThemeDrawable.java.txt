@@ -1,0 +1,84 @@
+package com.android.settings.widget;
+
+import android.app.ActivityThread;
+import android.content.Context;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.database.ContentObserver;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.PixelFormat;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Looper;
+import android.provider.Settings;
+import android.util.AttributeSet;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import java.io.IOException;
+import java.util.WeakHashMap;
+
+/** Resource wrapper retaining the original Android art alongside the optional pack. */
+public final class Kyf37ThemeDrawable extends Drawable {
+    private static final String KEY="kyf37_icon_theme";
+    private static final WeakHashMap<Kyf37ThemeDrawable,Boolean> icons=new WeakHashMap<>();
+    private static boolean watching;
+    private static int themeId=1;
+    private Drawable standard, themed, sky, classic;
+    private int width,height,alpha=255;
+    private ColorFilter filter;
+
+    public Kyf37ThemeDrawable() { }
+    private static void watch() {
+        synchronized(icons) {
+            if (watching) return;
+            final Context c=ActivityThread.currentApplication();
+            if (c==null) return;
+            themeId=Settings.Global.getInt(c.getContentResolver(),KEY,1);
+            c.getContentResolver().registerContentObserver(Settings.Global.getUriFor(KEY),false,
+                new ContentObserver(new Handler(Looper.getMainLooper())) {
+                    @Override public void onChange(boolean self) {
+                        synchronized(icons) {
+                            themeId=Settings.Global.getInt(c.getContentResolver(),KEY,1);
+                            for (Kyf37ThemeDrawable d:icons.keySet()) if (d!=null) d.invalidateSelf();
+                        }
+                    }
+                });
+            watching=true;
+        }
+    }
+    @Override public void inflate(Resources r,XmlPullParser parser,AttributeSet attrs,Resources.Theme theme)
+            throws IOException,XmlPullParserException {
+        super.inflate(r,parser,attrs,theme);
+        TypedArray a=r.obtainAttributes(attrs,new int[]{android.R.attr.src,android.R.attr.drawable,android.R.attr.width,android.R.attr.height});
+        try {
+            standard=r.getDrawable(a.getResourceId(0,0),theme);
+            themed=r.getDrawable(a.getResourceId(1,0),theme);
+            String skyName=r.getResourceEntryName(a.getResourceId(1,0)).replace("pastel_","sky_");
+            int skyId=r.getIdentifier(skyName,"drawable","com.android.settings");
+            sky=skyId==0?themed:r.getDrawable(skyId,theme);
+            String classicName=skyName.replace("sky_","classic_");
+            int classicId=r.getIdentifier(classicName,"drawable","com.android.settings");
+            classic=classicId==0?standard:r.getDrawable(classicId,theme);
+            width=a.getDimensionPixelSize(2,standard.getIntrinsicWidth());
+            height=a.getDimensionPixelSize(3,standard.getIntrinsicHeight());
+        } finally { a.recycle(); }
+        watch();
+        synchronized(icons) { icons.put(this,Boolean.TRUE); }
+    }
+    @Override public void draw(Canvas canvas) {
+        Drawable d=themeId==0?standard:(themeId==3?classic:(themeId==2?sky:themed));
+        if(d==null)return;
+        d.setBounds(getBounds()); d.setAlpha(alpha);
+        d.setColorFilter(themeId==0?filter:null); d.setState(getState());
+        d.draw(canvas);
+    }
+    @Override public int getIntrinsicWidth(){return width;}
+    @Override public int getIntrinsicHeight(){return height;}
+    @Override public void setAlpha(int a){alpha=a;invalidateSelf();}
+    @Override public void setColorFilter(ColorFilter f){filter=f;invalidateSelf();}
+    @Override public int getOpacity(){return PixelFormat.TRANSLUCENT;}
+    @Override public boolean isStateful(){return standard!=null && standard.isStateful();}
+    @Override protected boolean onStateChange(int[] state){invalidateSelf();return true;}
+}

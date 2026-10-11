@@ -1,0 +1,109 @@
+{
+  "original_bytes": 6531072,
+  "output_bytes": 1130496,
+  "original_count": 137,
+  "kept_count": 6,
+  "runtime_soc_id": 245,
+  "runtime_hw_platform": "MTP",
+  "runtime_subtype": 2,
+  "source_sha256": "be0c5d2d744601e70279214253d1d8d412e23e5aa0a93c5369578bd0b20bf13c",
+  "output_sha256": "d2ab52d9ac25cb6af07ce6315fb5ac960dcb9c4b366075dcb09d7cf151c77863",
+  "entries": [
+    {
+      "fields": [
+        245,
+        8,
+        0,
+        0,
+        65549,
+        0,
+        0,
+        0,
+        2048,
+        190464
+      ],
+      "original_offset": 700416,
+      "blob_sha256": "8d633529db038112ef593ab807c6ff0ea2683b631ca7123d3178815f8c712986"
+    },
+    {
+      "fields": [
+        245,
+        8,
+        2,
+        0,
+        65547,
+        0,
+        0,
+        0,
+        192512,
+        180224
+      ],
+      "original_offset": 890880,
+      "blob_sha256": "0ffd891f4a40a4f9202bf87fa2d26ff6acc348a3c3e9afe9bc3f8cee5cf80118"
+    },
+    {
+      "fields": [
+        245,
+        8,
+        3,
+        0,
+        65549,
+        0,
+        0,
+        0,
+        372736,
+        192512
+      ],
+      "original_offset": 1071104,
+      "blob_sha256": "efaf485bb9f261d49b4dfe6d3828a0d3029ade64a2dc3db3ddda7ac2a26a7101"
+    },
+    {
+      "fields": [
+        245,
+        8,
+        4,
+        0,
+        65547,
+        0,
+        0,
+        0,
+        565248,
+        180224
+      ],
+      "original_offset": 1263616,
+      "blob_sha256": "8cda34ef45b2832f1a508b339891362ee8a0be1a5c28d1c30ab99e268917fd84"
+    },
+    {
+      "fields": [
+        245,
+        8,
+        256,
+        0,
+        65549,
+        0,
+        0,
+        0,
+        745472,
+        190464
+      ],
+      "original_offset": 1443840,
+      "blob_sha256": "3ef848ae9021b9d97c953fdde8c69b220a88965bb2e277c6fa84cdaa97850c38"
+    },
+    {
+      "fields": [
+        245,
+        8,
+        259,
+        0,
+        65549,
+        0,
+        0,
+        0,
+        935936,
+        194560
+      ],
+      "original_offset": 1634304,
+      "blob_sha256": "ce8761e1c8e4f7ff2877ddefe4f390a98541d1593c69ae992e2f432c8c4ffbb7"
+    }
+  ]
+}

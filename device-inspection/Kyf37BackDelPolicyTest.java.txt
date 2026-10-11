@@ -1,0 +1,29 @@
+package android.view;
+
+/** Host-side test for Kyf37BackDelPolicy (run by test-kyf37-back-del.sh). */
+public final class Kyf37BackDelPolicyTest {
+    static int failures;
+    static void eq(String name, int want, int got) {
+        if (want != got) { failures++; System.out.println("FAIL " + name + ": want " + want + " got " + got); }
+        else System.out.println("ok   " + name);
+    }
+    public static void main(String[] a) {
+        final int N = Kyf37BackDelPolicy.NONE, D = Kyf37BackDelPolicy.DEL, F = Kyf37BackDelPolicy.FORWARD_DEL;
+        eq("not editable -> Back", N, Kyf37BackDelPolicy.decide(false, false, 5, 5));
+        eq("empty field -> Back", N, Kyf37BackDelPolicy.decide(true, false, 0, 0));
+        eq("text before cursor -> DEL", D, Kyf37BackDelPolicy.decide(true, false, 3, 0));
+        eq("cursor in middle -> DEL", D, Kyf37BackDelPolicy.decide(true, false, 2, 4));
+        eq("selection only -> DEL", D, Kyf37BackDelPolicy.decide(true, true, 0, 0));
+        eq("composing word (before>0) -> DEL", D, Kyf37BackDelPolicy.decide(true, false, 7, 0));
+        eq("cursor at start, text after -> FORWARD_DEL", F, Kyf37BackDelPolicy.decide(true, false, 0, 3));
+        eq("clear key is rewritten", 1, Kyf37BackDelPolicy.isClearKey(4, 355, false) ? 1 : 0);
+        eq("other back source untouched", 0, Kyf37BackDelPolicy.isClearKey(4, 0, false) ? 1 : 0);
+        eq("debug override", 1, Kyf37BackDelPolicy.isClearKey(4, 0, true) ? 1 : 0);
+        eq("non-back key untouched", 0, Kyf37BackDelPolicy.isClearKey(67, 355, true) ? 1 : 0);
+        eq("keycode DEL", 67, Kyf37BackDelPolicy.keyCodeFor(D));
+        eq("keycode FWD", 112, Kyf37BackDelPolicy.keyCodeFor(F));
+        eq("keycode none", 0, Kyf37BackDelPolicy.keyCodeFor(N));
+        System.out.println(failures == 0 ? "ALL PASS" : failures + " FAILED");
+        if (failures != 0) System.exit(1);
+    }
+}

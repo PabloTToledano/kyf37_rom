@@ -1,0 +1,78 @@
+uid=0(root) gid=0(root) groups=1003(graphics),1004(input),1007(log),1011(adb),1015(sdcard_rw),1028(sdcard_r),3001(net_bt_admin),3002(net_bt),3003(inet),3006(net_bw_stats) context=u:r:su:s0
+
+3.7.0_9-0
+
+kcpermissive
+
+sched_enable_hmp=1 console=ttyHSL0,115200,n8 no_console_suspend=1 androidboot.console=ttyHSL0 androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x3F ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci lpm_levels.sleep_disabled=1 earlyprintk androidboot.selinux=permissive androidboot.emmc=true androidboot.serialno=981108631314 gpt androidboot.authorized_kernel=true androidboot.baseband=msm mdss_mdp3.panel=1:dsi:0:qcom,mdss_dsi_kc_jdi_fwvga_video:1:none led_stat=1 androidboot.mode=kcpermissive lowtempmode=0 maxcpus=4
+
+service.adb.root=1
+
+
+
+SELinux contexts loaded from /file_contexts
+
+Full SELinux support is present.
+
+tw_get_context got selinux context: u:object_r:media_rw_data_file:s0
+
+I:Got default contexts and file mode for storage files.
+
+I:TWFunc::Fixup_Time: Pre-fix date and time: 1971-09-01--20-31-53
+
+I:TWFunc::Fixup_Time: Setting time offset from file /sys/class/rtc/rtc0/since_epoch
+
+I:TWFunc::Fixup_Time: will attempt to use the ats files now.
+
+I:TWFunc::Fixup_Time: Setting time offset from file /data/time/ats_2, offset 0
+
+I:TWFunc::Fixup_Time: Date and time corrected: 1971-09-01--20-31-53
+
+I:Path /cache/recovery/log.gz does not exist. Unable to copy /cache/recovery/last_log.gz
+
+I:No recovery folder found. Using default folder.
+
+I:Attempt to load settings from settings file...
+
+I:InfoManager file '/data/media/0/TWRP/.twrps' not found.
+
+I:No recovery folder found. Using default folder.
+
+I:Backup folder set to '/data/media/0/TWRP/BACKUPS/981108631314'
+
+I:Copied file /etc/recovery.fstab to /cache/recovery/recovery.fstab
+
+I:Version number saved to '/cache/recovery/.version'
+
+I:Unable to mount '/external_sd'
+
+I:Actual block device: '', current file system: 'vfat'
+
+I:TWFunc::Set_Brightness: Setting brightness control to 160
+
+I:PageManager::LoadFileToBuffer loading filename: '/twres/languages/en.xml' directly
+
+parsing languageFile
+
+parsing languageFile done
+
+I:Translating partition display names
+
+I:No recovery folder found. Using default folder.
+
+I:Backup folder set to '/data/media/0/TWRP/BACKUPS/981108631314'
+
+I:Switching packages (TWRP)
+
+I:Skipping screen timeout: TW_NO_SCREEN_TIMEOUT is set
+
+I:Set page: 'system_readonly'
+
+display_frame failed, no overlay
+
+: No such file or directory
+
+display_frame failed, no overlay
+
+: No such device
+

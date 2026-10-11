@@ -1,0 +1,10 @@
+boot_recovery_temporary_wp_clear_verified
+
+4096+0 records in
+
+4096+0 records out
+
+16777216 bytes (16.0MB) copied, 0.566539 seconds, 28.2MB/s
+
+KYF37_TWRP_FLASH_READBACK_VERIFIED
+

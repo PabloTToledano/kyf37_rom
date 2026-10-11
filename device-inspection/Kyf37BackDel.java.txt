@@ -1,0 +1,50 @@
+package android.view;
+
+import android.text.Editable;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputConnection;
+import android.widget.TextView;
+
+/**
+ * Looks at the view that currently has input focus and tells ViewRootImpl whether the
+ * Clear/Back key should become a backspace. See Kyf37BackDelPolicy for the rule.
+ *
+ * @hide
+ */
+public final class Kyf37BackDel {
+    private Kyf37BackDel() { }
+
+    /** @return Kyf37BackDelPolicy.NONE / DEL / FORWARD_DEL for the focused editable. */
+    public static int probe(View root) {
+        try {
+            final View f = root == null ? null : root.findFocus();
+            if (f != null && f.isEnabled()
+                    && "com.android.keyguard.PasswordTextView".equals(f.getClass().getName())) {
+                // Lock-screen PIN entry is not a text editor but deletes on KEYCODE_DEL.
+                final CharSequence pin = (CharSequence) f.getClass().getMethod("getText").invoke(f);
+                return Kyf37BackDelPolicy.decide(true, false, pin == null ? 0 : pin.length(), 0);
+            }
+            if (f == null || !f.isEnabled() || !f.onCheckIsTextEditor()) return Kyf37BackDelPolicy.NONE;
+            if (f instanceof android.webkit.WebView) return Kyf37BackDelPolicy.NONE; // opaque editor
+            if (f instanceof TextView) {
+                final TextView t = (TextView) f;
+                final CharSequence text = t.getText();
+                if (!(text instanceof Editable)) return Kyf37BackDelPolicy.NONE;
+                int s = t.getSelectionStart(), e = t.getSelectionEnd();
+                final int len = text.length();
+                if (s < 0 || e < 0) { s = len; e = len; }
+                return Kyf37BackDelPolicy.decide(true, s != e, Math.min(s, e), len - Math.max(s, e));
+            }
+            // Custom editors: ask their InputConnection (same data the IME sees).
+            final InputConnection ic = f.onCreateInputConnection(new EditorInfo());
+            if (ic == null) return Kyf37BackDelPolicy.NONE;
+            final CharSequence before = ic.getTextBeforeCursor(1, 0);
+            final CharSequence after = ic.getTextAfterCursor(1, 0);
+            final CharSequence sel = ic.getSelectedText(0);
+            return Kyf37BackDelPolicy.decide(true, sel != null && sel.length() > 0,
+                    before == null ? 0 : before.length(), after == null ? 0 : after.length());
+        } catch (Exception e) {
+            return Kyf37BackDelPolicy.NONE; // never trap the user: fall back to normal Back
+        }
+    }
+}

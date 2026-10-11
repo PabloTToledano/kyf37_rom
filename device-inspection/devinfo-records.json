@@ -1,0 +1,12 @@
+{
+  "bytes": 8388608,
+  "magic_records": [
+    {
+      "offset": 0,
+      "unlock": 0,
+      "tamper": 0,
+      "verified": 0,
+      "charger": 1
+    }
+  ]
+}

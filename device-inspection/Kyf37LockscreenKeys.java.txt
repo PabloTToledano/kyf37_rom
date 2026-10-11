@@ -1,0 +1,75 @@
+package com.android.systemui.statusbar.phone;
+
+import android.graphics.Color;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import com.android.keyguard.Kyf37LockActions;
+import com.android.systemui.statusbar.notification.row.ExpandableNotificationRow;
+import java.util.ArrayList;
+
+/** Only navigation. Native notification click handlers and bouncer enforce access. */
+final class Kyf37LockscreenKeys {
+    private View selectedRow;
+    private Drawable oldForeground;
+    private void clear() {
+        if (selectedRow != null) selectedRow.setForeground(oldForeground);
+        selectedRow = null;
+        oldForeground = null;
+    }
+    private void rows(View root, ArrayList<View> out) {
+        if (!root.isShown() || root.getAlpha() < .1f) return;
+        if (root instanceof ExpandableNotificationRow) {
+            Rect r = new Rect();
+            if (root.isEnabled() && root.getGlobalVisibleRect(r) && r.height() > 12) out.add(root);
+            return;
+        }
+        if (root instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) root;
+            for (int i = 0; i < group.getChildCount(); ++i) rows(group.getChildAt(i), out);
+        }
+    }
+    boolean handle(StatusBarWindowView window, KeyEvent event, Runnable unlock,
+            java.util.function.Consumer<View> openNotification) {
+        Kyf37LockActions actions = Kyf37LockActions.latest;
+        if (actions == null || !actions.isShown()) { clear(); return false; }
+        if (actions.resetSelection) { clear(); actions.resetSelection = false; }
+        int key = event.getKeyCode();
+        boolean ok = key == KeyEvent.KEYCODE_DPAD_CENTER || key == KeyEvent.KEYCODE_ENTER;
+        boolean up = key == KeyEvent.KEYCODE_DPAD_UP;
+        boolean down = key == KeyEvent.KEYCODE_DPAD_DOWN;
+        if (!ok && !up && !down) return false;
+        ArrayList<View> list = new ArrayList<>();
+        rows(window, list);
+        int index = selectedRow == null ? -1 : list.indexOf(selectedRow);
+        if (selectedRow != null && index < 0) clear();
+        if (up || down) {
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                int next = index + (down ? 1 : -1);
+                next = Math.max(-1, Math.min(list.size() - 1, next));
+                clear();
+                if (next >= 0) {
+                    selectedRow = list.get(next);
+                    oldForeground = selectedRow.getForeground();
+                    GradientDrawable outline = new GradientDrawable();
+                    outline.setColor(0x183d8bff);
+                    outline.setCornerRadius(20 * window.getResources().getDisplayMetrics().density);
+                    outline.setStroke(Math.round(3 * window.getResources().getDisplayMetrics().density), actions.accent());
+                    selectedRow.setForeground(outline);
+                }
+                actions.selectUnlock(selectedRow == null);
+            }
+            return true;
+        }
+        if (event.getAction() == KeyEvent.ACTION_UP && !event.isCanceled()) {
+            if (selectedRow == null) unlock.run();
+            else openNotification.accept(selectedRow);
+            clear();
+            actions.selectUnlock(true);
+        }
+        return true;
+    }
+}

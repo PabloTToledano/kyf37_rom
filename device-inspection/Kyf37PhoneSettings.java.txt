@@ -1,0 +1,232 @@
+package org.kyf37.phonesettings;
+
+import android.app.Activity;
+import android.app.NotificationManager;
+import android.bluetooth.BluetoothAdapter;
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.media.AudioManager;
+import android.net.wifi.WifiManager;
+import android.os.Bundle;
+import android.provider.Settings;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+/**
+ * Keypad-first settings. Every row has a digit: pressing it jumps to the row and activates it.
+ * Toggle rows change in place; the others open the matching page of the full Settings app.
+ * Documentation: KEYPAD.md / AGENTS.md in the project root.
+ */
+public final class PhoneSettings extends Activity {
+    private static final int[] BRIGHT = {20, 60, 110, 170, 255};
+    private static final int[] TIMEOUT_MS = {15000, 30000, 60000, 120000, 300000};
+    private static final String[] TIMEOUT_NAME = {"15 seconds", "30 seconds", "1 minute", "2 minutes", "5 minutes"};
+
+    private final int[] pastelIcons = {R.drawable.ic_pastel_wifi, R.drawable.ic_pastel_bluetooth, R.drawable.ic_pastel_sound, R.drawable.ic_pastel_display, R.drawable.ic_pastel_clock, R.drawable.ic_pastel_clock, R.drawable.ic_pastel_language, R.drawable.ic_pastel_battery, R.drawable.ic_pastel_keypad, R.drawable.ic_pastel_settings, R.drawable.ic_pastel_sound, R.drawable.ic_pastel_storage, R.drawable.ic_pastel_generic, R.drawable.ic_pastel_phone_settings, R.drawable.ic_pastel_settings, R.drawable.ic_pastel_clock};
+    private final int[] skyIcons = {R.drawable.sky_wifi, R.drawable.sky_bluetooth, R.drawable.sky_sound, R.drawable.sky_display, R.drawable.sky_clock, R.drawable.sky_clock, R.drawable.sky_language, R.drawable.sky_battery, R.drawable.sky_keypad, R.drawable.sky_settings, R.drawable.sky_sound, R.drawable.sky_storage, R.drawable.sky_generic, R.drawable.sky_phone_settings, R.drawable.sky_settings, R.drawable.sky_clock};
+    private final int[] classicIcons = {R.drawable.classic_wifi, R.drawable.classic_bluetooth, R.drawable.classic_sound, R.drawable.classic_display, R.drawable.classic_clock, R.drawable.classic_clock, R.drawable.classic_language, R.drawable.classic_battery, R.drawable.classic_keypad, R.drawable.classic_settings, R.drawable.classic_sound, R.drawable.classic_storage, R.drawable.classic_generic, R.drawable.classic_phone_settings, R.drawable.classic_settings, R.drawable.classic_clock};
+    private ListView list;
+    private final String[] titles = {
+        "Wi-Fi", "Bluetooth", "Ringer", "Brightness", "Screen timeout",
+        "Date & time", "Language & keyboard", "Battery", "Keypad & keys", "All settings",
+        "Sound & volume", "Storage", "Apps", "About phone", "Appearance", "Outer screen" };
+
+    private final BaseAdapter adapter = new BaseAdapter() {
+        @Override public int getCount() { return titles.length; }
+        @Override public Object getItem(int i) { return titles[i]; }
+        @Override public long getItemId(int i) { return i; }
+        @Override public View getView(int i, View convert, ViewGroup parent) {
+            float d = getResources().getDisplayMetrics().density;
+            LinearLayout row;
+            TextView num, title, value;
+            if (convert == null) {
+                row = new LinearLayout(PhoneSettings.this);
+                row.setOrientation(LinearLayout.HORIZONTAL);
+                row.setGravity(Gravity.CENTER_VERTICAL);
+                row.setPadding((int) (10 * d), (int) (8 * d), (int) (10 * d), (int) (8 * d));
+                num = new TextView(PhoneSettings.this);
+                num.setId(1); num.setTextSize(20); num.setTypeface(Typeface.DEFAULT_BOLD);
+                num.setTextColor(0xFF6AA9FF); num.setGravity(Gravity.CENTER);
+                row.addView(num, new LinearLayout.LayoutParams((int) (30 * d), ViewGroup.LayoutParams.WRAP_CONTENT));
+                android.widget.ImageView image = new android.widget.ImageView(PhoneSettings.this);
+                image.setId(4);
+                LinearLayout.LayoutParams iconLp = new LinearLayout.LayoutParams((int)(32*d),(int)(32*d));
+                iconLp.rightMargin = (int)(10*d);
+                row.addView(image, iconLp);
+                LinearLayout text = new LinearLayout(PhoneSettings.this);
+                text.setOrientation(LinearLayout.VERTICAL);
+                title = new TextView(PhoneSettings.this);
+                title.setId(2); title.setTextSize(17); title.setTextColor(Color.WHITE);
+                value = new TextView(PhoneSettings.this);
+                value.setId(3); value.setTextSize(13); value.setTextColor(0xFFB8C2CC);
+                text.addView(title); text.addView(value);
+                row.addView(text, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+                row.setLayoutParams(new AbsListViewLayout());
+            } else {
+                row = (LinearLayout) convert;
+                num = (TextView) row.findViewById(1);
+                title = (TextView) row.findViewById(2);
+                value = (TextView) row.findViewById(3);
+            }
+            num.setText(String.valueOf((i + 1) % 10));
+            ((android.widget.ImageView) row.findViewById(4)).setImageResource(Settings.Global.getInt(getContentResolver(),"kyf37_icon_theme",1)==3 ? classicIcons[i] : (Settings.Global.getInt(getContentResolver(),"kyf37_icon_theme",1)==2 ? skyIcons[i] : pastelIcons[i]));
+            row.findViewById(4).setVisibility(Settings.Global.getInt(getContentResolver(),"kyf37_icon_theme",1)==0 ? View.GONE : View.VISIBLE);
+            row.findViewById(4).setVisibility(Settings.Global.getInt(getContentResolver(),"kyf37_icon_theme",1)==0 ? View.GONE : View.VISIBLE);
+            row.findViewById(4).setVisibility(Settings.Global.getInt(getContentResolver(),"kyf37_icon_theme",1)==0 ? View.GONE : View.VISIBLE);
+            title.setText(titles[i]);
+            String v = valueOf(i);
+            value.setText(v);
+            value.setVisibility(v.length() == 0 ? View.GONE : View.VISIBLE);
+            return row;
+        }
+    };
+
+    private static final class AbsListViewLayout extends android.widget.AbsListView.LayoutParams {
+        AbsListViewLayout() { super(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT); }
+    }
+
+    @Override public void onCreate(Bundle b) {
+        super.onCreate(b);
+        setTitle("Phone settings");
+        LinearLayout root = new LinearLayout(this);
+        root.setOrientation(LinearLayout.VERTICAL);
+        root.setBackgroundColor(0xFF10151B);
+        TextView head = new TextView(this);
+        head.setText("Phone settings");
+        head.setTextSize(20); head.setTextColor(Color.WHITE); head.setTypeface(Typeface.DEFAULT_BOLD);
+        head.setPadding(20, 14, 20, 6);
+        root.addView(head);
+        TextView hint = new TextView(this);
+        hint.setText("Press a number, or use ▲▼ and OK. Toggles change in place.");
+        hint.setTextSize(12); hint.setTextColor(0xFF8995A1);
+        hint.setPadding(20, 0, 20, 8);
+        root.addView(hint);
+        list = new ListView(this);
+        list.setAdapter(adapter);
+        list.setDivider(new android.graphics.drawable.ColorDrawable(0xFF26303A));
+        list.setDividerHeight(1);
+        list.setSelector(new android.graphics.drawable.ColorDrawable(Kyf37FocusCompat.has() ? 0 : 0x553D8BFF));
+        list.setItemsCanFocus(false);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override public void onItemClick(AdapterView<?> p, View v, int pos, long id) { activate(pos); }
+        });
+        root.addView(list, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
+        setContentView(root);
+        list.requestFocus();
+    }
+
+    @Override public void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
+    }
+
+    private String valueOf(int i) {
+        try {
+            switch (i) {
+                case 0: return wifi().isWifiEnabled() ? "On" : "Off";
+                case 1: { BluetoothAdapter a = BluetoothAdapter.getDefaultAdapter(); return a == null ? "Unavailable" : (a.isEnabled() ? "On" : "Off"); }
+                case 2: switch (audio().getRingerMode()) {
+                    case AudioManager.RINGER_MODE_NORMAL: return "Ring";
+                    case AudioManager.RINGER_MODE_VIBRATE: return "Vibrate";
+                    default: return "Silent"; }
+                case 3: return Math.round(Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, 128) * 100f / 255f) + "%";
+                case 4: return timeoutName(Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, 30000));
+                case 15: { int t = Settings.Global.getInt(getContentResolver(),"kyf37_outer_timeout",10); return t == 0 ? "Always on" : (t >= 60 ? (t / 60) + " min" : t + " s"); }
+                case 14: return new String[]{"Standard","Pastel Star","Sky Star","Kyocera Classic"}[Math.max(0,Math.min(3,Settings.Global.getInt(getContentResolver(),"kyf37_icon_theme",1)))];
+                default: return "";
+            }
+        } catch (RuntimeException e) { return ""; }
+    }
+
+    private String timeoutName(int ms) {
+        if (ms >= Integer.MAX_VALUE / 2) return "Only when lid closes";
+        for (int i = 0; i < TIMEOUT_MS.length; i++) if (TIMEOUT_MS[i] == ms) return TIMEOUT_NAME[i];
+        return (ms / 1000) + " seconds";
+    }
+
+    private WifiManager wifi() { return (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE); }
+    private AudioManager audio() { return (AudioManager) getSystemService(AUDIO_SERVICE); }
+
+    private void activate(int i) {
+        try {
+            switch (i) {
+                case 0: wifi().setWifiEnabled(!wifi().isWifiEnabled()); break;
+                case 1: {
+                    BluetoothAdapter a = BluetoothAdapter.getDefaultAdapter();
+                    if (a != null) { if (a.isEnabled()) a.disable(); else a.enable(); }
+                    break; }
+                case 2: {
+                    int m = audio().getRingerMode();
+                    int next = m == AudioManager.RINGER_MODE_NORMAL ? AudioManager.RINGER_MODE_VIBRATE
+                            : m == AudioManager.RINGER_MODE_VIBRATE ? AudioManager.RINGER_MODE_SILENT
+                            : AudioManager.RINGER_MODE_NORMAL;
+                    audio().setRingerMode(next);
+                    break; }
+                case 3: {
+                    int cur = Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, 128);
+                    int idx = 0;
+                    for (int k = 0; k < BRIGHT.length; k++) if (cur >= BRIGHT[k] - 10) idx = k;
+                    idx = (idx + 1) % BRIGHT.length;
+                    Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+                    Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, BRIGHT[idx]);
+                    break; }
+                case 4: {
+                    int cur = Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, 30000);
+                    int idx = -1;
+                    for (int k = 0; k < TIMEOUT_MS.length; k++) if (TIMEOUT_MS[k] == cur) idx = k;
+                    idx = (idx + 1) % TIMEOUT_MS.length;
+                    Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, TIMEOUT_MS[idx]);
+                    break; }
+                case 5: open(Settings.ACTION_DATE_SETTINGS); break;
+                case 6: open(Settings.ACTION_INPUT_METHOD_SETTINGS); break;
+                case 7: open(Intent.ACTION_POWER_USAGE_SUMMARY); break;
+                case 8: {
+                    Intent k = new Intent(Intent.ACTION_MAIN).setComponent(new ComponentName("org.kyf37.keypad", "org.kyf37.keypad.KeypadSettings"));
+                    startActivity(k); break; }
+                case 9: open(Settings.ACTION_SETTINGS); break;
+                case 10: open(Settings.ACTION_SOUND_SETTINGS); break;
+                case 11: open(Settings.ACTION_INTERNAL_STORAGE_SETTINGS); break;
+                case 12: open(Settings.ACTION_APPLICATION_SETTINGS); break;
+                case 13: open(Settings.ACTION_DEVICE_INFO_SETTINGS); break;
+                case 14: startActivity(new Intent(PhoneSettings.this,AppearanceSettings.class)); break;
+                case 15: startActivity(new Intent(PhoneSettings.this,OuterScreenSettings.class)); break;
+                default: break;
+            }
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(this, "Not available", Toast.LENGTH_SHORT).show();
+        } catch (RuntimeException e) {
+            Toast.makeText(this, "Could not change this setting", Toast.LENGTH_SHORT).show();
+        }
+        adapter.notifyDataSetChanged();
+        // Toggles settle asynchronously; refresh once more shortly after.
+        list.postDelayed(new Runnable() { public void run() { adapter.notifyDataSetChanged(); } }, 800);
+    }
+
+    private void open(String action) { startActivity(new Intent(action)); }
+
+    @Override public boolean onKeyDown(int code, KeyEvent event) {
+        if (event.getRepeatCount() == 0) {
+            int row = -1;
+            if (code >= KeyEvent.KEYCODE_1 && code <= KeyEvent.KEYCODE_9) row = code - KeyEvent.KEYCODE_1;
+            else if (code == KeyEvent.KEYCODE_0) row = 9;
+            if (row >= 0 && row < titles.length) {
+                list.setSelection(row);
+                activate(row);
+                return true;
+            }
+        }
+        return super.onKeyDown(code, event);
+    }
+}

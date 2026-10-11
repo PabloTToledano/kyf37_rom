@@ -1,0 +1,3730 @@
+revision=8 erase_group_def=1 erase_size=1 wp_size=8 user_wp=0x10 group_sectors=8192 total_sectors=15269888
+
+sector=0 type=1
+
+sector=8192 type=1
+
+sector=16384 type=1
+
+sector=24576 type=1
+
+sector=32768 type=1
+
+sector=40960 type=1
+
+sector=49152 type=1
+
+sector=57344 type=1
+
+sector=65536 type=1
+
+sector=73728 type=1
+
+sector=81920 type=1
+
+sector=90112 type=1
+
+sector=98304 type=1
+
+sector=106496 type=1
+
+sector=114688 type=1
+
+sector=122880 type=1
+
+sector=131072 type=1
+
+sector=139264 type=1
+
+sector=147456 type=1
+
+sector=155648 type=1
+
+sector=163840 type=1
+
+sector=172032 type=1
+
+sector=180224 type=1
+
+sector=188416 type=1
+
+sector=196608 type=1
+
+sector=204800 type=1
+
+sector=212992 type=1
+
+sector=221184 type=1
+
+sector=229376 type=1
+
+sector=237568 type=1
+
+sector=245760 type=1
+
+sector=253952 type=1
+
+sector=262144 type=1
+
+sector=270336 type=1
+
+sector=278528 type=1
+
+sector=286720 type=1
+
+sector=294912 type=1
+
+sector=303104 type=1
+
+sector=311296 type=1
+
+sector=319488 type=1
+
+sector=327680 type=1
+
+sector=335872 type=1
+
+sector=344064 type=1
+
+sector=352256 type=1
+
+sector=360448 type=1
+
+sector=368640 type=1
+
+sector=376832 type=1
+
+sector=385024 type=1
+
+sector=393216 type=1
+
+sector=401408 type=1
+
+sector=409600 type=1
+
+sector=417792 type=1
+
+sector=425984 type=1
+
+sector=434176 type=1
+
+sector=442368 type=1
+
+sector=450560 type=1
+
+sector=458752 type=1
+
+sector=466944 type=1
+
+sector=475136 type=1
+
+sector=483328 type=1
+
+sector=491520 type=1
+
+sector=499712 type=1
+
+sector=507904 type=1
+
+sector=516096 type=1
+
+sector=524288 type=1
+
+sector=532480 type=1
+
+sector=540672 type=1
+
+sector=548864 type=1
+
+sector=557056 type=1
+
+sector=565248 type=1
+
+sector=573440 type=1
+
+sector=581632 type=1
+
+sector=589824 type=1
+
+sector=598016 type=1
+
+sector=606208 type=1
+
+sector=614400 type=1
+
+sector=622592 type=1
+
+sector=630784 type=1
+
+sector=638976 type=1
+
+sector=647168 type=1
+
+sector=655360 type=1
+
+sector=663552 type=1
+
+sector=671744 type=1
+
+sector=679936 type=1
+
+sector=688128 type=1
+
+sector=696320 type=1
+
+sector=704512 type=1
+
+sector=712704 type=1
+
+sector=720896 type=1
+
+sector=729088 type=1
+
+sector=737280 type=1
+
+sector=745472 type=1
+
+sector=753664 type=1
+
+sector=761856 type=1
+
+sector=770048 type=1
+
+sector=778240 type=1
+
+sector=786432 type=1
+
+sector=794624 type=1
+
+sector=802816 type=1
+
+sector=811008 type=1
+
+sector=819200 type=1
+
+sector=827392 type=1
+
+sector=835584 type=1
+
+sector=843776 type=1
+
+sector=851968 type=1
+
+sector=860160 type=1
+
+sector=868352 type=1
+
+sector=876544 type=1
+
+sector=884736 type=1
+
+sector=892928 type=1
+
+sector=901120 type=1
+
+sector=909312 type=1
+
+sector=917504 type=1
+
+sector=925696 type=1
+
+sector=933888 type=1
+
+sector=942080 type=1
+
+sector=950272 type=1
+
+sector=958464 type=1
+
+sector=966656 type=1
+
+sector=974848 type=1
+
+sector=983040 type=1
+
+sector=991232 type=1
+
+sector=999424 type=1
+
+sector=1007616 type=1
+
+sector=1015808 type=1
+
+sector=1024000 type=1
+
+sector=1032192 type=1
+
+sector=1040384 type=1
+
+sector=1048576 type=1
+
+sector=1056768 type=1
+
+sector=1064960 type=1
+
+sector=1073152 type=1
+
+sector=1081344 type=1
+
+sector=1089536 type=1
+
+sector=1097728 type=1
+
+sector=1105920 type=1
+
+sector=1114112 type=1
+
+sector=1122304 type=1
+
+sector=1130496 type=1
+
+sector=1138688 type=1
+
+sector=1146880 type=1
+
+sector=1155072 type=1
+
+sector=1163264 type=1
+
+sector=1171456 type=1
+
+sector=1179648 type=1
+
+sector=1187840 type=1
+
+sector=1196032 type=1
+
+sector=1204224 type=1
+
+sector=1212416 type=1
+
+sector=1220608 type=1
+
+sector=1228800 type=1
+
+sector=1236992 type=1
+
+sector=1245184 type=1
+
+sector=1253376 type=1
+
+sector=1261568 type=1
+
+sector=1269760 type=1
+
+sector=1277952 type=1
+
+sector=1286144 type=1
+
+sector=1294336 type=1
+
+sector=1302528 type=1
+
+sector=1310720 type=1
+
+sector=1318912 type=1
+
+sector=1327104 type=1
+
+sector=1335296 type=1
+
+sector=1343488 type=1
+
+sector=1351680 type=1
+
+sector=1359872 type=1
+
+sector=1368064 type=1
+
+sector=1376256 type=1
+
+sector=1384448 type=1
+
+sector=1392640 type=1
+
+sector=1400832 type=1
+
+sector=1409024 type=1
+
+sector=1417216 type=1
+
+sector=1425408 type=1
+
+sector=1433600 type=1
+
+sector=1441792 type=1
+
+sector=1449984 type=1
+
+sector=1458176 type=1
+
+sector=1466368 type=1
+
+sector=1474560 type=1
+
+sector=1482752 type=1
+
+sector=1490944 type=1
+
+sector=1499136 type=1
+
+sector=1507328 type=1
+
+sector=1515520 type=1
+
+sector=1523712 type=1
+
+sector=1531904 type=1
+
+sector=1540096 type=1
+
+sector=1548288 type=1
+
+sector=1556480 type=1
+
+sector=1564672 type=1
+
+sector=1572864 type=1
+
+sector=1581056 type=1
+
+sector=1589248 type=1
+
+sector=1597440 type=1
+
+sector=1605632 type=1
+
+sector=1613824 type=1
+
+sector=1622016 type=1
+
+sector=1630208 type=1
+
+sector=1638400 type=1
+
+sector=1646592 type=1
+
+sector=1654784 type=1
+
+sector=1662976 type=1
+
+sector=1671168 type=1
+
+sector=1679360 type=1
+
+sector=1687552 type=1
+
+sector=1695744 type=1
+
+sector=1703936 type=1
+
+sector=1712128 type=1
+
+sector=1720320 type=1
+
+sector=1728512 type=1
+
+sector=1736704 type=1
+
+sector=1744896 type=1
+
+sector=1753088 type=1
+
+sector=1761280 type=1
+
+sector=1769472 type=1
+
+sector=1777664 type=1
+
+sector=1785856 type=1
+
+sector=1794048 type=1
+
+sector=1802240 type=1
+
+sector=1810432 type=1
+
+sector=1818624 type=1
+
+sector=1826816 type=1
+
+sector=1835008 type=1
+
+sector=1843200 type=1
+
+sector=1851392 type=1
+
+sector=1859584 type=1
+
+sector=1867776 type=1
+
+sector=1875968 type=1
+
+sector=1884160 type=1
+
+sector=1892352 type=1
+
+sector=1900544 type=1
+
+sector=1908736 type=1
+
+sector=1916928 type=1
+
+sector=1925120 type=1
+
+sector=1933312 type=1
+
+sector=1941504 type=1
+
+sector=1949696 type=1
+
+sector=1957888 type=1
+
+sector=1966080 type=1
+
+sector=1974272 type=1
+
+sector=1982464 type=1
+
+sector=1990656 type=1
+
+sector=1998848 type=1
+
+sector=2007040 type=1
+
+sector=2015232 type=1
+
+sector=2023424 type=1
+
+sector=2031616 type=1
+
+sector=2039808 type=1
+
+sector=2048000 type=1
+
+sector=2056192 type=1
+
+sector=2064384 type=1
+
+sector=2072576 type=1
+
+sector=2080768 type=1
+
+sector=2088960 type=1
+
+sector=2097152 type=1
+
+sector=2105344 type=1
+
+sector=2113536 type=1
+
+sector=2121728 type=1
+
+sector=2129920 type=1
+
+sector=2138112 type=1
+
+sector=2146304 type=1
+
+sector=2154496 type=1
+
+sector=2162688 type=1
+
+sector=2170880 type=1
+
+sector=2179072 type=1
+
+sector=2187264 type=1
+
+sector=2195456 type=1
+
+sector=2203648 type=1
+
+sector=2211840 type=1
+
+sector=2220032 type=1
+
+sector=2228224 type=1
+
+sector=2236416 type=1
+
+sector=2244608 type=1
+
+sector=2252800 type=1
+
+sector=2260992 type=1
+
+sector=2269184 type=1
+
+sector=2277376 type=1
+
+sector=2285568 type=1
+
+sector=2293760 type=1
+
+sector=2301952 type=1
+
+sector=2310144 type=1
+
+sector=2318336 type=1
+
+sector=2326528 type=1
+
+sector=2334720 type=1
+
+sector=2342912 type=1
+
+sector=2351104 type=1
+
+sector=2359296 type=1
+
+sector=2367488 type=1
+
+sector=2375680 type=1
+
+sector=2383872 type=1
+
+sector=2392064 type=1
+
+sector=2400256 type=1
+
+sector=2408448 type=1
+
+sector=2416640 type=1
+
+sector=2424832 type=1
+
+sector=2433024 type=1
+
+sector=2441216 type=1
+
+sector=2449408 type=1
+
+sector=2457600 type=1
+
+sector=2465792 type=1
+
+sector=2473984 type=1
+
+sector=2482176 type=1
+
+sector=2490368 type=1
+
+sector=2498560 type=1
+
+sector=2506752 type=1
+
+sector=2514944 type=1
+
+sector=2523136 type=1
+
+sector=2531328 type=1
+
+sector=2539520 type=1
+
+sector=2547712 type=1
+
+sector=2555904 type=1
+
+sector=2564096 type=1
+
+sector=2572288 type=1
+
+sector=2580480 type=1
+
+sector=2588672 type=1
+
+sector=2596864 type=1
+
+sector=2605056 type=1
+
+sector=2613248 type=1
+
+sector=2621440 type=1
+
+sector=2629632 type=1
+
+sector=2637824 type=1
+
+sector=2646016 type=1
+
+sector=2654208 type=1
+
+sector=2662400 type=1
+
+sector=2670592 type=1
+
+sector=2678784 type=1
+
+sector=2686976 type=1
+
+sector=2695168 type=1
+
+sector=2703360 type=1
+
+sector=2711552 type=1
+
+sector=2719744 type=1
+
+sector=2727936 type=1
+
+sector=2736128 type=1
+
+sector=2744320 type=1
+
+sector=2752512 type=1
+
+sector=2760704 type=1
+
+sector=2768896 type=1
+
+sector=2777088 type=1
+
+sector=2785280 type=1
+
+sector=2793472 type=1
+
+sector=2801664 type=1
+
+sector=2809856 type=1
+
+sector=2818048 type=1
+
+sector=2826240 type=1
+
+sector=2834432 type=1
+
+sector=2842624 type=1
+
+sector=2850816 type=1
+
+sector=2859008 type=1
+
+sector=2867200 type=1
+
+sector=2875392 type=1
+
+sector=2883584 type=1
+
+sector=2891776 type=1
+
+sector=2899968 type=1
+
+sector=2908160 type=1
+
+sector=2916352 type=1
+
+sector=2924544 type=1
+
+sector=2932736 type=1
+
+sector=2940928 type=1
+
+sector=2949120 type=1
+
+sector=2957312 type=1
+
+sector=2965504 type=1
+
+sector=2973696 type=1
+
+sector=2981888 type=1
+
+sector=2990080 type=1
+
+sector=2998272 type=1
+
+sector=3006464 type=1
+
+sector=3014656 type=1
+
+sector=3022848 type=1
+
+sector=3031040 type=1
+
+sector=3039232 type=1
+
+sector=3047424 type=1
+
+sector=3055616 type=1
+
+sector=3063808 type=1
+
+sector=3072000 type=1
+
+sector=3080192 type=1
+
+sector=3088384 type=1
+
+sector=3096576 type=1
+
+sector=3104768 type=1
+
+sector=3112960 type=1
+
+sector=3121152 type=1
+
+sector=3129344 type=1
+
+sector=3137536 type=1
+
+sector=3145728 type=1
+
+sector=3153920 type=1
+
+sector=3162112 type=1
+
+sector=3170304 type=1
+
+sector=3178496 type=1
+
+sector=3186688 type=1
+
+sector=3194880 type=1
+
+sector=3203072 type=1
+
+sector=3211264 type=1
+
+sector=3219456 type=1
+
+sector=3227648 type=1
+
+sector=3235840 type=1
+
+sector=3244032 type=1
+
+sector=3252224 type=1
+
+sector=3260416 type=1
+
+sector=3268608 type=1
+
+sector=3276800 type=1
+
+sector=3284992 type=1
+
+sector=3293184 type=1
+
+sector=3301376 type=1
+
+sector=3309568 type=1
+
+sector=3317760 type=1
+
+sector=3325952 type=1
+
+sector=3334144 type=1
+
+sector=3342336 type=1
+
+sector=3350528 type=1
+
+sector=3358720 type=1
+
+sector=3366912 type=1
+
+sector=3375104 type=1
+
+sector=3383296 type=1
+
+sector=3391488 type=1
+
+sector=3399680 type=1
+
+sector=3407872 type=1
+
+sector=3416064 type=1
+
+sector=3424256 type=1
+
+sector=3432448 type=1
+
+sector=3440640 type=2
+
+sector=3448832 type=2
+
+sector=3457024 type=0
+
+sector=3465216 type=0
+
+sector=3473408 type=0
+
+sector=3481600 type=0
+
+sector=3489792 type=0
+
+sector=3497984 type=0
+
+sector=3506176 type=0
+
+sector=3514368 type=0
+
+sector=3522560 type=0
+
+sector=3530752 type=0
+
+sector=3538944 type=0
+
+sector=3547136 type=0
+
+sector=3555328 type=0
+
+sector=3563520 type=0
+
+sector=3571712 type=0
+
+sector=3579904 type=0
+
+sector=3588096 type=0
+
+sector=3596288 type=0
+
+sector=3604480 type=0
+
+sector=3612672 type=0
+
+sector=3620864 type=0
+
+sector=3629056 type=0
+
+sector=3637248 type=0
+
+sector=3645440 type=0
+
+sector=3653632 type=0
+
+sector=3661824 type=0
+
+sector=3670016 type=0
+
+sector=3678208 type=0
+
+sector=3686400 type=0
+
+sector=3694592 type=0
+
+sector=3702784 type=0
+
+sector=3710976 type=0
+
+sector=3719168 type=0
+
+sector=3727360 type=0
+
+sector=3735552 type=0
+
+sector=3743744 type=0
+
+sector=3751936 type=0
+
+sector=3760128 type=0
+
+sector=3768320 type=0
+
+sector=3776512 type=0
+
+sector=3784704 type=0
+
+sector=3792896 type=0
+
+sector=3801088 type=0
+
+sector=3809280 type=0
+
+sector=3817472 type=0
+
+sector=3825664 type=0
+
+sector=3833856 type=0
+
+sector=3842048 type=0
+
+sector=3850240 type=0
+
+sector=3858432 type=0
+
+sector=3866624 type=0
+
+sector=3874816 type=0
+
+sector=3883008 type=0
+
+sector=3891200 type=0
+
+sector=3899392 type=0
+
+sector=3907584 type=0
+
+sector=3915776 type=0
+
+sector=3923968 type=0
+
+sector=3932160 type=0
+
+sector=3940352 type=0
+
+sector=3948544 type=0
+
+sector=3956736 type=0
+
+sector=3964928 type=0
+
+sector=3973120 type=0
+
+sector=3981312 type=0
+
+sector=3989504 type=0
+
+sector=3997696 type=0
+
+sector=4005888 type=0
+
+sector=4014080 type=0
+
+sector=4022272 type=0
+
+sector=4030464 type=0
+
+sector=4038656 type=0
+
+sector=4046848 type=0
+
+sector=4055040 type=0
+
+sector=4063232 type=0
+
+sector=4071424 type=0
+
+sector=4079616 type=0
+
+sector=4087808 type=0
+
+sector=4096000 type=0
+
+sector=4104192 type=0
+
+sector=4112384 type=0
+
+sector=4120576 type=0
+
+sector=4128768 type=0
+
+sector=4136960 type=0
+
+sector=4145152 type=0
+
+sector=4153344 type=0
+
+sector=4161536 type=0
+
+sector=4169728 type=0
+
+sector=4177920 type=0
+
+sector=4186112 type=0
+
+sector=4194304 type=0
+
+sector=4202496 type=0
+
+sector=4210688 type=0
+
+sector=4218880 type=0
+
+sector=4227072 type=0
+
+sector=4235264 type=0
+
+sector=4243456 type=0
+
+sector=4251648 type=0
+
+sector=4259840 type=0
+
+sector=4268032 type=0
+
+sector=4276224 type=0
+
+sector=4284416 type=0
+
+sector=4292608 type=0
+
+sector=4300800 type=0
+
+sector=4308992 type=0
+
+sector=4317184 type=0
+
+sector=4325376 type=0
+
+sector=4333568 type=0
+
+sector=4341760 type=0
+
+sector=4349952 type=0
+
+sector=4358144 type=0
+
+sector=4366336 type=0
+
+sector=4374528 type=0
+
+sector=4382720 type=0
+
+sector=4390912 type=0
+
+sector=4399104 type=0
+
+sector=4407296 type=0
+
+sector=4415488 type=0
+
+sector=4423680 type=0
+
+sector=4431872 type=0
+
+sector=4440064 type=0
+
+sector=4448256 type=0
+
+sector=4456448 type=0
+
+sector=4464640 type=0
+
+sector=4472832 type=0
+
+sector=4481024 type=0
+
+sector=4489216 type=0
+
+sector=4497408 type=0
+
+sector=4505600 type=0
+
+sector=4513792 type=0
+
+sector=4521984 type=0
+
+sector=4530176 type=0
+
+sector=4538368 type=0
+
+sector=4546560 type=0
+
+sector=4554752 type=0
+
+sector=4562944 type=0
+
+sector=4571136 type=0
+
+sector=4579328 type=0
+
+sector=4587520 type=0
+
+sector=4595712 type=0
+
+sector=4603904 type=0
+
+sector=4612096 type=0
+
+sector=4620288 type=0
+
+sector=4628480 type=0
+
+sector=4636672 type=0
+
+sector=4644864 type=0
+
+sector=4653056 type=0
+
+sector=4661248 type=0
+
+sector=4669440 type=0
+
+sector=4677632 type=0
+
+sector=4685824 type=0
+
+sector=4694016 type=0
+
+sector=4702208 type=0
+
+sector=4710400 type=0
+
+sector=4718592 type=0
+
+sector=4726784 type=0
+
+sector=4734976 type=0
+
+sector=4743168 type=0
+
+sector=4751360 type=0
+
+sector=4759552 type=0
+
+sector=4767744 type=0
+
+sector=4775936 type=0
+
+sector=4784128 type=0
+
+sector=4792320 type=0
+
+sector=4800512 type=0
+
+sector=4808704 type=0
+
+sector=4816896 type=0
+
+sector=4825088 type=0
+
+sector=4833280 type=0
+
+sector=4841472 type=0
+
+sector=4849664 type=0
+
+sector=4857856 type=0
+
+sector=4866048 type=0
+
+sector=4874240 type=0
+
+sector=4882432 type=0
+
+sector=4890624 type=0
+
+sector=4898816 type=0
+
+sector=4907008 type=0
+
+sector=4915200 type=0
+
+sector=4923392 type=0
+
+sector=4931584 type=0
+
+sector=4939776 type=0
+
+sector=4947968 type=0
+
+sector=4956160 type=0
+
+sector=4964352 type=0
+
+sector=4972544 type=0
+
+sector=4980736 type=0
+
+sector=4988928 type=0
+
+sector=4997120 type=0
+
+sector=5005312 type=0
+
+sector=5013504 type=0
+
+sector=5021696 type=0
+
+sector=5029888 type=0
+
+sector=5038080 type=0
+
+sector=5046272 type=0
+
+sector=5054464 type=0
+
+sector=5062656 type=0
+
+sector=5070848 type=0
+
+sector=5079040 type=0
+
+sector=5087232 type=0
+
+sector=5095424 type=0
+
+sector=5103616 type=0
+
+sector=5111808 type=0
+
+sector=5120000 type=0
+
+sector=5128192 type=0
+
+sector=5136384 type=0
+
+sector=5144576 type=0
+
+sector=5152768 type=0
+
+sector=5160960 type=0
+
+sector=5169152 type=0
+
+sector=5177344 type=0
+
+sector=5185536 type=0
+
+sector=5193728 type=0
+
+sector=5201920 type=0
+
+sector=5210112 type=0
+
+sector=5218304 type=0
+
+sector=5226496 type=0
+
+sector=5234688 type=0
+
+sector=5242880 type=0
+
+sector=5251072 type=0
+
+sector=5259264 type=0
+
+sector=5267456 type=0
+
+sector=5275648 type=0
+
+sector=5283840 type=0
+
+sector=5292032 type=0
+
+sector=5300224 type=0
+
+sector=5308416 type=0
+
+sector=5316608 type=0
+
+sector=5324800 type=0
+
+sector=5332992 type=0
+
+sector=5341184 type=0
+
+sector=5349376 type=0
+
+sector=5357568 type=0
+
+sector=5365760 type=0
+
+sector=5373952 type=0
+
+sector=5382144 type=0
+
+sector=5390336 type=0
+
+sector=5398528 type=0
+
+sector=5406720 type=0
+
+sector=5414912 type=0
+
+sector=5423104 type=0
+
+sector=5431296 type=0
+
+sector=5439488 type=0
+
+sector=5447680 type=0
+
+sector=5455872 type=0
+
+sector=5464064 type=0
+
+sector=5472256 type=0
+
+sector=5480448 type=0
+
+sector=5488640 type=0
+
+sector=5496832 type=0
+
+sector=5505024 type=0
+
+sector=5513216 type=0
+
+sector=5521408 type=0
+
+sector=5529600 type=0
+
+sector=5537792 type=0
+
+sector=5545984 type=0
+
+sector=5554176 type=0
+
+sector=5562368 type=0
+
+sector=5570560 type=0
+
+sector=5578752 type=0
+
+sector=5586944 type=0
+
+sector=5595136 type=0
+
+sector=5603328 type=0
+
+sector=5611520 type=0
+
+sector=5619712 type=0
+
+sector=5627904 type=0
+
+sector=5636096 type=0
+
+sector=5644288 type=0
+
+sector=5652480 type=0
+
+sector=5660672 type=0
+
+sector=5668864 type=0
+
+sector=5677056 type=0
+
+sector=5685248 type=0
+
+sector=5693440 type=0
+
+sector=5701632 type=0
+
+sector=5709824 type=0
+
+sector=5718016 type=0
+
+sector=5726208 type=0
+
+sector=5734400 type=0
+
+sector=5742592 type=0
+
+sector=5750784 type=0
+
+sector=5758976 type=0
+
+sector=5767168 type=0
+
+sector=5775360 type=0
+
+sector=5783552 type=0
+
+sector=5791744 type=0
+
+sector=5799936 type=0
+
+sector=5808128 type=0
+
+sector=5816320 type=0
+
+sector=5824512 type=0
+
+sector=5832704 type=0
+
+sector=5840896 type=0
+
+sector=5849088 type=0
+
+sector=5857280 type=0
+
+sector=5865472 type=0
+
+sector=5873664 type=0
+
+sector=5881856 type=0
+
+sector=5890048 type=0
+
+sector=5898240 type=0
+
+sector=5906432 type=0
+
+sector=5914624 type=0
+
+sector=5922816 type=0
+
+sector=5931008 type=0
+
+sector=5939200 type=0
+
+sector=5947392 type=0
+
+sector=5955584 type=0
+
+sector=5963776 type=0
+
+sector=5971968 type=0
+
+sector=5980160 type=0
+
+sector=5988352 type=0
+
+sector=5996544 type=0
+
+sector=6004736 type=0
+
+sector=6012928 type=0
+
+sector=6021120 type=0
+
+sector=6029312 type=0
+
+sector=6037504 type=0
+
+sector=6045696 type=0
+
+sector=6053888 type=0
+
+sector=6062080 type=0
+
+sector=6070272 type=0
+
+sector=6078464 type=0
+
+sector=6086656 type=0
+
+sector=6094848 type=0
+
+sector=6103040 type=0
+
+sector=6111232 type=0
+
+sector=6119424 type=0
+
+sector=6127616 type=0
+
+sector=6135808 type=0
+
+sector=6144000 type=0
+
+sector=6152192 type=0
+
+sector=6160384 type=0
+
+sector=6168576 type=0
+
+sector=6176768 type=0
+
+sector=6184960 type=0
+
+sector=6193152 type=0
+
+sector=6201344 type=0
+
+sector=6209536 type=0
+
+sector=6217728 type=0
+
+sector=6225920 type=0
+
+sector=6234112 type=0
+
+sector=6242304 type=0
+
+sector=6250496 type=0
+
+sector=6258688 type=0
+
+sector=6266880 type=0
+
+sector=6275072 type=0
+
+sector=6283264 type=0
+
+sector=6291456 type=0
+
+sector=6299648 type=0
+
+sector=6307840 type=0
+
+sector=6316032 type=0
+
+sector=6324224 type=0
+
+sector=6332416 type=0
+
+sector=6340608 type=0
+
+sector=6348800 type=0
+
+sector=6356992 type=0
+
+sector=6365184 type=0
+
+sector=6373376 type=0
+
+sector=6381568 type=0
+
+sector=6389760 type=0
+
+sector=6397952 type=0
+
+sector=6406144 type=0
+
+sector=6414336 type=0
+
+sector=6422528 type=0
+
+sector=6430720 type=0
+
+sector=6438912 type=0
+
+sector=6447104 type=0
+
+sector=6455296 type=0
+
+sector=6463488 type=0
+
+sector=6471680 type=0
+
+sector=6479872 type=0
+
+sector=6488064 type=0
+
+sector=6496256 type=0
+
+sector=6504448 type=0
+
+sector=6512640 type=0
+
+sector=6520832 type=0
+
+sector=6529024 type=0
+
+sector=6537216 type=0
+
+sector=6545408 type=0
+
+sector=6553600 type=0
+
+sector=6561792 type=0
+
+sector=6569984 type=0
+
+sector=6578176 type=0
+
+sector=6586368 type=0
+
+sector=6594560 type=0
+
+sector=6602752 type=0
+
+sector=6610944 type=0
+
+sector=6619136 type=0
+
+sector=6627328 type=0
+
+sector=6635520 type=0
+
+sector=6643712 type=0
+
+sector=6651904 type=0
+
+sector=6660096 type=0
+
+sector=6668288 type=0
+
+sector=6676480 type=0
+
+sector=6684672 type=0
+
+sector=6692864 type=0
+
+sector=6701056 type=0
+
+sector=6709248 type=0
+
+sector=6717440 type=0
+
+sector=6725632 type=0
+
+sector=6733824 type=0
+
+sector=6742016 type=0
+
+sector=6750208 type=0
+
+sector=6758400 type=0
+
+sector=6766592 type=0
+
+sector=6774784 type=0
+
+sector=6782976 type=0
+
+sector=6791168 type=0
+
+sector=6799360 type=0
+
+sector=6807552 type=0
+
+sector=6815744 type=0
+
+sector=6823936 type=0
+
+sector=6832128 type=0
+
+sector=6840320 type=0
+
+sector=6848512 type=0
+
+sector=6856704 type=0
+
+sector=6864896 type=0
+
+sector=6873088 type=0
+
+sector=6881280 type=0
+
+sector=6889472 type=0
+
+sector=6897664 type=0
+
+sector=6905856 type=0
+
+sector=6914048 type=0
+
+sector=6922240 type=0
+
+sector=6930432 type=0
+
+sector=6938624 type=0
+
+sector=6946816 type=0
+
+sector=6955008 type=0
+
+sector=6963200 type=0
+
+sector=6971392 type=0
+
+sector=6979584 type=0
+
+sector=6987776 type=0
+
+sector=6995968 type=0
+
+sector=7004160 type=0
+
+sector=7012352 type=0
+
+sector=7020544 type=0
+
+sector=7028736 type=0
+
+sector=7036928 type=0
+
+sector=7045120 type=0
+
+sector=7053312 type=0
+
+sector=7061504 type=0
+
+sector=7069696 type=0
+
+sector=7077888 type=0
+
+sector=7086080 type=0
+
+sector=7094272 type=0
+
+sector=7102464 type=0
+
+sector=7110656 type=0
+
+sector=7118848 type=0
+
+sector=7127040 type=0
+
+sector=7135232 type=0
+
+sector=7143424 type=0
+
+sector=7151616 type=0
+
+sector=7159808 type=0
+
+sector=7168000 type=0
+
+sector=7176192 type=0
+
+sector=7184384 type=0
+
+sector=7192576 type=0
+
+sector=7200768 type=0
+
+sector=7208960 type=0
+
+sector=7217152 type=0
+
+sector=7225344 type=0
+
+sector=7233536 type=0
+
+sector=7241728 type=0
+
+sector=7249920 type=0
+
+sector=7258112 type=0
+
+sector=7266304 type=0
+
+sector=7274496 type=0
+
+sector=7282688 type=0
+
+sector=7290880 type=0
+
+sector=7299072 type=0
+
+sector=7307264 type=0
+
+sector=7315456 type=0
+
+sector=7323648 type=0
+
+sector=7331840 type=0
+
+sector=7340032 type=0
+
+sector=7348224 type=0
+
+sector=7356416 type=0
+
+sector=7364608 type=0
+
+sector=7372800 type=0
+
+sector=7380992 type=0
+
+sector=7389184 type=0
+
+sector=7397376 type=0
+
+sector=7405568 type=0
+
+sector=7413760 type=0
+
+sector=7421952 type=0
+
+sector=7430144 type=0
+
+sector=7438336 type=0
+
+sector=7446528 type=0
+
+sector=7454720 type=0
+
+sector=7462912 type=0
+
+sector=7471104 type=0
+
+sector=7479296 type=0
+
+sector=7487488 type=0
+
+sector=7495680 type=0
+
+sector=7503872 type=0
+
+sector=7512064 type=0
+
+sector=7520256 type=0
+
+sector=7528448 type=0
+
+sector=7536640 type=0
+
+sector=7544832 type=0
+
+sector=7553024 type=0
+
+sector=7561216 type=0
+
+sector=7569408 type=0
+
+sector=7577600 type=0
+
+sector=7585792 type=0
+
+sector=7593984 type=0
+
+sector=7602176 type=0
+
+sector=7610368 type=0
+
+sector=7618560 type=0
+
+sector=7626752 type=0
+
+sector=7634944 type=0
+
+sector=7643136 type=0
+
+sector=7651328 type=0
+
+sector=7659520 type=0
+
+sector=7667712 type=0
+
+sector=7675904 type=0
+
+sector=7684096 type=0
+
+sector=7692288 type=0
+
+sector=7700480 type=0
+
+sector=7708672 type=0
+
+sector=7716864 type=0
+
+sector=7725056 type=0
+
+sector=7733248 type=0
+
+sector=7741440 type=0
+
+sector=7749632 type=0
+
+sector=7757824 type=0
+
+sector=7766016 type=0
+
+sector=7774208 type=0
+
+sector=7782400 type=0
+
+sector=7790592 type=0
+
+sector=7798784 type=0
+
+sector=7806976 type=0
+
+sector=7815168 type=0
+
+sector=7823360 type=0
+
+sector=7831552 type=0
+
+sector=7839744 type=0
+
+sector=7847936 type=0
+
+sector=7856128 type=0
+
+sector=7864320 type=0
+
+sector=7872512 type=0
+
+sector=7880704 type=0
+
+sector=7888896 type=0
+
+sector=7897088 type=0
+
+sector=7905280 type=0
+
+sector=7913472 type=0
+
+sector=7921664 type=0
+
+sector=7929856 type=0
+
+sector=7938048 type=0
+
+sector=7946240 type=0
+
+sector=7954432 type=0
+
+sector=7962624 type=0
+
+sector=7970816 type=0
+
+sector=7979008 type=0
+
+sector=7987200 type=0
+
+sector=7995392 type=0
+
+sector=8003584 type=0
+
+sector=8011776 type=0
+
+sector=8019968 type=0
+
+sector=8028160 type=0
+
+sector=8036352 type=0
+
+sector=8044544 type=0
+
+sector=8052736 type=0
+
+sector=8060928 type=0
+
+sector=8069120 type=0
+
+sector=8077312 type=0
+
+sector=8085504 type=0
+
+sector=8093696 type=0
+
+sector=8101888 type=0
+
+sector=8110080 type=0
+
+sector=8118272 type=0
+
+sector=8126464 type=0
+
+sector=8134656 type=0
+
+sector=8142848 type=0
+
+sector=8151040 type=0
+
+sector=8159232 type=0
+
+sector=8167424 type=0
+
+sector=8175616 type=0
+
+sector=8183808 type=0
+
+sector=8192000 type=0
+
+sector=8200192 type=0
+
+sector=8208384 type=0
+
+sector=8216576 type=0
+
+sector=8224768 type=0
+
+sector=8232960 type=0
+
+sector=8241152 type=0
+
+sector=8249344 type=0
+
+sector=8257536 type=0
+
+sector=8265728 type=0
+
+sector=8273920 type=0
+
+sector=8282112 type=0
+
+sector=8290304 type=0
+
+sector=8298496 type=0
+
+sector=8306688 type=0
+
+sector=8314880 type=0
+
+sector=8323072 type=0
+
+sector=8331264 type=0
+
+sector=8339456 type=0
+
+sector=8347648 type=0
+
+sector=8355840 type=0
+
+sector=8364032 type=0
+
+sector=8372224 type=0
+
+sector=8380416 type=0
+
+sector=8388608 type=0
+
+sector=8396800 type=0
+
+sector=8404992 type=0
+
+sector=8413184 type=0
+
+sector=8421376 type=0
+
+sector=8429568 type=0
+
+sector=8437760 type=0
+
+sector=8445952 type=0
+
+sector=8454144 type=0
+
+sector=8462336 type=0
+
+sector=8470528 type=0
+
+sector=8478720 type=0
+
+sector=8486912 type=0
+
+sector=8495104 type=0
+
+sector=8503296 type=0
+
+sector=8511488 type=0
+
+sector=8519680 type=0
+
+sector=8527872 type=0
+
+sector=8536064 type=0
+
+sector=8544256 type=0
+
+sector=8552448 type=0
+
+sector=8560640 type=0
+
+sector=8568832 type=0
+
+sector=8577024 type=0
+
+sector=8585216 type=0
+
+sector=8593408 type=0
+
+sector=8601600 type=0
+
+sector=8609792 type=0
+
+sector=8617984 type=0
+
+sector=8626176 type=0
+
+sector=8634368 type=0
+
+sector=8642560 type=0
+
+sector=8650752 type=0
+
+sector=8658944 type=0
+
+sector=8667136 type=0
+
+sector=8675328 type=0
+
+sector=8683520 type=0
+
+sector=8691712 type=0
+
+sector=8699904 type=0
+
+sector=8708096 type=0
+
+sector=8716288 type=0
+
+sector=8724480 type=0
+
+sector=8732672 type=0
+
+sector=8740864 type=0
+
+sector=8749056 type=0
+
+sector=8757248 type=0
+
+sector=8765440 type=0
+
+sector=8773632 type=0
+
+sector=8781824 type=0
+
+sector=8790016 type=0
+
+sector=8798208 type=0
+
+sector=8806400 type=0
+
+sector=8814592 type=0
+
+sector=8822784 type=0
+
+sector=8830976 type=0
+
+sector=8839168 type=0
+
+sector=8847360 type=0
+
+sector=8855552 type=0
+
+sector=8863744 type=0
+
+sector=8871936 type=0
+
+sector=8880128 type=0
+
+sector=8888320 type=0
+
+sector=8896512 type=0
+
+sector=8904704 type=0
+
+sector=8912896 type=0
+
+sector=8921088 type=0
+
+sector=8929280 type=0
+
+sector=8937472 type=0
+
+sector=8945664 type=0
+
+sector=8953856 type=0
+
+sector=8962048 type=0
+
+sector=8970240 type=0
+
+sector=8978432 type=0
+
+sector=8986624 type=0
+
+sector=8994816 type=0
+
+sector=9003008 type=0
+
+sector=9011200 type=0
+
+sector=9019392 type=0
+
+sector=9027584 type=0
+
+sector=9035776 type=0
+
+sector=9043968 type=0
+
+sector=9052160 type=0
+
+sector=9060352 type=0
+
+sector=9068544 type=0
+
+sector=9076736 type=0
+
+sector=9084928 type=0
+
+sector=9093120 type=0
+
+sector=9101312 type=0
+
+sector=9109504 type=0
+
+sector=9117696 type=0
+
+sector=9125888 type=0
+
+sector=9134080 type=0
+
+sector=9142272 type=0
+
+sector=9150464 type=0
+
+sector=9158656 type=0
+
+sector=9166848 type=0
+
+sector=9175040 type=0
+
+sector=9183232 type=0
+
+sector=9191424 type=0
+
+sector=9199616 type=0
+
+sector=9207808 type=0
+
+sector=9216000 type=0
+
+sector=9224192 type=0
+
+sector=9232384 type=0
+
+sector=9240576 type=0
+
+sector=9248768 type=0
+
+sector=9256960 type=0
+
+sector=9265152 type=0
+
+sector=9273344 type=0
+
+sector=9281536 type=0
+
+sector=9289728 type=0
+
+sector=9297920 type=0
+
+sector=9306112 type=0
+
+sector=9314304 type=0
+
+sector=9322496 type=0
+
+sector=9330688 type=0
+
+sector=9338880 type=0
+
+sector=9347072 type=0
+
+sector=9355264 type=0
+
+sector=9363456 type=0
+
+sector=9371648 type=0
+
+sector=9379840 type=0
+
+sector=9388032 type=0
+
+sector=9396224 type=0
+
+sector=9404416 type=0
+
+sector=9412608 type=0
+
+sector=9420800 type=0
+
+sector=9428992 type=0
+
+sector=9437184 type=0
+
+sector=9445376 type=0
+
+sector=9453568 type=0
+
+sector=9461760 type=0
+
+sector=9469952 type=0
+
+sector=9478144 type=0
+
+sector=9486336 type=0
+
+sector=9494528 type=0
+
+sector=9502720 type=0
+
+sector=9510912 type=0
+
+sector=9519104 type=0
+
+sector=9527296 type=0
+
+sector=9535488 type=0
+
+sector=9543680 type=0
+
+sector=9551872 type=0
+
+sector=9560064 type=0
+
+sector=9568256 type=0
+
+sector=9576448 type=0
+
+sector=9584640 type=0
+
+sector=9592832 type=0
+
+sector=9601024 type=0
+
+sector=9609216 type=0
+
+sector=9617408 type=0
+
+sector=9625600 type=0
+
+sector=9633792 type=0
+
+sector=9641984 type=0
+
+sector=9650176 type=0
+
+sector=9658368 type=0
+
+sector=9666560 type=0
+
+sector=9674752 type=0
+
+sector=9682944 type=0
+
+sector=9691136 type=0
+
+sector=9699328 type=0
+
+sector=9707520 type=0
+
+sector=9715712 type=0
+
+sector=9723904 type=0
+
+sector=9732096 type=0
+
+sector=9740288 type=0
+
+sector=9748480 type=0
+
+sector=9756672 type=0
+
+sector=9764864 type=0
+
+sector=9773056 type=0
+
+sector=9781248 type=0
+
+sector=9789440 type=0
+
+sector=9797632 type=0
+
+sector=9805824 type=0
+
+sector=9814016 type=0
+
+sector=9822208 type=0
+
+sector=9830400 type=0
+
+sector=9838592 type=0
+
+sector=9846784 type=0
+
+sector=9854976 type=0
+
+sector=9863168 type=0
+
+sector=9871360 type=0
+
+sector=9879552 type=0
+
+sector=9887744 type=0
+
+sector=9895936 type=0
+
+sector=9904128 type=0
+
+sector=9912320 type=0
+
+sector=9920512 type=0
+
+sector=9928704 type=0
+
+sector=9936896 type=0
+
+sector=9945088 type=0
+
+sector=9953280 type=0
+
+sector=9961472 type=0
+
+sector=9969664 type=0
+
+sector=9977856 type=0
+
+sector=9986048 type=0
+
+sector=9994240 type=0
+
+sector=10002432 type=0
+
+sector=10010624 type=0
+
+sector=10018816 type=0
+
+sector=10027008 type=0
+
+sector=10035200 type=0
+
+sector=10043392 type=0
+
+sector=10051584 type=0
+
+sector=10059776 type=0
+
+sector=10067968 type=0
+
+sector=10076160 type=0
+
+sector=10084352 type=0
+
+sector=10092544 type=0
+
+sector=10100736 type=0
+
+sector=10108928 type=0
+
+sector=10117120 type=0
+
+sector=10125312 type=0
+
+sector=10133504 type=0
+
+sector=10141696 type=0
+
+sector=10149888 type=0
+
+sector=10158080 type=0
+
+sector=10166272 type=0
+
+sector=10174464 type=0
+
+sector=10182656 type=0
+
+sector=10190848 type=0
+
+sector=10199040 type=0
+
+sector=10207232 type=0
+
+sector=10215424 type=0
+
+sector=10223616 type=0
+
+sector=10231808 type=0
+
+sector=10240000 type=0
+
+sector=10248192 type=0
+
+sector=10256384 type=0
+
+sector=10264576 type=0
+
+sector=10272768 type=0
+
+sector=10280960 type=0
+
+sector=10289152 type=0
+
+sector=10297344 type=0
+
+sector=10305536 type=0
+
+sector=10313728 type=0
+
+sector=10321920 type=0
+
+sector=10330112 type=0
+
+sector=10338304 type=0
+
+sector=10346496 type=0
+
+sector=10354688 type=0
+
+sector=10362880 type=0
+
+sector=10371072 type=0
+
+sector=10379264 type=0
+
+sector=10387456 type=0
+
+sector=10395648 type=0
+
+sector=10403840 type=0
+
+sector=10412032 type=0
+
+sector=10420224 type=0
+
+sector=10428416 type=0
+
+sector=10436608 type=0
+
+sector=10444800 type=0
+
+sector=10452992 type=0
+
+sector=10461184 type=0
+
+sector=10469376 type=0
+
+sector=10477568 type=0
+
+sector=10485760 type=0
+
+sector=10493952 type=0
+
+sector=10502144 type=0
+
+sector=10510336 type=0
+
+sector=10518528 type=0
+
+sector=10526720 type=0
+
+sector=10534912 type=0
+
+sector=10543104 type=0
+
+sector=10551296 type=0
+
+sector=10559488 type=0
+
+sector=10567680 type=0
+
+sector=10575872 type=0
+
+sector=10584064 type=0
+
+sector=10592256 type=0
+
+sector=10600448 type=0
+
+sector=10608640 type=0
+
+sector=10616832 type=0
+
+sector=10625024 type=0
+
+sector=10633216 type=0
+
+sector=10641408 type=0
+
+sector=10649600 type=0
+
+sector=10657792 type=0
+
+sector=10665984 type=0
+
+sector=10674176 type=0
+
+sector=10682368 type=0
+
+sector=10690560 type=0
+
+sector=10698752 type=0
+
+sector=10706944 type=0
+
+sector=10715136 type=0
+
+sector=10723328 type=0
+
+sector=10731520 type=0
+
+sector=10739712 type=0
+
+sector=10747904 type=0
+
+sector=10756096 type=0
+
+sector=10764288 type=0
+
+sector=10772480 type=0
+
+sector=10780672 type=0
+
+sector=10788864 type=0
+
+sector=10797056 type=0
+
+sector=10805248 type=0
+
+sector=10813440 type=0
+
+sector=10821632 type=0
+
+sector=10829824 type=0
+
+sector=10838016 type=0
+
+sector=10846208 type=0
+
+sector=10854400 type=0
+
+sector=10862592 type=0
+
+sector=10870784 type=0
+
+sector=10878976 type=0
+
+sector=10887168 type=0
+
+sector=10895360 type=0
+
+sector=10903552 type=0
+
+sector=10911744 type=0
+
+sector=10919936 type=0
+
+sector=10928128 type=0
+
+sector=10936320 type=0
+
+sector=10944512 type=0
+
+sector=10952704 type=0
+
+sector=10960896 type=0
+
+sector=10969088 type=0
+
+sector=10977280 type=0
+
+sector=10985472 type=0
+
+sector=10993664 type=0
+
+sector=11001856 type=0
+
+sector=11010048 type=0
+
+sector=11018240 type=0
+
+sector=11026432 type=0
+
+sector=11034624 type=0
+
+sector=11042816 type=0
+
+sector=11051008 type=0
+
+sector=11059200 type=0
+
+sector=11067392 type=0
+
+sector=11075584 type=0
+
+sector=11083776 type=0
+
+sector=11091968 type=0
+
+sector=11100160 type=0
+
+sector=11108352 type=0
+
+sector=11116544 type=0
+
+sector=11124736 type=0
+
+sector=11132928 type=0
+
+sector=11141120 type=0
+
+sector=11149312 type=0
+
+sector=11157504 type=0
+
+sector=11165696 type=0
+
+sector=11173888 type=0
+
+sector=11182080 type=0
+
+sector=11190272 type=0
+
+sector=11198464 type=0
+
+sector=11206656 type=0
+
+sector=11214848 type=0
+
+sector=11223040 type=0
+
+sector=11231232 type=0
+
+sector=11239424 type=0
+
+sector=11247616 type=0
+
+sector=11255808 type=0
+
+sector=11264000 type=0
+
+sector=11272192 type=0
+
+sector=11280384 type=0
+
+sector=11288576 type=0
+
+sector=11296768 type=0
+
+sector=11304960 type=0
+
+sector=11313152 type=0
+
+sector=11321344 type=0
+
+sector=11329536 type=0
+
+sector=11337728 type=0
+
+sector=11345920 type=0
+
+sector=11354112 type=0
+
+sector=11362304 type=0
+
+sector=11370496 type=0
+
+sector=11378688 type=0
+
+sector=11386880 type=0
+
+sector=11395072 type=0
+
+sector=11403264 type=0
+
+sector=11411456 type=0
+
+sector=11419648 type=0
+
+sector=11427840 type=0
+
+sector=11436032 type=0
+
+sector=11444224 type=0
+
+sector=11452416 type=0
+
+sector=11460608 type=0
+
+sector=11468800 type=0
+
+sector=11476992 type=0
+
+sector=11485184 type=0
+
+sector=11493376 type=0
+
+sector=11501568 type=0
+
+sector=11509760 type=0
+
+sector=11517952 type=0
+
+sector=11526144 type=0
+
+sector=11534336 type=0
+
+sector=11542528 type=0
+
+sector=11550720 type=0
+
+sector=11558912 type=0
+
+sector=11567104 type=0
+
+sector=11575296 type=0
+
+sector=11583488 type=0
+
+sector=11591680 type=0
+
+sector=11599872 type=0
+
+sector=11608064 type=0
+
+sector=11616256 type=0
+
+sector=11624448 type=0
+
+sector=11632640 type=0
+
+sector=11640832 type=0
+
+sector=11649024 type=0
+
+sector=11657216 type=0
+
+sector=11665408 type=0
+
+sector=11673600 type=0
+
+sector=11681792 type=0
+
+sector=11689984 type=0
+
+sector=11698176 type=0
+
+sector=11706368 type=0
+
+sector=11714560 type=0
+
+sector=11722752 type=0
+
+sector=11730944 type=0
+
+sector=11739136 type=0
+
+sector=11747328 type=0
+
+sector=11755520 type=0
+
+sector=11763712 type=0
+
+sector=11771904 type=0
+
+sector=11780096 type=0
+
+sector=11788288 type=0
+
+sector=11796480 type=0
+
+sector=11804672 type=0
+
+sector=11812864 type=0
+
+sector=11821056 type=0
+
+sector=11829248 type=0
+
+sector=11837440 type=0
+
+sector=11845632 type=0
+
+sector=11853824 type=0
+
+sector=11862016 type=0
+
+sector=11870208 type=0
+
+sector=11878400 type=0
+
+sector=11886592 type=0
+
+sector=11894784 type=0
+
+sector=11902976 type=0
+
+sector=11911168 type=0
+
+sector=11919360 type=0
+
+sector=11927552 type=0
+
+sector=11935744 type=0
+
+sector=11943936 type=0
+
+sector=11952128 type=0
+
+sector=11960320 type=0
+
+sector=11968512 type=0
+
+sector=11976704 type=0
+
+sector=11984896 type=0
+
+sector=11993088 type=0
+
+sector=12001280 type=0
+
+sector=12009472 type=0
+
+sector=12017664 type=0
+
+sector=12025856 type=0
+
+sector=12034048 type=0
+
+sector=12042240 type=0
+
+sector=12050432 type=0
+
+sector=12058624 type=0
+
+sector=12066816 type=0
+
+sector=12075008 type=0
+
+sector=12083200 type=0
+
+sector=12091392 type=0
+
+sector=12099584 type=0
+
+sector=12107776 type=0
+
+sector=12115968 type=0
+
+sector=12124160 type=0
+
+sector=12132352 type=0
+
+sector=12140544 type=0
+
+sector=12148736 type=0
+
+sector=12156928 type=0
+
+sector=12165120 type=0
+
+sector=12173312 type=0
+
+sector=12181504 type=0
+
+sector=12189696 type=0
+
+sector=12197888 type=0
+
+sector=12206080 type=0
+
+sector=12214272 type=0
+
+sector=12222464 type=0
+
+sector=12230656 type=0
+
+sector=12238848 type=0
+
+sector=12247040 type=0
+
+sector=12255232 type=0
+
+sector=12263424 type=0
+
+sector=12271616 type=0
+
+sector=12279808 type=0
+
+sector=12288000 type=0
+
+sector=12296192 type=0
+
+sector=12304384 type=0
+
+sector=12312576 type=0
+
+sector=12320768 type=0
+
+sector=12328960 type=0
+
+sector=12337152 type=0
+
+sector=12345344 type=0
+
+sector=12353536 type=0
+
+sector=12361728 type=0
+
+sector=12369920 type=0
+
+sector=12378112 type=0
+
+sector=12386304 type=0
+
+sector=12394496 type=0
+
+sector=12402688 type=0
+
+sector=12410880 type=0
+
+sector=12419072 type=0
+
+sector=12427264 type=0
+
+sector=12435456 type=0
+
+sector=12443648 type=0
+
+sector=12451840 type=0
+
+sector=12460032 type=0
+
+sector=12468224 type=0
+
+sector=12476416 type=0
+
+sector=12484608 type=0
+
+sector=12492800 type=0
+
+sector=12500992 type=0
+
+sector=12509184 type=0
+
+sector=12517376 type=0
+
+sector=12525568 type=0
+
+sector=12533760 type=0
+
+sector=12541952 type=0
+
+sector=12550144 type=0
+
+sector=12558336 type=0
+
+sector=12566528 type=0
+
+sector=12574720 type=0
+
+sector=12582912 type=0
+
+sector=12591104 type=0
+
+sector=12599296 type=0
+
+sector=12607488 type=0
+
+sector=12615680 type=0
+
+sector=12623872 type=0
+
+sector=12632064 type=0
+
+sector=12640256 type=0
+
+sector=12648448 type=0
+
+sector=12656640 type=0
+
+sector=12664832 type=0
+
+sector=12673024 type=0
+
+sector=12681216 type=0
+
+sector=12689408 type=0
+
+sector=12697600 type=0
+
+sector=12705792 type=0
+
+sector=12713984 type=0
+
+sector=12722176 type=0
+
+sector=12730368 type=0
+
+sector=12738560 type=0
+
+sector=12746752 type=0
+
+sector=12754944 type=0
+
+sector=12763136 type=0
+
+sector=12771328 type=0
+
+sector=12779520 type=0
+
+sector=12787712 type=0
+
+sector=12795904 type=0
+
+sector=12804096 type=0
+
+sector=12812288 type=0
+
+sector=12820480 type=0
+
+sector=12828672 type=0
+
+sector=12836864 type=0
+
+sector=12845056 type=0
+
+sector=12853248 type=0
+
+sector=12861440 type=0
+
+sector=12869632 type=0
+
+sector=12877824 type=0
+
+sector=12886016 type=0
+
+sector=12894208 type=0
+
+sector=12902400 type=0
+
+sector=12910592 type=0
+
+sector=12918784 type=0
+
+sector=12926976 type=0
+
+sector=12935168 type=0
+
+sector=12943360 type=0
+
+sector=12951552 type=0
+
+sector=12959744 type=0
+
+sector=12967936 type=0
+
+sector=12976128 type=0
+
+sector=12984320 type=0
+
+sector=12992512 type=0
+
+sector=13000704 type=0
+
+sector=13008896 type=0
+
+sector=13017088 type=0
+
+sector=13025280 type=0
+
+sector=13033472 type=0
+
+sector=13041664 type=0
+
+sector=13049856 type=0
+
+sector=13058048 type=0
+
+sector=13066240 type=0
+
+sector=13074432 type=0
+
+sector=13082624 type=0
+
+sector=13090816 type=0
+
+sector=13099008 type=0
+
+sector=13107200 type=0
+
+sector=13115392 type=0
+
+sector=13123584 type=0
+
+sector=13131776 type=0
+
+sector=13139968 type=0
+
+sector=13148160 type=0
+
+sector=13156352 type=0
+
+sector=13164544 type=0
+
+sector=13172736 type=0
+
+sector=13180928 type=0
+
+sector=13189120 type=0
+
+sector=13197312 type=0
+
+sector=13205504 type=0
+
+sector=13213696 type=0
+
+sector=13221888 type=0
+
+sector=13230080 type=0
+
+sector=13238272 type=0
+
+sector=13246464 type=0
+
+sector=13254656 type=0
+
+sector=13262848 type=0
+
+sector=13271040 type=0
+
+sector=13279232 type=0
+
+sector=13287424 type=0
+
+sector=13295616 type=0
+
+sector=13303808 type=0
+
+sector=13312000 type=0
+
+sector=13320192 type=0
+
+sector=13328384 type=0
+
+sector=13336576 type=0
+
+sector=13344768 type=0
+
+sector=13352960 type=0
+
+sector=13361152 type=0
+
+sector=13369344 type=0
+
+sector=13377536 type=0
+
+sector=13385728 type=0
+
+sector=13393920 type=0
+
+sector=13402112 type=0
+
+sector=13410304 type=0
+
+sector=13418496 type=0
+
+sector=13426688 type=0
+
+sector=13434880 type=0
+
+sector=13443072 type=0
+
+sector=13451264 type=0
+
+sector=13459456 type=0
+
+sector=13467648 type=0
+
+sector=13475840 type=0
+
+sector=13484032 type=0
+
+sector=13492224 type=0
+
+sector=13500416 type=0
+
+sector=13508608 type=0
+
+sector=13516800 type=0
+
+sector=13524992 type=0
+
+sector=13533184 type=0
+
+sector=13541376 type=0
+
+sector=13549568 type=0
+
+sector=13557760 type=0
+
+sector=13565952 type=0
+
+sector=13574144 type=0
+
+sector=13582336 type=0
+
+sector=13590528 type=0
+
+sector=13598720 type=0
+
+sector=13606912 type=0
+
+sector=13615104 type=0
+
+sector=13623296 type=0
+
+sector=13631488 type=0
+
+sector=13639680 type=0
+
+sector=13647872 type=0
+
+sector=13656064 type=0
+
+sector=13664256 type=0
+
+sector=13672448 type=0
+
+sector=13680640 type=0
+
+sector=13688832 type=0
+
+sector=13697024 type=0
+
+sector=13705216 type=0
+
+sector=13713408 type=0
+
+sector=13721600 type=0
+
+sector=13729792 type=0
+
+sector=13737984 type=0
+
+sector=13746176 type=0
+
+sector=13754368 type=0
+
+sector=13762560 type=0
+
+sector=13770752 type=0
+
+sector=13778944 type=0
+
+sector=13787136 type=0
+
+sector=13795328 type=0
+
+sector=13803520 type=0
+
+sector=13811712 type=0
+
+sector=13819904 type=0
+
+sector=13828096 type=0
+
+sector=13836288 type=0
+
+sector=13844480 type=0
+
+sector=13852672 type=0
+
+sector=13860864 type=0
+
+sector=13869056 type=0
+
+sector=13877248 type=0
+
+sector=13885440 type=0
+
+sector=13893632 type=0
+
+sector=13901824 type=0
+
+sector=13910016 type=0
+
+sector=13918208 type=0
+
+sector=13926400 type=0
+
+sector=13934592 type=0
+
+sector=13942784 type=0
+
+sector=13950976 type=0
+
+sector=13959168 type=0
+
+sector=13967360 type=0
+
+sector=13975552 type=0
+
+sector=13983744 type=0
+
+sector=13991936 type=0
+
+sector=14000128 type=0
+
+sector=14008320 type=0
+
+sector=14016512 type=0
+
+sector=14024704 type=0
+
+sector=14032896 type=0
+
+sector=14041088 type=0
+
+sector=14049280 type=0
+
+sector=14057472 type=0
+
+sector=14065664 type=0
+
+sector=14073856 type=0
+
+sector=14082048 type=0
+
+sector=14090240 type=0
+
+sector=14098432 type=0
+
+sector=14106624 type=0
+
+sector=14114816 type=0
+
+sector=14123008 type=0
+
+sector=14131200 type=0
+
+sector=14139392 type=0
+
+sector=14147584 type=0
+
+sector=14155776 type=0
+
+sector=14163968 type=0
+
+sector=14172160 type=0
+
+sector=14180352 type=0
+
+sector=14188544 type=0
+
+sector=14196736 type=0
+
+sector=14204928 type=0
+
+sector=14213120 type=0
+
+sector=14221312 type=0
+
+sector=14229504 type=0
+
+sector=14237696 type=0
+
+sector=14245888 type=0
+
+sector=14254080 type=0
+
+sector=14262272 type=0
+
+sector=14270464 type=0
+
+sector=14278656 type=0
+
+sector=14286848 type=0
+
+sector=14295040 type=0
+
+sector=14303232 type=0
+
+sector=14311424 type=0
+
+sector=14319616 type=0
+
+sector=14327808 type=0
+
+sector=14336000 type=0
+
+sector=14344192 type=0
+
+sector=14352384 type=0
+
+sector=14360576 type=0
+
+sector=14368768 type=0
+
+sector=14376960 type=0
+
+sector=14385152 type=0
+
+sector=14393344 type=0
+
+sector=14401536 type=0
+
+sector=14409728 type=0
+
+sector=14417920 type=0
+
+sector=14426112 type=0
+
+sector=14434304 type=0
+
+sector=14442496 type=0
+
+sector=14450688 type=0
+
+sector=14458880 type=0
+
+sector=14467072 type=0
+
+sector=14475264 type=0
+
+sector=14483456 type=0
+
+sector=14491648 type=0
+
+sector=14499840 type=0
+
+sector=14508032 type=0
+
+sector=14516224 type=0
+
+sector=14524416 type=0
+
+sector=14532608 type=0
+
+sector=14540800 type=0
+
+sector=14548992 type=0
+
+sector=14557184 type=0
+
+sector=14565376 type=0
+
+sector=14573568 type=0
+
+sector=14581760 type=0
+
+sector=14589952 type=0
+
+sector=14598144 type=0
+
+sector=14606336 type=0
+
+sector=14614528 type=0
+
+sector=14622720 type=0
+
+sector=14630912 type=0
+
+sector=14639104 type=0
+
+sector=14647296 type=0
+
+sector=14655488 type=0
+
+sector=14663680 type=0
+
+sector=14671872 type=0
+
+sector=14680064 type=0
+
+sector=14688256 type=0
+
+sector=14696448 type=0
+
+sector=14704640 type=0
+
+sector=14712832 type=0
+
+sector=14721024 type=0
+
+sector=14729216 type=0
+
+sector=14737408 type=0
+
+sector=14745600 type=0
+
+sector=14753792 type=0
+
+sector=14761984 type=0
+
+sector=14770176 type=0
+
+sector=14778368 type=0
+
+sector=14786560 type=0
+
+sector=14794752 type=0
+
+sector=14802944 type=0
+
+sector=14811136 type=0
+
+sector=14819328 type=0
+
+sector=14827520 type=0
+
+sector=14835712 type=0
+
+sector=14843904 type=0
+
+sector=14852096 type=0
+
+sector=14860288 type=0
+
+sector=14868480 type=0
+
+sector=14876672 type=0
+
+sector=14884864 type=0
+
+sector=14893056 type=0
+
+sector=14901248 type=0
+
+sector=14909440 type=0
+
+sector=14917632 type=0
+
+sector=14925824 type=0
+
+sector=14934016 type=0
+
+sector=14942208 type=0
+
+sector=14950400 type=0
+
+sector=14958592 type=0
+
+sector=14966784 type=0
+
+sector=14974976 type=0
+
+sector=14983168 type=0
+
+sector=14991360 type=0
+
+sector=14999552 type=0
+
+sector=15007744 type=0
+
+sector=15015936 type=0
+
+sector=15024128 type=0
+
+sector=15032320 type=0
+
+sector=15040512 type=0
+
+sector=15048704 type=0
+
+sector=15056896 type=0
+
+sector=15065088 type=0
+
+sector=15073280 type=0
+
+sector=15081472 type=0
+
+sector=15089664 type=0
+
+sector=15097856 type=0
+
+sector=15106048 type=0
+
+sector=15114240 type=0
+
+sector=15122432 type=0
+
+sector=15130624 type=0
+
+sector=15138816 type=0
+
+sector=15147008 type=0
+
+sector=15155200 type=0
+
+sector=15163392 type=0
+
+sector=15171584 type=0
+
+sector=15179776 type=0
+
+sector=15187968 type=0
+
+sector=15196160 type=0
+
+sector=15204352 type=0
+
+sector=15212544 type=0
+
+sector=15220736 type=0
+
+sector=15228928 type=0
+
+sector=15237120 type=0
+
+sector=15245312 type=0
+
+sector=15253504 type=0
+
+sector=15261696 type=0
+

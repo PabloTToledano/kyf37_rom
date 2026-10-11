@@ -1,0 +1,833 @@
+package org.kyf37.home;
+
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PixelFormat;
+import android.graphics.Rect;
+import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.StateListDrawable;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+/**
+ * Keitai / Material You home screen (fix-android10-home-redesign.py).
+ * 3-column icon grid, D-pad focus, digits 1-9 open the first nine tiles. Tiles can be moved anywhere in the grid
+ * (* then "Move", D-pad moves, OK drops) and grouped into folders; the layout (order + folders) persists in prefs.
+ */
+public final class Home extends Activity {
+    private static final int COLS = 3;
+    private static final int ACCENT = 0xFF1E6FD9;
+    private static final int CONTAINER = 0xE6D8E2FF;   // tonal container for the focused tile
+    private static final int HELD = 0xFFA9C7FF;        // lifted tile while moving
+
+    private static final class Tile {
+        String key;        // "app:<component>" or "folder:<id>"
+        String label;
+        Drawable icon;
+        Intent intent;
+        String folderId;
+    }
+    private static final class Folder {
+        String name;
+        final ArrayList<String> members = new ArrayList<String>();
+    }
+
+    private final HashMap<String, Tile> apps = new HashMap<String, Tile>();
+    private final ArrayList<String> appOrder = new ArrayList<String>(); // discovery order (fixed apps first, then A-Z)
+    private final ArrayList<String> homeOrder = new ArrayList<String>();
+    private final LinkedHashMap<String, Folder> folders = new LinkedHashMap<String, Folder>();
+    private final ArrayList<Tile> tiles = new ArrayList<Tile>(); // what the grid shows right now
+    private String openFolder;
+    private int homePosition;
+    // Keypad launcher management v1
+    private final HashSet<String> hiddenApps = new HashSet<String>();
+    private TextView keyHints;
+    private int moveKeyRelease = -1;
+    private boolean moving;
+    private int movePos = -1;
+
+    private GridView grid;
+    private WallpaperContrast wallpaperContrast;
+    private TextView banner;
+    private boolean contrastUpdatePosted;
+    private final android.database.ContentObserver themeObserver = new android.database.ContentObserver(new android.os.Handler()) {
+        @Override public void onChange(boolean self) { recreate(); }
+    };
+
+    private float dp() { return getResources().getDisplayMetrics().density; }
+
+    private GradientDrawable round(int color, float radiusDp) {
+        GradientDrawable g = new GradientDrawable();
+        g.setColor(color);
+        g.setCornerRadius(radiusDp * dp());
+        return g;
+    }
+
+    private final BaseAdapter adapter = new BaseAdapter() {
+        @Override public int getCount() { return tiles.size(); }
+        @Override public Object getItem(int i) { return tiles.get(i); }
+        @Override public long getItemId(int i) { return i; }
+        @Override public View getView(int position, View convert, ViewGroup parent) {
+            float d = dp();
+            LinearLayout cell;
+            ImageView icon;
+            TextView label;
+            if (convert == null) {
+                cell = new LinearLayout(Home.this);
+                cell.setOrientation(LinearLayout.VERTICAL);
+                cell.setGravity(Gravity.CENTER_HORIZONTAL);
+                cell.setPadding((int) (4 * d), (int) (8 * d), (int) (4 * d), (int) (6 * d));
+                icon = new ImageView(Home.this);
+                icon.setId(1);
+                cell.addView(icon, new LinearLayout.LayoutParams((int) (66 * d), (int) (66 * d)));
+                label = new TextView(Home.this);
+                label.setId(2);
+                label.setTextColor(Color.WHITE);
+                label.setShadowLayer(3f * d, 0, d, 0xFF233C50);
+                label.setTextSize(12);
+                label.setGravity(Gravity.CENTER);
+                label.setSingleLine(true);
+                label.setEllipsize(android.text.TextUtils.TruncateAt.END);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                lp.topMargin = (int) (4 * d);
+                cell.addView(label, lp);
+                cell.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (104 * d)));
+                cell.setWillNotDraw(false); // else View.draw() is skipped and the themed selection never paints
+            } else {
+                cell = (LinearLayout) convert;
+                icon = (ImageView) cell.findViewById(1);
+                label = (TextView) cell.findViewById(2);
+            }
+            Tile t = tiles.get(position);
+            boolean held = moving && position == movePos;
+            StateListDrawable bg = new StateListDrawable();
+            bg.addState(new int[] { android.R.attr.state_selected }, round(held ? HELD : CONTAINER, 22));
+            bg.addState(new int[] { android.R.attr.state_focused }, round(held ? HELD : CONTAINER, 22));
+            bg.addState(new int[] {}, new ColorDrawable(Color.TRANSPARENT));
+            cell.setBackground(held ? round(HELD, 22) : bg);
+            cell.setScaleX(held ? 1.08f : 1f);
+            cell.setScaleY(held ? 1.08f : 1f);
+            cell.setElevation(held ? 8 * d : 0);
+            icon.setImageDrawable(t.icon);
+            label.setText(position < 9 ? (position + 1) + " " + t.label : t.label);
+            scheduleContrast();
+            return cell;
+        }
+    };
+
+    @Override public void onCreate(Bundle state) {
+        super.onCreate(state);
+        wallpaperContrast = new WallpaperContrast(this, new Runnable() { public void run() { scheduleContrast(); } });
+        float d = dp();
+        LinearLayout root = new LinearLayout(this);
+        root.setOrientation(LinearLayout.VERTICAL);
+        getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_SHOW_WALLPAPER);
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        root.setBackgroundColor(Color.TRANSPARENT);
+
+
+        // Pill used for the open folder name and the "moving" hint.
+        banner = new TextView(this);
+        banner.setTextColor(Color.WHITE);
+        banner.setTextSize(14);
+        banner.setGravity(Gravity.CENTER);
+        banner.setBackground(round(0xE61E6FD9, 20));
+        banner.setPadding((int) (16 * d), (int) (7 * d), (int) (16 * d), (int) (7 * d));
+        banner.setVisibility(View.GONE);
+        LinearLayout.LayoutParams bp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        bp.gravity = Gravity.CENTER_HORIZONTAL;
+        bp.topMargin = (int) (2 * d);
+        bp.bottomMargin = (int) (4 * d);
+        root.addView(banner, bp);
+
+        grid = new GridView(this);
+        grid.setNumColumns(COLS);
+        grid.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
+        grid.setVerticalSpacing((int) (2 * d));
+        grid.setHorizontalSpacing((int) (2 * d));
+        grid.setPadding((int) (8 * d), 0, (int) (8 * d), 0);
+        grid.setClipToPadding(false);
+        grid.setSelector(selector());
+        grid.setDrawSelectorOnTop(false);
+        grid.setVerticalScrollBarEnabled(false);
+        grid.setAdapter(adapter);
+        grid.setOnScrollListener(new android.widget.AbsListView.OnScrollListener() {
+            public void onScrollStateChanged(android.widget.AbsListView v, int s) { scheduleContrast(); }
+            public void onScroll(android.widget.AbsListView v, int f, int vis, int total) { scheduleContrast(); }
+        });
+        grid.setOnItemLongClickListener((parent, view, pos, id) -> { grid.setSelection(pos); editMenu(); return true; });
+        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override public void onItemClick(AdapterView<?> p, View v, int pos, long id) {
+                if (moving) { stopMoving(); return; }
+                activate(tiles.get(pos));
+            }
+        });
+        root.addView(grid, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
+        keyHints = new TextView(this);
+        keyHints.setTextColor(Color.WHITE);
+        keyHints.setTextSize(12);
+        keyHints.setGravity(Gravity.CENTER);
+        keyHints.setBackgroundColor(0xE6233C50);
+        keyHints.setPadding(0, (int)(5*d), 0, (int)(5*d));
+        root.addView(keyHints);
+        setContentView(root);
+        grid.requestFocus();
+    }
+
+    @Override protected void onStart() {
+        super.onStart();
+        wallpaperContrast.start();
+        getContentResolver().registerContentObserver(android.provider.Settings.Global.getUriFor("kyf37_icon_theme"), false, themeObserver);
+    }
+    @Override protected void onStop() {
+        wallpaperContrast.stop();
+        getContentResolver().unregisterContentObserver(themeObserver);
+        super.onStop();
+    }
+    private void scheduleContrast() {
+        if (grid == null || contrastUpdatePosted) return;
+        contrastUpdatePosted = true;
+        grid.post(new Runnable() { public void run() {
+            contrastUpdatePosted = false;
+            for (int i = 0; i < grid.getChildCount(); i++)
+                wallpaperContrast.apply((TextView) grid.getChildAt(i).findViewById(2));
+        } });
+    }
+
+    private Drawable selector() {
+        // The cell background (tonal container) is the selection look; with the focus-theme framework
+        // the themed outline is drawn on top of it, on older ROMs the container alone keeps focus visible.
+        return new ColorDrawable(Color.TRANSPARENT);
+    }
+
+    // ------------------------------------------------------------------------------------------ app discovery
+    @Override public void onResume() {
+        super.onResume();
+        wallpaperContrast.refresh();
+        scheduleContrast();
+        moving = false;
+        movePos = -1;
+        discoverApps();
+        loadLayout();
+        int selected = grid.getSelectedItemPosition();
+        showFolder(openFolder, selected);
+        grid.requestFocus();
+        grid.post(new Runnable() { public void run() {
+            if (grid.getCount() > 0 && grid.getSelectedItemPosition() < 0) grid.setSelection(0);
+            grid.invalidate();
+        } });
+    }
+
+    private static boolean installed(PackageManager pm, String pkg) {
+        try { pm.getPackageInfo(pkg, 0); return true; } catch (PackageManager.NameNotFoundException e) { return false; }
+    }
+
+    private void hideLegacy(PackageManager pm, HashSet<String> seen, String keitai, String legacy) {
+        if (installed(pm, keitai)) seen.add(legacy); // keitai app present: hide the stock Lineage tile
+    }
+
+    private Drawable iconFor(PackageManager pm, ResolveInfo info) {
+        Drawable ic = android.provider.Settings.Global.getInt(getContentResolver(), "kyf37_icon_theme", 1) == 0
+                ? info.loadIcon(pm) : PastelIcons.get(this, info.activityInfo.packageName);
+        if (ic == null) ic = info.loadIcon(pm);
+        int shape = prefs().getInt("icon_shape", 0);
+        return shape == 0 ? ic : new ShapeIcon(ic, shape);
+    }
+
+    private static final String[] SHAPES = { "Original", "Circle", "Squircle", "Rounded square", "Square", "Teardrop" };
+
+    /** Icon on a tonal plate cut to the chosen shape (1 circle, 2 squircle, 3 rounded square, 4 square, 5 teardrop). */
+    private static final class ShapeIcon extends Drawable {
+        final Drawable inner;
+        final int shape;
+        final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        final android.graphics.Path path = new android.graphics.Path();
+        ShapeIcon(Drawable inner, int shape) { this.inner = inner; this.shape = shape; }
+        @Override protected void onBoundsChange(Rect b) {
+            path.reset();
+            android.graphics.RectF r = new android.graphics.RectF(b);
+            float w = b.width();
+            switch (shape) {
+                case 1: path.addCircle(r.centerX(), r.centerY(), w / 2f, android.graphics.Path.Direction.CW); break;
+                case 2: path.addRoundRect(r, w * .34f, w * .34f, android.graphics.Path.Direction.CW); break;
+                case 3: path.addRoundRect(r, w * .16f, w * .16f, android.graphics.Path.Direction.CW); break;
+                case 4: path.addRoundRect(r, w * .03f, w * .03f, android.graphics.Path.Direction.CW); break;
+                default: {
+                    float big = w / 2f, small = w * .06f;
+                    path.addRoundRect(r, new float[] { big, big, big, big, big, big, small, small }, android.graphics.Path.Direction.CW);
+                }
+            }
+            int inset = (int) (w * .04f);
+            inner.setBounds(b.left + inset, b.top + inset, b.right - inset, b.bottom - inset);
+        }
+        @Override public void draw(Canvas c) {
+            paint.setColor(0xF2EEF3FF);
+            c.drawPath(path, paint);
+            int save = c.save();
+            c.clipPath(path);
+            inner.draw(c);
+            c.restoreToCount(save);
+        }
+        @Override public void setAlpha(int a) { }
+        @Override public void setColorFilter(android.graphics.ColorFilter f) { }
+        @Override public int getOpacity() { return PixelFormat.TRANSLUCENT; }
+    }
+
+    private void pickShape() {
+        new android.app.AlertDialog.Builder(this).setTitle("Icon shape")
+            .setSingleChoiceItems(SHAPES, prefs().getInt("icon_shape", 0), (dlg, which) -> {
+                prefs().edit().putInt("icon_shape", which).apply();
+                dlg.dismiss();
+                discoverApps();
+                loadLayout();
+                showFolder(openFolder, Math.max(0, grid.getSelectedItemPosition()));
+            }).setNegativeButton(android.R.string.cancel, null).show();
+    }
+
+    private void addApp(PackageManager pm, ResolveInfo info, String label, Intent base) {
+        String comp = new ComponentName(info.activityInfo.packageName, info.activityInfo.name).flattenToString();
+        String key = "app:" + comp;
+        if (apps.containsKey(key)) return;
+        Tile t = new Tile();
+        t.key = key;
+        t.label = label;
+        t.icon = iconFor(pm, info);
+        t.intent = new Intent(base).setComponent(ComponentName.unflattenFromString(comp));
+        apps.put(key, t);
+        appOrder.add(key);
+    }
+
+    private void addFixed(PackageManager pm, HashSet<String> seen, String label, Intent intent) {
+        ResolveInfo info = pm.resolveActivity(intent, 0);
+        if (info == null || info.activityInfo == null) return;
+        addApp(pm, info, label, intent);
+        seen.add(info.activityInfo.packageName);
+    }
+
+    private void discoverApps() {
+        PackageManager pm = getPackageManager();
+        apps.clear();
+        appOrder.clear();
+        HashSet<String> seen = new HashSet<String>();
+        seen.add(getPackageName());
+        addFixed(pm, seen, "Phone", new Intent(Intent.ACTION_DIAL));
+        addFixed(pm, seen, "Messages", new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_APP_MESSAGING).setPackage(installed(pm, "org.kyf37.messages") ? "org.kyf37.messages" : null));
+        addFixed(pm, seen, "Contacts", new Intent(Intent.ACTION_VIEW, Uri.parse("content://contacts/people")).setPackage(installed(pm, "org.kyf37.contacts") ? "org.kyf37.contacts" : null));
+        addFixed(pm, seen, "Camera", new Intent(android.provider.MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA).setPackage(installed(pm, "com.android.camera2") ? "com.android.camera2" : (installed(pm, "jp.kyocera.camera") ? "jp.kyocera.camera" : null)));
+        addFixed(pm, seen, "Settings", new Intent(android.provider.Settings.ACTION_SETTINGS));
+        hideLegacy(pm, seen, "org.kyf37.dialer", "com.android.dialer");
+        hideLegacy(pm, seen, "org.kyf37.messages", "com.android.messaging");
+        hideLegacy(pm, seen, "org.kyf37.contacts", "com.android.contacts");
+        hideLegacy(pm, seen, "jp.kyocera.datafolder", "com.android.gallery3d");
+        seen.add("org.lineageos.audiofx"); // utility app, not useful on the keypad grid
+        Intent query = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER);
+        ArrayList<ResolveInfo> list = new ArrayList<ResolveInfo>(pm.queryIntentActivities(query, 0));
+        final PackageManager fpm = pm;
+        Collections.sort(list, new Comparator<ResolveInfo>() {
+            public int compare(ResolveInfo a, ResolveInfo b) {
+                return a.loadLabel(fpm).toString().compareToIgnoreCase(b.loadLabel(fpm).toString());
+            }
+        });
+        for (ResolveInfo info : list) {
+            String pkg = info.activityInfo.packageName;
+            if (!seen.add(pkg)) continue;
+            addApp(pm, info, info.loadLabel(pm).toString(), new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER));
+        }
+    }
+
+    // ------------------------------------------------------------------------------------------ layout persistence
+    private android.content.SharedPreferences prefs() { return getSharedPreferences("folders", MODE_PRIVATE); }
+
+    private boolean layoutLoaded;
+
+    private void loadLayout() {
+        if (!layoutLoaded) {
+            layoutLoaded = true;
+            readLayout();
+        }
+        reconcile();
+    }
+
+    private void readLayout() {
+        homeOrder.clear();
+        folders.clear();
+        hiddenApps.clear();
+        hiddenApps.addAll(prefs().getStringSet("hidden_apps", Collections.<String>emptySet()));
+        android.content.SharedPreferences p = prefs();
+        try {
+            String v2 = p.getString("layout2", null);
+            if (v2 != null) {
+                JSONObject o = new JSONObject(v2);
+                JSONArray h = o.optJSONArray("home");
+                if (h != null) for (int i = 0; i < h.length(); i++) homeOrder.add(h.getString(i));
+                JSONObject f = o.optJSONObject("folders");
+                if (f != null) {
+                    Iterator<String> it = f.keys();
+                    while (it.hasNext()) {
+                        String id = it.next();
+                        JSONObject fo = f.getJSONObject(id);
+                        Folder folder = new Folder();
+                        folder.name = fo.optString("name", "Folder");
+                        JSONArray m = fo.optJSONArray("members");
+                        if (m != null) for (int i = 0; i < m.length(); i++) folder.members.add(m.getString(i));
+                        folders.put(id, folder);
+                    }
+                }
+                return;
+            }
+            // Migrate the old folder-only layout (members were bare component names).
+            JSONObject old = new JSONObject(p.getString("layout", "{}"));
+            Iterator<String> it = old.keys();
+            while (it.hasNext()) {
+                String id = it.next();
+                JSONObject fo = old.getJSONObject(id);
+                Folder folder = new Folder();
+                folder.name = fo.optString("name", "Folder");
+                JSONArray m = fo.optJSONArray("members");
+                if (m != null) for (int i = 0; i < m.length(); i++) folder.members.add("app:" + m.getString(i));
+                folders.put(id, folder);
+            }
+            if (!p.getBoolean("seeded", false) && !folders.containsKey("kyocera")) {
+                Folder k = new Folder();
+                k.name = "Kyocera Apps";
+                HashSet<String> ports = new HashSet<String>(java.util.Arrays.asList(
+                        "com.kyocera.calculator2", "jp.kyocera.charactercheck", "jp.kyocera.datafolder",
+                        "jp.kyocera.camera", "jp.kyocera.memo", "jp.kyocera.kc_soundrecorder",
+                        "jp.kyocera.barcodereader", "org.kyf37.dialerxx"));
+                for (String key : appOrder) {
+                    ComponentName c = ComponentName.unflattenFromString(key.substring(4));
+                    if (c != null && ports.contains(c.getPackageName())) k.members.add(key);
+                }
+                folders.put("kyocera", k);
+            }
+            p.edit().putBoolean("seeded", true).apply();
+        } catch (JSONException e) {
+            homeOrder.clear();
+            folders.clear();
+        }
+    }
+
+    private void saveLayout() {
+        try {
+            JSONObject o = new JSONObject();
+            o.put("home", new JSONArray(homeOrder));
+            JSONObject f = new JSONObject();
+            for (java.util.Map.Entry<String, Folder> e : folders.entrySet()) {
+                JSONObject fo = new JSONObject();
+                fo.put("name", e.getValue().name);
+                fo.put("members", new JSONArray(e.getValue().members));
+                f.put(e.getKey(), fo);
+            }
+            o.put("folders", f);
+            prefs().edit().putString("layout2", o.toString()).putStringSet("hidden_apps", new HashSet<String>(hiddenApps)).apply();
+        } catch (JSONException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    /** Drop uninstalled apps and unknown folders, place anything new, keep every app exactly once. */
+    private void reconcile() {
+        HashSet<String> placed = new HashSet<String>();
+        ArrayList<String> newHome = new ArrayList<String>();
+        for (String k : homeOrder) {
+            boolean ok = k.startsWith("folder:") ? folders.containsKey(k.substring(7)) : (apps.containsKey(k) && !hiddenApps.contains(k));
+            if (ok && placed.add(k)) newHome.add(k);
+        }
+        for (Folder f : folders.values()) {
+            ArrayList<String> kept = new ArrayList<String>();
+            for (String k : f.members) if (apps.containsKey(k) && !hiddenApps.contains(k) && placed.add(k)) kept.add(k);
+            f.members.clear();
+            f.members.addAll(kept);
+        }
+        for (String k : appOrder) if (!hiddenApps.contains(k) && placed.add(k)) newHome.add(k);
+        int at = Math.min(5, newHome.size());
+        for (String id : folders.keySet()) {
+            if (placed.add("folder:" + id)) newHome.add(Math.min(at++, newHome.size()), "folder:" + id);
+        }
+        homeOrder.clear();
+        homeOrder.addAll(newHome);
+        saveLayout();
+    }
+
+    // ------------------------------------------------------------------------------------------ grid content
+    private Tile tileFor(String key) {
+        if (key.startsWith("folder:")) {
+            String id = key.substring(7);
+            Tile t = new Tile();
+            t.key = key;
+            t.folderId = id;
+            t.label = folders.get(id).name;
+            t.icon = new FolderIcon(id);
+            return t;
+        }
+        return apps.get(key);
+    }
+
+    private ArrayList<String> currentOrder() {
+        return openFolder == null ? homeOrder : folders.get(openFolder).members;
+    }
+
+    private void showFolder(String id, int selection) {
+        openFolder = (id != null && folders.containsKey(id)) ? id : null;
+        tiles.clear();
+        for (String k : currentOrder()) {
+            Tile t = tileFor(k);
+            if (t != null) tiles.add(t);
+        }
+        updateBanner();
+        adapter.notifyDataSetChanged();
+        grid.requestFocus();
+        final int sel = Math.max(0, Math.min(selection, tiles.size() - 1));
+        grid.setSelection(sel);
+        grid.post(new Runnable() { public void run() { grid.setSelection(sel); } });
+        scheduleContrast();
+    }
+
+    private void updateBanner() {
+        keyHints.setText(moving ? "D-pad: move   OK / Back: finish"
+                : "OK: open   *: options   0 / #: page   Back: home");
+        if (moving) {
+            banner.setText("Moving " + tiles.get(movePos).label + "  ·  D-pad move, OK drop");
+            banner.setVisibility(View.VISIBLE);
+        } else if (openFolder != null) {
+            banner.setText("‹  " + folders.get(openFolder).name);
+            banner.setVisibility(View.VISIBLE);
+        } else {
+            banner.setVisibility(View.GONE);
+        }
+    }
+
+    private void activate(Tile t) {
+        if (t.folderId != null) {
+            homePosition = tiles.indexOf(t);
+            showFolder(t.folderId, 0);
+        } else {
+            launch(t.intent);
+        }
+    }
+
+    private void launch(Intent action) {
+        try {
+            startActivity(new Intent(action).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(this, "Application unavailable", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // ------------------------------------------------------------------------------------------ move mode
+    private void startMoving() {
+        int pos = grid.getSelectedItemPosition();
+        if (pos < 0 || pos >= tiles.size()) return;
+        moving = true;
+        movePos = pos;
+        updateBanner();
+        adapter.notifyDataSetChanged();
+    }
+
+    private void stopMoving() {
+        moving = false;
+        movePos = -1;
+        saveLayout();
+        updateBanner();
+        adapter.notifyDataSetChanged();
+    }
+
+    private void moveHeld(int delta) {
+        int to = movePos + delta;
+        if (to < 0 || to >= tiles.size()) return;
+        ArrayList<String> order = currentOrder();
+        // tiles and order are index-aligned unless a stale key was skipped; rebuild both from the order to be safe
+        if (order.size() != tiles.size()) return;
+        Collections.swap(order, movePos, to);
+        Collections.swap(tiles, movePos, to);
+        movePos = to;
+        saveLayout();
+        updateBanner();
+        adapter.notifyDataSetChanged();
+        final int sel = to;
+        grid.setSelection(sel);
+        grid.post(new Runnable() { public void run() { grid.setSelection(sel); } });
+    }
+
+    // Handle move keys before GridView consumes navigation / OK.
+    @Override public boolean dispatchKeyEvent(KeyEvent event) {
+        int code = event.getKeyCode();
+        if (code == moveKeyRelease && event.getAction() == KeyEvent.ACTION_UP) {
+            moveKeyRelease = -1;
+            return true;
+        }
+        boolean moveKey = moving && (code == KeyEvent.KEYCODE_DPAD_LEFT
+                || code == KeyEvent.KEYCODE_DPAD_RIGHT || code == KeyEvent.KEYCODE_DPAD_UP
+                || code == KeyEvent.KEYCODE_DPAD_DOWN || code == KeyEvent.KEYCODE_DPAD_CENTER
+                || code == KeyEvent.KEYCODE_ENTER || code == KeyEvent.KEYCODE_BACK);
+        if (moveKey || code == KeyEvent.KEYCODE_STAR || code == KeyEvent.KEYCODE_POUND
+                || code == KeyEvent.KEYCODE_0) {
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                if (moveKey) moveKeyRelease = code;
+                onKeyDown(code, event);
+            }
+            return true;
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
+    // ------------------------------------------------------------------------------------------ keys
+    @Override public boolean onKeyDown(int code, KeyEvent event) {
+        int n = tiles.size(), sel = grid.getSelectedItemPosition();
+        if (moving) {
+            switch (code) {
+                case KeyEvent.KEYCODE_DPAD_LEFT: moveHeld(-1); return true;
+                case KeyEvent.KEYCODE_DPAD_RIGHT: moveHeld(1); return true;
+                case KeyEvent.KEYCODE_DPAD_UP: moveHeld(-COLS); return true;
+                case KeyEvent.KEYCODE_DPAD_DOWN: moveHeld(COLS); return true;
+                case KeyEvent.KEYCODE_DPAD_CENTER:
+                case KeyEvent.KEYCODE_ENTER:
+                case KeyEvent.KEYCODE_BACK:
+                    if (event.getRepeatCount() == 0) stopMoving();
+                    return true;
+                default: return true; // swallow everything else while a tile is held
+            }
+        }
+        if (n > 0 && sel >= 0) {
+            // GridView returns unhandled only at the edges: wrap around (keitai style).
+            if (code == KeyEvent.KEYCODE_DPAD_UP && sel < COLS) { grid.setSelection(n - 1); return true; }
+            if (code == KeyEvent.KEYCODE_DPAD_DOWN && sel / COLS == (n - 1) / COLS) { grid.setSelection(Math.min(sel % COLS, n - 1)); return true; }
+        }
+        if (event.getRepeatCount() == 0) {
+            if (code == KeyEvent.KEYCODE_0 || code == KeyEvent.KEYCODE_POUND) {
+                if (n > 0) {
+                    int page = Math.max(COLS, (grid.getLastVisiblePosition() - grid.getFirstVisiblePosition() + 1) / COLS * COLS);
+                    int target = Math.max(0, sel) + (code == KeyEvent.KEYCODE_POUND ? page : -page);
+                    grid.setSelection(target >= n ? 0 : target < 0 ? n - 1 : target);
+                }
+                return true;
+            }
+            if (code == KeyEvent.KEYCODE_STAR) { editMenu(); return true; }
+            if (code == KeyEvent.KEYCODE_CALL) { launch(new Intent(Intent.ACTION_DIAL)); return true; }
+            if (code == KeyEvent.KEYCODE_MENU || code == KeyEvent.KEYCODE_F1) {
+                launch(new Intent(android.provider.Settings.ACTION_SETTINGS));
+                return true;
+            }
+            if (code >= KeyEvent.KEYCODE_1 && code <= KeyEvent.KEYCODE_9) {
+                int i = code - KeyEvent.KEYCODE_1;
+                if (i < tiles.size()) { activate(tiles.get(i)); return true; }
+            }
+        }
+        return super.onKeyDown(code, event);
+    }
+
+    @Override public void onBackPressed() {
+        if (moving) { stopMoving(); return; }
+        if (openFolder != null) showFolder(null, homePosition);
+        else grid.setSelection(0);
+    }
+
+    @Override protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (moving) stopMoving();
+        if (intent.hasCategory(Intent.CATEGORY_HOME) && openFolder != null) showFolder(null, homePosition);
+    }
+
+    // ------------------------------------------------------------------------------------------ edit menu / folders
+    private void editMenu() {
+        int pos = grid.getSelectedItemPosition();
+        final Tile tile = pos >= 0 && pos < tiles.size() ? tiles.get(pos) : null;
+        final String fid = tile != null && tile.folderId != null ? tile.folderId : openFolder;
+        final ArrayList<String> choices = new ArrayList<String>();
+        if (tile != null) choices.add("Move");
+        if (tile != null && tile.folderId == null) {
+            choices.add("Remove from launcher");
+            choices.add("App info…");
+        }
+        choices.add("Restore hidden apps…");
+        choices.add("Keypad help");
+        choices.add("New folder");
+        choices.add("Icon shape…");
+        if (tile != null && tile.folderId == null && !folders.isEmpty()) choices.add("Add to folder…");
+        if (tile != null && tile.folderId == null && openFolder != null) choices.add("Move out to Home");
+        if (fid != null) { choices.add("Rename folder"); choices.add("Remove folder (keep apps)"); }
+        final String[] labels = choices.toArray(new String[0]);
+        new android.app.AlertDialog.Builder(this).setTitle(tile == null ? "Home" : tile.label)
+            .setItems(labels, (dlg, which) -> {
+                String action = labels[which];
+                if (action.equals("Remove from launcher")) { hideApp(tile); return; }
+                if (action.startsWith("App info")) {
+                    launch(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                            Uri.parse("package:" + tile.intent.getComponent().getPackageName())));
+                    return;
+                }
+                if (action.startsWith("Restore hidden")) { restoreApps(); return; }
+                if (action.equals("Keypad help")) {
+                    new android.app.AlertDialog.Builder(this).setTitle("Keypad help")
+                        .setMessage("D-pad: select an app\nOK: open\n1–9: open numbered tiles\n*: options / manage apps\n0: previous page\n#: next page\nBack: leave folder / first tile\nCall: Phone\n\nMove: D-pad rearranges; OK or Back saves.\nRemoved apps stay installed. Restore them from * → Restore hidden apps.")
+                        .setPositiveButton("OK", null).show();
+                    return;
+                }
+                if (action.equals("Move")) { startMoving(); return; }
+                if (action.equals("New folder")) { nameFolder(null, tile); return; }
+                if (action.startsWith("Icon shape")) { pickShape(); return; }
+                if (action.startsWith("Add to")) { pickFolder(tile); return; }
+                if (action.startsWith("Move out")) { relocate(tile, null); return; }
+                if (action.startsWith("Rename")) { nameFolder(fid, null); return; }
+                new android.app.AlertDialog.Builder(this).setMessage("Remove folder? Its apps return to Home.")
+                    .setPositiveButton("Remove", (x, n) -> removeFolder(fid))
+                    .setNegativeButton(android.R.string.cancel, null).show();
+            }).show();
+    }
+
+    private void hideApp(final Tile app) {
+        new android.app.AlertDialog.Builder(this).setTitle("Remove " + app.label + "?")
+            .setMessage("Hide this app from the launcher. It stays installed and can be restored from Options.")
+            .setNegativeButton(android.R.string.cancel, null)
+            .setPositiveButton("Remove", (dialog, which) -> {
+                int selected = grid.getSelectedItemPosition();
+                hiddenApps.add(app.key);
+                reconcile();
+                showFolder(openFolder, selected);
+            }).show();
+    }
+
+    private void restoreApps() {
+        final ArrayList<String> keys = new ArrayList<String>();
+        for (String key : appOrder) if (hiddenApps.contains(key)) keys.add(key);
+        if (keys.isEmpty()) {
+            Toast.makeText(this, "No hidden installed apps", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String[] labels = new String[keys.size() + 1];
+        labels[0] = "Restore all";
+        for (int i = 0; i < keys.size(); i++) labels[i + 1] = apps.get(keys.get(i)).label;
+        new android.app.AlertDialog.Builder(this).setTitle("Restore to Home")
+            .setItems(labels, (dialog, which) -> {
+                if (which == 0) hiddenApps.clear();
+                else hiddenApps.remove(keys.get(which - 1));
+                reconcile();
+                showFolder(openFolder, 0);
+            }).setNegativeButton(android.R.string.cancel, null).show();
+    }
+
+    private void pickFolder(final Tile app) {
+        final ArrayList<String> ids = new ArrayList<String>(folders.keySet());
+        String[] names = new String[ids.size()];
+        for (int i = 0; i < names.length; i++) names[i] = folders.get(ids.get(i)).name;
+        new android.app.AlertDialog.Builder(this).setTitle("Add " + app.label + " to")
+            .setItems(names, (x, n) -> relocate(app, ids.get(n))).show();
+    }
+
+    /** Put an app into folder id, or back on Home when id is null. */
+    private void relocate(Tile app, String id) {
+        if (app == null || app.folderId != null) return;
+        homeOrder.remove(app.key);
+        for (Folder f : folders.values()) f.members.remove(app.key);
+        if (id == null) homeOrder.add(app.key);
+        else folders.get(id).members.add(app.key);
+        saveLayout();
+        showFolder(openFolder, 0);
+    }
+
+    private void removeFolder(String id) {
+        Folder f = folders.remove(id);
+        if (f == null) return;
+        homeOrder.remove("folder:" + id);
+        homeOrder.addAll(f.members);
+        openFolder = null;
+        saveLayout();
+        showFolder(null, homePosition);
+    }
+
+    private void nameFolder(final String id, final Tile app) {
+        final android.widget.EditText edit = new android.widget.EditText(this);
+        edit.setSingleLine(true);
+        edit.setFilters(new android.text.InputFilter[] { new android.text.InputFilter.LengthFilter(40) });
+        edit.setText(id == null ? "" : folders.get(id).name);
+        edit.setSelectAllOnFocus(true);
+        new android.app.AlertDialog.Builder(this).setTitle(id == null ? "New folder" : "Rename folder").setView(edit)
+            .setPositiveButton("Save", (dialog, which) -> {
+                String name = edit.getText().toString().trim();
+                if (name.isEmpty()) return;
+                if (id != null) {
+                    folders.get(id).name = name;
+                    saveLayout();
+                    showFolder(openFolder, 0);
+                    return;
+                }
+                String fid = java.util.UUID.randomUUID().toString();
+                Folder f = new Folder();
+                f.name = name;
+                folders.put(fid, f);
+                int at = app != null ? homeOrder.indexOf(app.key) : -1;
+                homeOrder.add(at >= 0 ? at : homeOrder.size(), "folder:" + fid);
+                saveLayout();
+                if (app != null && app.folderId == null) relocate(app, fid);
+                else showFolder(openFolder, 0);
+            }).setNegativeButton(android.R.string.cancel, null).show();
+    }
+
+    /** 2x2 preview of the first four members on a tonal rounded container. */
+    private final class FolderIcon extends Drawable {
+        final String id;
+        final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
+        FolderIcon(String id) { this.id = id; }
+        @Override public void draw(Canvas canvas) {
+            Rect b = getBounds();
+            float w = b.width(), h = b.height();
+            int save = canvas.save();
+            canvas.translate(b.left, b.top);
+            paint.setColor(0xF2E3EBFF);
+            canvas.drawRoundRect(0, 0, w, h, w * .28f, w * .28f, paint);
+            Folder f = folders.get(id);
+            int i = 0;
+            if (f != null) for (String key : f.members) {
+                Tile t = apps.get(key);
+                if (t == null || i >= 4) continue;
+                float x = w * (.12f + (i % 2) * .43f), y = h * (.12f + (i / 2) * .43f);
+                Rect old = new Rect(t.icon.getBounds());
+                t.icon.setBounds((int) x, (int) y, (int) (x + w * .33f), (int) (y + h * .33f));
+                t.icon.draw(canvas);
+                t.icon.setBounds(old);
+                i++;
+            }
+            if (i == 0) {
+                paint.setColor(0xFF31588A);
+                paint.setTextSize(w * .48f);
+                canvas.drawText("+", w * .32f, h * .66f, paint);
+            }
+            canvas.restoreToCount(save);
+        }
+        @Override public void setAlpha(int a) { }
+        @Override public void setColorFilter(android.graphics.ColorFilter f) { }
+        @Override public int getOpacity() { return PixelFormat.TRANSLUCENT; }
+    }
+}

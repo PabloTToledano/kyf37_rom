@@ -1,0 +1,115 @@
+package org.kyf37.subdisplay;
+import android.app.Service;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.*;
+import android.os.*;
+import android.util.Log;
+import java.util.Calendar;
+
+public final class OuterScreenService extends Service {
+    static { System.loadLibrary("kyf37subdisplay"); }
+    private static native int updatePanel(boolean visible,int hour,int minute,int battery);
+    private static native int updateAnimation(int frame,int hour,int minute,int battery,int scene);
+    private AlarmManager alarms;
+    private PendingIntent tick;
+    private int battery;
+    private final Handler handler=new Handler();
+    private final java.util.ArrayList<Integer> scenes=new java.util.ArrayList<Integer>();
+    private int scene;
+    private int previousScene=-1;
+    private int idlePhase;
+    private long animationDeadline;
+    private boolean animating;
+    private int frame;
+    private PowerManager.WakeLock animationLock;
+    private boolean closed() {return !SystemProperties.getBoolean("sys.kyf37.lid_open",true);}
+    private final Runnable animate=new Runnable() {
+        @Override public void run() {
+            if(!animating)return;
+            if(!closed() || frame>=48 || SystemClock.elapsedRealtime()>=animationDeadline) {
+                stopAnimation();refresh();return;
+            }
+            Calendar now=Calendar.getInstance();
+            int result=updateAnimation(frame++,now.get(Calendar.HOUR_OF_DAY),
+                now.get(Calendar.MINUTE),battery,scene);
+            if(result!=0) {
+                Log.w("KYF37OuterScreen","Animation update failed: "+result);
+                stopAnimation();refresh();return;
+            }
+            handler.postDelayed(this,100);
+        }
+    };
+    private void stopAnimation() {
+        animating=false;
+        handler.removeCallbacks(animate);
+        if(animationLock!=null && animationLock.isHeld())animationLock.release();
+    }
+    private void startAnimation() {
+        alarms.cancel(tick);
+        if(scenes.isEmpty()) {
+            for(int i=0;i<42;i++)scenes.add(i);
+            java.util.Collections.shuffle(scenes);
+            if(scenes.get(scenes.size()-1)==previousScene)java.util.Collections.swap(scenes,0,scenes.size()-1);
+        }
+        scene=scenes.remove(scenes.size()-1);previousScene=scene;
+        Log.i("KYF37OuterScreen","Scene="+scene);
+        frame=0;animating=true;
+        animationDeadline=SystemClock.elapsedRealtime()+6000;
+        animationLock=((PowerManager)getSystemService(POWER_SERVICE))
+            .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"KYF37:OuterAnimation");
+        animationLock.acquire(8000);
+        handler.post(animate);
+    }
+    private final BroadcastReceiver changes=new BroadcastReceiver() {
+        @Override public void onReceive(Context context,Intent intent) {
+            if(Intent.ACTION_BATTERY_CHANGED.equals(intent.getAction())) {
+                int level=intent.getIntExtra(BatteryManager.EXTRA_LEVEL,-1);
+                int scale=intent.getIntExtra(BatteryManager.EXTRA_SCALE,-1);
+                if(level>=0 && scale>0)battery=Math.min(100,(int)(100L*level/scale));
+            }
+            refresh();
+        }
+    };
+    private final BroadcastReceiver lid=new BroadcastReceiver() {
+        @Override public void onReceive(Context context,Intent intent) {refresh();}
+    };
+    @Override public void onCreate() {
+        super.onCreate();
+        alarms=(AlarmManager)getSystemService(ALARM_SERVICE);
+        tick=PendingIntent.getBroadcast(this,0,new Intent(this,WakeReceiver.class),PendingIntent.FLAG_UPDATE_CURRENT);
+        IntentFilter events=new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        events.addAction(Intent.ACTION_TIME_CHANGED);events.addAction(Intent.ACTION_TIMEZONE_CHANGED);
+        registerReceiver(changes,events);
+        registerReceiver(lid,new IntentFilter("org.kyf37.action.LID_CHANGED"),
+                         "org.kyf37.permission.OUTER_SCREEN",null);
+    }
+    private void refresh() {
+        boolean visible=closed();
+        if(!visible) {stopAnimation();}
+        if(animating)return;
+        PowerManager.WakeLock lock=((PowerManager)getSystemService(POWER_SERVICE))
+            .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"KYF37:OuterScreen");
+        lock.acquire(3000);
+        try {
+            Calendar now=Calendar.getInstance();
+            int result=visible?updateAnimation(-1,now.get(Calendar.HOUR_OF_DAY),now.get(Calendar.MINUTE),battery,
+                (idlePhase++ & 3)):updatePanel(false,0,0,0);
+            if(result!=0)Log.w("KYF37OuterScreen","Panel update failed: "+result);
+            alarms.cancel(tick);
+            if(visible)alarms.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                SystemClock.elapsedRealtime()+5000,tick);
+        } finally {if(lock.isHeld())lock.release();}
+    }
+    @Override public int onStartCommand(Intent intent,int flags,int id) {
+        if(intent!=null && "org.kyf37.action.OUTER_WAKE".equals(intent.getAction()) && closed()) {
+            stopAnimation();startAnimation();return START_STICKY;
+        }
+        refresh();return START_STICKY;
+    }
+    @Override public IBinder onBind(Intent intent) {return null;}
+    @Override public void onDestroy() {
+        stopAnimation();unregisterReceiver(changes);unregisterReceiver(lid);alarms.cancel(tick);
+        updatePanel(false,0,0,0);super.onDestroy();
+    }
+}

@@ -1,0 +1,154 @@
+01-01 00:09:47.785   502   581 V AudioDaemon: bool android::AudioDaemon::getStateFDs(std::vector<std::pair<int, int> >&): 0 sound cards detected
+01-01 00:09:47.786   502   581 E AudioDaemon: Sleeping for 100 ms
+01-01 00:09:41.005   234   234 I chatty  : uid=1000(system) /system/bin/servicemanager identical 8 lines
+01-01 00:09:46.014   234   234 I snet_event_log: [121035042,-1,]
+01-01 00:09:47.779   281   281 I auditd  : type=1400 audit(0.0:595): avc: denied { dac_override } for uid=0 comm="logcat" capability=1 scontext=u:r:logd:s0 tcontext=u:r:logd:s0 tclass=capability permissive=1
+01-01 00:09:47.779   281   281 I logcat  : type=1400 audit(0.0:595): avc: denied { dac_override } for uid=0 capability=1 scontext=u:r:logd:s0 tcontext=u:r:logd:s0 tclass=capability permissive=1
+01-01 00:09:47.790   329   329 E QC-QMI  : qmi_client [329]: unable to connect to server, errno=[2:No such file or directory], attempt=54
+01-01 00:09:47.886   502   581 D AudioDaemon: Opening sound card state : /proc/asound/card---/state
+01-01 00:09:47.886   502   581 E AudioDaemon: Open /proc/asound/card---/state failed : No such file or directory
+01-01 00:09:47.886   502   581 V AudioDaemon: bool android::AudioDaemon::getStateFDs(std::vector<std::pair<int, int> >&): 0 sound cards detected
+01-01 00:09:47.886   502   581 E AudioDaemon: Sleeping for 100 ms
+01-01 00:09:47.986   502   581 D AudioDaemon: Opening sound card state : /proc/asound/card---/state
+01-01 00:09:47.986   502   581 E AudioDaemon: Open /proc/asound/card---/state failed : No such file or directory
+01-01 00:09:47.986   502   581 V AudioDaemon: bool android::AudioDaemon::getStateFDs(std::vector<std::pair<int, int> >&): 0 sound cards detected
+01-01 00:09:47.986   502   581 E AudioDaemon: Sleeping for 100 ms
+01-01 00:09:48.086   502   581 D AudioDaemon: Opening sound card state : /proc/asound/card---/state
+01-01 00:09:48.087   502   581 E AudioDaemon: Open /proc/asound/card---/state failed : No such file or directory
+01-01 00:09:48.087   502   581 V AudioDaemon: bool android::AudioDaemon::getStateFDs(std::vector<std::pair<int, int> >&): 0 sound cards detected
+01-01 00:09:48.087   502   581 E AudioDaemon: Sleeping for 100 ms
+01-01 00:09:48.156   644   667 E QC-QMI  : qmi_client [644]: unable to connect to server, errno=[2:No such file or directory], attempt=50
+01-01 00:09:48.187   502   581 D AudioDaemon: Opening sound card state : /proc/asound/card---/state
+01-01 00:09:48.187   502   581 E AudioDaemon: Open /proc/asound/card---/state failed : No such file or directory
+01-01 00:09:48.187   502   581 V AudioDaemon: bool android::AudioDaemon::getStateFDs(std::vector<std::pair<int, int> >&): 0 sound cards detected
+01-01 00:09:48.187   502   581 E AudioDaemon: Sleeping for 100 ms
+01-01 00:09:48.287   502   581 D AudioDaemon: Opening sound card state : /proc/asound/card---/state
+01-01 00:09:48.287   502   581 E AudioDaemon: Open /proc/asound/card---/state failed : No such file or directory
+01-01 00:09:48.287   502   581 V AudioDaemon: bool android::AudioDaemon::getStateFDs(std::vector<std::pair<int, int> >&): 0 sound cards detected
+01-01 00:09:48.287   502   581 E AudioDaemon: Sleeping for 100 ms
+01-01 00:09:48.387   502   581 D AudioDaemon: Opening sound card state : /proc/asound/card---/state
+01-01 00:09:48.387   502   581 E AudioDaemon: Open /proc/asound/card---/state failed : No such file or directory
+01-01 00:09:48.388   502   581 V AudioDaemon: bool android::AudioDaemon::getStateFDs(std::vector<std::pair<int, int> >&): 0 sound cards detected
+01-01 00:09:48.388   502   581 E AudioDaemon: Sleeping for 100 ms
+01-01 00:09:48.488   502   581 D AudioDaemon: Opening sound card state : /proc/asound/card---/state
+01-01 00:09:48.488   502   581 E AudioDaemon: Open /proc/asound/card---/state failed : No such file or directory
+01-01 00:09:48.488   502   581 V AudioDaemon: bool android::AudioDaemon::getStateFDs(std::vector<std::pair<int, int> >&): 0 sound cards detected
+01-01 00:09:48.488   502   581 E AudioDaemon: Sleeping for 100 ms
+01-01 00:09:48.588   502   581 D AudioDaemon: Opening sound card state : /proc/asound/card---/state
+01-01 00:09:48.588   502   581 E AudioDaemon: Open /proc/asound/card---/state failed : No such file or directory
+01-01 00:09:48.588   502   581 V AudioDaemon: bool android::AudioDaemon::getStateFDs(std::vector<std::pair<int, int> >&): 0 sound cards detected
+01-01 00:09:48.588   502   581 E AudioDaemon: Sleeping for 100 ms
+01-01 00:09:48.688   502   581 D AudioDaemon: Opening sound card state : /proc/asound/card---/state
+01-01 00:09:48.688   502   581 E AudioDaemon: Open /proc/asound/card---/state failed : No such file or directory
+01-01 00:09:48.689   502   581 V AudioDaemon: bool android::AudioDaemon::getStateFDs(std::vector<std::pair<int, int> >&): 0 sound cards detected
+01-01 00:09:48.689   502   581 E AudioDaemon: Sleeping for 100 ms
+01-01 00:09:48.789   502   581 D AudioDaemon: Opening sound card state : /proc/asound/card---/state
+01-01 00:09:48.789   502   581 E AudioDaemon: Open /proc/asound/card---/state failed : No such file or directory
+01-01 00:09:48.789   502   581 V AudioDaemon: bool android::AudioDaemon::getStateFDs(std::vector<std::pair<int, int> >&): 0 sound cards detected
+01-01 00:09:48.789   502   581 E AudioDaemon: Sleeping for 100 ms
+01-01 00:09:48.790   329   329 E QC-QMI  : qmi_client [329]: unable to connect to server, errno=[2:No such file or directory], attempt=55
+01-01 00:09:48.889   502   581 D AudioDaemon: Opening sound card state : /proc/asound/card---/state
+01-01 00:09:48.889   502   581 E AudioDaemon: Open /proc/asound/card---/state failed : No such file or directory
+01-01 00:09:48.889   502   581 V AudioDaemon: bool android::AudioDaemon::getStateFDs(std::vector<std::pair<int, int> >&): 0 sound cards detected
+01-01 00:09:48.889   502   581 E AudioDaemon: Sleeping for 100 ms
+01-01 00:09:48.989   502   581 D AudioDaemon: Opening sound card state : /proc/asound/card---/state
+01-01 00:09:48.990   502   581 E AudioDaemon: Open /proc/asound/card---/state failed : No such file or directory
+01-01 00:09:48.990   502   581 V AudioDaemon: bool android::AudioDaemon::getStateFDs(std::vector<std::pair<int, int> >&): 0 sound cards detected
+01-01 00:09:48.990   502   581 E AudioDaemon: Sleeping for 100 ms
+01-01 00:09:49.090   502   581 D AudioDaemon: Opening sound card state : /proc/asound/card---/state
+01-01 00:09:49.090   502   581 E AudioDaemon: Open /proc/asound/card---/state failed : No such file or directory
+01-01 00:09:49.090   502   581 V AudioDaemon: bool android::AudioDaemon::getStateFDs(std::vector<std::pair<int, int> >&): 0 sound cards detected
+01-01 00:09:49.090   502   581 E AudioDaemon: Sleeping for 100 ms
+01-01 00:09:49.121  1093  1093 D QSEECOMD: : qseecom listener services process entry PPID = 1
+01-01 00:09:49.121  1093  1093 E QSEECOMD: : Listener: index = 0, hierarchy = 0
+01-01 00:09:49.121  1093  1093 E QSEECOMD: : Init dlopen(librpmb.so, RLTD_NOW) is failed....
+01-01 00:09:49.121  1093  1093 E QSEECOMD: : ERROR: RPMB_INIT failed, shall not start listener services
+01-01 00:09:49.156   644   667 E QC-QMI  : qmi_client [644]: unable to connect to server, errno=[2:No such file or directory], attempt=51
+01-01 00:09:49.190   502   581 D AudioDaemon: Opening sound card state : /proc/asound/card---/state
+01-01 00:09:49.190   502   581 E AudioDaemon: Open /proc/asound/card---/state failed : No such file or directory
+01-01 00:09:49.190   502   581 V AudioDaemon: bool android::AudioDaemon::getStateFDs(std::vector<std::pair<int, int> >&): 0 sound cards detected
+01-01 00:09:49.190   502   581 E AudioDaemon: Sleeping for 100 ms
+01-01 00:09:49.197     1     1 W libc    : Unable to set property "ro.init.updatable_crashing_process_name" to "qseecomd": error code: 0xb
+01-01 00:09:49.199     1     1 W libc    : Unable to set property "ro.init.updatable_crashing" to "1": error code: 0xb
+01-01 00:09:49.291   502   581 D AudioDaemon: Opening sound card state : /proc/asound/card---/state
+01-01 00:09:49.291   502   581 E AudioDaemon: Open /proc/asound/card---/state failed : No such file or directory
+01-01 00:09:49.291   502   581 V AudioDaemon: bool android::AudioDaemon::getStateFDs(std::vector<std::pair<int, int> >&): 0 sound cards detected
+01-01 00:09:49.291   502   581 E AudioDaemon: Sleeping for 100 ms
+01-01 00:09:49.391   502   581 D AudioDaemon: Opening sound card state : /proc/asound/card---/state
+01-01 00:09:49.391   502   581 E AudioDaemon: Open /proc/asound/card---/state failed : No such file or directory
+01-01 00:09:49.391   502   581 V AudioDaemon: bool android::AudioDaemon::getStateFDs(std::vector<std::pair<int, int> >&): 0 sound cards detected
+01-01 00:09:49.391   502   581 E AudioDaemon: Sleeping for 100 ms
+01-01 00:09:49.492   502   581 D AudioDaemon: Opening sound card state : /proc/asound/card---/state
+01-01 00:09:49.492   502   581 E AudioDaemon: Open /proc/asound/card---/state failed : No such file or directory
+01-01 00:09:49.492   502   581 V AudioDaemon: bool android::AudioDaemon::getStateFDs(std::vector<std::pair<int, int> >&): 0 sound cards detected
+01-01 00:09:49.492   502   581 E AudioDaemon: Sleeping for 100 ms
+01-01 00:09:49.592   502   581 D AudioDaemon: Opening sound card state : /proc/asound/card---/state
+01-01 00:09:49.592   502   581 E AudioDaemon: Open /proc/asound/card---/state failed : No such file or directory
+01-01 00:09:49.592   502   581 V AudioDaemon: bool android::AudioDaemon::getStateFDs(std::vector<std::pair<int, int> >&): 0 sound cards detected
+01-01 00:09:49.592   502   581 E AudioDaemon: Sleeping for 100 ms
+01-01 00:09:49.692   502   581 D AudioDaemon: Opening sound card state : /proc/asound/card---/state
+01-01 00:09:49.692   502   581 E AudioDaemon: Open /proc/asound/card---/state failed : No such file or directory
+01-01 00:09:49.692   502   581 V AudioDaemon: bool android::AudioDaemon::getStateFDs(std::vector<std::pair<int, int> >&): 0 sound cards detected
+01-01 00:09:49.692   502   581 E AudioDaemon: Sleeping for 100 ms
+01-01 00:09:49.790   329   329 E QC-QMI  : qmi_client [329]: unable to connect to server, errno=[2:No such file or directory], attempt=56
+01-01 00:09:49.793   502   581 D AudioDaemon: Opening sound card state : /proc/asound/card---/state
+01-01 00:09:49.793   502   581 E AudioDaemon: Open /proc/asound/card---/state failed : No such file or directory
+01-01 00:09:49.793   502   581 V AudioDaemon: bool android::AudioDaemon::getStateFDs(std::vector<std::pair<int, int> >&): 0 sound cards detected
+01-01 00:09:49.793   502   581 E AudioDaemon: Sleeping for 100 ms
+01-01 00:09:49.893   502   581 D AudioDaemon: Opening sound card state : /proc/asound/card---/state
+01-01 00:09:49.893   502   581 E AudioDaemon: Open /proc/asound/card---/state failed : No such file or directory
+01-01 00:09:49.893   502   581 V AudioDaemon: bool android::AudioDaemon::getStateFDs(std::vector<std::pair<int, int> >&): 0 sound cards detected
+01-01 00:09:49.893   502   581 E AudioDaemon: Sleeping for 100 ms
+01-01 00:09:49.919  1094  1094 I auditd  : type=1400 audit(0.0:602): avc: denied { module_request } for uid=0 comm="setprop" kmod="personality-8" scontext=u:r:toolbox:s0 tcontext=u:r:kernel:s0 tclass=system permissive=1
+01-01 00:09:49.919  1094  1094 I setprop : type=1400 audit(0.0:602): avc: denied { module_request } for uid=0 kmod="personality-8" scontext=u:r:toolbox:s0 tcontext=u:r:kernel:s0 tclass=system permissive=1
+01-01 00:09:49.949  1094  1094 I auditd  : type=1400 audit(0.0:603): avc: denied { write } for uid=0 comm="setprop" name="property_service" dev="tmpfs" ino=8414 scontext=u:r:toolbox:s0 tcontext=u:object_r:property_socket:s0 tclass=sock_file permissive=1
+01-01 00:09:49.949  1094  1094 I setprop : type=1400 audit(0.0:603): avc: denied { write } for uid=0 name="property_service" dev="tmpfs" ino=8414 scontext=u:r:toolbox:s0 tcontext=u:object_r:property_socket:s0 tclass=sock_file permissive=1
+01-01 00:09:49.993   502   581 D AudioDaemon: Opening sound card state : /proc/asound/card---/state
+01-01 00:09:49.994   502   581 E AudioDaemon: Open /proc/asound/card---/state failed : No such file or directory
+01-01 00:09:49.994   502   581 V AudioDaemon: bool android::AudioDaemon::getStateFDs(std::vector<std::pair<int, int> >&): 0 sound cards detected
+01-01 00:09:49.994   502   581 E AudioDaemon: Sleeping for 100 ms
+01-01 00:09:49.999  1095  1095 I auditd  : type=1400 audit(0.0:605): avc: denied { module_request } for uid=1000 comm="blank_screen" kmod="personality-8" scontext=u:r:blank_screen:s0 tcontext=u:r:kernel:s0 tclass=system permissive=1
+01-01 00:09:49.999  1095  1095 I blank_screen: type=1400 audit(0.0:605): avc: denied { module_request } for uid=1000 kmod="personality-8" scontext=u:r:blank_screen:s0 tcontext=u:r:kernel:s0 tclass=system permissive=1
+01-01 00:09:50.063   726   726 I wificond: wificond is about to exit
+01-01 00:09:50.065   234   234 I ServiceManager: service 'wificond' died
+01-01 00:09:50.070   234   234 I ServiceManager: service 'storaged' died
+01-01 00:09:50.070   234   234 I ServiceManager: service 'storaged_pri' died
+01-01 00:09:50.074   234   234 I ServiceManager: service 'stats' died
+01-01 00:09:50.081   234   234 I ServiceManager: service 'dnsresolver' died
+01-01 00:09:50.081   234   234 I ServiceManager: service 'netd' died
+01-01 00:09:50.088   234   234 I ServiceManager: service 'media.player' died
+01-01 00:09:50.088   234   234 I ServiceManager: service 'media.resource_manager' died
+01-01 00:09:50.094   502   581 D AudioDaemon: Opening sound card state : /proc/asound/card---/state
+01-01 00:09:50.094   234   234 I ServiceManager: service 'media.metrics' died
+01-01 00:09:50.094   502   581 E AudioDaemon: Open /proc/asound/card---/state failed : No such file or directory
+01-01 00:09:50.094   502   581 V AudioDaemon: bool android::AudioDaemon::getStateFDs(std::vector<std::pair<int, int> >&): 0 sound cards detected
+01-01 00:09:50.094   502   581 E AudioDaemon: Sleeping for 100 ms
+01-01 00:09:50.102   234   234 I ServiceManager: service 'media.extractor' died
+01-01 00:09:50.107   234   234 I ServiceManager: service 'media.drm' died
+01-01 00:09:50.115   805   822 W Installer: installd died; reconnecting
+01-01 00:09:50.116   234   234 I ServiceManager: service 'installd' died
+01-01 00:09:50.116   805   822 W Installer: installd not found; trying again
+01-01 00:09:50.120   234   234 I ServiceManager: service 'incident' died
+01-01 00:09:50.125   234   234 I ServiceManager: service 'idmap' died
+01-01 00:09:50.131   234   234 I ServiceManager: service 'drm.drmManager' died
+01-01 00:09:50.148   234   234 I ServiceManager: service 'suspend_control' died
+01-01 00:09:50.155   234   234 I ServiceManager: service 'adbroot_service' died
+01-01 00:09:50.157   644   667 E QC-QMI  : qmi_client [644]: unable to connect to server, errno=[2:No such file or directory], attempt=52
+01-01 00:09:50.195   502   581 D AudioDaemon: Opening sound card state : /proc/asound/card---/state
+01-01 00:09:50.195   502   581 E AudioDaemon: Open /proc/asound/card---/state failed : No such file or directory
+01-01 00:09:50.195   502   581 V AudioDaemon: bool android::AudioDaemon::getStateFDs(std::vector<std::pair<int, int> >&): 0 sound cards detected
+01-01 00:09:50.195   502   581 E AudioDaemon: Sleeping for 100 ms
+01-01 00:09:50.211   234   234 I ServiceManager: service 'iorapd' died
+01-01 00:09:50.216   234   234 I ServiceManager: service 'dumpstate' died
+01-01 00:09:50.225   234   234 I ServiceManager: service 'device_identifiers' died
+01-01 00:09:50.225   234   234 I ServiceManager: service 'uri_grants' died
+01-01 00:09:50.225   234   234 I ServiceManager: service 'activity_task' died
+01-01 00:09:50.240   234   234 I ServiceManager: service 'android.service.gatekeeper.IGateKeeperService' died
+01-01 00:09:50.255   496   496 I cnss-daemon: Caught Signal: 15
+01-01 00:09:50.255   496   496 I cnss-daemon: nl_loop_terminate called
+01-01 00:09:50.255   496   496 I cnss-daemon: Loop terminating: EINTR
+01-01 00:09:50.269   326   326 I auditd  : type=1400 audit(0.0:606): avc: denied { read } for uid=1000 comm="pm-service" scontext=u:r:init:s0 tcontext=u:r:init:s0 tclass=socket permissive=1
+01-01 00:09:50.269   326   326 I pm-service: type=1400 audit(0.0:606): avc: denied { read } for uid=1000 scontext=u:r:init:s0 tcontext=u:r:init:s0 tclass=socket permissive=1
+01-01 00:09:50.282   234   234 I ServiceManager: service 'gpu' died
+01-01 00:09:50.286   234   234 I ServiceManager: service 'ashmem_device_service' died
+01-01 00:09:50.290   234   234 I ServiceManager: service 'jp.kyocera.internal.KcjSecurity' died

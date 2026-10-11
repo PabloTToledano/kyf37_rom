@@ -1,0 +1,114 @@
+- Unpacking boot image
+
+Parsing boot image: [/data/local/tmp/kyf37-root-backup/boot.img]
+
+HEADER_VER      [0]
+
+KERNEL_SZ       [6844280]
+
+RAMDISK_SZ      [688749]
+
+SECOND_SZ       [0]
+
+EXTRA_SZ        [6531072]
+
+PAGESIZE        [2048]
+
+NAME            []
+
+CMDLINE         [console=ttyHSL0,115200,n8 no_console_suspend=1 androidboot.console=ttyHSL0 androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x3F ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci lpm_levels.sleep_disabled=1 earlyprintk]
+
+CHECKSUM        [3d7d8844ea6123d164ef15654427a858333683e7000000000000000000000000]
+
+KERNEL_FMT      [raw]
+
+RAMDISK_FMT     [gzip]
+
+EXTRA_FMT       [raw]
+
+- Checking ramdisk status
+
+Loading cpio: [ramdisk.cpio]
+
+- Stock boot image detected
+
+- Patching ramdisk
+
+Loading cpio: [ramdisk.cpio]
+
+Add entry [init] (0750)
+
+Create directory [overlay.d] (0750)
+
+Create directory [overlay.d/sbin] (0750)
+
+Add entry [overlay.d/sbin/magisk32.xz] (0644)
+
+Patch with flag KEEPVERITY=[true] KEEPFORCEENCRYPT=[true]
+
+Loading cpio: [ramdisk.cpio.orig]
+
+Backup mismatch entry: [init] -> [.backup/init]
+
+Record new entry: [overlay.d] -> [.backup/.rmlist]
+
+Record new entry: [overlay.d/sbin] -> [.backup/.rmlist]
+
+Record new entry: [overlay.d/sbin/magisk32.xz] -> [.backup/.rmlist]
+
+Create directory [.backup] (0000)
+
+Add entry [.backup/.magisk] (0000)
+
+Dump cpio: [ramdisk.cpio]
+
+Loading dtbs from [extra]
+
+- Repacking boot image
+
+Parsing boot image: [/data/local/tmp/kyf37-root-backup/boot.img]
+
+HEADER_VER      [0]
+
+KERNEL_SZ       [6844280]
+
+RAMDISK_SZ      [688749]
+
+SECOND_SZ       [0]
+
+EXTRA_SZ        [6531072]
+
+PAGESIZE        [2048]
+
+NAME            []
+
+CMDLINE         [console=ttyHSL0,115200,n8 no_console_suspend=1 androidboot.console=ttyHSL0 androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x3F ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci lpm_levels.sleep_disabled=1 earlyprintk]
+
+CHECKSUM        [3d7d8844ea6123d164ef15654427a858333683e7000000000000000000000000]
+
+KERNEL_FMT      [raw]
+
+RAMDISK_FMT     [gzip]
+
+EXTRA_FMT       [raw]
+
+Repack to boot image: [new-boot.img]
+
+HEADER_VER      [0]
+
+KERNEL_SZ       [6844280]
+
+RAMDISK_SZ      [939662]
+
+SECOND_SZ       [0]
+
+EXTRA_SZ        [6531072]
+
+PAGESIZE        [2048]
+
+NAME            []
+
+CMDLINE         [console=ttyHSL0,115200,n8 no_console_suspend=1 androidboot.console=ttyHSL0 androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x3F ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci lpm_levels.sleep_disabled=1 earlyprintk]
+
+CHECKSUM        [4cb4ff3140021430f5bdacddc82e519e55e91cdc000000000000000000000000]
+

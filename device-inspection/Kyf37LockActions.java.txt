@@ -1,0 +1,90 @@
+package com.android.keyguard;
+
+import android.app.WallpaperColors;
+import android.app.WallpaperManager;
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Handler;
+import android.util.AttributeSet;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+/** Small native-keyguard surface; deliberately owns no authentication state. */
+public class Kyf37LockActions extends LinearLayout {
+    public static Kyf37LockActions latest;
+    public boolean resetSelection = true;
+    private final TextView unlock;
+    private boolean selected = true;
+    private int accent = 0xffb8dbff;
+    private WallpaperManager wallpaper;
+    private final WallpaperManager.OnColorsChangedListener colors = (value, which) -> updateColors();
+
+    public Kyf37LockActions(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        setOrientation(VERTICAL);
+        setGravity(Gravity.CENTER);
+        setFocusable(false);
+        unlock = new TextView(context);
+        unlock.setText("OK  ·  Unlock");
+        unlock.setTextSize(17);
+        unlock.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
+        unlock.setGravity(Gravity.CENTER);
+        unlock.setContentDescription("Unlock. Press OK. Use Up and Down for notifications.");
+        addView(unlock, new LayoutParams(dp(174), dp(36)));
+        TextView hint = new TextView(context);
+        hint.setText("↑ ↓  Notifications");
+        hint.setTextColor(0xffdce4ee);
+        hint.setTextSize(12);
+        hint.setGravity(Gravity.CENTER);
+        LayoutParams hp = new LayoutParams(LayoutParams.MATCH_PARENT, dp(18));
+        hp.topMargin = dp(3);
+        addView(hint, hp);
+    }
+
+    private int dp(float value) { return Math.round(value * getResources().getDisplayMetrics().density); }
+    @Override protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        latest = this;
+        wallpaper = getContext().getSystemService(WallpaperManager.class);
+        if (wallpaper != null) wallpaper.addOnColorsChangedListener(colors, new Handler());
+        updateColors();
+    }
+    @Override protected void onDetachedFromWindow() {
+        if (wallpaper != null) wallpaper.removeOnColorsChangedListener(colors);
+        if (latest == this) latest = null;
+        super.onDetachedFromWindow();
+    }
+    @Override public void onVisibilityAggregated(boolean visible) {
+        super.onVisibilityAggregated(visible);
+        if (visible) { resetSelection = true; selectUnlock(true); }
+    }
+    private void updateColors() {
+        float[] hsv = {210, .28f, .98f};
+        if (wallpaper != null) {
+            WallpaperColors wc = wallpaper.getWallpaperColors(WallpaperManager.FLAG_LOCK);
+            if (wc == null) wc = wallpaper.getWallpaperColors(WallpaperManager.FLAG_SYSTEM);
+            if (wc != null) Color.colorToHSV(wc.getPrimaryColor().toArgb(), hsv);
+        }
+        float hue = hsv[0];
+        accent = Color.HSVToColor(new float[] {hue, Math.min(.30f, Math.max(.12f, hsv[1])), .98f});
+        // Free-floating clock/date over the wallpaper, with no enclosing card.
+        if (getParent() instanceof View) ((View) getParent()).setBackground(null);
+        selectUnlock(selected);
+    }
+    public int accent() { return accent; }
+    public void selectUnlock(boolean value) {
+        selected = value;
+        GradientDrawable bg = new GradientDrawable();
+        bg.setCornerRadius(dp(22));
+        bg.setColor(value ? 0x66202a34 : Color.TRANSPARENT);
+        bg.setStroke(dp(value ? 2 : 0), accent);
+        unlock.setTextColor(Color.WHITE);
+        unlock.setShadowLayer(dp(2), 0, dp(1), 0xcc000000);
+        unlock.setBackground(bg);
+        unlock.setText(value ? "OK  ·  Unlock" : "Unlock");
+    }
+}

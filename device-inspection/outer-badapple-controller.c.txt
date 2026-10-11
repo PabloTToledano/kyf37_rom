@@ -1,0 +1,35 @@
+/* KYF37 BadApple playback and passive side-key observer */
+#include <linux/input.h>
+#include <poll.h>
+static int side_fd=-1;
+JNIEXPORT jint JNICALL Java_org_kyf37_subdisplay_OuterScreenService_readSideKey(JNIEnv *env,jclass type) {
+    (void)env;(void)type;
+    if(side_fd<0) {
+        side_fd=open("/dev/input/event2",O_RDONLY|O_NONBLOCK|O_CLOEXEC);
+        if(side_fd<0)return -errno;
+    }
+    struct pollfd p={side_fd,POLLIN,0};
+    int result=poll(&p,1,250);
+    if(result<0)return errno==EINTR?0:-errno;
+    if(!result)return 0;
+    if(p.revents&(POLLERR|POLLHUP|POLLNVAL))return -EIO;
+    struct input_event event;
+    while(read(side_fd,&event,sizeof event)==sizeof event) {
+        if(event.type==EV_KEY && event.code==254 && event.value!=2)return event.value?1:2;
+    }
+    return 0;
+}
+JNIEXPORT void JNICALL Java_org_kyf37_subdisplay_OuterScreenService_closeSideKey(JNIEnv *env,jclass type) {
+    (void)env;(void)type;if(side_fd>=0){close(side_fd);side_fd=-1;}
+}
+JNIEXPORT jint JNICALL Java_org_kyf37_subdisplay_OuterScreenService_updateVideo(JNIEnv *env,jclass type,jbyteArray packed) {
+    (void)type;
+    if(!packed || (*env)->GetArrayLength(env,packed)!=576)return -EINVAL;
+    unsigned char bytes[576],pixels[128*36];
+    (*env)->GetByteArrayRegion(env,packed,0,576,(jbyte*)bytes);
+    if((*env)->ExceptionCheck(env))return -EINVAL;
+    for(int i=0;i<128*36;i++)pixels[i]=(bytes[i/8]>>(7-i%8))&1;
+    int result=open_panel();if(result)return result;
+    if(!panel_on){if(ioctl(panel_fd,FBIOBLANK,FB_BLANK_UNBLANK))return -errno;panel_on=1;}
+    return kyf37_subdisplay_commit(panel_fd,pixels,sizeof pixels)?-errno:0;
+}

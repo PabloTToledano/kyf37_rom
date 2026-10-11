@@ -1,0 +1,25 @@
+package org.lineageos.setupwizard;
+
+import android.os.Bundle;
+import android.provider.Settings;
+import android.widget.RadioGroup;
+
+/** Native wizard navigation and provisioning are owned by BaseSetupWizardActivity. */
+public class Kyf37AppearanceActivity extends BaseSetupWizardActivity {
+    @Override protected int getLayoutResId() { return R.layout.kyf37_appearance; }
+    @Override protected void onCreate(Bundle state) {
+        super.onCreate(state);
+        RadioGroup group = findViewById(R.id.kyf37_styles);
+        int theme = Settings.Global.getInt(getContentResolver(), "kyf37_icon_theme", 1);
+        group.check(theme == 2 ? R.id.kyf37_sky : theme == 3 ? R.id.kyf37_classic : R.id.kyf37_pastel);
+        group.post(() -> findViewById(group.getCheckedRadioButtonId()).requestFocus());
+        setNextText(R.string.next);
+    }
+    @Override protected void onNextPressed() {
+        RadioGroup group = findViewById(R.id.kyf37_styles);
+        int id = group.getCheckedRadioButtonId();
+        Settings.Global.putInt(getContentResolver(), "kyf37_icon_theme",
+                id == R.id.kyf37_sky ? 2 : id == R.id.kyf37_classic ? 3 : 1);
+        super.onNextPressed();
+    }
+}

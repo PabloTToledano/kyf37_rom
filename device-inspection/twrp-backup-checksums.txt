@@ -1,0 +1,6 @@
+data.ext4.win: OK
+
+boot.emmc.win: OK
+
+recovery.emmc.win: OK
+

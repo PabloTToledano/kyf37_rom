@@ -1,0 +1,6 @@
+Linux localhost 3.10.49 #2 SMP PREEMPT Thu Oct 8 00:01:14 CEST 2026 armv7l GNU/Linux
+
+AMBIENT_EXEC_PRESERVE_OK
+
+16
+

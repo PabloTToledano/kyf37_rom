@@ -1,0 +1,214 @@
+package android.view;
+
+import android.app.ActivityThread;
+import android.content.Context;
+import android.database.ContentObserver;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.Paint;
+import android.graphics.PixelFormat;
+import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
+import android.provider.Settings;
+import java.util.ArrayList;
+import java.util.WeakHashMap;
+
+/**
+ * KYF37 keypad-focus colour theme: the ONE place that knows the palettes and draws the
+ * "selected item" look (outline + tint) for every View, ListView row, SystemUI logical
+ * selection and the pointer cursor.
+ *
+ * The palette id is Settings.Global "kyf37_focus_theme" (persistent in userdata, default
+ * {@link #DEFAULT}). A ContentObserver per process reloads it and invalidates everything that
+ * was drawn with it, so a change recolours all running UI without a reboot.
+ *
+ * Look of a selected item: 2 dp (bold: 3 dp) light/dark contrast edge outermost, then a 4 dp
+ * (bold: 7 dp) accent outline, then a translucent tint over the item. The edge keeps the
+ * outline readable on both light and dark wallpapers.
+ *
+ * @hide
+ */
+public final class Kyf37FocusTheme {
+    public static final String KEY = "kyf37_focus_theme";
+    public static final int DEFAULT = 0;
+
+    public static final String[] NAMES = {
+        "Sky blue", "Pink", "Mint green", "Orange", "Purple",
+        "Monochrome (high contrast)", "Bold (high visibility)"
+    };
+    public static final int COUNT = NAMES.length;
+
+    // accent, edge, tint fill, accent dp, edge dp
+    private static final int[][] PALETTE = {
+        {0xFF1E88E5, 0xFFFFFFFF, 0x401E88E5, 4, 2},
+        {0xFFE91E8C, 0xFFFFFFFF, 0x40E91E8C, 4, 2},
+        {0xFF0FA678, 0xFFFFFFFF, 0x400FA678, 4, 2},
+        {0xFFF57C00, 0xFFFFFFFF, 0x40F57C00, 4, 2},
+        {0xFF7E57C2, 0xFFFFFFFF, 0x407E57C2, 4, 2},
+        {0xFF000000, 0xFFFFFFFF, 0x50808080, 4, 2},
+        {0xFF000000, 0xFF00E5FF, 0x7000E5FF, 7, 3},
+    };
+
+    private static volatile int sId = DEFAULT;
+    private static boolean sWatching;
+    private static final WeakHashMap<Object, Boolean> sDrawn = new WeakHashMap<>();
+    private static final ArrayList<Runnable> sListeners = new ArrayList<>();
+    private static final Paint sPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private static final RectF sRect = new RectF();
+    private static final RectF sWork = new RectF();
+
+    private Kyf37FocusTheme() { }
+
+    // ---------------------------------------------------------------- palette access
+
+    /** Pure helper (host-tested): clamp an arbitrary stored value to a valid palette id. */
+    public static int sanitize(int id) { return id < 0 || id >= COUNT ? DEFAULT : id; }
+
+    /** Current palette id; call {@link #watch(Context)} first in processes that can. */
+    public static int id() { return sId; }
+    public static int id(Context c) { watch(c); return sId; }
+    public static int accent(Context c) { watch(c); return PALETTE[sId][0]; }
+    public static int edge(Context c) { watch(c); return PALETTE[sId][1]; }
+    public static int fill(Context c) { watch(c); return PALETTE[sId][2]; }
+    /** Accent colour of an arbitrary palette (previews in the Appearance page). */
+    public static int accentOf(int id) { return PALETTE[sanitize(id)][0]; }
+    public static int edgeOf(int id) { return PALETTE[sanitize(id)][1]; }
+    public static int fillOf(int id) { return PALETTE[sanitize(id)][2]; }
+
+    /** Start observing the setting in this process (idempotent, any thread). */
+    public static void watch(Context context) {
+        synchronized (sListeners) {
+            if (sWatching) return;
+            if (context == null) context = ActivityThread.currentApplication();
+            if (context == null) return;
+            final Context app = context.getApplicationContext() != null
+                    ? context.getApplicationContext() : context;
+            try {
+                sId = sanitize(Settings.Global.getInt(app.getContentResolver(), KEY, DEFAULT));
+                app.getContentResolver().registerContentObserver(Settings.Global.getUriFor(KEY),
+                        false, new ContentObserver(new Handler(Looper.getMainLooper())) {
+                            @Override public void onChange(boolean selfChange) {
+                                sId = sanitize(Settings.Global.getInt(app.getContentResolver(),
+                                        KEY, DEFAULT));
+                                changed();
+                            }
+                        });
+                sWatching = true;
+            } catch (RuntimeException e) {
+                // Settings provider not ready yet (early boot): use the default and retry later.
+            }
+        }
+    }
+
+    /** Run {@code r} (on the main thread) every time the palette changes. */
+    public static void addListener(Runnable r) {
+        synchronized (sListeners) { sListeners.add(r); }
+    }
+
+    private static void changed() {
+        ArrayList<Object> drawn;
+        ArrayList<Runnable> listeners;
+        synchronized (sDrawn) { drawn = new ArrayList<>(sDrawn.keySet()); }
+        synchronized (sListeners) { listeners = new ArrayList<>(sListeners); }
+        for (Object o : drawn) {
+            if (o instanceof View) ((View) o).invalidate();
+            else if (o instanceof Drawable) ((Drawable) o).invalidateSelf();
+        }
+        for (Runnable r : listeners) r.run();
+    }
+
+    // ---------------------------------------------------------------- drawing
+
+    /** Hook called from View.draw after the foreground; draws the selected state. */
+    public static void draw(View v, Canvas canvas) {
+        if (!"kyf37".equals(Build.DEVICE) || !v.isEnabled()) return;
+        final boolean row = false; // list rows are drawn by AbsListView (drawListRow)
+        // A focused view in a window that does not hold window focus (status bar, overlays) is not
+        // where the user is: never outline it at rest.
+        final boolean focus = v.isFocused() && v.hasWindowFocus() && !isContainer(v) && isInteractive(v);
+        if (!row && !focus) return;
+        final int w = v.getWidth(), h = v.getHeight();
+        final float d = v.getResources().getDisplayMetrics().density;
+        if (w < 12 * d || h < 12 * d) return;
+        final android.util.DisplayMetrics m = v.getResources().getDisplayMetrics();
+        if (w >= 0.95f * m.widthPixels && h >= 0.7f * m.heightPixels) return; // whole-screen view
+        watch(v.getContext());
+        synchronized (sDrawn) { sDrawn.put(v, Boolean.TRUE); }
+        sRect.set(v.getScrollX(), v.getScrollY(), v.getScrollX() + w, v.getScrollY() + h);
+        paintBox(canvas, sRect, d, sId);
+    }
+
+
+    private static boolean isInteractive(View v) {
+        return v.isClickable() || v.isLongClickable() || v.onCheckIsTextEditor()
+                || v instanceof android.widget.AbsSeekBar || v instanceof android.widget.NumberPicker
+                || v instanceof android.widget.Checkable || v instanceof android.widget.Spinner;
+    }
+
+    /** Called by AbsListView.dispatchDraw: paint the selected row (list focused, keypad mode). */
+    public static void drawListRow(android.widget.AbsListView list, Canvas canvas, boolean show) {
+        if (!show || !"kyf37".equals(Build.DEVICE)) return;
+        final View sel = list.getSelectedView();
+        if (sel == null || !sel.isEnabled() || sel.getVisibility() != View.VISIBLE) return;
+        final float d = list.getResources().getDisplayMetrics().density;
+        final int w = sel.getWidth(), h = sel.getHeight();
+        if (w < 12 * d || h < 12 * d) return;
+        watch(list.getContext());
+        synchronized (sDrawn) { sDrawn.put(list, Boolean.TRUE); }
+        sRect.set(sel.getLeft(), sel.getTop(), sel.getRight(), sel.getBottom());
+        paintBox(canvas, sRect, d, sId);
+    }
+
+    private static boolean isContainer(View v) {
+        return v instanceof android.widget.AbsListView || v instanceof android.widget.ScrollView
+                || v instanceof android.widget.HorizontalScrollView
+                || v instanceof android.webkit.WebView || v instanceof SurfaceView;
+    }
+
+    /** Tint + accent outline + contrast edge inside {@code bounds} (edge flush with bounds). */
+    public static void paintBox(Canvas canvas, RectF bounds, float density, int id) {
+        final int[] p = PALETTE[sanitize(id)];
+        final float edgeW = p[4] * density, accW = p[3] * density, radius = 4 * density;
+        final Paint paint = sPaint;
+        final float l = bounds.left, t = bounds.top, r = bounds.right, b = bounds.bottom;
+        final RectF q = sWork;
+        float inset = edgeW + accW;
+        q.set(l + inset, t + inset, r - inset, b - inset);
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(p[2]);
+        canvas.drawRoundRect(q, radius / 2, radius / 2, paint);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(accW);
+        paint.setColor(p[0]);
+        float a = edgeW + accW / 2;
+        q.set(l + a, t + a, r - a, b - a);
+        canvas.drawRoundRect(q, radius, radius, paint);
+        paint.setStrokeWidth(edgeW);
+        paint.setColor(p[1]);
+        float e = edgeW / 2;
+        q.set(l + e, t + e, r - e, b - e);
+        canvas.drawRoundRect(q, radius + e, radius + e, paint);
+    }
+
+    /** Drawable form for logical selections (SystemUI tiles / notification rows). */
+    public static Drawable selection(Context context) {
+        watch(context);
+        Drawable d = new SelectionDrawable(context.getResources().getDisplayMetrics().density);
+        synchronized (sDrawn) { sDrawn.put(d, Boolean.TRUE); }
+        return d;
+    }
+
+    private static final class SelectionDrawable extends Drawable {
+        private final float density;
+        SelectionDrawable(float density) { this.density = density; }
+        @Override public void draw(Canvas canvas) {
+            paintBox(canvas, new RectF(getBounds()), density, sId);
+        }
+        @Override public void setAlpha(int alpha) { }
+        @Override public void setColorFilter(ColorFilter cf) { }
+        @Override public int getOpacity() { return PixelFormat.TRANSLUCENT; }
+    }
+}

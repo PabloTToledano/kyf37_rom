@@ -1,0 +1,82 @@
+27 activities found:
+  Activity #0:
+    priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=true
+    com.android.camera2/com.android.camera.CameraLauncher
+  Activity #1:
+    priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=true
+    com.android.contacts/.activities.PeopleActivity
+  Activity #2:
+    priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=true
+    com.android.deskclock/.DeskClock
+  Activity #3:
+    priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=true
+    com.android.dialer/.main.impl.MainActivity
+  Activity #4:
+    priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=true
+    com.android.email/.activity.Welcome
+  Activity #5:
+    priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=true
+    com.android.gallery3d/.app.GalleryActivity
+  Activity #6:
+    priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=true
+    com.android.messaging/.ui.conversationlist.ConversationListActivity
+  Activity #7:
+    priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=true
+    com.android.settings/.Settings
+  Activity #8:
+    priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=true
+    com.aurora.store/.ComposeActivity
+  Activity #9:
+    priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=true
+    jp.kyocera.kc_soundrecorder/.MainMenuActivity
+  Activity #10:
+    priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=true
+    org.lineageos.eleven/.ui.activities.HomeActivity
+  Activity #11:
+    priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=true
+    org.lineageos.etar/com.android.calendar.AllInOneActivity
+  Activity #12:
+    priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=false
+    com.android.calculator2/.Calculator
+  Activity #13:
+    priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=false
+    com.android.documentsui/.LauncherActivity
+  Activity #14:
+    priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=false
+    com.google.android.gms/org.microg.gms.ui.SettingsActivity
+  Activity #15:
+    priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=false
+    com.kyocera.irda/.IrDATopActivity
+  Activity #16:
+    priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=false
+    io.github.sspanak.tt9/.preferences.PreferencesActivity
+  Activity #17:
+    priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=false
+    jp.kyocera.barcodereader/.MainActivity
+  Activity #18:
+    priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=false
+    jp.kyocera.camera/.activity.CameraActivity
+  Activity #19:
+    priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=false
+    jp.kyocera.memo/.MemoActivity
+  Activity #20:
+    priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=false
+    jp.kyocera.mobilelight/.MobileLight
+  Activity #21:
+    priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=false
+    org.kyf37.keypad/.KeypadSettings
+  Activity #22:
+    priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=false
+    org.kyf37.phonesettings/.PhoneSettings
+  Activity #23:
+    priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=false
+    org.lineageos.audiofx/.activity.ActivityMusic
+  Activity #24:
+    priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=false
+    org.lineageos.jelly/.MainActivity
+  Activity #25:
+    priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=false
+    com.iakmds.librecamera/.MainActivity
+  Activity #26:
+    priority=0 preferredOrder=0 match=0x108000 specificIndex=-1 isDefault=false
+    com.tiktok.lite.go/com.ss.android.ugc.aweme.main.homepage.MainActivity

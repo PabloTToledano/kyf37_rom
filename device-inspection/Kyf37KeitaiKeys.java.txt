@@ -1,0 +1,71 @@
+package com.android.systemui.statusbar.phone;
+
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.view.KeyEvent;
+import android.view.View;
+import com.android.systemui.R;
+import com.android.systemui.statusbar.notification.row.ExpandableNotificationRow;
+import com.android.systemui.statusbar.notification.stack.NotificationStackScrollLayout;
+import java.util.ArrayList;
+
+/** Physical-key selection over the real Android notification rows. */
+final class Kyf37KeitaiKeys {
+    private ExpandableNotificationRow selected;
+    boolean handle(StatusBarWindowView window, KeyEvent event) {
+        NotificationPanelView panel = window.findViewById(R.id.notification_panel);
+        if (panel == null || panel.isFullyCollapsed()) { clear(); return false; }
+        int key = event.getKeyCode();
+        if (key != KeyEvent.KEYCODE_DPAD_UP && key != KeyEvent.KEYCODE_DPAD_DOWN
+                && key != KeyEvent.KEYCODE_DPAD_LEFT && key != KeyEvent.KEYCODE_DPAD_RIGHT
+                && key != KeyEvent.KEYCODE_DPAD_CENTER && key != KeyEvent.KEYCODE_ENTER
+                && key != KeyEvent.KEYCODE_DEL) return false;
+        NotificationStackScrollLayout stack = window.findViewById(R.id.notification_stack_scroller);
+        ArrayList<ExpandableNotificationRow> rows = new ArrayList<>();
+        if (stack != null) for (int i = 0; i < stack.getChildCount(); i++) {
+            View child = stack.getChildAt(i);
+            if (child instanceof ExpandableNotificationRow && child.getVisibility() == View.VISIBLE) {
+                ExpandableNotificationRow row = (ExpandableNotificationRow) child;
+                rows.add(row);
+                if (row.areChildrenExpanded() && row.getNotificationChildren() != null)
+                    for (ExpandableNotificationRow nested : row.getNotificationChildren())
+                        if (nested.getVisibility() == View.VISIBLE) rows.add(nested);
+            }
+        }
+        if (rows.isEmpty()) { clear(); return false; }
+        if (event.getAction() != KeyEvent.ACTION_DOWN) return true;
+        int index = rows.indexOf(selected);
+        if (index < 0) index = 0;
+        else if (key == KeyEvent.KEYCODE_DPAD_DOWN) index = Math.min(rows.size()-1, index+1);
+        else if (key == KeyEvent.KEYCODE_DPAD_UP) index = Math.max(0, index-1);
+        ExpandableNotificationRow next = rows.get(index);
+        if (next != selected) {
+            clear(); selected = next;
+            GradientDrawable border = new GradientDrawable();
+            border.setColor(0x402475BB);
+            border.setCornerRadius(0);
+            border.setStroke((int)(3 * window.getResources().getDisplayMetrics().density), 0xff10305a);
+            selected.setForeground(border);
+        }
+        stack.scrollTo(selected);
+        if (event.getRepeatCount() == 0) {
+            if (key == KeyEvent.KEYCODE_DPAD_CENTER || key == KeyEvent.KEYCODE_ENTER)
+                selected.performClick();
+            else if (key == KeyEvent.KEYCODE_DPAD_RIGHT) {
+                if (selected.isSummaryWithChildren()) selected.setChildrenExpanded(true, true);
+                else selected.setUserExpanded(true, true);
+            } else if (key == KeyEvent.KEYCODE_DPAD_LEFT) {
+                if (selected.isSummaryWithChildren()) selected.setChildrenExpanded(false, true);
+                else selected.setUserExpanded(false, true);
+            }
+            else if (key == KeyEvent.KEYCODE_DEL && selected.getEntry().isClearable()) {
+                selected.performDismiss(false); clear();
+            }
+        }
+        return true;
+    }
+    void clear() {
+        if (selected != null) selected.setForeground(null);
+        selected = null;
+    }
+}

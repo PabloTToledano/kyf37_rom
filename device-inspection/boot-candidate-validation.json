@@ -1,0 +1,11 @@
+{
+  "stock_bytes": 16777216,
+  "candidate_bytes": 16777216,
+  "fits_partition": true,
+  "kernel_unchanged": true,
+  "device_tree_unchanged": true,
+  "candidate_ramdisk_bytes": 1744748,
+  "candidate_has_magisk": true,
+  "candidate_has_stock_init_backup": true,
+  "sha256": "63ac686b87ff2dc700c33414a7a1d4fd8e017f0edfeac3af43a61926ccdebf2b"
+}

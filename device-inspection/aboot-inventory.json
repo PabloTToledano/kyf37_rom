@@ -1,0 +1,468 @@
+{
+  "entry": "0x8f600000",
+  "segments": [
+    {
+      "offset": 32768,
+      "address": 2405433344,
+      "bytes": 375352,
+      "flags": 7
+    }
+  ],
+  "strings": [
+    {
+      "text": "ANDROID-BOOT!",
+      "offset": "0x4ffe8",
+      "address": "0x8f647fe8",
+      "literal_references": [],
+      "movw_movt_references": [
+        {
+          "instruction": "0x8f61c9a8",
+          "mode": "arm"
+        },
+        {
+          "instruction": "0x8f61ca40",
+          "mode": "arm"
+        },
+        {
+          "instruction": "0x8f61d428",
+          "mode": "arm"
+        },
+        {
+          "instruction": "0x8f61d478",
+          "mode": "arm"
+        }
+      ]
+    },
+    {
+      "text": "ANDROID-BOOT!",
+      "offset": "0x63818",
+      "address": "0x8f65b818",
+      "literal_references": [],
+      "movw_movt_references": [
+        {
+          "instruction": "0x8f61b8b0",
+          "mode": "arm"
+        },
+        {
+          "instruction": "0x8f61bab0",
+          "mode": "arm"
+        },
+        {
+          "instruction": "0x8f61bb70",
+          "mode": "arm"
+        },
+        {
+          "instruction": "0x8f61c078",
+          "mode": "arm"
+        },
+        {
+          "instruction": "0x8f61c34c",
+          "mode": "arm"
+        },
+        {
+          "instruction": "0x8f61cdb0",
+          "mode": "arm"
+        },
+        {
+          "instruction": "0x8f61d0ec",
+          "mode": "arm"
+        },
+        {
+          "instruction": "0x8f61d604",
+          "mode": "arm"
+        },
+        {
+          "instruction": "0x8f61d9b4",
+          "mode": "arm"
+        },
+        {
+          "instruction": "0x8f61da08",
+          "mode": "arm"
+        }
+      ]
+    },
+    {
+      "text": "Device is unlocked! Skipping verification...\n",
+      "offset": "0x4f8a4",
+      "address": "0x8f6478a4",
+      "literal_references": [],
+      "movw_movt_references": [
+        {
+          "instruction": "0x8f61b91c",
+          "mode": "arm"
+        }
+      ]
+    },
+    {
+      "text": "oem unlock is not allowed",
+      "offset": "0x50970",
+      "address": "0x8f648970",
+      "literal_references": [],
+      "movw_movt_references": []
+    },
+    {
+      "text": "fastboot oem unlock-go'",
+      "offset": "0x509c0",
+      "address": "0x8f6489c0",
+      "literal_references": [],
+      "movw_movt_references": []
+    },
+    {
+      "text": "use_signed_kernel=%d, is_unlocked=%d, is_tampered=%d.\n",
+      "offset": "0x4fd3c",
+      "address": "0x8f647d3c",
+      "literal_references": [],
+      "movw_movt_references": [
+        {
+          "instruction": "0x8f61c08c",
+          "mode": "arm"
+        }
+      ]
+    },
+    {
+      "text": "Need wipe userdata. Do 'fastboot oem unlock-go'",
+      "offset": "0x509a8",
+      "address": "0x8f6489a8",
+      "literal_references": [],
+      "movw_movt_references": []
+    },
+    {
+      "text": "boot_verifier: oem keystore length is invalid.\n",
+      "offset": "0x4ce4c",
+      "address": "0x8f644e4c",
+      "literal_references": [],
+      "movw_movt_references": [
+        {
+          "instruction": "0x8f60accc",
+          "mode": "arm"
+        }
+      ]
+    },
+    {
+      "text": "boot_verifier: Calloc failed during verification\n",
+      "offset": "0x4ce7c",
+      "address": "0x8f644e7c",
+      "literal_references": [],
+      "movw_movt_references": [
+        {
+          "instruction": "0x8f60aed0",
+          "mode": "arm"
+        }
+      ]
+    },
+    {
+      "text": "boot_verifier: Signature decrypt failed! Signature invalid = %d\n",
+      "offset": "0x4ceb0",
+      "address": "0x8f644eb0",
+      "literal_references": [],
+      "movw_movt_references": [
+        {
+          "instruction": "0x8f60ae74",
+          "mode": "arm"
+        }
+      ]
+    },
+    {
+      "text": "boot_verifier: verification failure due to target name mismatch\n",
+      "offset": "0x4cf00",
+      "address": "0x8f644f00",
+      "literal_references": [],
+      "movw_movt_references": [
+        {
+          "instruction": "0x8f60af60",
+          "mode": "arm"
+        },
+        {
+          "instruction": "0x8f60b168",
+          "mode": "arm"
+        }
+      ]
+    },
+    {
+      "text": "boot_verifier: image length is different. (%d vs %d)\n",
+      "offset": "0x4cf44",
+      "address": "0x8f644f44",
+      "literal_references": [],
+      "movw_movt_references": [
+        {
+          "instruction": "0x8f60b004",
+          "mode": "arm"
+        }
+      ]
+    },
+    {
+      "text": "boot_verifier: Image verification failed.\n",
+      "offset": "0x4cf7c",
+      "address": "0x8f644f7c",
+      "literal_references": [],
+      "movw_movt_references": [
+        {
+          "instruction": "0x8f60aff0",
+          "mode": "arm"
+        }
+      ]
+    },
+    {
+      "text": "boot_verifier: Device is in ORANGE boot state.\n",
+      "offset": "0x4cfa8",
+      "address": "0x8f644fa8",
+      "literal_references": [],
+      "movw_movt_references": [
+        {
+          "instruction": "0x8f60b148",
+          "mode": "arm"
+        },
+        {
+          "instruction": "0x8f60b520",
+          "mode": "arm"
+        }
+      ]
+    },
+    {
+      "text": "boot_verifier: Skipping boot verification.\n",
+      "offset": "0x4cfd8",
+      "address": "0x8f644fd8",
+      "literal_references": [],
+      "movw_movt_references": [
+        {
+          "instruction": "0x8f60b154",
+          "mode": "arm"
+        }
+      ]
+    },
+    {
+      "text": "boot_verifier: Error while reading singature length.\n",
+      "offset": "0x4d004",
+      "address": "0x8f645004",
+      "literal_references": [],
+      "movw_movt_references": [
+        {
+          "instruction": "0x8f60b08c",
+          "mode": "arm"
+        }
+      ]
+    },
+    {
+      "text": "boot_verifier: No keystore partition found\n",
+      "offset": "0x4d03c",
+      "address": "0x8f64503c",
+      "literal_references": [],
+      "movw_movt_references": [
+        {
+          "instruction": "0x8f60b40c",
+          "mode": "arm"
+        }
+      ]
+    },
+    {
+      "text": "boot_verifier: Cannot read user keystore\n",
+      "offset": "0x4d068",
+      "address": "0x8f645068",
+      "literal_references": [],
+      "movw_movt_references": [
+        {
+          "instruction": "0x8f60b41c",
+          "mode": "arm"
+        }
+      ]
+    },
+    {
+      "text": "boot_verifier: user keystore length is invalid.\n",
+      "offset": "0x4d094",
+      "address": "0x8f645094",
+      "literal_references": [],
+      "movw_movt_references": [
+        {
+          "instruction": "0x8f60b2c0",
+          "mode": "arm"
+        }
+      ]
+    },
+    {
+      "text": "boot_verifier: Keystore verification failed!\n",
+      "offset": "0x4d0c8",
+      "address": "0x8f6450c8",
+      "literal_references": [],
+      "movw_movt_references": [
+        {
+          "instruction": "0x8f60b3bc",
+          "mode": "arm"
+        }
+      ]
+    },
+    {
+      "text": "boot_verifier: Keystore verification success!\n",
+      "offset": "0x4d0f8",
+      "address": "0x8f6450f8",
+      "literal_references": [],
+      "movw_movt_references": [
+        {
+          "instruction": "0x8f60b3e0",
+          "mode": "arm"
+        }
+      ]
+    },
+    {
+      "text": "boot_verifier: Device is in GREEN boot state.\n",
+      "offset": "0x4d128",
+      "address": "0x8f645128",
+      "literal_references": [],
+      "movw_movt_references": [
+        {
+          "instruction": "0x8f60b4fc",
+          "mode": "arm"
+        }
+      ]
+    },
+    {
+      "text": "boot_verifier: Device is in YELLOW boot state.\n",
+      "offset": "0x4d158",
+      "address": "0x8f645158",
+      "literal_references": [],
+      "movw_movt_references": [
+        {
+          "instruction": "0x8f60b4e0",
+          "mode": "arm"
+        }
+      ]
+    },
+    {
+      "text": "boot_verifier: Device is in RED boot state.\n",
+      "offset": "0x4d188",
+      "address": "0x8f645188",
+      "literal_references": [],
+      "movw_movt_references": [
+        {
+          "instruction": "0x8f60b4bc",
+          "mode": "arm"
+        }
+      ]
+    },
+    {
+      "text": "boot_verifier: keystore length is invalid.\n",
+      "offset": "0x4d1b8",
+      "address": "0x8f6451b8",
+      "literal_references": [],
+      "movw_movt_references": []
+    },
+    {
+      "text": "recovery",
+      "offset": "0x4a300",
+      "address": "0x8f642300",
+      "literal_references": [],
+      "movw_movt_references": [
+        {
+          "instruction": "0x8f603e58",
+          "mode": "arm"
+        },
+        {
+          "instruction": "0x8f61c1bc",
+          "mode": "arm"
+        },
+        {
+          "instruction": "0x8f61cc14",
+          "mode": "arm"
+        }
+      ]
+    },
+    {
+      "text": "recoveryfs",
+      "offset": "0x4f53c",
+      "address": "0x8f64753c",
+      "literal_references": [],
+      "movw_movt_references": [
+        {
+          "instruction": "0x8f61ac10",
+          "mode": "arm"
+        }
+      ]
+    },
+    {
+      "text": "recovery",
+      "offset": "0x4f959",
+      "address": "0x8f647959",
+      "literal_references": [],
+      "movw_movt_references": []
+    },
+    {
+      "text": "recovery.\n",
+      "offset": "0x4f9f7",
+      "address": "0x8f6479f7",
+      "literal_references": [],
+      "movw_movt_references": []
+    },
+    {
+      "text": "recovery.img",
+      "offset": "0x4fc4c",
+      "address": "0x8f647c4c",
+      "literal_references": [],
+      "movw_movt_references": []
+    },
+    {
+      "text": "recovery partition found\n",
+      "offset": "0x4fc66",
+      "address": "0x8f647c66",
+      "literal_references": [],
+      "movw_movt_references": []
+    },
+    {
+      "text": "recovery_init\n",
+      "offset": "0x5024a",
+      "address": "0x8f64824a",
+      "literal_references": [],
+      "movw_movt_references": []
+    },
+    {
+      "text": "recovery\n--wipe_data",
+      "offset": "0x509d8",
+      "address": "0x8f6489d8",
+      "literal_references": [],
+      "movw_movt_references": []
+    },
+    {
+      "text": "recovery_header\n",
+      "offset": "0x50d2b",
+      "address": "0x8f648d2b",
+      "literal_references": [],
+      "movw_movt_references": []
+    },
+    {
+      "text": "recovery",
+      "offset": "0x50e6d",
+      "address": "0x8f648e6d",
+      "literal_references": [],
+      "movw_movt_references": []
+    },
+    {
+      "text": "recovery.c",
+      "offset": "0x50f26",
+      "address": "0x8f648f26",
+      "literal_references": [],
+      "movw_movt_references": []
+    },
+    {
+      "text": "devinfo",
+      "offset": "0x4f82c",
+      "address": "0x8f64782c",
+      "literal_references": [],
+      "movw_movt_references": [
+        {
+          "instruction": "0x8f61b7b0",
+          "mode": "arm"
+        },
+        {
+          "instruction": "0x8f61c8b8",
+          "mode": "arm"
+        },
+        {
+          "instruction": "0x8f61ca9c",
+          "mode": "arm"
+        },
+        {
+          "instruction": "0x8f61d3e4",
+          "mode": "arm"
+        }
+      ]
+    }
+  ]
+}

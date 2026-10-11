@@ -1,0 +1,6 @@
+1
+
+uid=0(root) gid=0(root) context=u:r:init_shell:s0
+
+7c564a1e8bac242b14d99a7f2f9b0c5c  /dev/block/bootdevice/by-name/recovery
+
