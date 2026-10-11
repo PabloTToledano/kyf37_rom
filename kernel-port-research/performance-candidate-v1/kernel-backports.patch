@@ -1,0 +1,5546 @@
+diff --git a/arch/arm/include/asm/unistd.h b/arch/arm/include/asm/unistd.h
+index 43876245..2ed963aa 100644
+--- a/arch/arm/include/asm/unistd.h
++++ b/arch/arm/include/asm/unistd.h
+@@ -15,7 +15,7 @@
+ 
+ #include <uapi/asm/unistd.h>
+ 
+-#define __NR_syscalls  (384)
++#define __NR_syscalls  (388)
+ #define __ARM_NR_cmpxchg		(__ARM_NR_BASE+0x00fff0)
+ 
+ #define __ARCH_WANT_STAT64
+diff --git a/arch/arm/include/uapi/asm/unistd.h b/arch/arm/include/uapi/asm/unistd.h
+index fb5584d0..8d09edaa 100644
+--- a/arch/arm/include/uapi/asm/unistd.h
++++ b/arch/arm/include/uapi/asm/unistd.h
+@@ -408,6 +408,7 @@
+ #define __NR_finit_module		(__NR_SYSCALL_BASE+379)
+ #define __NR_sched_setattr		(__NR_SYSCALL_BASE+380)
+ #define __NR_sched_getattr		(__NR_SYSCALL_BASE+381)
++#define __NR_getrandom			(__NR_SYSCALL_BASE+384)
+ 
+ /*
+  * This may need to be greater than __NR_last_syscall+1 in order to
+diff --git a/arch/arm/kernel/calls.S b/arch/arm/kernel/calls.S
+index 166e945d..d444eac8 100644
+--- a/arch/arm/kernel/calls.S
++++ b/arch/arm/kernel/calls.S
+@@ -391,6 +391,9 @@
+ 		CALL(sys_finit_module)
+ /* 380 */	CALL(sys_sched_setattr)
+ 		CALL(sys_sched_getattr)
++		CALL(sys_ni_syscall)	/* 382: renameat2 not backported */
++		CALL(sys_ni_syscall)	/* 383: seccomp syscall not backported */
++/* 384 */	CALL(sys_getrandom)
+ #ifndef syscalls_counted
+ .equ syscalls_padding, ((NR_syscalls + 3) & ~3) - NR_syscalls
+ #define syscalls_counted
+diff --git a/block/genhd.c b/block/genhd.c
+index 50d8e7ac..35aa64d6 100644
+--- a/block/genhd.c
++++ b/block/genhd.c
+@@ -1507,9 +1507,9 @@ static void __disk_unblock_events(struct gendisk *disk, bool check_now)
+ 	intv = disk_events_poll_jiffies(disk);
+ 	set_timer_slack(&ev->dwork.timer, intv / 4);
+ 	if (check_now)
+-		queue_delayed_work(system_freezable_wq, &ev->dwork, 0);
++		queue_delayed_work(system_freezable_power_efficient_wq, &ev->dwork, 0);
+ 	else if (intv)
+-		queue_delayed_work(system_freezable_wq, &ev->dwork, intv);
++		queue_delayed_work(system_freezable_power_efficient_wq, &ev->dwork, intv);
+ out_unlock:
+ 	spin_unlock_irqrestore(&ev->lock, flags);
+ }
+@@ -1552,7 +1552,7 @@ void disk_flush_events(struct gendisk *disk, unsigned int mask)
+ 	spin_lock_irq(&ev->lock);
+ 	ev->clearing |= mask;
+ 	if (!ev->block)
+-		mod_delayed_work(system_freezable_wq, &ev->dwork, 0);
++		mod_delayed_work(system_freezable_power_efficient_wq, &ev->dwork, 0);
+ 	spin_unlock_irq(&ev->lock);
+ }
+ 
+@@ -1645,7 +1645,7 @@ static void disk_check_events(struct disk_events *ev,
+ 
+ 	intv = disk_events_poll_jiffies(disk);
+ 	if (!ev->block && intv)
+-		queue_delayed_work(system_freezable_wq, &ev->dwork, intv);
++		queue_delayed_work(system_freezable_power_efficient_wq, &ev->dwork, intv);
+ 
+ 	spin_unlock_irq(&ev->lock);
+ 
+diff --git a/drivers/char/random.c b/drivers/char/random.c
+index 1c24ed59..d10522bf 100644
+--- a/drivers/char/random.c
++++ b/drivers/char/random.c
+@@ -257,6 +257,7 @@
+ #include <linux/ptrace.h>
+ #include <linux/kmemcheck.h>
+ #include <linux/irq.h>
++#include <linux/syscalls.h>
+ 
+ #include <asm/processor.h>
+ #include <asm/uaccess.h>
+@@ -405,6 +406,7 @@ static struct poolinfo {
+  */
+ static DECLARE_WAIT_QUEUE_HEAD(random_read_wait);
+ static DECLARE_WAIT_QUEUE_HEAD(random_write_wait);
++static DECLARE_WAIT_QUEUE_HEAD(urandom_init_wait);
+ static struct fasync_struct *fasync;
+ 
+ static bool debug;
+@@ -614,8 +616,12 @@ retry:
+ 
+ 	if (!r->initialized && nbits > 0) {
+ 		r->entropy_total += nbits;
+-		if (r->entropy_total > 128)
++		if (r->entropy_total > 128) {
+ 			r->initialized = 1;
++			if (r == &nonblocking_pool)
++				wake_up_interruptible(&urandom_init_wait);
++		}
++
+ 	}
+ 
+ 	trace_credit_entropy_bits(r->name, nbits, entropy_count,
+@@ -1023,13 +1029,14 @@ static ssize_t extract_entropy_user(struct entropy_store *r, void __user *buf,
+ {
+ 	ssize_t ret = 0, i;
+ 	__u8 tmp[EXTRACT_SIZE];
++	int large_request = (nbytes > 256);
+ 
+ 	trace_extract_entropy_user(r->name, nbytes, r->entropy_count, _RET_IP_);
+ 	xfer_secondary_pool(r, nbytes);
+ 	nbytes = account(r, nbytes, 0, 0);
+ 
+ 	while (nbytes) {
+-		if (need_resched()) {
++		if (large_request && need_resched()) {
+ 			if (signal_pending(current)) {
+ 				if (ret == 0)
+ 					ret = -ERESTARTSYS;
+@@ -1163,7 +1170,7 @@ void rand_initialize_disk(struct gendisk *disk)
+ #endif
+ 
+ static ssize_t
+-random_read(struct file *file, char __user *buf, size_t nbytes, loff_t *ppos)
++_random_read(int nonblock, char __user *buf, size_t nbytes)
+ {
+ 	ssize_t n, retval = 0, count = 0;
+ 
+@@ -1188,7 +1195,7 @@ random_read(struct file *file, char __user *buf, size_t nbytes, loff_t *ppos)
+ 			  n*8, (nbytes-n)*8);
+ 
+ 		if (n == 0) {
+-			if (file->f_flags & O_NONBLOCK) {
++			if (nonblock) {
+ 				retval = -EAGAIN;
+ 				break;
+ 			}
+@@ -1219,6 +1226,12 @@ random_read(struct file *file, char __user *buf, size_t nbytes, loff_t *ppos)
+ 	return (count ? count : retval);
+ }
+ 
++static ssize_t
++random_read(struct file *file, char __user *buf, size_t nbytes, loff_t *ppos)
++{
++	return _random_read(file->f_flags & O_NONBLOCK, buf, nbytes);
++}
++
+ static ssize_t
+ urandom_read(struct file *file, char __user *buf, size_t nbytes, loff_t *ppos)
+ {
+@@ -1562,3 +1575,26 @@ void add_hwgenerator_randomness(const char *buffer, size_t count,
+ 	credit_entropy_bits(poolp, entropy);
+ }
+ EXPORT_SYMBOL_GPL(add_hwgenerator_randomness);
++
++SYSCALL_DEFINE3(getrandom, char __user *, buf, size_t, count,
++		unsigned int, flags)
++{
++	if (flags & ~(GRND_NONBLOCK|GRND_RANDOM))
++		return -EINVAL;
++
++	if (count > INT_MAX)
++		count = INT_MAX;
++
++	if (flags & GRND_RANDOM)
++		return _random_read(flags & GRND_NONBLOCK, buf, count);
++
++	if (unlikely(nonblocking_pool.initialized == 0)) {
++		if (flags & GRND_NONBLOCK)
++			return -EAGAIN;
++		wait_event_interruptible(urandom_init_wait,
++					 nonblocking_pool.initialized);
++		if (signal_pending(current))
++			return -ERESTARTSYS;
++	}
++	return urandom_read(NULL, buf, count, NULL);
++}
+diff --git a/drivers/staging/zram/Kconfig b/drivers/staging/zram/Kconfig
+index 983314c4..6489c0fd 100644
+--- a/drivers/staging/zram/Kconfig
++++ b/drivers/staging/zram/Kconfig
+@@ -14,7 +14,16 @@ config ZRAM
+ 	  disks and maybe many more.
+ 
+ 	  See zram.txt for more information.
+-	  Project home: <https://compcache.googlecode.com/>
++
++config ZRAM_LZ4_COMPRESS
++	bool "Enable LZ4 algorithm support"
++	depends on ZRAM
++	select LZ4_COMPRESS
++	select LZ4_DECOMPRESS
++	default n
++	help
++	  This option enables LZ4 compression algorithm support. Compression
++	  algorithm can be changed using `comp_algorithm' device attribute.
+ 
+ config ZRAM_DEBUG
+ 	bool "Compressed RAM block device debug support"
+diff --git a/drivers/staging/zram/Makefile b/drivers/staging/zram/Makefile
+index cb0f9ced..be0763ff 100644
+--- a/drivers/staging/zram/Makefile
++++ b/drivers/staging/zram/Makefile
+@@ -1,3 +1,5 @@
+-zram-y	:=	zram_drv.o
++zram-y	:=	zcomp_lzo.o zcomp.o zram_drv.o
++
++zram-$(CONFIG_ZRAM_LZ4_COMPRESS) += zcomp_lz4.o
+ 
+ obj-$(CONFIG_ZRAM)	+=	zram.o
+diff --git a/drivers/staging/zram/kyf37_compat.h b/drivers/staging/zram/kyf37_compat.h
+new file mode 100644
+index 00000000..bcd05035
+--- /dev/null
++++ b/drivers/staging/zram/kyf37_compat.h
+@@ -0,0 +1,18 @@
++/* Compatibility with the original KYF37 3.10 allocator/API. */
++#ifndef _KYF37_ZRAM_COMPAT_H
++#define _KYF37_ZRAM_COMPAT_H
++#include <linux/slab.h>
++#include <linux/vmalloc.h>
++#include "../zsmalloc/zsmalloc.h"
++static inline void kyf37_kvfree(const void *p)
++{
++    if (is_vmalloc_addr(p))
++        vfree(p);
++    else
++        kfree(p);
++}
++static inline unsigned long kyf37_zs_get_total_pages(struct zs_pool *pool)
++{
++    return zs_get_total_size_bytes(pool) >> PAGE_SHIFT;
++}
++#endif
+diff --git a/drivers/staging/zram/zcomp.c b/drivers/staging/zram/zcomp.c
+new file mode 100644
+index 00000000..feca4030
+--- /dev/null
++++ b/drivers/staging/zram/zcomp.c
+@@ -0,0 +1,356 @@
++/*
++ * Copyright (C) 2014 Sergey Senozhatsky.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version
++ * 2 of the License, or (at your option) any later version.
++ */
++
++#include <linux/kernel.h>
++#include <linux/string.h>
++#include <linux/err.h>
++#include <linux/slab.h>
++#include <linux/wait.h>
++#include <linux/sched.h>
++
++#include "zcomp.h"
++#include "zcomp_lzo.h"
++#ifdef CONFIG_ZRAM_LZ4_COMPRESS
++#include "zcomp_lz4.h"
++#endif
++
++/*
++ * single zcomp_strm backend
++ */
++struct zcomp_strm_single {
++	struct mutex strm_lock;
++	struct zcomp_strm *zstrm;
++};
++
++/*
++ * multi zcomp_strm backend
++ */
++struct zcomp_strm_multi {
++	/* protect strm list */
++	spinlock_t strm_lock;
++	/* max possible number of zstrm streams */
++	int max_strm;
++	/* number of available zstrm streams */
++	int avail_strm;
++	/* list of available strms */
++	struct list_head idle_strm;
++	wait_queue_head_t strm_wait;
++};
++
++static struct zcomp_backend *backends[] = {
++	&zcomp_lzo,
++#ifdef CONFIG_ZRAM_LZ4_COMPRESS
++	&zcomp_lz4,
++#endif
++	NULL
++};
++
++static struct zcomp_backend *find_backend(const char *compress)
++{
++	int i = 0;
++	while (backends[i]) {
++		if (sysfs_streq(compress, backends[i]->name))
++			break;
++		i++;
++	}
++	return backends[i];
++}
++
++static void zcomp_strm_free(struct zcomp *comp, struct zcomp_strm *zstrm)
++{
++	if (zstrm->private)
++		comp->backend->destroy(zstrm->private);
++	free_pages((unsigned long)zstrm->buffer, 1);
++	kfree(zstrm);
++}
++
++/*
++ * allocate new zcomp_strm structure with ->private initialized by
++ * backend, return NULL on error
++ */
++static struct zcomp_strm *zcomp_strm_alloc(struct zcomp *comp)
++{
++	struct zcomp_strm *zstrm = kmalloc(sizeof(*zstrm), GFP_NOIO);
++	if (!zstrm)
++		return NULL;
++
++	zstrm->private = comp->backend->create();
++	/*
++	 * allocate 2 pages. 1 for compressed data, plus 1 extra for the
++	 * case when compressed size is larger than the original one
++	 */
++	zstrm->buffer = (void *)__get_free_pages(GFP_NOIO | __GFP_ZERO, 1);
++	if (!zstrm->private || !zstrm->buffer) {
++		zcomp_strm_free(comp, zstrm);
++		zstrm = NULL;
++	}
++	return zstrm;
++}
++
++/*
++ * get idle zcomp_strm or wait until other process release
++ * (zcomp_strm_release()) one for us
++ */
++static struct zcomp_strm *zcomp_strm_multi_find(struct zcomp *comp)
++{
++	struct zcomp_strm_multi *zs = comp->stream;
++	struct zcomp_strm *zstrm;
++
++	while (1) {
++		spin_lock(&zs->strm_lock);
++		if (!list_empty(&zs->idle_strm)) {
++			zstrm = list_entry(zs->idle_strm.next,
++					struct zcomp_strm, list);
++			list_del(&zstrm->list);
++			spin_unlock(&zs->strm_lock);
++			return zstrm;
++		}
++		/* zstrm streams limit reached, wait for idle stream */
++		if (zs->avail_strm >= zs->max_strm) {
++			spin_unlock(&zs->strm_lock);
++			wait_event(zs->strm_wait, !list_empty(&zs->idle_strm));
++			continue;
++		}
++		/* allocate new zstrm stream */
++		zs->avail_strm++;
++		spin_unlock(&zs->strm_lock);
++
++		zstrm = zcomp_strm_alloc(comp);
++		if (!zstrm) {
++			spin_lock(&zs->strm_lock);
++			zs->avail_strm--;
++			spin_unlock(&zs->strm_lock);
++			wait_event(zs->strm_wait, !list_empty(&zs->idle_strm));
++			continue;
++		}
++		break;
++	}
++	return zstrm;
++}
++
++/* add stream back to idle list and wake up waiter or free the stream */
++static void zcomp_strm_multi_release(struct zcomp *comp, struct zcomp_strm *zstrm)
++{
++	struct zcomp_strm_multi *zs = comp->stream;
++
++	spin_lock(&zs->strm_lock);
++	if (zs->avail_strm <= zs->max_strm) {
++		list_add(&zstrm->list, &zs->idle_strm);
++		spin_unlock(&zs->strm_lock);
++		wake_up(&zs->strm_wait);
++		return;
++	}
++
++	zs->avail_strm--;
++	spin_unlock(&zs->strm_lock);
++	zcomp_strm_free(comp, zstrm);
++}
++
++/* change max_strm limit */
++static bool zcomp_strm_multi_set_max_streams(struct zcomp *comp, int num_strm)
++{
++    struct zcomp_strm_multi *zs = comp->stream;
++    struct zcomp_strm *zstrm, *next;
++    LIST_HEAD(to_free);
++
++    spin_lock(&zs->strm_lock);
++    zs->max_strm = num_strm;
++    while (zs->avail_strm > num_strm && !list_empty(&zs->idle_strm)) {
++        zstrm = list_entry(zs->idle_strm.next, struct zcomp_strm, list);
++        list_move(&zstrm->list, &to_free);
++        zs->avail_strm--;
++    }
++    spin_unlock(&zs->strm_lock);
++
++    /* kvfree may sleep for vmalloc-backed compression working memory. */
++    list_for_each_entry_safe(zstrm, next, &to_free, list) {
++        list_del(&zstrm->list);
++        zcomp_strm_free(comp, zstrm);
++    }
++    return true;
++}
++
++static void zcomp_strm_multi_destroy(struct zcomp *comp)
++{
++	struct zcomp_strm_multi *zs = comp->stream;
++	struct zcomp_strm *zstrm;
++
++	while (!list_empty(&zs->idle_strm)) {
++		zstrm = list_entry(zs->idle_strm.next,
++				struct zcomp_strm, list);
++		list_del(&zstrm->list);
++		zcomp_strm_free(comp, zstrm);
++	}
++	kfree(zs);
++}
++
++static int zcomp_strm_multi_create(struct zcomp *comp, int max_strm)
++{
++	struct zcomp_strm *zstrm;
++	struct zcomp_strm_multi *zs;
++
++	comp->destroy = zcomp_strm_multi_destroy;
++	comp->strm_find = zcomp_strm_multi_find;
++	comp->strm_release = zcomp_strm_multi_release;
++	comp->set_max_streams = zcomp_strm_multi_set_max_streams;
++	zs = kmalloc(sizeof(struct zcomp_strm_multi), GFP_KERNEL);
++	if (!zs)
++		return -ENOMEM;
++
++	comp->stream = zs;
++	spin_lock_init(&zs->strm_lock);
++	INIT_LIST_HEAD(&zs->idle_strm);
++	init_waitqueue_head(&zs->strm_wait);
++	zs->max_strm = max_strm;
++	zs->avail_strm = 1;
++
++	zstrm = zcomp_strm_alloc(comp);
++	if (!zstrm) {
++		kfree(zs);
++		return -ENOMEM;
++	}
++	list_add(&zstrm->list, &zs->idle_strm);
++	return 0;
++}
++
++static struct zcomp_strm *zcomp_strm_single_find(struct zcomp *comp)
++{
++	struct zcomp_strm_single *zs = comp->stream;
++	mutex_lock(&zs->strm_lock);
++	return zs->zstrm;
++}
++
++static void zcomp_strm_single_release(struct zcomp *comp,
++		struct zcomp_strm *zstrm)
++{
++	struct zcomp_strm_single *zs = comp->stream;
++	mutex_unlock(&zs->strm_lock);
++}
++
++static bool zcomp_strm_single_set_max_streams(struct zcomp *comp, int num_strm)
++{
++	/* zcomp_strm_single support only max_comp_streams == 1 */
++	return false;
++}
++
++static void zcomp_strm_single_destroy(struct zcomp *comp)
++{
++	struct zcomp_strm_single *zs = comp->stream;
++	zcomp_strm_free(comp, zs->zstrm);
++	kfree(zs);
++}
++
++static int zcomp_strm_single_create(struct zcomp *comp)
++{
++	struct zcomp_strm_single *zs;
++
++	comp->destroy = zcomp_strm_single_destroy;
++	comp->strm_find = zcomp_strm_single_find;
++	comp->strm_release = zcomp_strm_single_release;
++	comp->set_max_streams = zcomp_strm_single_set_max_streams;
++	zs = kmalloc(sizeof(struct zcomp_strm_single), GFP_KERNEL);
++	if (!zs)
++		return -ENOMEM;
++
++	comp->stream = zs;
++	mutex_init(&zs->strm_lock);
++	zs->zstrm = zcomp_strm_alloc(comp);
++	if (!zs->zstrm) {
++		kfree(zs);
++		return -ENOMEM;
++	}
++	return 0;
++}
++
++/* show available compressors */
++ssize_t zcomp_available_show(const char *comp, char *buf)
++{
++	ssize_t sz = 0;
++	int i = 0;
++
++	while (backends[i]) {
++		if (sysfs_streq(comp, backends[i]->name))
++			sz += scnprintf(buf + sz, PAGE_SIZE - sz - 2,
++					"[%s] ", backends[i]->name);
++		else
++			sz += scnprintf(buf + sz, PAGE_SIZE - sz - 2,
++					"%s ", backends[i]->name);
++		i++;
++	}
++	sz += scnprintf(buf + sz, PAGE_SIZE - sz, "\n");
++	return sz;
++}
++
++bool zcomp_set_max_streams(struct zcomp *comp, int num_strm)
++{
++	return comp->set_max_streams(comp, num_strm);
++}
++
++struct zcomp_strm *zcomp_strm_find(struct zcomp *comp)
++{
++	return comp->strm_find(comp);
++}
++
++void zcomp_strm_release(struct zcomp *comp, struct zcomp_strm *zstrm)
++{
++	comp->strm_release(comp, zstrm);
++}
++
++int zcomp_compress(struct zcomp *comp, struct zcomp_strm *zstrm,
++		const unsigned char *src, size_t *dst_len)
++{
++	return comp->backend->compress(src, zstrm->buffer, dst_len,
++			zstrm->private);
++}
++
++int zcomp_decompress(struct zcomp *comp, const unsigned char *src,
++		size_t src_len, unsigned char *dst)
++{
++	return comp->backend->decompress(src, src_len, dst);
++}
++
++void zcomp_destroy(struct zcomp *comp)
++{
++	comp->destroy(comp);
++	kfree(comp);
++}
++
++/*
++ * search available compressors for requested algorithm.
++ * allocate new zcomp and initialize it. return compressing
++ * backend pointer or ERR_PTR if things went bad. ERR_PTR(-EINVAL)
++ * if requested algorithm is not supported, ERR_PTR(-ENOMEM) in
++ * case of allocation error, or any other error potentially
++ * returned by functions zcomp_strm_{multi,single}_create.
++ */
++struct zcomp *zcomp_create(const char *compress, int max_strm)
++{
++	struct zcomp *comp;
++	struct zcomp_backend *backend;
++	int error;
++
++	backend = find_backend(compress);
++	if (!backend)
++		return ERR_PTR(-EINVAL);
++
++	comp = kzalloc(sizeof(struct zcomp), GFP_KERNEL);
++	if (!comp)
++		return ERR_PTR(-ENOMEM);
++
++	comp->backend = backend;
++	if (max_strm > 1)
++		error = zcomp_strm_multi_create(comp, max_strm);
++	else
++		error = zcomp_strm_single_create(comp);
++	if (error) {
++		kfree(comp);
++		return ERR_PTR(error);
++	}
++	return comp;
++}
+diff --git a/drivers/staging/zram/zcomp.h b/drivers/staging/zram/zcomp.h
+new file mode 100644
+index 00000000..c59d1fca
+--- /dev/null
++++ b/drivers/staging/zram/zcomp.h
+@@ -0,0 +1,68 @@
++/*
++ * Copyright (C) 2014 Sergey Senozhatsky.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version
++ * 2 of the License, or (at your option) any later version.
++ */
++
++#ifndef _ZCOMP_H_
++#define _ZCOMP_H_
++
++#include <linux/mutex.h>
++
++struct zcomp_strm {
++	/* compression/decompression buffer */
++	void *buffer;
++	/*
++	 * The private data of the compression stream, only compression
++	 * stream backend can touch this (e.g. compression algorithm
++	 * working memory)
++	 */
++	void *private;
++	/* used in multi stream backend, protected by backend strm_lock */
++	struct list_head list;
++};
++
++/* static compression backend */
++struct zcomp_backend {
++	int (*compress)(const unsigned char *src, unsigned char *dst,
++			size_t *dst_len, void *private);
++
++	int (*decompress)(const unsigned char *src, size_t src_len,
++			unsigned char *dst);
++
++	void *(*create)(void);
++	void (*destroy)(void *private);
++
++	const char *name;
++};
++
++/* dynamic per-device compression frontend */
++struct zcomp {
++	void *stream;
++	struct zcomp_backend *backend;
++
++	struct zcomp_strm *(*strm_find)(struct zcomp *comp);
++	void (*strm_release)(struct zcomp *comp, struct zcomp_strm *zstrm);
++	bool (*set_max_streams)(struct zcomp *comp, int num_strm);
++	void (*destroy)(struct zcomp *comp);
++};
++
++ssize_t zcomp_available_show(const char *comp, char *buf);
++
++struct zcomp *zcomp_create(const char *comp, int max_strm);
++void zcomp_destroy(struct zcomp *comp);
++
++struct zcomp_strm *zcomp_strm_find(struct zcomp *comp);
++void zcomp_strm_release(struct zcomp *comp, struct zcomp_strm *zstrm);
++
++int zcomp_compress(struct zcomp *comp, struct zcomp_strm *zstrm,
++		const unsigned char *src, size_t *dst_len);
++
++int zcomp_decompress(struct zcomp *comp, const unsigned char *src,
++		size_t src_len, unsigned char *dst);
++
++bool zcomp_set_max_streams(struct zcomp *comp, int num_strm);
++#endif /* _ZCOMP_H_ */
+diff --git a/drivers/staging/zram/zcomp_lz4.c b/drivers/staging/zram/zcomp_lz4.c
+new file mode 100644
+index 00000000..d2964c46
+--- /dev/null
++++ b/drivers/staging/zram/zcomp_lz4.c
+@@ -0,0 +1,67 @@
++/*
++ * Copyright (C) 2014 Sergey Senozhatsky.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version
++ * 2 of the License, or (at your option) any later version.
++ */
++
++#include <linux/kernel.h>
++#include <linux/slab.h>
++#include <linux/lz4.h>
++#include <linux/vmalloc.h>
++#include <linux/mm.h>
++
++#include "kyf37_compat.h"
++#include "zcomp_lz4.h"
++
++static void *zcomp_lz4_create(void)
++{
++	void *ret;
++
++	/*
++	 * This function can be called in swapout/fs write path
++	 * so we can't use GFP_FS|IO. And it assumes we already
++	 * have at least one stream in zram initialization so we
++	 * don't do best effort to allocate more stream in here.
++	 * A default stream will work well without further multiple
++	 * streams. That's why we use NORETRY | NOWARN.
++	 */
++	ret = kzalloc(LZ4_MEM_COMPRESS, GFP_NOIO | __GFP_NORETRY |
++					__GFP_NOWARN);
++	if (!ret)
++		ret = __vmalloc(LZ4_MEM_COMPRESS,
++				GFP_NOIO | __GFP_NORETRY | __GFP_NOWARN |
++				__GFP_ZERO | __GFP_HIGHMEM,
++				PAGE_KERNEL);
++	return ret;
++}
++
++static void zcomp_lz4_destroy(void *private)
++{
++	kyf37_kvfree(private);
++}
++
++static int zcomp_lz4_compress(const unsigned char *src, unsigned char *dst,
++		size_t *dst_len, void *private)
++{
++	/* return  : Success if return 0 */
++	return lz4_compress(src, PAGE_SIZE, dst, dst_len, private);
++}
++
++static int zcomp_lz4_decompress(const unsigned char *src, size_t src_len,
++		unsigned char *dst)
++{
++	size_t dst_len = PAGE_SIZE;
++	/* return  : Success if return 0 */
++	return lz4_decompress_unknownoutputsize(src, src_len, dst, &dst_len);
++}
++
++struct zcomp_backend zcomp_lz4 = {
++	.compress = zcomp_lz4_compress,
++	.decompress = zcomp_lz4_decompress,
++	.create = zcomp_lz4_create,
++	.destroy = zcomp_lz4_destroy,
++	.name = "lz4",
++};
+diff --git a/drivers/staging/zram/zcomp_lz4.h b/drivers/staging/zram/zcomp_lz4.h
+new file mode 100644
+index 00000000..60613fb2
+--- /dev/null
++++ b/drivers/staging/zram/zcomp_lz4.h
+@@ -0,0 +1,17 @@
++/*
++ * Copyright (C) 2014 Sergey Senozhatsky.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version
++ * 2 of the License, or (at your option) any later version.
++ */
++
++#ifndef _ZCOMP_LZ4_H_
++#define _ZCOMP_LZ4_H_
++
++#include "zcomp.h"
++
++extern struct zcomp_backend zcomp_lz4;
++
++#endif /* _ZCOMP_LZ4_H_ */
+diff --git a/drivers/staging/zram/zcomp_lzo.c b/drivers/staging/zram/zcomp_lzo.c
+new file mode 100644
+index 00000000..eaecdc5b
+--- /dev/null
++++ b/drivers/staging/zram/zcomp_lzo.c
+@@ -0,0 +1,67 @@
++/*
++ * Copyright (C) 2014 Sergey Senozhatsky.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version
++ * 2 of the License, or (at your option) any later version.
++ */
++
++#include <linux/kernel.h>
++#include <linux/slab.h>
++#include <linux/lzo.h>
++#include <linux/vmalloc.h>
++#include <linux/mm.h>
++
++#include "kyf37_compat.h"
++#include "zcomp_lzo.h"
++
++static void *lzo_create(void)
++{
++	void *ret;
++
++	/*
++	 * This function can be called in swapout/fs write path
++	 * so we can't use GFP_FS|IO. And it assumes we already
++	 * have at least one stream in zram initialization so we
++	 * don't do best effort to allocate more stream in here.
++	 * A default stream will work well without further multiple
++	 * streams. That's why we use NORETRY | NOWARN.
++	 */
++	ret = kzalloc(LZO1X_MEM_COMPRESS, GFP_NOIO | __GFP_NORETRY |
++					__GFP_NOWARN);
++	if (!ret)
++		ret = __vmalloc(LZO1X_MEM_COMPRESS,
++				GFP_NOIO | __GFP_NORETRY | __GFP_NOWARN |
++				__GFP_ZERO | __GFP_HIGHMEM,
++				PAGE_KERNEL);
++	return ret;
++}
++
++static void lzo_destroy(void *private)
++{
++	kyf37_kvfree(private);
++}
++
++static int lzo_compress(const unsigned char *src, unsigned char *dst,
++		size_t *dst_len, void *private)
++{
++	int ret = lzo1x_1_compress(src, PAGE_SIZE, dst, dst_len, private);
++	return ret == LZO_E_OK ? 0 : ret;
++}
++
++static int lzo_decompress(const unsigned char *src, size_t src_len,
++		unsigned char *dst)
++{
++	size_t dst_len = PAGE_SIZE;
++	int ret = lzo1x_decompress_safe(src, src_len, dst, &dst_len);
++	return ret == LZO_E_OK ? 0 : ret;
++}
++
++struct zcomp_backend zcomp_lzo = {
++	.compress = lzo_compress,
++	.decompress = lzo_decompress,
++	.create = lzo_create,
++	.destroy = lzo_destroy,
++	.name = "lzo",
++};
+diff --git a/drivers/staging/zram/zcomp_lzo.h b/drivers/staging/zram/zcomp_lzo.h
+new file mode 100644
+index 00000000..128c5807
+--- /dev/null
++++ b/drivers/staging/zram/zcomp_lzo.h
+@@ -0,0 +1,17 @@
++/*
++ * Copyright (C) 2014 Sergey Senozhatsky.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * as published by the Free Software Foundation; either version
++ * 2 of the License, or (at your option) any later version.
++ */
++
++#ifndef _ZCOMP_LZO_H_
++#define _ZCOMP_LZO_H_
++
++#include "zcomp.h"
++
++extern struct zcomp_backend zcomp_lzo;
++
++#endif /* _ZCOMP_LZO_H_ */
+diff --git a/drivers/staging/zram/zram.txt b/drivers/staging/zram/zram.txt
+index 765d790a..7fcf9c65 100644
+--- a/drivers/staging/zram/zram.txt
++++ b/drivers/staging/zram/zram.txt
+@@ -1,8 +1,6 @@
+ zram: Compressed RAM based block devices
+ ----------------------------------------
+ 
+-Project home: http://compcache.googlecode.com/
+-
+ * Introduction
+ 
+ The zram module creates RAM based block devices named /dev/zram<id>
+@@ -23,7 +21,43 @@ Following shows a typical sequence of steps for using zram.
+ 	This creates 4 devices: /dev/zram{0,1,2,3}
+ 	(num_devices parameter is optional. Default: 1)
+ 
+-2) Set Disksize
++2) Set max number of compression streams
++	Compression backend may use up to max_comp_streams compression streams,
++	thus allowing up to max_comp_streams concurrent compression operations.
++	By default, compression backend uses single compression stream.
++
++	Examples:
++	#show max compression streams number
++	cat /sys/block/zram0/max_comp_streams
++
++	#set max compression streams number to 3
++	echo 3 > /sys/block/zram0/max_comp_streams
++
++Note:
++In order to enable compression backend's multi stream support max_comp_streams
++must be initially set to desired concurrency level before ZRAM device
++initialisation. Once the device initialised as a single stream compression
++backend (max_comp_streams equals to 1), you will see error if you try to change
++the value of max_comp_streams because single stream compression backend
++implemented as a special case by lock overhead issue and does not support
++dynamic max_comp_streams. Only multi stream backend supports dynamic
++max_comp_streams adjustment.
++
++3) Select compression algorithm
++	Using comp_algorithm device attribute one can see available and
++	currently selected (shown in square brackets) compression algortithms,
++	change selected compression algorithm (once the device is initialised
++	there is no way to change compression algorithm).
++
++	Examples:
++	#show supported compression algorithms
++	cat /sys/block/zram0/comp_algorithm
++	lzo [lz4]
++
++	#select lzo compression algorithm
++	echo lzo > /sys/block/zram0/comp_algorithm
++
++4) Set Disksize
+         Set disk size by writing the value to sysfs node 'disksize'.
+         The value can be either in bytes or you can use mem suffixes.
+         Examples:
+@@ -35,32 +69,55 @@ Following shows a typical sequence of steps for using zram.
+             echo 512M > /sys/block/zram0/disksize
+             echo 1G > /sys/block/zram0/disksize
+ 
+-3) Activate:
++Note:
++There is little point creating a zram of greater than twice the size of memory
++since we expect a 2:1 compression ratio. Note that zram uses about 0.1% of the
++size of the disk when not in use so a huge zram is wasteful.
++
++5) Set memory limit: Optional
++	Set memory limit by writing the value to sysfs node 'mem_limit'.
++	The value can be either in bytes or you can use mem suffixes.
++	In addition, you could change the value in runtime.
++	Examples:
++	    # limit /dev/zram0 with 50MB memory
++	    echo $((50*1024*1024)) > /sys/block/zram0/mem_limit
++
++	    # Using mem suffixes
++	    echo 256K > /sys/block/zram0/mem_limit
++	    echo 512M > /sys/block/zram0/mem_limit
++	    echo 1G > /sys/block/zram0/mem_limit
++
++	    # To disable memory limit
++	    echo 0 > /sys/block/zram0/mem_limit
++
++6) Activate:
+ 	mkswap /dev/zram0
+ 	swapon /dev/zram0
+ 
+ 	mkfs.ext4 /dev/zram1
+ 	mount /dev/zram1 /tmp
+ 
+-4) Stats:
++7) Stats:
+ 	Per-device statistics are exported as various nodes under
+ 	/sys/block/zram<id>/
+ 		disksize
+ 		num_reads
+ 		num_writes
++		failed_reads
++		failed_writes
+ 		invalid_io
+ 		notify_free
+-		discard
+ 		zero_pages
+ 		orig_data_size
+ 		compr_data_size
+ 		mem_used_total
++		mem_used_max
+ 
+-5) Deactivate:
++8) Deactivate:
+ 	swapoff /dev/zram0
+ 	umount /dev/zram1
+ 
+-6) Reset:
++9) Reset:
+ 	Write any positive value to 'reset' sysfs node
+ 	echo 1 > /sys/block/zram0/reset
+ 	echo 1 > /sys/block/zram1/reset
+@@ -69,9 +126,5 @@ Following shows a typical sequence of steps for using zram.
+ 	resets the disksize to zero. You must set the disksize again
+ 	before reusing the device.
+ 
+-Please report any problems at:
+- - Mailing list: linux-mm-cc at laptop dot org
+- - Issue tracker: http://code.google.com/p/compcache/issues/list
+-
+ Nitin Gupta
+ ngupta@vflare.org
+diff --git a/drivers/staging/zram/zram_drv.c b/drivers/staging/zram/zram_drv.c
+index f1fdb827..6c1a284a 100644
+--- a/drivers/staging/zram/zram_drv.c
++++ b/drivers/staging/zram/zram_drv.c
+@@ -2,6 +2,7 @@
+  * Compressed RAM block device
+  *
+  * Copyright (C) 2008, 2009, 2010  Nitin Gupta
++ *               2012, 2013 Minchan Kim
+  *
+  * This code is released using a dual license strategy: BSD/GPL
+  * You can choose the licence that better fits your requirements.
+@@ -9,7 +10,6 @@
+  * Released under the terms of 3-clause BSD License
+  * Released under the terms of GNU General Public License Version 2.0
+  *
+- * Project home: http://compcache.googlecode.com
+  */
+ 
+ #define KMSG_COMPONENT "zram"
+@@ -29,180 +29,276 @@
+ #include <linux/genhd.h>
+ #include <linux/highmem.h>
+ #include <linux/slab.h>
+-#include <linux/lzo.h>
+ #include <linux/string.h>
+ #include <linux/vmalloc.h>
+-#include <linux/ratelimit.h>
+-#include <linux/show_mem_notifier.h>
++#include <linux/err.h>
+ 
++#include "kyf37_compat.h"
+ #include "zram_drv.h"
+ 
+ /* Globals */
+ static int zram_major;
+ static struct zram *zram_devices;
+-
+-/*
+- * We don't need to see memory allocation errors more than once every 1
+- * second to know that a problem is occurring.
+- */
+-#define ALLOC_ERROR_LOG_RATE_MS 1000
++static const char *default_compressor = "lzo";
+ 
+ /* Module params (documentation at end) */
+ static unsigned int num_devices = 1;
+ 
+-static int zram_show_mem_notifier(struct notifier_block *nb,
+-				unsigned long action,
+-				void *data)
++#define ZRAM_ATTR_RO(name)						\
++static ssize_t zram_attr_##name##_show(struct device *d,		\
++				struct device_attribute *attr, char *b)	\
++{									\
++	struct zram *zram = dev_to_zram(d);				\
++	return scnprintf(b, PAGE_SIZE, "%llu\n",			\
++		(u64)atomic64_read(&zram->stats.name));			\
++}									\
++static struct device_attribute dev_attr_##name =			\
++	__ATTR(name, S_IRUGO, zram_attr_##name##_show, NULL);
++
++static inline int init_done(struct zram *zram)
+ {
+-	int i;
+-
+-	if (!zram_devices)
+-		return 0;
+-
+-	for (i = 0; i < num_devices; i++) {
+-		struct zram *zram = &zram_devices[i];
+-		struct zram_meta *meta = zram->meta;
+-
+-		if (!down_read_trylock(&zram->init_lock))
+-			continue;
+-
+-		if (zram->init_done) {
+-			u64 val;
+-			u64 data_size;
+-
+-			val = zs_get_total_size_bytes(meta->mem_pool);
+-			data_size = atomic64_read(&zram->stats.compr_size);
+-			pr_info("Zram[%d] mem_used_total = %llu\n", i, val);
+-			pr_info("Zram[%d] compr_data_size = %llu\n", i,
+-				(unsigned long long)data_size);
+-			pr_info("Zram[%d] orig_data_size = %u\n", i,
+-				zram->stats.pages_stored);
+-		}
+-
+-		up_read(&zram->init_lock);
+-	}
+-
+-	return 0;
++	return zram->meta != NULL;
+ }
+ 
+-static struct notifier_block zram_show_mem_notifier_block = {
+-	.notifier_call = zram_show_mem_notifier
+-};
+-
+ static inline struct zram *dev_to_zram(struct device *dev)
+ {
+ 	return (struct zram *)dev_to_disk(dev)->private_data;
+ }
+ 
++static ssize_t compact_store(struct device *dev,
++        struct device_attribute *attr, const char *buf, size_t len)
++{
++    struct zram *zram = dev_to_zram(dev);
++    unsigned long value;
++    int ret = kstrtoul(buf, 10, &value);
++
++    if (ret)
++        return ret;
++    if (value != 1)
++        return -EINVAL;
++    down_read(&zram->init_lock);
++    if (!init_done(zram)) {
++        up_read(&zram->init_lock);
++        return -EINVAL;
++    }
++    zs_compact(zram->meta->mem_pool);
++    up_read(&zram->init_lock);
++    return len;
++}
++
+ static ssize_t disksize_show(struct device *dev,
+ 		struct device_attribute *attr, char *buf)
+ {
+ 	struct zram *zram = dev_to_zram(dev);
+ 
+-	return sprintf(buf, "%llu\n", zram->disksize);
++	return scnprintf(buf, PAGE_SIZE, "%llu\n", zram->disksize);
+ }
+ 
+ static ssize_t initstate_show(struct device *dev,
+ 		struct device_attribute *attr, char *buf)
+ {
++	u32 val;
+ 	struct zram *zram = dev_to_zram(dev);
+ 
+-	return sprintf(buf, "%u\n", zram->init_done);
++	down_read(&zram->init_lock);
++	val = init_done(zram);
++	up_read(&zram->init_lock);
++
++	return scnprintf(buf, PAGE_SIZE, "%u\n", val);
+ }
+ 
+-static ssize_t num_reads_show(struct device *dev,
++static ssize_t orig_data_size_show(struct device *dev,
+ 		struct device_attribute *attr, char *buf)
+ {
+ 	struct zram *zram = dev_to_zram(dev);
+ 
+-	return sprintf(buf, "%llu\n",
+-			(u64)atomic64_read(&zram->stats.num_reads));
++	return scnprintf(buf, PAGE_SIZE, "%llu\n",
++		(u64)(atomic64_read(&zram->stats.pages_stored)) << PAGE_SHIFT);
+ }
+ 
+-static ssize_t num_writes_show(struct device *dev,
++static ssize_t mem_used_total_show(struct device *dev,
+ 		struct device_attribute *attr, char *buf)
+ {
++	u64 val = 0;
+ 	struct zram *zram = dev_to_zram(dev);
+ 
+-	return sprintf(buf, "%llu\n",
+-			(u64)atomic64_read(&zram->stats.num_writes));
++	down_read(&zram->init_lock);
++	if (init_done(zram)) {
++		struct zram_meta *meta = zram->meta;
++		val = kyf37_zs_get_total_pages(meta->mem_pool);
++	}
++	up_read(&zram->init_lock);
++
++	return scnprintf(buf, PAGE_SIZE, "%llu\n", val << PAGE_SHIFT);
+ }
+ 
+-static ssize_t invalid_io_show(struct device *dev,
++static ssize_t max_comp_streams_show(struct device *dev,
+ 		struct device_attribute *attr, char *buf)
+ {
++	int val;
+ 	struct zram *zram = dev_to_zram(dev);
+ 
+-	return sprintf(buf, "%llu\n",
+-			(u64)atomic64_read(&zram->stats.invalid_io));
++	down_read(&zram->init_lock);
++	val = zram->max_comp_streams;
++	up_read(&zram->init_lock);
++
++	return scnprintf(buf, PAGE_SIZE, "%d\n", val);
+ }
+ 
+-static ssize_t notify_free_show(struct device *dev,
++static ssize_t mem_limit_show(struct device *dev,
+ 		struct device_attribute *attr, char *buf)
+ {
++	u64 val;
+ 	struct zram *zram = dev_to_zram(dev);
+ 
+-	return sprintf(buf, "%llu\n",
+-			(u64)atomic64_read(&zram->stats.notify_free));
++	down_read(&zram->init_lock);
++	val = zram->limit_pages;
++	up_read(&zram->init_lock);
++
++	return scnprintf(buf, PAGE_SIZE, "%llu\n", val << PAGE_SHIFT);
+ }
+ 
+-static ssize_t zero_pages_show(struct device *dev,
+-		struct device_attribute *attr, char *buf)
++static ssize_t mem_limit_store(struct device *dev,
++		struct device_attribute *attr, const char *buf, size_t len)
+ {
++	u64 limit;
++	char *tmp;
+ 	struct zram *zram = dev_to_zram(dev);
+ 
+-	return sprintf(buf, "%u\n", zram->stats.pages_zero);
++	limit = memparse(buf, &tmp);
++	if (buf == tmp) /* no chars parsed, invalid input */
++		return -EINVAL;
++
++	down_write(&zram->init_lock);
++	zram->limit_pages = PAGE_ALIGN(limit) >> PAGE_SHIFT;
++	up_write(&zram->init_lock);
++
++	return len;
+ }
+ 
+-static ssize_t orig_data_size_show(struct device *dev,
++static ssize_t mem_used_max_show(struct device *dev,
+ 		struct device_attribute *attr, char *buf)
+ {
++	u64 val = 0;
+ 	struct zram *zram = dev_to_zram(dev);
+ 
+-	return sprintf(buf, "%llu\n",
+-		(u64)(zram->stats.pages_stored) << PAGE_SHIFT);
++	down_read(&zram->init_lock);
++	if (init_done(zram))
++		val = atomic_long_read(&zram->stats.max_used_pages);
++	up_read(&zram->init_lock);
++
++	return scnprintf(buf, PAGE_SIZE, "%llu\n", val << PAGE_SHIFT);
+ }
+ 
+-static ssize_t compr_data_size_show(struct device *dev,
+-		struct device_attribute *attr, char *buf)
++static ssize_t mem_used_max_store(struct device *dev,
++		struct device_attribute *attr, const char *buf, size_t len)
++{
++	int err;
++	unsigned long val;
++	struct zram *zram = dev_to_zram(dev);
++
++	err = kstrtoul(buf, 10, &val);
++	if (err || val != 0)
++		return -EINVAL;
++
++	down_read(&zram->init_lock);
++	if (init_done(zram)) {
++		struct zram_meta *meta = zram->meta;
++		atomic_long_set(&zram->stats.max_used_pages,
++				kyf37_zs_get_total_pages(meta->mem_pool));
++	}
++	up_read(&zram->init_lock);
++
++	return len;
++}
++
++static ssize_t max_comp_streams_store(struct device *dev,
++		struct device_attribute *attr, const char *buf, size_t len)
+ {
++	int num;
+ 	struct zram *zram = dev_to_zram(dev);
++	int ret;
++
++	ret = kstrtoint(buf, 0, &num);
++	if (ret < 0)
++		return ret;
++	if (num < 1)
++		return -EINVAL;
++
++	down_write(&zram->init_lock);
++	if (init_done(zram)) {
++		if (!zcomp_set_max_streams(zram->comp, num)) {
++			pr_info("Cannot change max compression streams\n");
++			ret = -EINVAL;
++			goto out;
++		}
++	}
+ 
+-	return sprintf(buf, "%llu\n",
+-			(u64)atomic64_read(&zram->stats.compr_size));
++	zram->max_comp_streams = num;
++	ret = len;
++out:
++	up_write(&zram->init_lock);
++	return ret;
+ }
+ 
+-static ssize_t mem_used_total_show(struct device *dev,
++static ssize_t comp_algorithm_show(struct device *dev,
+ 		struct device_attribute *attr, char *buf)
+ {
+-	u64 val = 0;
++	size_t sz;
+ 	struct zram *zram = dev_to_zram(dev);
+-	struct zram_meta *meta = zram->meta;
+ 
+ 	down_read(&zram->init_lock);
+-	if (zram->init_done)
+-		val = zs_get_total_size_bytes(meta->mem_pool);
++	sz = zcomp_available_show(zram->compressor, buf);
+ 	up_read(&zram->init_lock);
+ 
+-	return sprintf(buf, "%llu\n", val);
++	return sz;
++}
++
++static ssize_t comp_algorithm_store(struct device *dev,
++		struct device_attribute *attr, const char *buf, size_t len)
++{
++	struct zram *zram = dev_to_zram(dev);
++	down_write(&zram->init_lock);
++	if (init_done(zram)) {
++		up_write(&zram->init_lock);
++		pr_info("Can't change algorithm for initialized device\n");
++		return -EBUSY;
++	}
++	strlcpy(zram->compressor, buf, sizeof(zram->compressor));
++	up_write(&zram->init_lock);
++	return len;
+ }
+ 
++/* flag operations needs meta->tb_lock */
+ static int zram_test_flag(struct zram_meta *meta, u32 index,
+ 			enum zram_pageflags flag)
+ {
+-	return meta->table[index].flags & BIT(flag);
++	return meta->table[index].value & BIT(flag);
+ }
+ 
+ static void zram_set_flag(struct zram_meta *meta, u32 index,
+ 			enum zram_pageflags flag)
+ {
+-	meta->table[index].flags |= BIT(flag);
++	meta->table[index].value |= BIT(flag);
+ }
+ 
+ static void zram_clear_flag(struct zram_meta *meta, u32 index,
+ 			enum zram_pageflags flag)
+ {
+-	meta->table[index].flags &= ~BIT(flag);
++	meta->table[index].value &= ~BIT(flag);
++}
++
++static size_t zram_get_obj_size(struct zram_meta *meta, u32 index)
++{
++	return meta->table[index].value & (BIT(ZRAM_FLAG_SHIFT) - 1);
++}
++
++static void zram_set_obj_size(struct zram_meta *meta,
++					u32 index, size_t size)
++{
++	unsigned long flags = meta->table[index].value >> ZRAM_FLAG_SHIFT;
++
++	meta->table[index].value = (flags << ZRAM_FLAG_SHIFT) | size;
+ }
+ 
+ static inline int is_partial_io(struct bio_vec *bvec)
+@@ -218,7 +314,8 @@ static inline int valid_io_request(struct zram *zram, struct bio *bio)
+ 	u64 start, end, bound;
+ 
+ 	/* unaligned request */
+-	if (unlikely(bio->bi_sector & (ZRAM_SECTOR_PER_LOGICAL_BLOCK - 1)))
++	if (unlikely(bio->bi_sector &
++		     (ZRAM_SECTOR_PER_LOGICAL_BLOCK - 1)))
+ 		return 0;
+ 	if (unlikely(bio->bi_size & (ZRAM_LOGICAL_BLOCK_SIZE - 1)))
+ 		return 0;
+@@ -237,8 +334,6 @@ static inline int valid_io_request(struct zram *zram, struct bio *bio)
+ static void zram_meta_free(struct zram_meta *meta)
+ {
+ 	zs_destroy_pool(meta->mem_pool);
+-	kfree(meta->compress_workmem);
+-	free_pages((unsigned long)meta->compress_buffer, 1);
+ 	vfree(meta->table);
+ 	kfree(meta);
+ }
+@@ -250,26 +345,14 @@ static struct zram_meta *zram_meta_alloc(u64 disksize)
+ 	if (!meta)
+ 		goto out;
+ 
+-	meta->compress_workmem = kzalloc(LZO1X_MEM_COMPRESS, GFP_KERNEL);
+-	if (!meta->compress_workmem)
+-		goto free_meta;
+-
+-	meta->compress_buffer =
+-		(void *)__get_free_pages(GFP_KERNEL | __GFP_ZERO, 1);
+-	if (!meta->compress_buffer) {
+-		pr_err("Error allocating compressor buffer space\n");
+-		goto free_workmem;
+-	}
+-
+ 	num_pages = disksize >> PAGE_SHIFT;
+ 	meta->table = vzalloc(num_pages * sizeof(*meta->table));
+ 	if (!meta->table) {
+ 		pr_err("Error allocating zram address table\n");
+-		goto free_buffer;
++		goto free_meta;
+ 	}
+ 
+-	meta->mem_pool = zs_create_pool(GFP_NOIO | __GFP_HIGHMEM |
+-					__GFP_NOWARN);
++	meta->mem_pool = zs_create_pool(GFP_NOIO | __GFP_HIGHMEM);
+ 	if (!meta->mem_pool) {
+ 		pr_err("Error creating memory pool\n");
+ 		goto free_table;
+@@ -279,10 +362,6 @@ static struct zram_meta *zram_meta_alloc(u64 disksize)
+ 
+ free_table:
+ 	vfree(meta->table);
+-free_buffer:
+-	free_pages((unsigned long)meta->compress_buffer, 1);
+-free_workmem:
+-	kfree(meta->compress_workmem);
+ free_meta:
+ 	kfree(meta);
+ 	meta = NULL;
+@@ -327,11 +406,16 @@ static void handle_zero_page(struct bio_vec *bvec)
+ 	flush_dcache_page(page);
+ }
+ 
++
++/*
++ * To protect concurrent access to the same index entry,
++ * caller should hold this table index entry's bit_spinlock to
++ * indicate this index entry is accessing.
++ */
+ static void zram_free_page(struct zram *zram, size_t index)
+ {
+ 	struct zram_meta *meta = zram->meta;
+ 	unsigned long handle = meta->table[index].handle;
+-	u16 size = meta->table[index].size;
+ 
+ 	if (unlikely(!handle)) {
+ 		/*
+@@ -340,51 +424,50 @@ static void zram_free_page(struct zram *zram, size_t index)
+ 		 */
+ 		if (zram_test_flag(meta, index, ZRAM_ZERO)) {
+ 			zram_clear_flag(meta, index, ZRAM_ZERO);
+-			zram->stats.pages_zero--;
++			atomic64_dec(&zram->stats.zero_pages);
+ 		}
+ 		return;
+ 	}
+ 
+-	if (unlikely(size > max_zpage_size))
+-		zram->stats.bad_compress--;
+-
+ 	zs_free(meta->mem_pool, handle);
+ 
+-	if (size <= PAGE_SIZE / 2)
+-		zram->stats.good_compress--;
+-
+-	atomic64_sub(meta->table[index].size, &zram->stats.compr_size);
+-	zram->stats.pages_stored--;
++	atomic64_sub(zram_get_obj_size(meta, index),
++			&zram->stats.compr_data_size);
++	atomic64_dec(&zram->stats.pages_stored);
+ 
+ 	meta->table[index].handle = 0;
+-	meta->table[index].size = 0;
++	zram_set_obj_size(meta, index, 0);
+ }
+ 
+ static int zram_decompress_page(struct zram *zram, char *mem, u32 index)
+ {
+-	int ret = LZO_E_OK;
+-	size_t clen = PAGE_SIZE;
++	int ret = 0;
+ 	unsigned char *cmem;
+ 	struct zram_meta *meta = zram->meta;
+-	unsigned long handle = meta->table[index].handle;
++	unsigned long handle;
++	size_t size;
++
++	bit_spin_lock(ZRAM_ACCESS, &meta->table[index].value);
++	handle = meta->table[index].handle;
++	size = zram_get_obj_size(meta, index);
+ 
+ 	if (!handle || zram_test_flag(meta, index, ZRAM_ZERO)) {
+-		clear_page(mem);
++		bit_spin_unlock(ZRAM_ACCESS, &meta->table[index].value);
++		memset(mem, 0, PAGE_SIZE);
+ 		return 0;
+ 	}
+ 
+ 	cmem = zs_map_object(meta->mem_pool, handle, ZS_MM_RO);
+-	if (meta->table[index].size == PAGE_SIZE)
+-		copy_page(mem, cmem);
++	if (size == PAGE_SIZE)
++		memcpy(mem, cmem, PAGE_SIZE);
+ 	else
+-		ret = lzo1x_decompress_safe(cmem, meta->table[index].size,
+-						mem, &clen);
++		ret = zcomp_decompress(zram->comp, cmem, size, mem);
+ 	zs_unmap_object(meta->mem_pool, handle);
++	bit_spin_unlock(ZRAM_ACCESS, &meta->table[index].value);
+ 
+ 	/* Should NEVER happen. Return bio error if it does. */
+-	if (unlikely(ret != LZO_E_OK)) {
++	if (unlikely(ret)) {
+ 		pr_err("Decompression failed! err=%d, page=%u\n", ret, index);
+-		atomic64_inc(&zram->stats.failed_reads);
+ 		return ret;
+ 	}
+ 
+@@ -400,11 +483,14 @@ static int zram_bvec_read(struct zram *zram, struct bio_vec *bvec,
+ 	struct zram_meta *meta = zram->meta;
+ 	page = bvec->bv_page;
+ 
++	bit_spin_lock(ZRAM_ACCESS, &meta->table[index].value);
+ 	if (unlikely(!meta->table[index].handle) ||
+ 			zram_test_flag(meta, index, ZRAM_ZERO)) {
++		bit_spin_unlock(ZRAM_ACCESS, &meta->table[index].value);
+ 		handle_zero_page(bvec);
+ 		return 0;
+ 	}
++	bit_spin_unlock(ZRAM_ACCESS, &meta->table[index].value);
+ 
+ 	if (is_partial_io(bvec))
+ 		/* Use  a temporary buffer to decompress the page */
+@@ -422,7 +508,7 @@ static int zram_bvec_read(struct zram *zram, struct bio_vec *bvec,
+ 
+ 	ret = zram_decompress_page(zram, uncmem, index);
+ 	/* Should NEVER happen. Return bio error if it does. */
+-	if (unlikely(ret != LZO_E_OK))
++	if (unlikely(ret))
+ 		goto out_cleanup;
+ 
+ 	if (is_partial_io(bvec))
+@@ -438,6 +524,21 @@ out_cleanup:
+ 	return ret;
+ }
+ 
++static inline void update_used_max(struct zram *zram,
++					const unsigned long pages)
++{
++	int old_max, cur_max;
++
++	old_max = atomic_long_read(&zram->stats.max_used_pages);
++
++	do {
++		cur_max = old_max;
++		if (pages > cur_max)
++			old_max = atomic_long_cmpxchg(
++				&zram->stats.max_used_pages, cur_max, pages);
++	} while (old_max != cur_max);
++}
++
+ static int zram_bvec_write(struct zram *zram, struct bio_vec *bvec, u32 index,
+ 			   int offset)
+ {
+@@ -447,11 +548,11 @@ static int zram_bvec_write(struct zram *zram, struct bio_vec *bvec, u32 index,
+ 	struct page *page;
+ 	unsigned char *user_mem, *cmem, *src, *uncmem = NULL;
+ 	struct zram_meta *meta = zram->meta;
+-	static unsigned long zram_rs_time;
++	struct zcomp_strm *zstrm;
++	bool locked = false;
++	unsigned long alloced_pages;
+ 
+ 	page = bvec->bv_page;
+-	src = meta->compress_buffer;
+-
+ 	if (is_partial_io(bvec)) {
+ 		/*
+ 		 * This is a partial IO. We need to read the full page
+@@ -467,6 +568,8 @@ static int zram_bvec_write(struct zram *zram, struct bio_vec *bvec, u32 index,
+ 			goto out;
+ 	}
+ 
++	zstrm = zcomp_strm_find(zram->comp);
++	locked = true;
+ 	user_mem = kmap_atomic(page);
+ 
+ 	if (is_partial_io(bvec)) {
+@@ -479,141 +582,168 @@ static int zram_bvec_write(struct zram *zram, struct bio_vec *bvec, u32 index,
+ 	}
+ 
+ 	if (page_zero_filled(uncmem)) {
+-		kunmap_atomic(user_mem);
++		if (user_mem)
++			kunmap_atomic(user_mem);
+ 		/* Free memory associated with this sector now. */
++		bit_spin_lock(ZRAM_ACCESS, &meta->table[index].value);
+ 		zram_free_page(zram, index);
+-
+-		zram->stats.pages_zero++;
+ 		zram_set_flag(meta, index, ZRAM_ZERO);
++		bit_spin_unlock(ZRAM_ACCESS, &meta->table[index].value);
++
++		atomic64_inc(&zram->stats.zero_pages);
+ 		ret = 0;
+ 		goto out;
+ 	}
+ 
+-	/*
+-	 * zram_slot_free_notify could miss free so that let's
+-	 * double check.
+-	 */
+-	if (unlikely(meta->table[index].handle ||
+-			zram_test_flag(meta, index, ZRAM_ZERO)))
+-		zram_free_page(zram, index);
+-
+-	ret = lzo1x_1_compress(uncmem, PAGE_SIZE, src, &clen,
+-			       meta->compress_workmem);
+-
++	ret = zcomp_compress(zram->comp, zstrm, uncmem, &clen);
+ 	if (!is_partial_io(bvec)) {
+ 		kunmap_atomic(user_mem);
+ 		user_mem = NULL;
+ 		uncmem = NULL;
+ 	}
+ 
+-	if (unlikely(ret != LZO_E_OK)) {
++	if (unlikely(ret)) {
+ 		pr_err("Compression failed! err=%d\n", ret);
+ 		goto out;
+ 	}
+-
++	src = zstrm->buffer;
+ 	if (unlikely(clen > max_zpage_size)) {
+-		zram->stats.bad_compress++;
+ 		clen = PAGE_SIZE;
+-		src = NULL;
+ 		if (is_partial_io(bvec))
+ 			src = uncmem;
+ 	}
+ 
+ 	handle = zs_malloc(meta->mem_pool, clen);
+ 	if (!handle) {
+-		if (printk_timed_ratelimit(&zram_rs_time,
+-					   ALLOC_ERROR_LOG_RATE_MS))
+-			pr_info("Error allocating memory for compressed page: %u, size=%zu\n",
+-				index, clen);
++		pr_info("Error allocating memory for compressed page: %u, size=%zu\n",
++			index, clen);
++		ret = -ENOMEM;
++		goto out;
++	}
++
++	alloced_pages = kyf37_zs_get_total_pages(meta->mem_pool);
++	if (zram->limit_pages && alloced_pages > zram->limit_pages) {
++		zs_free(meta->mem_pool, handle);
+ 		ret = -ENOMEM;
+ 		goto out;
+ 	}
++
++	update_used_max(zram, alloced_pages);
++
+ 	cmem = zs_map_object(meta->mem_pool, handle, ZS_MM_WO);
+ 
+ 	if ((clen == PAGE_SIZE) && !is_partial_io(bvec)) {
+ 		src = kmap_atomic(page);
+-		copy_page(cmem, src);
++		memcpy(cmem, src, PAGE_SIZE);
+ 		kunmap_atomic(src);
+ 	} else {
+ 		memcpy(cmem, src, clen);
+ 	}
+ 
+ 	zs_unmap_object(meta->mem_pool, handle);
++	zcomp_strm_release(zram->comp, zstrm);
++	locked = false;
+ 
+ 	/*
+ 	 * Free memory associated with this sector
+ 	 * before overwriting unused sectors.
+ 	 */
++	bit_spin_lock(ZRAM_ACCESS, &meta->table[index].value);
+ 	zram_free_page(zram, index);
+ 
+ 	meta->table[index].handle = handle;
+-	meta->table[index].size = clen;
++	zram_set_obj_size(meta, index, clen);
++	bit_spin_unlock(ZRAM_ACCESS, &meta->table[index].value);
+ 
+ 	/* Update stats */
+-	atomic64_add(clen, &zram->stats.compr_size);
+-	zram->stats.pages_stored++;
+-	if (clen <= PAGE_SIZE / 2)
+-		zram->stats.good_compress++;
+-
++	atomic64_add(clen, &zram->stats.compr_data_size);
++	atomic64_inc(&zram->stats.pages_stored);
+ out:
++	if (locked)
++		zcomp_strm_release(zram->comp, zstrm);
+ 	if (is_partial_io(bvec))
+ 		kfree(uncmem);
+-
+-	if (ret)
+-		atomic64_inc(&zram->stats.failed_writes);
+ 	return ret;
+ }
+ 
+-static void handle_pending_slot_free(struct zram *zram)
+-{
+-	struct zram_slot_free *free_rq;
+-
+-	spin_lock(&zram->slot_free_lock);
+-	while (zram->slot_free_rq) {
+-		free_rq = zram->slot_free_rq;
+-		zram->slot_free_rq = free_rq->next;
+-		zram_free_page(zram, free_rq->index);
+-		kfree(free_rq);
+-	}
+-	spin_unlock(&zram->slot_free_lock);
+-}
+-
+ static int zram_bvec_rw(struct zram *zram, struct bio_vec *bvec, u32 index,
+-			int offset, struct bio *bio, int rw)
++			int offset, struct bio *bio)
+ {
+ 	int ret;
++	int rw = bio_data_dir(bio);
+ 
+ 	if (rw == READ) {
+-		down_read(&zram->lock);
+-		handle_pending_slot_free(zram);
++		atomic64_inc(&zram->stats.num_reads);
+ 		ret = zram_bvec_read(zram, bvec, index, offset, bio);
+-		up_read(&zram->lock);
+ 	} else {
+-		down_write(&zram->lock);
+-		handle_pending_slot_free(zram);
++		atomic64_inc(&zram->stats.num_writes);
+ 		ret = zram_bvec_write(zram, bvec, index, offset);
+-		up_write(&zram->lock);
++	}
++
++	if (unlikely(ret)) {
++		if (rw == READ)
++			atomic64_inc(&zram->stats.failed_reads);
++		else
++			atomic64_inc(&zram->stats.failed_writes);
+ 	}
+ 
+ 	return ret;
+ }
+ 
++/*
++ * zram_bio_discard - handler on discard request
++ * @index: physical block index in PAGE_SIZE units
++ * @offset: byte offset within physical block
++ */
++static void zram_bio_discard(struct zram *zram, u32 index,
++			     int offset, struct bio *bio)
++{
++	size_t n = bio->bi_size;
++	struct zram_meta *meta = zram->meta;
++
++	/*
++	 * zram manages data in physical block size units. Because logical block
++	 * size isn't identical with physical block size on some arch, we
++	 * could get a discard request pointing to a specific offset within a
++	 * certain physical block.  Although we can handle this request by
++	 * reading that physiclal block and decompressing and partially zeroing
++	 * and re-compressing and then re-storing it, this isn't reasonable
++	 * because our intent with a discard request is to save memory.  So
++	 * skipping this logical block is appropriate here.
++	 */
++	if (offset) {
++		if (n <= (PAGE_SIZE - offset))
++			return;
++
++		n -= (PAGE_SIZE - offset);
++		index++;
++	}
++
++	while (n >= PAGE_SIZE) {
++		bit_spin_lock(ZRAM_ACCESS, &meta->table[index].value);
++		zram_free_page(zram, index);
++		bit_spin_unlock(ZRAM_ACCESS, &meta->table[index].value);
++		atomic64_inc(&zram->stats.notify_free);
++		index++;
++		n -= PAGE_SIZE;
++	}
++}
++
+ static void zram_reset_device(struct zram *zram, bool reset_capacity)
+ {
+ 	size_t index;
+ 	struct zram_meta *meta;
+ 
+-	flush_work(&zram->free_work);
+-
+ 	down_write(&zram->init_lock);
+-	if (!zram->init_done) {
++
++	zram->limit_pages = 0;
++
++	if (!init_done(zram)) {
+ 		up_write(&zram->init_lock);
+ 		return;
+ 	}
+ 
+ 	meta = zram->meta;
+-	zram->init_done = 0;
+-
+ 	/* Free all pages that are still in this zram device */
+ 	for (index = 0; index < zram->disksize >> PAGE_SHIFT; index++) {
+ 		unsigned long handle = meta->table[index].handle;
+@@ -623,6 +753,9 @@ static void zram_reset_device(struct zram *zram, bool reset_capacity)
+ 		zs_free(meta->mem_pool, handle);
+ 	}
+ 
++	zcomp_destroy(zram->comp);
++	zram->max_comp_streams = 1;
++
+ 	zram_meta_free(zram->meta);
+ 	zram->meta = NULL;
+ 	/* Reset stats */
+@@ -631,40 +764,26 @@ static void zram_reset_device(struct zram *zram, bool reset_capacity)
+ 	zram->disksize = 0;
+ 	if (reset_capacity)
+ 		set_capacity(zram->disk, 0);
+-	up_write(&zram->init_lock);
+-}
+ 
+-static void zram_init_device(struct zram *zram, struct zram_meta *meta)
+-{
+-	if (zram->disksize > 2 * (totalram_pages << PAGE_SHIFT)) {
+-		pr_info(
+-		"There is little point creating a zram of greater than "
+-		"twice the size of memory since we expect a 2:1 compression "
+-		"ratio. Note that zram uses about 0.1%% of the size of "
+-		"the disk when not in use so a huge zram is "
+-		"wasteful.\n"
+-		"\tMemory Size: %lu kB\n"
+-		"\tSize you selected: %llu kB\n"
+-		"Continuing anyway ...\n",
+-		(totalram_pages << PAGE_SHIFT) >> 10, zram->disksize >> 10
+-		);
+-	}
+-
+-	/* zram devices sort of resembles non-rotational disks */
+-	queue_flag_set_unlocked(QUEUE_FLAG_NONROT, zram->disk->queue);
+-
+-	zram->meta = meta;
+-	zram->init_done = 1;
++	up_write(&zram->init_lock);
+ 
+-	pr_debug("Initialization done!\n");
++	/*
++	 * Revalidate disk out of the init_lock to avoid lockdep splat.
++	 * It's okay because disk's capacity is protected by init_lock
++	 * so that revalidate_disk always sees up-to-date capacity.
++	 */
++	if (reset_capacity)
++		revalidate_disk(zram->disk);
+ }
+ 
+ static ssize_t disksize_store(struct device *dev,
+ 		struct device_attribute *attr, const char *buf, size_t len)
+ {
+ 	u64 disksize;
++	struct zcomp *comp;
+ 	struct zram_meta *meta;
+ 	struct zram *zram = dev_to_zram(dev);
++	int err;
+ 
+ 	disksize = memparse(buf, NULL);
+ 	if (!disksize)
+@@ -672,20 +791,45 @@ static ssize_t disksize_store(struct device *dev,
+ 
+ 	disksize = PAGE_ALIGN(disksize);
+ 	meta = zram_meta_alloc(disksize);
++	if (!meta)
++		return -ENOMEM;
++
++	comp = zcomp_create(zram->compressor, zram->max_comp_streams);
++	if (IS_ERR(comp)) {
++		pr_info("Cannot initialise %s compressing backend\n",
++				zram->compressor);
++		err = PTR_ERR(comp);
++		goto out_free_meta;
++	}
++
+ 	down_write(&zram->init_lock);
+-	if (zram->init_done) {
+-		up_write(&zram->init_lock);
+-		zram_meta_free(meta);
++	if (init_done(zram)) {
+ 		pr_info("Cannot change disksize for initialized device\n");
+-		return -EBUSY;
++		err = -EBUSY;
++		goto out_destroy_comp;
+ 	}
+ 
++	zram->meta = meta;
++	zram->comp = comp;
+ 	zram->disksize = disksize;
+ 	set_capacity(zram->disk, zram->disksize >> SECTOR_SHIFT);
+-	zram_init_device(zram, meta);
+ 	up_write(&zram->init_lock);
+ 
++	/*
++	 * Revalidate disk out of the init_lock to avoid lockdep splat.
++	 * It's okay because disk's capacity is protected by init_lock
++	 * so that revalidate_disk always sees up-to-date capacity.
++	 */
++	revalidate_disk(zram->disk);
++
+ 	return len;
++
++out_destroy_comp:
++	up_write(&zram->init_lock);
++	zcomp_destroy(comp);
++out_free_meta:
++	zram_meta_free(meta);
++	return err;
+ }
+ 
+ static ssize_t reset_store(struct device *dev,
+@@ -699,44 +843,54 @@ static ssize_t reset_store(struct device *dev,
+ 	zram = dev_to_zram(dev);
+ 	bdev = bdget_disk(zram->disk, 0);
+ 
++	if (!bdev)
++		return -ENOMEM;
++
+ 	/* Do not reset an active device! */
+-	if (bdev->bd_holders)
+-		return -EBUSY;
++	if (bdev->bd_holders) {
++		ret = -EBUSY;
++		goto out;
++	}
+ 
+ 	ret = kstrtou16(buf, 10, &do_reset);
+ 	if (ret)
+-		return ret;
++		goto out;
+ 
+-	if (!do_reset)
+-		return -EINVAL;
++	if (!do_reset) {
++		ret = -EINVAL;
++		goto out;
++	}
+ 
+ 	/* Make sure all pending I/O is finished */
+-	if (bdev)
+-		fsync_bdev(bdev);
++	fsync_bdev(bdev);
++	bdput(bdev);
+ 
+ 	zram_reset_device(zram, true);
+ 	return len;
++
++out:
++	bdput(bdev);
++	return ret;
+ }
+ 
+-static void __zram_make_request(struct zram *zram, struct bio *bio, int rw)
++static void __zram_make_request(struct zram *zram, struct bio *bio)
+ {
+-	int i, offset;
++	int offset;
+ 	u32 index;
+ 	struct bio_vec *bvec;
+-
+-	switch (rw) {
+-	case READ:
+-		atomic64_inc(&zram->stats.num_reads);
+-		break;
+-	case WRITE:
+-		atomic64_inc(&zram->stats.num_writes);
+-		break;
+-	}
++	int iter;
+ 
+ 	index = bio->bi_sector >> SECTORS_PER_PAGE_SHIFT;
+-	offset = (bio->bi_sector & (SECTORS_PER_PAGE - 1)) << SECTOR_SHIFT;
++	offset = (bio->bi_sector &
++		  (SECTORS_PER_PAGE - 1)) << SECTOR_SHIFT;
+ 
+-	bio_for_each_segment(bvec, bio, i) {
++	if (unlikely(bio->bi_rw & REQ_DISCARD)) {
++		zram_bio_discard(zram, index, offset, bio);
++		bio_endio(bio, 0);
++		return;
++	}
++
++	bio_for_each_segment(bvec, bio, iter) {
+ 		int max_transfer_size = PAGE_SIZE - offset;
+ 
+ 		if (bvec->bv_len > max_transfer_size) {
+@@ -750,16 +904,15 @@ static void __zram_make_request(struct zram *zram, struct bio *bio, int rw)
+ 			bv.bv_len = max_transfer_size;
+ 			bv.bv_offset = bvec->bv_offset;
+ 
+-			if (zram_bvec_rw(zram, &bv, index, offset, bio, rw) < 0)
++			if (zram_bvec_rw(zram, &bv, index, offset, bio) < 0)
+ 				goto out;
+ 
+ 			bv.bv_len = bvec->bv_len - max_transfer_size;
+ 			bv.bv_offset += max_transfer_size;
+-			if (zram_bvec_rw(zram, &bv, index+1, 0, bio, rw) < 0)
++			if (zram_bvec_rw(zram, &bv, index + 1, 0, bio) < 0)
+ 				goto out;
+ 		} else
+-			if (zram_bvec_rw(zram, bvec, index, offset, bio, rw)
+-			    < 0)
++			if (zram_bvec_rw(zram, bvec, index, offset, bio) < 0)
+ 				goto out;
+ 
+ 		update_position(&index, &offset, bvec);
+@@ -781,7 +934,7 @@ static void zram_make_request(struct request_queue *queue, struct bio *bio)
+ 	struct zram *zram = queue->queuedata;
+ 
+ 	down_read(&zram->init_lock);
+-	if (unlikely(!zram->init_done))
++	if (unlikely(!init_done(zram)))
+ 		goto error;
+ 
+ 	if (!valid_io_request(zram, bio)) {
+@@ -789,7 +942,7 @@ static void zram_make_request(struct request_queue *queue, struct bio *bio)
+ 		goto error;
+ 	}
+ 
+-	__zram_make_request(zram, bio, bio_data_dir(bio));
++	__zram_make_request(zram, bio);
+ 	up_read(&zram->init_lock);
+ 
+ 	return;
+@@ -799,40 +952,19 @@ error:
+ 	bio_io_error(bio);
+ }
+ 
+-static void zram_slot_free(struct work_struct *work)
+-{
+-	struct zram *zram;
+-
+-	zram = container_of(work, struct zram, free_work);
+-	down_write(&zram->lock);
+-	handle_pending_slot_free(zram);
+-	up_write(&zram->lock);
+-}
+-
+-static void add_slot_free(struct zram *zram, struct zram_slot_free *free_rq)
+-{
+-	spin_lock(&zram->slot_free_lock);
+-	free_rq->next = zram->slot_free_rq;
+-	zram->slot_free_rq = free_rq;
+-	spin_unlock(&zram->slot_free_lock);
+-}
+-
+ static void zram_slot_free_notify(struct block_device *bdev,
+ 				unsigned long index)
+ {
+ 	struct zram *zram;
+-	struct zram_slot_free *free_rq;
++	struct zram_meta *meta;
+ 
+ 	zram = bdev->bd_disk->private_data;
+-	atomic64_inc(&zram->stats.notify_free);
+-
+-	free_rq = kmalloc(sizeof(struct zram_slot_free), GFP_ATOMIC);
+-	if (!free_rq)
+-		return;
++	meta = zram->meta;
+ 
+-	free_rq->index = index;
+-	add_slot_free(zram, free_rq);
+-	schedule_work(&zram->free_work);
++	bit_spin_lock(ZRAM_ACCESS, &meta->table[index].value);
++	zram_free_page(zram, index);
++	bit_spin_unlock(ZRAM_ACCESS, &meta->table[index].value);
++	atomic64_inc(&zram->stats.notify_free);
+ }
+ 
+ static const struct block_device_operations zram_devops = {
+@@ -840,31 +972,50 @@ static const struct block_device_operations zram_devops = {
+ 	.owner = THIS_MODULE
+ };
+ 
++static DEVICE_ATTR(compact, 0200, NULL, compact_store);
+ static DEVICE_ATTR(disksize, S_IRUGO | S_IWUSR,
+ 		disksize_show, disksize_store);
+ static DEVICE_ATTR(initstate, S_IRUGO, initstate_show, NULL);
+ static DEVICE_ATTR(reset, S_IWUSR, NULL, reset_store);
+-static DEVICE_ATTR(num_reads, S_IRUGO, num_reads_show, NULL);
+-static DEVICE_ATTR(num_writes, S_IRUGO, num_writes_show, NULL);
+-static DEVICE_ATTR(invalid_io, S_IRUGO, invalid_io_show, NULL);
+-static DEVICE_ATTR(notify_free, S_IRUGO, notify_free_show, NULL);
+-static DEVICE_ATTR(zero_pages, S_IRUGO, zero_pages_show, NULL);
+ static DEVICE_ATTR(orig_data_size, S_IRUGO, orig_data_size_show, NULL);
+-static DEVICE_ATTR(compr_data_size, S_IRUGO, compr_data_size_show, NULL);
+ static DEVICE_ATTR(mem_used_total, S_IRUGO, mem_used_total_show, NULL);
++static DEVICE_ATTR(mem_limit, S_IRUGO | S_IWUSR, mem_limit_show,
++		mem_limit_store);
++static DEVICE_ATTR(mem_used_max, S_IRUGO | S_IWUSR, mem_used_max_show,
++		mem_used_max_store);
++static DEVICE_ATTR(max_comp_streams, S_IRUGO | S_IWUSR,
++		max_comp_streams_show, max_comp_streams_store);
++static DEVICE_ATTR(comp_algorithm, S_IRUGO | S_IWUSR,
++		comp_algorithm_show, comp_algorithm_store);
++
++ZRAM_ATTR_RO(num_reads);
++ZRAM_ATTR_RO(num_writes);
++ZRAM_ATTR_RO(failed_reads);
++ZRAM_ATTR_RO(failed_writes);
++ZRAM_ATTR_RO(invalid_io);
++ZRAM_ATTR_RO(notify_free);
++ZRAM_ATTR_RO(zero_pages);
++ZRAM_ATTR_RO(compr_data_size);
+ 
+ static struct attribute *zram_disk_attrs[] = {
++	&dev_attr_compact.attr,
+ 	&dev_attr_disksize.attr,
+ 	&dev_attr_initstate.attr,
+ 	&dev_attr_reset.attr,
+ 	&dev_attr_num_reads.attr,
+ 	&dev_attr_num_writes.attr,
++	&dev_attr_failed_reads.attr,
++	&dev_attr_failed_writes.attr,
+ 	&dev_attr_invalid_io.attr,
+ 	&dev_attr_notify_free.attr,
+ 	&dev_attr_zero_pages.attr,
+ 	&dev_attr_orig_data_size.attr,
+ 	&dev_attr_compr_data_size.attr,
+ 	&dev_attr_mem_used_total.attr,
++	&dev_attr_mem_limit.attr,
++	&dev_attr_mem_used_max.attr,
++	&dev_attr_max_comp_streams.attr,
++	&dev_attr_comp_algorithm.attr,
+ 	NULL,
+ };
+ 
+@@ -872,17 +1023,17 @@ static struct attribute_group zram_disk_attr_group = {
+ 	.attrs = zram_disk_attrs,
+ };
+ 
++static const struct attribute_group *zram_disk_attr_groups[] = {
++	&zram_disk_attr_group,
++	NULL,
++};
++
+ static int create_device(struct zram *zram, int device_id)
+ {
+ 	int ret = -ENOMEM;
+ 
+-	init_rwsem(&zram->lock);
+ 	init_rwsem(&zram->init_lock);
+ 
+-	INIT_WORK(&zram->free_work, zram_slot_free);
+-	spin_lock_init(&zram->slot_free_lock);
+-	zram->slot_free_rq = NULL;
+-
+ 	zram->queue = blk_alloc_queue(GFP_KERNEL);
+ 	if (!zram->queue) {
+ 		pr_err("Error allocating disk queue for device %d\n",
+@@ -908,10 +1059,11 @@ static int create_device(struct zram *zram, int device_id)
+ 	zram->disk->private_data = zram;
+ 	snprintf(zram->disk->disk_name, 16, "zram%d", device_id);
+ 
+-	__set_bit(QUEUE_FLAG_FAST, &zram->queue->queue_flags);
+ 	/* Actual capacity set using syfs (/sys/block/zram<id>/disksize */
+ 	set_capacity(zram->disk, 0);
+-
++	/* zram devices sort of resembles non-rotational disks */
++	queue_flag_set_unlocked(QUEUE_FLAG_NONROT, zram->disk->queue);
++	queue_flag_clear_unlocked(QUEUE_FLAG_ADD_RANDOM, zram->disk->queue);
+ 	/*
+ 	 * To ensure that we always get PAGE_SIZE aligned
+ 	 * and n*PAGE_SIZED sized I/O requests.
+@@ -921,22 +1073,30 @@ static int create_device(struct zram *zram, int device_id)
+ 					ZRAM_LOGICAL_BLOCK_SIZE);
+ 	blk_queue_io_min(zram->disk->queue, PAGE_SIZE);
+ 	blk_queue_io_opt(zram->disk->queue, PAGE_SIZE);
++	zram->disk->queue->limits.discard_granularity = PAGE_SIZE;
++	zram->disk->queue->limits.max_discard_sectors = UINT_MAX;
++	/*
++	 * zram_bio_discard() will clear all logical blocks if logical block
++	 * size is identical with physical block size(PAGE_SIZE). But if it is
++	 * different, we will skip discarding some parts of logical blocks in
++	 * the part of the request range which isn't aligned to physical block
++	 * size.  So we can't ensure that all discarded logical blocks are
++	 * zeroed.
++	 */
++	if (ZRAM_LOGICAL_BLOCK_SIZE == PAGE_SIZE)
++		zram->disk->queue->limits.discard_zeroes_data = 1;
++	else
++		zram->disk->queue->limits.discard_zeroes_data = 0;
++	queue_flag_set_unlocked(QUEUE_FLAG_DISCARD, zram->disk->queue);
+ 
++	disk_to_dev(zram->disk)->groups = zram_disk_attr_groups;
+ 	add_disk(zram->disk);
+ 
+-	ret = sysfs_create_group(&disk_to_dev(zram->disk)->kobj,
+-				&zram_disk_attr_group);
+-	if (ret < 0) {
+-		pr_warn("Error creating sysfs group");
+-		goto out_free_disk;
+-	}
+-
+-	zram->init_done = 0;
++	strlcpy(zram->compressor, default_compressor, sizeof(zram->compressor));
++	zram->meta = NULL;
++	zram->max_comp_streams = 1;
+ 	return 0;
+ 
+-out_free_disk:
+-	del_gendisk(zram->disk);
+-	put_disk(zram->disk);
+ out_free_queue:
+ 	blk_cleanup_queue(zram->queue);
+ out:
+@@ -945,16 +1105,10 @@ out:
+ 
+ static void destroy_device(struct zram *zram)
+ {
+-	sysfs_remove_group(&disk_to_dev(zram->disk)->kobj,
+-			&zram_disk_attr_group);
+-
+-	if (zram->disk) {
+-		del_gendisk(zram->disk);
+-		put_disk(zram->disk);
+-	}
++	del_gendisk(zram->disk);
++	put_disk(zram->disk);
+ 
+-	if (zram->queue)
+-		blk_cleanup_queue(zram->queue);
++	blk_cleanup_queue(zram->queue);
+ }
+ 
+ static int __init zram_init(void)
+@@ -988,7 +1142,6 @@ static int __init zram_init(void)
+ 			goto free_devices;
+ 	}
+ 
+-	show_mem_notifier_register(&zram_show_mem_notifier_block);
+ 	pr_info("Created %u device(s) ...\n", num_devices);
+ 
+ 	return 0;
+@@ -1011,7 +1164,6 @@ static void __exit zram_exit(void)
+ 	for (i = 0; i < num_devices; i++) {
+ 		zram = &zram_devices[i];
+ 
+-		get_disk(zram->disk);
+ 		destroy_device(zram);
+ 		/*
+ 		 * Shouldn't access zram->disk after destroy_device
+@@ -1035,4 +1187,3 @@ MODULE_PARM_DESC(num_devices, "Number of zram devices");
+ MODULE_LICENSE("Dual BSD/GPL");
+ MODULE_AUTHOR("Nitin Gupta <ngupta@vflare.org>");
+ MODULE_DESCRIPTION("Compressed RAM Block Device");
+-MODULE_ALIAS("devname:zram");
+diff --git a/drivers/staging/zram/zram_drv.h b/drivers/staging/zram/zram_drv.h
+index 508a19f4..9decf875 100644
+--- a/drivers/staging/zram/zram_drv.h
++++ b/drivers/staging/zram/zram_drv.h
+@@ -2,6 +2,7 @@
+  * Compressed RAM block device
+  *
+  * Copyright (C) 2008, 2009, 2010  Nitin Gupta
++ *               2012, 2013 Minchan Kim
+  *
+  * This code is released using a dual license strategy: BSD/GPL
+  * You can choose the licence that better fits your requirements.
+@@ -9,17 +10,16 @@
+  * Released under the terms of 3-clause BSD License
+  * Released under the terms of GNU General Public License Version 2.0
+  *
+- * Project home: http://compcache.googlecode.com
+  */
+ 
+ #ifndef _ZRAM_DRV_H_
+ #define _ZRAM_DRV_H_
+ 
+ #include <linux/spinlock.h>
+-#include <linux/mutex.h>
+-
+ #include "../zsmalloc/zsmalloc.h"
+ 
++#include "zcomp.h"
++
+ /*
+  * Some arbitrary value. This is just to catch
+  * invalid value for num_devices module parameter.
+@@ -32,7 +32,7 @@ static const unsigned max_num_devices = 32;
+  * Pages that compress to size greater than this are stored
+  * uncompressed in memory.
+  */
+-static const size_t max_zpage_size = PAGE_SIZE / 10 * 9;
++static const size_t max_zpage_size = PAGE_SIZE / 4 * 3;
+ 
+ /*
+  * NOTE: max_zpage_size must be less than or equal to:
+@@ -43,7 +43,6 @@ static const size_t max_zpage_size = PAGE_SIZE / 10 * 9;
+ /*-- End of configurable params */
+ 
+ #define SECTOR_SHIFT		9
+-#define SECTOR_SIZE		(1 << SECTOR_SHIFT)
+ #define SECTORS_PER_PAGE_SHIFT	(PAGE_SHIFT - SECTOR_SHIFT)
+ #define SECTORS_PER_PAGE	(1 << SECTORS_PER_PAGE_SHIFT)
+ #define ZRAM_LOGICAL_BLOCK_SHIFT 12
+@@ -51,10 +50,24 @@ static const size_t max_zpage_size = PAGE_SIZE / 10 * 9;
+ #define ZRAM_SECTOR_PER_LOGICAL_BLOCK	\
+ 	(1 << (ZRAM_LOGICAL_BLOCK_SHIFT - SECTOR_SHIFT))
+ 
+-/* Flags for zram pages (table[page_no].flags) */
++
++/*
++ * The lower ZRAM_FLAG_SHIFT bits of table.value is for
++ * object size (excluding header), the higher bits is for
++ * zram_pageflags.
++ *
++ * zram is mainly used for memory efficiency so we want to keep memory
++ * footprint small so we can squeeze size and flags into a field.
++ * The lower ZRAM_FLAG_SHIFT bits is for object size (excluding header),
++ * the higher bits is for zram_pageflags.
++ */
++#define ZRAM_FLAG_SHIFT 24
++
++/* Flags for zram pages (table[page_no].value) */
+ enum zram_pageflags {
+ 	/* Page consists entirely of zeros */
+-	ZRAM_ZERO,
++	ZRAM_ZERO = ZRAM_FLAG_SHIFT + 1,
++	ZRAM_ACCESS,	/* page in now accessed */
+ 
+ 	__NR_ZRAM_PAGEFLAGS,
+ };
+@@ -62,55 +75,35 @@ enum zram_pageflags {
+ /*-- Data structures */
+ 
+ /* Allocated for each disk page */
+-struct table {
++struct zram_table_entry {
+ 	unsigned long handle;
+-	u16 size;	/* object size (excluding header) */
+-	u8 count;	/* object ref count (not yet used) */
+-	u8 flags;
+-} __aligned(4);
++	unsigned long value;
++};
+ 
+-/*
+- * All 64bit fields should only be manipulated by 64bit atomic accessors.
+- * All modifications to 32bit counter should be protected by zram->lock.
+- */
+ struct zram_stats {
+-	atomic64_t compr_size;	/* compressed size of pages stored */
++	atomic64_t compr_data_size;	/* compressed size of pages stored */
+ 	atomic64_t num_reads;	/* failed + successful */
+ 	atomic64_t num_writes;	/* --do-- */
+-	atomic64_t failed_reads;	/* should NEVER! happen */
++	atomic64_t failed_reads;	/* can happen when memory is too low */
+ 	atomic64_t failed_writes;	/* can happen when memory is too low */
+ 	atomic64_t invalid_io;	/* non-page-aligned I/O requests */
+ 	atomic64_t notify_free;	/* no. of swap slot free notifications */
+-	u32 pages_zero;		/* no. of zero filled pages */
+-	u32 pages_stored;	/* no. of pages currently stored */
+-	u32 good_compress;	/* % of pages with compression ratio<=50% */
+-	u32 bad_compress;	/* % of pages with compression ratio>=75% */
++	atomic64_t zero_pages;		/* no. of zero filled pages */
++	atomic64_t pages_stored;	/* no. of pages currently stored */
++	atomic_long_t max_used_pages;	/* no. of maximum pages stored */
+ };
+ 
+ struct zram_meta {
+-	void *compress_workmem;
+-	void *compress_buffer;
+-	struct table *table;
++	struct zram_table_entry *table;
+ 	struct zs_pool *mem_pool;
+ };
+ 
+-struct zram_slot_free {
+-	unsigned long index;
+-	struct zram_slot_free *next;
+-};
+-
+ struct zram {
+ 	struct zram_meta *meta;
+-	struct rw_semaphore lock; /* protect compression buffers, table,
+-				   * 32bit stat counters against concurrent
+-				   * notifications, reads and writes */
+-
+-	struct work_struct free_work;  /* handle pending free request */
+-	struct zram_slot_free *slot_free_rq; /* list head of free request */
+-
+ 	struct request_queue *queue;
+ 	struct gendisk *disk;
+-	int init_done;
++	struct zcomp *comp;
++
+ 	/* Prevent concurrent execution of device init, reset and R/W request */
+ 	struct rw_semaphore init_lock;
+ 	/*
+@@ -118,8 +111,13 @@ struct zram {
+ 	 * we can store in a disk.
+ 	 */
+ 	u64 disksize;	/* bytes */
+-	spinlock_t slot_free_lock;
+-
++	int max_comp_streams;
+ 	struct zram_stats stats;
++	/*
++	 * the number of pages zram can consume for storing compressed data
++	 */
++	unsigned long limit_pages;
++
++	char compressor[10];
+ };
+ #endif
+diff --git a/drivers/staging/zsmalloc/zsmalloc-main.c b/drivers/staging/zsmalloc/zsmalloc-main.c
+index 3b950e5a..8c46098e 100644
+--- a/drivers/staging/zsmalloc/zsmalloc-main.c
++++ b/drivers/staging/zsmalloc/zsmalloc-main.c
+@@ -2,6 +2,7 @@
+  * zsmalloc memory allocator
+  *
+  * Copyright (C) 2011  Nitin Gupta
++ * Copyright (C) 2012, 2013 Minchan Kim
+  *
+  * This code is released using a dual license strategy: BSD/GPL
+  * You can choose the license that better fits your requirements.
+@@ -10,23 +11,7 @@
+  * Released under the terms of GNU General Public License Version 2.0
+  */
+ 
+-
+ /*
+- * This allocator is designed for use with zcache and zram. Thus, the
+- * allocator is supposed to work well under low memory conditions. In
+- * particular, it never attempts higher order page allocation which is
+- * very likely to fail under memory pressure. On the other hand, if we
+- * just use single (0-order) pages, it would suffer from very high
+- * fragmentation -- any object of size PAGE_SIZE/2 or larger would occupy
+- * an entire page. This was one of the major issues with its predecessor
+- * (xvmalloc).
+- *
+- * To overcome these issues, zsmalloc allocates a bunch of 0-order pages
+- * and links them together using various 'struct page' fields. These linked
+- * pages act as a single higher-order page i.e. an object can span 0-order
+- * page boundaries. The code refers to these linked pages as a single entity
+- * called zspage.
+- *
+  * Following is how we use various fields and flags of underlying
+  * struct page(s) to form a zspage.
+  *
+@@ -43,6 +28,8 @@
+  *
+  *	page->private (union with page->first_page): refers to the
+  *		component page after the first page
++ *		If the page is first_page for huge object, it stores handle.
++ *		Look at size_class->huge.
+  *	page->freelist: points to the first free object in zspage.
+  *		Free objects are linked together using in-place
+  *		metadata.
+@@ -64,10 +51,10 @@
+ 
+ #include <linux/module.h>
+ #include <linux/kernel.h>
++#include <linux/sched.h>
+ #include <linux/bitops.h>
+ #include <linux/errno.h>
+ #include <linux/highmem.h>
+-#include <linux/init.h>
+ #include <linux/string.h>
+ #include <linux/slab.h>
+ #include <asm/tlbflush.h>
+@@ -78,8 +65,11 @@
+ #include <linux/hardirq.h>
+ #include <linux/spinlock.h>
+ #include <linux/types.h>
+-
++#include <linux/debugfs.h>
+ #include "zsmalloc.h"
++#ifdef CONFIG_ZPOOL
++#include <linux/zpool.h>
++#endif
+ 
+ /*
+  * This must be power of 2 and greater than of equal to sizeof(link_free).
+@@ -96,9 +86,11 @@
+ #define ZS_MAX_ZSPAGE_ORDER 2
+ #define ZS_MAX_PAGES_PER_ZSPAGE (_AC(1, UL) << ZS_MAX_ZSPAGE_ORDER)
+ 
++#define ZS_HANDLE_SIZE (sizeof(unsigned long))
++
+ /*
+  * Object location (<PFN>, <obj_idx>) is encoded as
+- * as single (void *) handle value.
++ * as single (unsigned long) handle value.
+  *
+  * Note that object index <obj_idx> is relative to system
+  * page <PFN> it is stored in, so for each sub-page belonging
+@@ -119,17 +111,37 @@
+ #endif
+ #endif
+ #define _PFN_BITS		(MAX_PHYSMEM_BITS - PAGE_SHIFT)
+-#define OBJ_INDEX_BITS	(BITS_PER_LONG - _PFN_BITS)
++
++/*
++ * Memory for allocating for handle keeps object position by
++ * encoding <page, obj_idx> and the encoded value has a room
++ * in least bit(ie, look at obj_to_location).
++ * We use the bit to synchronize between object access by
++ * user and migration.
++ */
++#define HANDLE_PIN_BIT	0
++
++/*
++ * Head in allocated object should have OBJ_ALLOCATED_TAG
++ * to identify the object was allocated or not.
++ * It's okay to add the status bit in the least bit because
++ * header keeps handle which is 4byte-aligned address so we
++ * have room for two bit at least.
++ */
++#define OBJ_ALLOCATED_TAG 1
++#define OBJ_TAG_BITS 1
++#define OBJ_INDEX_BITS	(BITS_PER_LONG - _PFN_BITS - OBJ_TAG_BITS)
+ #define OBJ_INDEX_MASK	((_AC(1, UL) << OBJ_INDEX_BITS) - 1)
+ 
+ #define MAX(a, b) ((a) >= (b) ? (a) : (b))
+ /* ZS_MIN_ALLOC_SIZE must be multiple of ZS_ALIGN */
+ #define ZS_MIN_ALLOC_SIZE \
+ 	MAX(32, (ZS_MAX_PAGES_PER_ZSPAGE << PAGE_SHIFT >> OBJ_INDEX_BITS))
++/* each chunk includes extra space to keep handle */
+ #define ZS_MAX_ALLOC_SIZE	PAGE_SIZE
+ 
+ /*
+- * On systems with 4K page size, this gives 254 size classes! There is a
++ * On systems with 4K page size, this gives 255 size classes! There is a
+  * trader-off here:
+  *  - Large number of size classes is potentially wasteful as free page are
+  *    spread across these classes
+@@ -142,8 +154,6 @@
+  *  (reason above)
+  */
+ #define ZS_SIZE_CLASS_DELTA	(PAGE_SIZE >> 8)
+-#define ZS_SIZE_CLASSES		((ZS_MAX_ALLOC_SIZE - ZS_MIN_ALLOC_SIZE) / \
+-					ZS_SIZE_CLASS_DELTA + 1)
+ 
+ /*
+  * We do not maintain any list for completely empty or full pages
+@@ -157,12 +167,35 @@ enum fullness_group {
+ 	ZS_FULL
+ };
+ 
++enum zs_stat_type {
++	OBJ_ALLOCATED,
++	OBJ_USED,
++	CLASS_ALMOST_FULL,
++	CLASS_ALMOST_EMPTY,
++	NR_ZS_STAT_TYPE,
++};
++
++#ifdef CONFIG_ZSMALLOC_STAT
++
++static struct dentry *zs_stat_root;
++
++struct zs_size_stat {
++	unsigned long objs[NR_ZS_STAT_TYPE];
++};
++
++#endif
++
++/*
++ * number of size_classes
++ */
++static int zs_size_classes;
++
+ /*
+  * We assign a page to ZS_ALMOST_EMPTY fullness group when:
+  *	n <= N / f, where
+  * n = number of allocated objects
+  * N = total number of objects zspage can store
+- * f = 1/fullness_threshold_frac
++ * f = fullness_threshold_frac
+  *
+  * Similarly, we assign zspage to:
+  *	ZS_ALMOST_FULL	when n > N / f
+@@ -183,11 +216,14 @@ struct size_class {
+ 
+ 	/* Number of PAGE_SIZE sized pages to combine to form a 'zspage' */
+ 	int pages_per_zspage;
++	/* huge object: pages_per_zspage == 1 && maxobj_per_zspage == 1 */
++	bool huge;
+ 
+-	spinlock_t lock;
++#ifdef CONFIG_ZSMALLOC_STAT
++	struct zs_size_stat stats;
++#endif
+ 
+-	/* stats */
+-	u64 pages_allocated;
++	spinlock_t lock;
+ 
+ 	struct page *fullness_list[_ZS_NR_FULLNESS_GROUPS];
+ };
+@@ -199,14 +235,31 @@ struct size_class {
+  * This must be power of 2 and less than or equal to ZS_ALIGN
+  */
+ struct link_free {
+-	/* Handle of next free chunk (encodes <PFN, obj_idx>) */
+-	void *next;
++	union {
++		/*
++		 * Position of next free chunk (encodes <PFN, obj_idx>)
++		 * It's valid for non-allocated object
++		 */
++		void *next;
++		/*
++		 * Handle of allocated object.
++		 */
++		unsigned long handle;
++	};
+ };
+ 
+ struct zs_pool {
+-	struct size_class size_class[ZS_SIZE_CLASSES];
++	char *name;
++
++	struct size_class **size_class;
++	struct kmem_cache *handle_cachep;
+ 
+ 	gfp_t flags;	/* allocation flags used when growing pool */
++	atomic_long_t pages_allocated;
++
++#ifdef CONFIG_ZSMALLOC_STAT
++	struct dentry *stat_dentry;
++#endif
+ };
+ 
+ /*
+@@ -218,27 +271,132 @@ struct zs_pool {
+ #define CLASS_IDX_MASK	((1 << CLASS_IDX_BITS) - 1)
+ #define FULLNESS_MASK	((1 << FULLNESS_BITS) - 1)
+ 
+-/*
+- * By default, zsmalloc uses a copy-based object mapping method to access
+- * allocations that span two pages. However, if a particular architecture
+- * performs VM mapping faster than copying, then it should be added here
+- * so that USE_PGTABLE_MAPPING is defined. This causes zsmalloc to use
+- * page table mapping rather than copying for object mapping.
+- */
+-#if defined(CONFIG_ARM) && !defined(MODULE)
+-#define USE_PGTABLE_MAPPING
+-#endif
+-
+ struct mapping_area {
+-#ifdef USE_PGTABLE_MAPPING
++#ifdef CONFIG_PGTABLE_MAPPING
+ 	struct vm_struct *vm; /* vm area for mapping object that span pages */
+ #else
+ 	char *vm_buf; /* copy buffer for objects that span pages */
+ #endif
+ 	char *vm_addr; /* address of kmap_atomic()'ed pages */
+ 	enum zs_mapmode vm_mm; /* mapping mode */
++	bool huge;
++};
++
++static int create_handle_cache(struct zs_pool *pool)
++{
++	pool->handle_cachep = kmem_cache_create("zs_handle", ZS_HANDLE_SIZE,
++					0, 0, NULL);
++	return pool->handle_cachep ? 0 : 1;
++}
++
++static void destroy_handle_cache(struct zs_pool *pool)
++{
++	if (pool->handle_cachep)
++		kmem_cache_destroy(pool->handle_cachep);
++}
++
++static unsigned long alloc_handle(struct zs_pool *pool)
++{
++	return (unsigned long)kmem_cache_alloc(pool->handle_cachep,
++		pool->flags & ~__GFP_HIGHMEM);
++}
++
++static void free_handle(struct zs_pool *pool, unsigned long handle)
++{
++	kmem_cache_free(pool->handle_cachep, (void *)handle);
++}
++
++static void record_obj(unsigned long handle, unsigned long obj)
++{
++	/*
++	 * lsb of @obj represents handle lock while other bits
++	 * represent object value the handle is pointing so
++	 * updating shouldn't do store tearing.
++	 */
++	ACCESS_ONCE(*(unsigned long *)handle) = obj;
++}
++
++/* zpool driver */
++
++#ifdef CONFIG_ZPOOL
++
++static void *zs_zpool_create(char *name, gfp_t gfp, struct zpool_ops *zpool_ops)
++{
++	return zs_create_pool(gfp);
++}
++
++static void zs_zpool_destroy(void *pool)
++{
++	zs_destroy_pool(pool);
++}
++
++static int zs_zpool_malloc(void *pool, size_t size, gfp_t gfp,
++			unsigned long *handle)
++{
++	*handle = zs_malloc(pool, size);
++	return *handle ? 0 : -1;
++}
++static void zs_zpool_free(void *pool, unsigned long handle)
++{
++	zs_free(pool, handle);
++}
++
++static int zs_zpool_shrink(void *pool, unsigned int pages,
++			unsigned int *reclaimed)
++{
++	return -EINVAL;
++}
++
++static void *zs_zpool_map(void *pool, unsigned long handle,
++			enum zpool_mapmode mm)
++{
++	enum zs_mapmode zs_mm;
++
++	switch (mm) {
++	case ZPOOL_MM_RO:
++		zs_mm = ZS_MM_RO;
++		break;
++	case ZPOOL_MM_WO:
++		zs_mm = ZS_MM_WO;
++		break;
++	case ZPOOL_MM_RW: /* fallthru */
++	default:
++		zs_mm = ZS_MM_RW;
++		break;
++	}
++
++	return zs_map_object(pool, handle, zs_mm);
++}
++static void zs_zpool_unmap(void *pool, unsigned long handle)
++{
++	zs_unmap_object(pool, handle);
++}
++
++static u64 zs_zpool_total_size(void *pool)
++{
++	return zs_get_total_pages(pool) << PAGE_SHIFT;
++}
++
++static struct zpool_driver zs_zpool_driver = {
++	.type =		"zsmalloc",
++	.owner =	THIS_MODULE,
++	.create =	zs_zpool_create,
++	.destroy =	zs_zpool_destroy,
++	.malloc =	zs_zpool_malloc,
++	.free =		zs_zpool_free,
++	.shrink =	zs_zpool_shrink,
++	.map =		zs_zpool_map,
++	.unmap =	zs_zpool_unmap,
++	.total_size =	zs_zpool_total_size,
+ };
+ 
++MODULE_ALIAS("zpool-zsmalloc");
++#endif /* CONFIG_ZPOOL */
++
++static unsigned int get_maxobj_per_zspage(int size, int pages_per_zspage)
++{
++	return pages_per_zspage * PAGE_SIZE / size;
++}
+ 
+ /* per-cpu VM mapping areas for zspage accesses that cross page boundaries */
+ static DEFINE_PER_CPU(struct mapping_area, zs_map_area);
+@@ -275,6 +433,13 @@ static void set_zspage_mapping(struct page *page, unsigned int class_idx,
+ 	page->mapping = (struct address_space *)m;
+ }
+ 
++/*
++ * zsmalloc divides the pool into various size classes where each
++ * class maintains a list of zspages where each zspage is divided
++ * into equal sized chunks. Each allocation falls into one of these
++ * classes depending on its size. This function returns index of the
++ * size class which has chunk size big enough to hold the give size.
++ */
+ static int get_size_class_index(int size)
+ {
+ 	int idx = 0;
+@@ -283,9 +448,189 @@ static int get_size_class_index(int size)
+ 		idx = DIV_ROUND_UP(size - ZS_MIN_ALLOC_SIZE,
+ 				ZS_SIZE_CLASS_DELTA);
+ 
+-	return idx;
++	return min(zs_size_classes - 1, idx);
++}
++
++#ifdef CONFIG_ZSMALLOC_STAT
++
++static inline void zs_stat_inc(struct size_class *class,
++				enum zs_stat_type type, unsigned long cnt)
++{
++	class->stats.objs[type] += cnt;
++}
++
++static inline void zs_stat_dec(struct size_class *class,
++				enum zs_stat_type type, unsigned long cnt)
++{
++	class->stats.objs[type] -= cnt;
++}
++
++static inline unsigned long zs_stat_get(struct size_class *class,
++				enum zs_stat_type type)
++{
++	return class->stats.objs[type];
++}
++
++static int __init zs_stat_init(void)
++{
++	if (!debugfs_initialized())
++		return -ENODEV;
++
++	zs_stat_root = debugfs_create_dir("zsmalloc", NULL);
++	if (!zs_stat_root)
++		return -ENOMEM;
++
++	return 0;
++}
++
++static void __exit zs_stat_exit(void)
++{
++	debugfs_remove_recursive(zs_stat_root);
++}
++
++static int zs_stats_size_show(struct seq_file *s, void *v)
++{
++	int i;
++	struct zs_pool *pool = s->private;
++	struct size_class *class;
++	int objs_per_zspage;
++	unsigned long class_almost_full, class_almost_empty;
++	unsigned long obj_allocated, obj_used, pages_used;
++	unsigned long total_class_almost_full = 0, total_class_almost_empty = 0;
++	unsigned long total_objs = 0, total_used_objs = 0, total_pages = 0;
++
++	seq_printf(s, " %5s %5s %11s %12s %13s %10s %10s %16s\n",
++			"class", "size", "almost_full", "almost_empty",
++			"obj_allocated", "obj_used", "pages_used",
++			"pages_per_zspage");
++
++	for (i = 0; i < zs_size_classes; i++) {
++		class = pool->size_class[i];
++
++		if (class->index != i)
++			continue;
++
++		spin_lock(&class->lock);
++		class_almost_full = zs_stat_get(class, CLASS_ALMOST_FULL);
++		class_almost_empty = zs_stat_get(class, CLASS_ALMOST_EMPTY);
++		obj_allocated = zs_stat_get(class, OBJ_ALLOCATED);
++		obj_used = zs_stat_get(class, OBJ_USED);
++		spin_unlock(&class->lock);
++
++		objs_per_zspage = get_maxobj_per_zspage(class->size,
++				class->pages_per_zspage);
++		pages_used = obj_allocated / objs_per_zspage *
++				class->pages_per_zspage;
++
++		seq_printf(s, " %5u %5u %11lu %12lu %13lu %10lu %10lu %16d\n",
++			i, class->size, class_almost_full, class_almost_empty,
++			obj_allocated, obj_used, pages_used,
++			class->pages_per_zspage);
++
++		total_class_almost_full += class_almost_full;
++		total_class_almost_empty += class_almost_empty;
++		total_objs += obj_allocated;
++		total_used_objs += obj_used;
++		total_pages += pages_used;
++	}
++
++	seq_puts(s, "\n");
++	seq_printf(s, " %5s %5s %11lu %12lu %13lu %10lu %10lu\n",
++			"Total", "", total_class_almost_full,
++			total_class_almost_empty, total_objs,
++			total_used_objs, total_pages);
++
++	return 0;
++}
++
++static int zs_stats_size_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, zs_stats_size_show, inode->i_private);
++}
++
++static const struct file_operations zs_stat_size_ops = {
++	.open           = zs_stats_size_open,
++	.read           = seq_read,
++	.llseek         = seq_lseek,
++	.release        = single_release,
++};
++
++static int zs_pool_stat_create(char *name, struct zs_pool *pool)
++{
++	struct dentry *entry;
++
++	if (!zs_stat_root)
++		return -ENODEV;
++
++	entry = debugfs_create_dir(name, zs_stat_root);
++	if (!entry) {
++		pr_warn("debugfs dir <%s> creation failed\n", name);
++		return -ENOMEM;
++	}
++	pool->stat_dentry = entry;
++
++	entry = debugfs_create_file("classes", S_IFREG | S_IRUGO,
++			pool->stat_dentry, pool, &zs_stat_size_ops);
++	if (!entry) {
++		pr_warn("%s: debugfs file entry <%s> creation failed\n",
++				name, "classes");
++		return -ENOMEM;
++	}
++
++	return 0;
++}
++
++static void zs_pool_stat_destroy(struct zs_pool *pool)
++{
++	debugfs_remove_recursive(pool->stat_dentry);
++}
++
++#else /* CONFIG_ZSMALLOC_STAT */
++
++static inline void zs_stat_inc(struct size_class *class,
++				enum zs_stat_type type, unsigned long cnt)
++{
++}
++
++static inline void zs_stat_dec(struct size_class *class,
++				enum zs_stat_type type, unsigned long cnt)
++{
++}
++
++static inline unsigned long zs_stat_get(struct size_class *class,
++				enum zs_stat_type type)
++{
++	return 0;
++}
++
++static int __init zs_stat_init(void)
++{
++	return 0;
++}
++
++static void __exit zs_stat_exit(void)
++{
++}
++
++static inline int zs_pool_stat_create(char *name, struct zs_pool *pool)
++{
++	return 0;
++}
++
++static inline void zs_pool_stat_destroy(struct zs_pool *pool)
++{
+ }
+ 
++#endif
++
++
++/*
++ * For each size class, zspages are divided into different groups
++ * depending on how "full" they are. This was done so that we could
++ * easily find empty or nearly empty zspages when we try to shrink
++ * the pool (not yet implemented). This function returns fullness
++ * status of the given page.
++ */
+ static enum fullness_group get_fullness_group(struct page *page)
+ {
+ 	int inuse, max_objects;
+@@ -299,7 +644,7 @@ static enum fullness_group get_fullness_group(struct page *page)
+ 		fg = ZS_EMPTY;
+ 	else if (inuse == max_objects)
+ 		fg = ZS_FULL;
+-	else if (inuse <= max_objects / fullness_threshold_frac)
++	else if (inuse <= 3 * max_objects / fullness_threshold_frac)
+ 		fg = ZS_ALMOST_EMPTY;
+ 	else
+ 		fg = ZS_ALMOST_FULL;
+@@ -307,6 +652,12 @@ static enum fullness_group get_fullness_group(struct page *page)
+ 	return fg;
+ }
+ 
++/*
++ * Each size class maintains various freelists and zspages are assigned
++ * to one of these freelists based on the number of live objects they
++ * have. This functions inserts the given zspage into the freelist
++ * identified by <class, fullness_group>.
++ */
+ static void insert_zspage(struct page *page, struct size_class *class,
+ 				enum fullness_group fullness)
+ {
+@@ -322,8 +673,14 @@ static void insert_zspage(struct page *page, struct size_class *class,
+ 		list_add_tail(&page->lru, &(*head)->lru);
+ 
+ 	*head = page;
++	zs_stat_inc(class, fullness == ZS_ALMOST_EMPTY ?
++			CLASS_ALMOST_EMPTY : CLASS_ALMOST_FULL, 1);
+ }
+ 
++/*
++ * This function removes the given zspage from the freelist identified
++ * by <class, fullness_group>.
++ */
+ static void remove_zspage(struct page *page, struct size_class *class,
+ 				enum fullness_group fullness)
+ {
+@@ -343,13 +700,23 @@ static void remove_zspage(struct page *page, struct size_class *class,
+ 					struct page, lru);
+ 
+ 	list_del_init(&page->lru);
++	zs_stat_dec(class, fullness == ZS_ALMOST_EMPTY ?
++			CLASS_ALMOST_EMPTY : CLASS_ALMOST_FULL, 1);
+ }
+ 
+-static enum fullness_group fix_fullness_group(struct zs_pool *pool,
++/*
++ * Each size class maintains zspages in different fullness groups depending
++ * on the number of live objects they contain. When allocating or freeing
++ * objects, the fullness status of the page can change, say, from ALMOST_FULL
++ * to ALMOST_EMPTY when freeing an object. This function checks if such
++ * a status change has occurred for the given page and accordingly moves the
++ * page from the freelist of the old fullness group to that of the new
++ * fullness group.
++ */
++static enum fullness_group fix_fullness_group(struct size_class *class,
+ 						struct page *page)
+ {
+ 	int class_idx;
+-	struct size_class *class;
+ 	enum fullness_group currfg, newfg;
+ 
+ 	BUG_ON(!is_first_page(page));
+@@ -359,7 +726,6 @@ static enum fullness_group fix_fullness_group(struct zs_pool *pool,
+ 	if (newfg == currfg)
+ 		goto out;
+ 
+-	class = &pool->size_class[class_idx];
+ 	remove_zspage(page, class, currfg);
+ 	insert_zspage(page, class, newfg);
+ 	set_zspage_mapping(page, class_idx, newfg);
+@@ -373,7 +739,8 @@ out:
+  * to form a zspage for each size class. This is important
+  * to reduce wastage due to unusable space left at end of
+  * each zspage which is given as:
+- *	wastage = Zp - Zp % size_class
++ *     wastage = Zp % class_size
++ *     usage = Zp - wastage
+  * where Zp = zspage size = k * PAGE_SIZE where k = 1, 2, ...
+  *
+  * For example, for size class of 3/8 * PAGE_SIZE, we should
+@@ -432,35 +799,50 @@ static struct page *get_next_page(struct page *page)
+ 
+ /*
+  * Encode <page, obj_idx> as a single handle value.
+- * On hardware platforms with physical memory starting at 0x0 the pfn
+- * could be 0 so we ensure that the handle will never be 0 by adjusting the
+- * encoded obj_idx value before encoding.
++ * We use the least bit of handle for tagging.
+  */
+-static void *obj_location_to_handle(struct page *page, unsigned long obj_idx)
++static void *location_to_obj(struct page *page, unsigned long obj_idx)
+ {
+-	unsigned long handle;
++	unsigned long obj;
+ 
+ 	if (!page) {
+ 		BUG_ON(obj_idx);
+ 		return NULL;
+ 	}
+ 
+-	handle = page_to_pfn(page) << OBJ_INDEX_BITS;
+-	handle |= ((obj_idx + 1) & OBJ_INDEX_MASK);
++	obj = page_to_pfn(page) << OBJ_INDEX_BITS;
++	obj |= ((obj_idx) & OBJ_INDEX_MASK);
++	obj <<= OBJ_TAG_BITS;
+ 
+-	return (void *)handle;
++	return (void *)obj;
+ }
+ 
+ /*
+  * Decode <page, obj_idx> pair from the given object handle. We adjust the
+  * decoded obj_idx back to its original value since it was adjusted in
+- * obj_location_to_handle().
++ * location_to_obj().
+  */
+-static void obj_handle_to_location(unsigned long handle, struct page **page,
++static void obj_to_location(unsigned long obj, struct page **page,
+ 				unsigned long *obj_idx)
+ {
+-	*page = pfn_to_page(handle >> OBJ_INDEX_BITS);
+-	*obj_idx = (handle & OBJ_INDEX_MASK) - 1;
++	obj >>= OBJ_TAG_BITS;
++	*page = pfn_to_page(obj >> OBJ_INDEX_BITS);
++	*obj_idx = (obj & OBJ_INDEX_MASK);
++}
++
++static unsigned long handle_to_obj(unsigned long handle)
++{
++	return *(unsigned long *)handle;
++}
++
++static unsigned long obj_to_head(struct size_class *class, struct page *page,
++			void *obj)
++{
++	if (class->huge) {
++		VM_BUG_ON(!is_first_page(page));
++		return *(unsigned long *)page_private(page);
++	} else
++		return *(unsigned long *)obj;
+ }
+ 
+ static unsigned long obj_idx_to_offset(struct page *page,
+@@ -474,6 +856,25 @@ static unsigned long obj_idx_to_offset(struct page *page,
+ 	return off + obj_idx * class_size;
+ }
+ 
++static inline int trypin_tag(unsigned long handle)
++{
++	unsigned long *ptr = (unsigned long *)handle;
++
++	return !test_and_set_bit_lock(HANDLE_PIN_BIT, ptr);
++}
++
++static void pin_tag(unsigned long handle)
++{
++	while (!trypin_tag(handle));
++}
++
++static void unpin_tag(unsigned long handle)
++{
++	unsigned long *ptr = (unsigned long *)handle;
++
++	clear_bit_unlock(HANDLE_PIN_BIT, ptr);
++}
++
+ static void reset_page(struct page *page)
+ {
+ 	clear_bit(PG_private, &page->flags);
+@@ -519,7 +920,8 @@ static void init_zspage(struct page *first_page, struct size_class *class)
+ 	while (page) {
+ 		struct page *next_page;
+ 		struct link_free *link;
+-		unsigned int i, objs_on_page;
++		unsigned int i = 1;
++		void *vaddr;
+ 
+ 		/*
+ 		 * page->index stores offset of first object starting
+@@ -530,16 +932,12 @@ static void init_zspage(struct page *first_page, struct size_class *class)
+ 		if (page != first_page)
+ 			page->index = off;
+ 
+-		link = (struct link_free *)kmap_atomic(page) +
+-						off / sizeof(*link);
+-		objs_on_page = (PAGE_SIZE - off) / class->size;
++		vaddr = kmap_atomic(page);
++		link = (struct link_free *)vaddr + off / sizeof(*link);
+ 
+-		for (i = 1; i <= objs_on_page; i++) {
+-			off += class->size;
+-			if (off < PAGE_SIZE) {
+-				link->next = obj_location_to_handle(page, i);
+-				link += class->size / sizeof(*link);
+-			}
++		while ((off += class->size) < PAGE_SIZE) {
++			link->next = location_to_obj(page, i++);
++			link += class->size / sizeof(*link);
+ 		}
+ 
+ 		/*
+@@ -548,10 +946,10 @@ static void init_zspage(struct page *first_page, struct size_class *class)
+ 		 * page (if present)
+ 		 */
+ 		next_page = get_next_page(page);
+-		link->next = obj_location_to_handle(next_page, 0);
+-		kunmap_atomic(link);
++		link->next = location_to_obj(next_page, 0);
++		kunmap_atomic(vaddr);
+ 		page = next_page;
+-		off = (off + class->size) % PAGE_SIZE;
++		off %= PAGE_SIZE;
+ 	}
+ }
+ 
+@@ -602,7 +1000,7 @@ static struct page *alloc_zspage(struct size_class *class, gfp_t flags)
+ 
+ 	init_zspage(first_page, class);
+ 
+-	first_page->freelist = obj_location_to_handle(first_page, 0);
++	first_page->freelist = location_to_obj(first_page, 0);
+ 	/* Maximum number of objects we can store in this zspage */
+ 	first_page->objects = class->pages_per_zspage * PAGE_SIZE / class->size;
+ 
+@@ -631,7 +1029,7 @@ static struct page *find_get_zspage(struct size_class *class)
+ 	return page;
+ }
+ 
+-#ifdef USE_PGTABLE_MAPPING
++#ifdef CONFIG_PGTABLE_MAPPING
+ static inline int __zs_cpu_up(struct mapping_area *area)
+ {
+ 	/*
+@@ -656,7 +1054,7 @@ static inline void __zs_cpu_down(struct mapping_area *area)
+ static inline void *__zs_map_object(struct mapping_area *area,
+ 				struct page *pages[2], int off, int size)
+ {
+-	BUG_ON(map_vm_area(area->vm, PAGE_KERNEL, &pages));
++	BUG_ON(map_vm_area(area->vm, PAGE_KERNEL, pages));
+ 	area->vm_addr = area->vm->addr;
+ 	return area->vm_addr + off;
+ }
+@@ -669,7 +1067,7 @@ static inline void __zs_unmap_object(struct mapping_area *area,
+ 	unmap_kernel_range(addr, PAGE_SIZE * 2);
+ }
+ 
+-#else /* USE_PGTABLE_MAPPING */
++#else /* CONFIG_PGTABLE_MAPPING */
+ 
+ static inline int __zs_cpu_up(struct mapping_area *area)
+ {
+@@ -679,7 +1077,7 @@ static inline int __zs_cpu_up(struct mapping_area *area)
+ 	 */
+ 	if (area->vm_buf)
+ 		return 0;
+-	area->vm_buf = (char *)__get_free_page(GFP_KERNEL);
++	area->vm_buf = kmalloc(ZS_MAX_ALLOC_SIZE, GFP_KERNEL);
+ 	if (!area->vm_buf)
+ 		return -ENOMEM;
+ 	return 0;
+@@ -687,8 +1085,7 @@ static inline int __zs_cpu_up(struct mapping_area *area)
+ 
+ static inline void __zs_cpu_down(struct mapping_area *area)
+ {
+-	if (area->vm_buf)
+-		free_page((unsigned long)area->vm_buf);
++	kfree(area->vm_buf);
+ 	area->vm_buf = NULL;
+ }
+ 
+@@ -725,12 +1122,19 @@ static void __zs_unmap_object(struct mapping_area *area,
+ {
+ 	int sizes[2];
+ 	void *addr;
+-	char *buf = area->vm_buf;
++	char *buf;
+ 
+ 	/* no write fastpath */
+ 	if (area->vm_mm == ZS_MM_RO)
+ 		goto out;
+ 
++	buf = area->vm_buf;
++	if (!area->huge) {
++		buf = buf + ZS_HANDLE_SIZE;
++		size -= ZS_HANDLE_SIZE;
++		off += ZS_HANDLE_SIZE;
++	}
++
+ 	sizes[0] = PAGE_SIZE - off;
+ 	sizes[1] = size - sizes[0];
+ 
+@@ -747,7 +1151,7 @@ out:
+ 	pagefault_enable();
+ }
+ 
+-#endif /* USE_PGTABLE_MAPPING */
++#endif /* CONFIG_PGTABLE_MAPPING */
+ 
+ static int zs_cpu_notifier(struct notifier_block *nb, unsigned long action,
+ 				void *pcpu)
+@@ -776,192 +1180,79 @@ static struct notifier_block zs_cpu_nb = {
+ 	.notifier_call = zs_cpu_notifier
+ };
+ 
+-static void zs_exit(void)
++static int zs_register_cpu_notifier(void)
+ {
+-	int cpu;
+-
+-	for_each_online_cpu(cpu)
+-		zs_cpu_notifier(NULL, CPU_DEAD, (void *)(long)cpu);
+-	unregister_cpu_notifier(&zs_cpu_nb);
+-}
++	int cpu, uninitialized_var(ret);
+ 
+-static int zs_init(void)
+-{
+-	int cpu, ret;
++	cpu_notifier_register_begin();
+ 
+-	register_cpu_notifier(&zs_cpu_nb);
++	__register_cpu_notifier(&zs_cpu_nb);
+ 	for_each_online_cpu(cpu) {
+ 		ret = zs_cpu_notifier(NULL, CPU_UP_PREPARE, (void *)(long)cpu);
+ 		if (notifier_to_errno(ret))
+-			goto fail;
++			break;
+ 	}
+-	return 0;
+-fail:
+-	zs_exit();
++
++	cpu_notifier_register_done();
+ 	return notifier_to_errno(ret);
+ }
+ 
+-/**
+- * zs_create_pool - Creates an allocation pool to work from.
+- * @flags: allocation flags used to allocate pool metadata
+- *
+- * This function must be called before anything when using
+- * the zsmalloc allocator.
+- *
+- * On success, a pointer to the newly created pool is returned,
+- * otherwise NULL.
+- */
+-struct zs_pool *zs_create_pool(gfp_t flags)
++static void zs_unregister_cpu_notifier(void)
+ {
+-	int i, ovhd_size;
+-	struct zs_pool *pool;
+-
+-	ovhd_size = roundup(sizeof(*pool), PAGE_SIZE);
+-	pool = kzalloc(ovhd_size, GFP_KERNEL);
+-	if (!pool)
+-		return NULL;
++	int cpu;
+ 
+-	for (i = 0; i < ZS_SIZE_CLASSES; i++) {
+-		int size;
+-		struct size_class *class;
++	cpu_notifier_register_begin();
+ 
+-		size = ZS_MIN_ALLOC_SIZE + i * ZS_SIZE_CLASS_DELTA;
+-		if (size > ZS_MAX_ALLOC_SIZE)
+-			size = ZS_MAX_ALLOC_SIZE;
++	for_each_online_cpu(cpu)
++		zs_cpu_notifier(NULL, CPU_DEAD, (void *)(long)cpu);
++	__unregister_cpu_notifier(&zs_cpu_nb);
+ 
+-		class = &pool->size_class[i];
+-		class->size = size;
+-		class->index = i;
+-		spin_lock_init(&class->lock);
+-		class->pages_per_zspage = get_pages_per_zspage(size);
++	cpu_notifier_register_done();
++}
+ 
+-	}
++static void init_zs_size_classes(void)
++{
++	int nr;
+ 
+-	pool->flags = flags;
++	nr = (ZS_MAX_ALLOC_SIZE - ZS_MIN_ALLOC_SIZE) / ZS_SIZE_CLASS_DELTA + 1;
++	if ((ZS_MAX_ALLOC_SIZE - ZS_MIN_ALLOC_SIZE) % ZS_SIZE_CLASS_DELTA)
++		nr += 1;
+ 
+-	return pool;
++	zs_size_classes = nr;
+ }
+-EXPORT_SYMBOL_GPL(zs_create_pool);
+ 
+-void zs_destroy_pool(struct zs_pool *pool)
++static bool can_merge(struct size_class *prev, int size, int pages_per_zspage)
+ {
+-	int i;
++	if (prev->pages_per_zspage != pages_per_zspage)
++		return false;
+ 
+-	for (i = 0; i < ZS_SIZE_CLASSES; i++) {
+-		int fg;
+-		struct size_class *class = &pool->size_class[i];
++	if (get_maxobj_per_zspage(prev->size, prev->pages_per_zspage)
++		!= get_maxobj_per_zspage(size, pages_per_zspage))
++		return false;
+ 
+-		for (fg = 0; fg < _ZS_NR_FULLNESS_GROUPS; fg++) {
+-			if (class->fullness_list[fg]) {
+-				pr_info("Freeing non-empty class with size %db, fullness group %d\n",
+-					class->size, fg);
+-			}
+-		}
+-	}
+-	kfree(pool);
++	return true;
+ }
+-EXPORT_SYMBOL_GPL(zs_destroy_pool);
+ 
+-/**
+- * zs_malloc - Allocate block of given size from pool.
+- * @pool: pool to allocate from
+- * @size: size of block to allocate
+- *
+- * On success, handle to the allocated object is returned,
+- * otherwise 0.
+- * Allocation requests with size > ZS_MAX_ALLOC_SIZE will fail.
+- */
+-unsigned long zs_malloc(struct zs_pool *pool, size_t size)
++static bool zspage_full(struct page *page)
+ {
+-	unsigned long obj;
+-	struct link_free *link;
+-	int class_idx;
+-	struct size_class *class;
+-
+-	struct page *first_page, *m_page;
+-	unsigned long m_objidx, m_offset;
+-
+-	if (unlikely(!size || size > ZS_MAX_ALLOC_SIZE))
+-		return 0;
+-
+-	class_idx = get_size_class_index(size);
+-	class = &pool->size_class[class_idx];
+-	BUG_ON(class_idx != class->index);
+-
+-	spin_lock(&class->lock);
+-	first_page = find_get_zspage(class);
+-
+-	if (!first_page) {
+-		spin_unlock(&class->lock);
+-		first_page = alloc_zspage(class, pool->flags);
+-		if (unlikely(!first_page))
+-			return 0;
+-
+-		set_zspage_mapping(first_page, class->index, ZS_EMPTY);
+-		spin_lock(&class->lock);
+-		class->pages_allocated += class->pages_per_zspage;
+-	}
+-
+-	obj = (unsigned long)first_page->freelist;
+-	obj_handle_to_location(obj, &m_page, &m_objidx);
+-	m_offset = obj_idx_to_offset(m_page, m_objidx, class->size);
+-
+-	link = (struct link_free *)kmap_atomic(m_page) +
+-					m_offset / sizeof(*link);
+-	first_page->freelist = link->next;
+-	memset(link, POISON_INUSE, sizeof(*link));
+-	kunmap_atomic(link);
+-
+-	first_page->inuse++;
+-	/* Now move the zspage to another fullness group, if required */
+-	fix_fullness_group(pool, first_page);
+-	spin_unlock(&class->lock);
++	BUG_ON(!is_first_page(page));
+ 
+-	return obj;
++	return page->inuse == page->objects;
+ }
+-EXPORT_SYMBOL_GPL(zs_malloc);
+ 
+-void zs_free(struct zs_pool *pool, unsigned long obj)
++unsigned long zs_get_total_pages(struct zs_pool *pool)
+ {
+-	struct link_free *link;
+-	struct page *first_page, *f_page;
+-	unsigned long f_objidx, f_offset;
+-
+-	int class_idx;
+-	struct size_class *class;
+-	enum fullness_group fullness;
+-
+-	if (unlikely(!obj))
+-		return;
+-
+-	obj_handle_to_location(obj, &f_page, &f_objidx);
+-	first_page = get_first_page(f_page);
+-
+-	get_zspage_mapping(first_page, &class_idx, &fullness);
+-	class = &pool->size_class[class_idx];
+-	f_offset = obj_idx_to_offset(f_page, f_objidx, class->size);
+-
+-	spin_lock(&class->lock);
+-
+-	/* Insert this object in containing zspage's freelist */
+-	link = (struct link_free *)((unsigned char *)kmap_atomic(f_page)
+-							+ f_offset);
+-	link->next = first_page->freelist;
+-	kunmap_atomic(link);
+-	first_page->freelist = (void *)obj;
+-
+-	first_page->inuse--;
+-	fullness = fix_fullness_group(pool, first_page);
+-
+-	if (fullness == ZS_EMPTY)
+-		class->pages_allocated -= class->pages_per_zspage;
+-
+-	spin_unlock(&class->lock);
++	return atomic_long_read(&pool->pages_allocated);
++}
++EXPORT_SYMBOL_GPL(zs_get_total_pages);
+ 
+-	if (fullness == ZS_EMPTY)
+-		free_zspage(first_page);
++/* Original 3.10 ABI: report bytes, not pages, with 64-bit multiplication. */
++u64 zs_get_total_size_bytes(struct zs_pool *pool)
++{
++    return (u64)zs_get_total_pages(pool) << PAGE_SHIFT;
+ }
+-EXPORT_SYMBOL_GPL(zs_free);
++EXPORT_SYMBOL_GPL(zs_get_total_size_bytes);
++
+ 
+ /**
+  * zs_map_object - get address of allocated object from handle.
+@@ -981,13 +1272,14 @@ void *zs_map_object(struct zs_pool *pool, unsigned long handle,
+ 			enum zs_mapmode mm)
+ {
+ 	struct page *page;
+-	unsigned long obj_idx, off;
++	unsigned long obj, obj_idx, off;
+ 
+ 	unsigned int class_idx;
+ 	enum fullness_group fg;
+ 	struct size_class *class;
+ 	struct mapping_area *area;
+ 	struct page *pages[2];
++	void *ret;
+ 
+ 	BUG_ON(!handle);
+ 
+@@ -998,9 +1290,13 @@ void *zs_map_object(struct zs_pool *pool, unsigned long handle,
+ 	 */
+ 	BUG_ON(in_interrupt());
+ 
+-	obj_handle_to_location(handle, &page, &obj_idx);
++	/* From now on, migration cannot move the object */
++	pin_tag(handle);
++
++	obj = handle_to_obj(handle);
++	obj_to_location(obj, &page, &obj_idx);
+ 	get_zspage_mapping(get_first_page(page), &class_idx, &fg);
+-	class = &pool->size_class[class_idx];
++	class = pool->size_class[class_idx];
+ 	off = obj_idx_to_offset(page, obj_idx, class->size);
+ 
+ 	area = &get_cpu_var(zs_map_area);
+@@ -1008,7 +1304,8 @@ void *zs_map_object(struct zs_pool *pool, unsigned long handle,
+ 	if (off + class->size <= PAGE_SIZE) {
+ 		/* this object is contained entirely within a page */
+ 		area->vm_addr = kmap_atomic(page);
+-		return area->vm_addr + off;
++		ret = area->vm_addr + off;
++		goto out;
+ 	}
+ 
+ 	/* this object spans two pages */
+@@ -1016,14 +1313,19 @@ void *zs_map_object(struct zs_pool *pool, unsigned long handle,
+ 	pages[1] = get_next_page(page);
+ 	BUG_ON(!pages[1]);
+ 
+-	return __zs_map_object(area, pages, off, class->size);
++	ret = __zs_map_object(area, pages, off, class->size);
++out:
++	if (!class->huge)
++		ret += ZS_HANDLE_SIZE;
++
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(zs_map_object);
+ 
+ void zs_unmap_object(struct zs_pool *pool, unsigned long handle)
+ {
+ 	struct page *page;
+-	unsigned long obj_idx, off;
++	unsigned long obj, obj_idx, off;
+ 
+ 	unsigned int class_idx;
+ 	enum fullness_group fg;
+@@ -1032,12 +1334,13 @@ void zs_unmap_object(struct zs_pool *pool, unsigned long handle)
+ 
+ 	BUG_ON(!handle);
+ 
+-	obj_handle_to_location(handle, &page, &obj_idx);
++	obj = handle_to_obj(handle);
++	obj_to_location(obj, &page, &obj_idx);
+ 	get_zspage_mapping(get_first_page(page), &class_idx, &fg);
+-	class = &pool->size_class[class_idx];
++	class = pool->size_class[class_idx];
+ 	off = obj_idx_to_offset(page, obj_idx, class->size);
+ 
+-	area = &__get_cpu_var(zs_map_area);
++	area = this_cpu_ptr(&zs_map_area);
+ 	if (off + class->size <= PAGE_SIZE)
+ 		kunmap_atomic(area->vm_addr);
+ 	else {
+@@ -1050,20 +1353,621 @@ void zs_unmap_object(struct zs_pool *pool, unsigned long handle)
+ 		__zs_unmap_object(area, pages, off, class->size);
+ 	}
+ 	put_cpu_var(zs_map_area);
++	unpin_tag(handle);
+ }
+ EXPORT_SYMBOL_GPL(zs_unmap_object);
+ 
+-u64 zs_get_total_size_bytes(struct zs_pool *pool)
++static unsigned long obj_malloc(struct page *first_page,
++		struct size_class *class, unsigned long handle)
++{
++	unsigned long obj;
++	struct link_free *link;
++
++	struct page *m_page;
++	unsigned long m_objidx, m_offset;
++	void *vaddr;
++
++	handle |= OBJ_ALLOCATED_TAG;
++	obj = (unsigned long)first_page->freelist;
++	obj_to_location(obj, &m_page, &m_objidx);
++	m_offset = obj_idx_to_offset(m_page, m_objidx, class->size);
++
++	vaddr = kmap_atomic(m_page);
++	link = (struct link_free *)vaddr + m_offset / sizeof(*link);
++	first_page->freelist = link->next;
++	if (!class->huge)
++		/* record handle in the header of allocated chunk */
++		link->handle = handle;
++	else
++		/* record handle in first_page->private */
++		set_page_private(first_page, handle);
++	kunmap_atomic(vaddr);
++	first_page->inuse++;
++	zs_stat_inc(class, OBJ_USED, 1);
++
++	return obj;
++}
++
++
++/**
++ * zs_malloc - Allocate block of given size from pool.
++ * @pool: pool to allocate from
++ * @size: size of block to allocate
++ *
++ * On success, handle to the allocated object is returned,
++ * otherwise 0.
++ * Allocation requests with size > ZS_MAX_ALLOC_SIZE will fail.
++ */
++unsigned long zs_malloc(struct zs_pool *pool, size_t size)
++{
++	unsigned long handle, obj;
++	struct size_class *class;
++	struct page *first_page;
++
++	if (unlikely(!size || size > ZS_MAX_ALLOC_SIZE))
++		return 0;
++
++	handle = alloc_handle(pool);
++	if (!handle)
++		return 0;
++
++	/* extra space in chunk to keep the handle */
++	size += ZS_HANDLE_SIZE;
++	class = pool->size_class[get_size_class_index(size)];
++
++	spin_lock(&class->lock);
++	first_page = find_get_zspage(class);
++
++	if (!first_page) {
++		spin_unlock(&class->lock);
++		first_page = alloc_zspage(class, pool->flags);
++		if (unlikely(!first_page)) {
++			free_handle(pool, handle);
++			return 0;
++		}
++
++		set_zspage_mapping(first_page, class->index, ZS_EMPTY);
++		atomic_long_add(class->pages_per_zspage,
++					&pool->pages_allocated);
++
++		spin_lock(&class->lock);
++		zs_stat_inc(class, OBJ_ALLOCATED, get_maxobj_per_zspage(
++				class->size, class->pages_per_zspage));
++	}
++
++	obj = obj_malloc(first_page, class, handle);
++	/* Now move the zspage to another fullness group, if required */
++	fix_fullness_group(class, first_page);
++	record_obj(handle, obj);
++	spin_unlock(&class->lock);
++
++	return handle;
++}
++EXPORT_SYMBOL_GPL(zs_malloc);
++
++static void obj_free(struct zs_pool *pool, struct size_class *class,
++			unsigned long obj)
++{
++	struct link_free *link;
++	struct page *first_page, *f_page;
++	unsigned long f_objidx, f_offset;
++	void *vaddr;
++	int class_idx;
++	enum fullness_group fullness;
++
++	BUG_ON(!obj);
++
++	obj &= ~OBJ_ALLOCATED_TAG;
++	obj_to_location(obj, &f_page, &f_objidx);
++	first_page = get_first_page(f_page);
++
++	get_zspage_mapping(first_page, &class_idx, &fullness);
++	f_offset = obj_idx_to_offset(f_page, f_objidx, class->size);
++
++	vaddr = kmap_atomic(f_page);
++
++	/* Insert this object in containing zspage's freelist */
++	link = (struct link_free *)(vaddr + f_offset);
++	link->next = first_page->freelist;
++	if (class->huge)
++		set_page_private(first_page, 0);
++	kunmap_atomic(vaddr);
++	first_page->freelist = (void *)obj;
++	first_page->inuse--;
++	zs_stat_dec(class, OBJ_USED, 1);
++}
++
++void zs_free(struct zs_pool *pool, unsigned long handle)
++{
++	struct page *first_page, *f_page;
++	unsigned long obj, f_objidx;
++	int class_idx;
++	struct size_class *class;
++	enum fullness_group fullness;
++
++	if (unlikely(!handle))
++		return;
++
++	pin_tag(handle);
++	obj = handle_to_obj(handle);
++	obj_to_location(obj, &f_page, &f_objidx);
++	first_page = get_first_page(f_page);
++
++	get_zspage_mapping(first_page, &class_idx, &fullness);
++	class = pool->size_class[class_idx];
++
++	spin_lock(&class->lock);
++	obj_free(pool, class, obj);
++	fullness = fix_fullness_group(class, first_page);
++	if (fullness == ZS_EMPTY) {
++		zs_stat_dec(class, OBJ_ALLOCATED, get_maxobj_per_zspage(
++				class->size, class->pages_per_zspage));
++		atomic_long_sub(class->pages_per_zspage,
++				&pool->pages_allocated);
++		free_zspage(first_page);
++	}
++	spin_unlock(&class->lock);
++	unpin_tag(handle);
++
++	free_handle(pool, handle);
++}
++EXPORT_SYMBOL_GPL(zs_free);
++
++static void zs_object_copy(unsigned long src, unsigned long dst,
++				struct size_class *class)
++{
++	struct page *s_page, *d_page;
++	unsigned long s_objidx, d_objidx;
++	unsigned long s_off, d_off;
++	void *s_addr, *d_addr;
++	int s_size, d_size, size;
++	int written = 0;
++
++	s_size = d_size = class->size;
++
++	obj_to_location(src, &s_page, &s_objidx);
++	obj_to_location(dst, &d_page, &d_objidx);
++
++	s_off = obj_idx_to_offset(s_page, s_objidx, class->size);
++	d_off = obj_idx_to_offset(d_page, d_objidx, class->size);
++
++	if (s_off + class->size > PAGE_SIZE)
++		s_size = PAGE_SIZE - s_off;
++
++	if (d_off + class->size > PAGE_SIZE)
++		d_size = PAGE_SIZE - d_off;
++
++	s_addr = kmap_atomic(s_page);
++	d_addr = kmap_atomic(d_page);
++
++	while (1) {
++		size = min(s_size, d_size);
++		memcpy(d_addr + d_off, s_addr + s_off, size);
++		written += size;
++
++		if (written == class->size)
++			break;
++
++		s_off += size;
++		s_size -= size;
++		d_off += size;
++		d_size -= size;
++
++		if (s_off >= PAGE_SIZE) {
++			kunmap_atomic(d_addr);
++			kunmap_atomic(s_addr);
++			s_page = get_next_page(s_page);
++			BUG_ON(!s_page);
++			s_addr = kmap_atomic(s_page);
++			d_addr = kmap_atomic(d_page);
++			s_size = class->size - written;
++			s_off = 0;
++		}
++
++		if (d_off >= PAGE_SIZE) {
++			kunmap_atomic(d_addr);
++			d_page = get_next_page(d_page);
++			BUG_ON(!d_page);
++			d_addr = kmap_atomic(d_page);
++			d_size = class->size - written;
++			d_off = 0;
++		}
++	}
++
++	kunmap_atomic(d_addr);
++	kunmap_atomic(s_addr);
++}
++
++/*
++ * Find alloced object in zspage from index object and
++ * return handle.
++ */
++static unsigned long find_alloced_obj(struct page *page, int index,
++					struct size_class *class)
++{
++	unsigned long head;
++	int offset = 0;
++	unsigned long handle = 0;
++	void *addr = kmap_atomic(page);
++
++	if (!is_first_page(page))
++		offset = page->index;
++	offset += class->size * index;
++
++	while (offset < PAGE_SIZE) {
++		head = obj_to_head(class, page, addr + offset);
++		if (head & OBJ_ALLOCATED_TAG) {
++			handle = head & ~OBJ_ALLOCATED_TAG;
++			if (trypin_tag(handle))
++				break;
++			handle = 0;
++		}
++
++		offset += class->size;
++		index++;
++	}
++
++	kunmap_atomic(addr);
++	return handle;
++}
++
++struct zs_compact_control {
++	/* Source page for migration which could be a subpage of zspage. */
++	struct page *s_page;
++	/* Destination page for migration which should be a first page
++	 * of zspage. */
++	struct page *d_page;
++	 /* Starting object index within @s_page which used for live object
++	  * in the subpage. */
++	int index;
++	/* how many of objects are migrated */
++	int nr_migrated;
++};
++
++static int migrate_zspage(struct zs_pool *pool, struct size_class *class,
++				struct zs_compact_control *cc)
++{
++	unsigned long used_obj, free_obj;
++	unsigned long handle;
++	struct page *s_page = cc->s_page;
++	struct page *d_page = cc->d_page;
++	unsigned long index = cc->index;
++	int nr_migrated = 0;
++	int ret = 0;
++
++	while (1) {
++		handle = find_alloced_obj(s_page, index, class);
++		if (!handle) {
++			s_page = get_next_page(s_page);
++			if (!s_page)
++				break;
++			index = 0;
++			continue;
++		}
++
++		/* Stop if there is no more space */
++		if (zspage_full(d_page)) {
++			unpin_tag(handle);
++			ret = -ENOMEM;
++			break;
++		}
++
++		used_obj = handle_to_obj(handle);
++		free_obj = obj_malloc(d_page, class, handle);
++		zs_object_copy(used_obj, free_obj, class);
++		index++;
++		/*
++		 * record_obj updates handle's value to free_obj and it will
++		 * invalidate lock bit(ie, HANDLE_PIN_BIT) of handle, which
++		 * breaks synchronization using pin_tag(e,g, zs_free) so
++		 * let's keep the lock bit.
++		 */
++		free_obj |= BIT(HANDLE_PIN_BIT);
++		record_obj(handle, free_obj);
++		unpin_tag(handle);
++		obj_free(pool, class, used_obj);
++		nr_migrated++;
++	}
++
++	/* Remember last position in this iteration */
++	cc->s_page = s_page;
++	cc->index = index;
++	cc->nr_migrated = nr_migrated;
++
++	return ret;
++}
++
++static struct page *alloc_target_page(struct size_class *class)
+ {
+ 	int i;
+-	u64 npages = 0;
++	struct page *page;
+ 
+-	for (i = 0; i < ZS_SIZE_CLASSES; i++)
+-		npages += pool->size_class[i].pages_allocated;
++	for (i = 0; i < _ZS_NR_FULLNESS_GROUPS; i++) {
++		page = class->fullness_list[i];
++		if (page) {
++			remove_zspage(page, class, i);
++			break;
++		}
++	}
+ 
+-	return npages << PAGE_SHIFT;
++	return page;
++}
++
++static void putback_zspage(struct zs_pool *pool, struct size_class *class,
++				struct page *first_page)
++{
++	enum fullness_group fullness;
++
++	BUG_ON(!is_first_page(first_page));
++
++	fullness = get_fullness_group(first_page);
++	insert_zspage(first_page, class, fullness);
++	set_zspage_mapping(first_page, class->index, fullness);
++
++	if (fullness == ZS_EMPTY) {
++		zs_stat_dec(class, OBJ_ALLOCATED, get_maxobj_per_zspage(
++			class->size, class->pages_per_zspage));
++		atomic_long_sub(class->pages_per_zspage,
++				&pool->pages_allocated);
++
++		free_zspage(first_page);
++	}
++}
++
++static struct page *isolate_source_page(struct size_class *class)
++{
++	struct page *page;
++
++	page = class->fullness_list[ZS_ALMOST_EMPTY];
++	if (page)
++		remove_zspage(page, class, ZS_ALMOST_EMPTY);
++
++	return page;
++}
++
++static unsigned long __zs_compact(struct zs_pool *pool,
++				struct size_class *class)
++{
++	int nr_to_migrate;
++	struct zs_compact_control cc;
++	struct page *src_page;
++	struct page *dst_page = NULL;
++	unsigned long nr_total_migrated = 0;
++
++	spin_lock(&class->lock);
++	while ((src_page = isolate_source_page(class))) {
++		unsigned long migrated_start = nr_total_migrated;
++
++		BUG_ON(!is_first_page(src_page));
++
++		/* The goal is to migrate all live objects in source page */
++		nr_to_migrate = src_page->inuse;
++		cc.index = 0;
++		cc.s_page = src_page;
++
++		while ((dst_page = alloc_target_page(class))) {
++			cc.d_page = dst_page;
++			/*
++			 * If there is no more space in dst_page, try to
++			 * allocate another zspage.
++			 */
++			if (!migrate_zspage(pool, class, &cc))
++				break;
++
++			putback_zspage(pool, class, dst_page);
++			nr_total_migrated += cc.nr_migrated;
++			nr_to_migrate -= cc.nr_migrated;
++		}
++
++		/* Stop if we couldn't find slot */
++		if (dst_page == NULL)
++			break;
++
++		putback_zspage(pool, class, dst_page);
++		putback_zspage(pool, class, src_page);
++		nr_total_migrated += cc.nr_migrated;
++		if (nr_total_migrated == migrated_start) {
++			/* Pinned source: avoid repeatedly selecting it. */
++			src_page = NULL;
++			break;
++		}
++		spin_unlock(&class->lock);
++		cond_resched();
++		spin_lock(&class->lock);
++	}
++
++	if (src_page)
++		putback_zspage(pool, class, src_page);
++
++	spin_unlock(&class->lock);
++
++	return nr_total_migrated;
++}
++
++unsigned long zs_compact(struct zs_pool *pool)
++{
++	int i;
++	unsigned long nr_migrated = 0;
++	struct size_class *class;
++
++	for (i = zs_size_classes - 1; i >= 0; i--) {
++		class = pool->size_class[i];
++		if (!class)
++			continue;
++		if (class->index != i)
++			continue;
++		nr_migrated += __zs_compact(pool, class);
++	}
++
++	return nr_migrated;
++}
++EXPORT_SYMBOL_GPL(zs_compact);
++
++/**
++ * zs_create_pool - Creates an allocation pool to work from.
++ * @flags: allocation flags used to allocate pool metadata
++ *
++ * This function must be called before anything when using
++ * the zsmalloc allocator.
++ *
++ * On success, a pointer to the newly created pool is returned,
++ * otherwise NULL.
++ */
++struct zs_pool *zs_create_pool(gfp_t flags)
++{
++	char *name = "kyf37-zram";
++	int i;
++	struct zs_pool *pool;
++	struct size_class *prev_class = NULL;
++
++	pool = kzalloc(sizeof(*pool), GFP_KERNEL);
++	if (!pool)
++		return NULL;
++
++	pool->size_class = kcalloc(zs_size_classes, sizeof(struct size_class *),
++			GFP_KERNEL);
++	if (!pool->size_class) {
++		kfree(pool);
++		return NULL;
++	}
++
++	pool->name = kstrdup(name, GFP_KERNEL);
++	if (!pool->name)
++		goto err;
++
++	if (create_handle_cache(pool))
++		goto err;
++
++	/*
++	 * Iterate reversly, because, size of size_class that we want to use
++	 * for merging should be larger or equal to current size.
++	 */
++	for (i = zs_size_classes - 1; i >= 0; i--) {
++		int size;
++		int pages_per_zspage;
++		struct size_class *class;
++
++		size = ZS_MIN_ALLOC_SIZE + i * ZS_SIZE_CLASS_DELTA;
++		if (size > ZS_MAX_ALLOC_SIZE)
++			size = ZS_MAX_ALLOC_SIZE;
++		pages_per_zspage = get_pages_per_zspage(size);
++
++		/*
++		 * size_class is used for normal zsmalloc operation such
++		 * as alloc/free for that size. Although it is natural that we
++		 * have one size_class for each size, there is a chance that we
++		 * can get more memory utilization if we use one size_class for
++		 * many different sizes whose size_class have same
++		 * characteristics. So, we makes size_class point to
++		 * previous size_class if possible.
++		 */
++		if (prev_class) {
++			if (can_merge(prev_class, size, pages_per_zspage)) {
++				pool->size_class[i] = prev_class;
++				continue;
++			}
++		}
++
++		class = kzalloc(sizeof(struct size_class), GFP_KERNEL);
++		if (!class)
++			goto err;
++
++		class->size = size;
++		class->index = i;
++		class->pages_per_zspage = pages_per_zspage;
++		if (pages_per_zspage == 1 &&
++			get_maxobj_per_zspage(size, pages_per_zspage) == 1)
++			class->huge = true;
++		spin_lock_init(&class->lock);
++		pool->size_class[i] = class;
++
++		prev_class = class;
++	}
++
++	pool->flags = flags;
++
++	if (zs_pool_stat_create(name, pool))
++		goto err;
++
++	return pool;
++
++err:
++	zs_destroy_pool(pool);
++	return NULL;
++}
++EXPORT_SYMBOL_GPL(zs_create_pool);
++
++void zs_destroy_pool(struct zs_pool *pool)
++{
++	int i;
++
++	zs_pool_stat_destroy(pool);
++
++	for (i = 0; i < zs_size_classes; i++) {
++		int fg;
++		struct size_class *class = pool->size_class[i];
++
++		if (!class)
++			continue;
++
++		if (class->index != i)
++			continue;
++
++		for (fg = 0; fg < _ZS_NR_FULLNESS_GROUPS; fg++) {
++			if (class->fullness_list[fg]) {
++				pr_info("Freeing non-empty class with size %db, fullness group %d\n",
++					class->size, fg);
++			}
++		}
++		kfree(class);
++	}
++
++	destroy_handle_cache(pool);
++	kfree(pool->size_class);
++	kfree(pool->name);
++	kfree(pool);
++}
++EXPORT_SYMBOL_GPL(zs_destroy_pool);
++
++static int __init zs_init(void)
++{
++	int ret = zs_register_cpu_notifier();
++
++	if (ret)
++		goto notifier_fail;
++
++	init_zs_size_classes();
++
++#ifdef CONFIG_ZPOOL
++	zpool_register_driver(&zs_zpool_driver);
++#endif
++
++	ret = zs_stat_init();
++	if (ret) {
++		pr_err("zs stat initialization failed\n");
++		goto stat_fail;
++	}
++	return 0;
++
++stat_fail:
++#ifdef CONFIG_ZPOOL
++	zpool_unregister_driver(&zs_zpool_driver);
++#endif
++notifier_fail:
++	zs_unregister_cpu_notifier();
++
++	return ret;
++}
++
++static void __exit zs_exit(void)
++{
++#ifdef CONFIG_ZPOOL
++	zpool_unregister_driver(&zs_zpool_driver);
++#endif
++	zs_unregister_cpu_notifier();
++
++	zs_stat_exit();
+ }
+-EXPORT_SYMBOL_GPL(zs_get_total_size_bytes);
+ 
+ module_init(zs_init);
+ module_exit(zs_exit);
+diff --git a/drivers/staging/zsmalloc/zsmalloc.h b/drivers/staging/zsmalloc/zsmalloc.h
+index fbe6bec4..828d0bdf 100644
+--- a/drivers/staging/zsmalloc/zsmalloc.h
++++ b/drivers/staging/zsmalloc/zsmalloc.h
+@@ -39,5 +39,7 @@ void *zs_map_object(struct zs_pool *pool, unsigned long handle,
+ void zs_unmap_object(struct zs_pool *pool, unsigned long handle);
+ 
+ u64 zs_get_total_size_bytes(struct zs_pool *pool);
++unsigned long zs_get_total_pages(struct zs_pool *pool);
++unsigned long zs_compact(struct zs_pool *pool);
+ 
+ #endif
+diff --git a/drivers/video/console/fbcon.c b/drivers/video/console/fbcon.c
+index a92783e4..0d8f98c7 100644
+--- a/drivers/video/console/fbcon.c
++++ b/drivers/video/console/fbcon.c
+@@ -404,7 +404,7 @@ static void cursor_timer_handler(unsigned long dev_addr)
+ 	struct fb_info *info = (struct fb_info *) dev_addr;
+ 	struct fbcon_ops *ops = info->fbcon_par;
+ 
+-	schedule_work(&info->queue);
++	queue_work(system_power_efficient_wq, &info->queue);
+ 	mod_timer(&ops->cursor_timer, jiffies + HZ/5);
+ }
+ 
+diff --git a/fs/proc/meminfo.c b/fs/proc/meminfo.c
+index 5aa847a6..f44cca73 100644
+--- a/fs/proc/meminfo.c
++++ b/fs/proc/meminfo.c
+@@ -27,6 +27,10 @@ static int meminfo_proc_show(struct seq_file *m, void *v)
+ 	unsigned long allowed;
+ 	struct vmalloc_info vmi;
+ 	long cached;
++	long available;
++	unsigned long pagecache;
++	unsigned long wmark_low = 0;
++	struct zone *zone;
+ 	unsigned long pages[NR_LRU_LISTS];
+ 	int lru;
+ 
+@@ -50,12 +54,44 @@ static int meminfo_proc_show(struct seq_file *m, void *v)
+ 	for (lru = LRU_BASE; lru < NR_LRU_LISTS; lru++)
+ 		pages[lru] = global_page_state(NR_LRU_BASE + lru);
+ 
++	for_each_zone(zone)
++		wmark_low += zone->watermark[WMARK_LOW];
++
++	/*
++	 * Estimate the amount of memory available for userspace allocations,
++	 * without causing swapping.
++	 *
++	 * Free memory cannot be taken below the low watermark, before the
++	 * system starts swapping.
++	 */
++	available = (long)i.freeram - (long)wmark_low;
++
++	/*
++	 * Not all the page cache can be freed, otherwise the system will
++	 * start swapping. Assume at least half of the page cache, or the
++	 * low watermark worth of cache, needs to stay.
++	 */
++	pagecache = pages[LRU_ACTIVE_FILE] + pages[LRU_INACTIVE_FILE];
++	pagecache -= min(pagecache / 2, wmark_low);
++	available += pagecache;
++
++	/*
++	 * Part of the reclaimable swap consists of items that are in use,
++	 * and cannot be freed. Cap this estimate at the low watermark.
++	 */
++	available += global_page_state(NR_SLAB_RECLAIMABLE) -
++		     min(global_page_state(NR_SLAB_RECLAIMABLE) / 2, wmark_low);
++
++	if (available < 0)
++		available = 0;
++
+ 	/*
+ 	 * Tagged format, for easy grepping and expansion.
+ 	 */
+ 	seq_printf(m,
+ 		"MemTotal:       %8lu kB\n"
+ 		"MemFree:        %8lu kB\n"
++		"MemAvailable:   %8lu kB\n"
+ 		"Buffers:        %8lu kB\n"
+ 		"Cached:         %8lu kB\n"
+ 		"SwapCached:     %8lu kB\n"
+@@ -108,6 +144,7 @@ static int meminfo_proc_show(struct seq_file *m, void *v)
+ 		,
+ 		K(i.totalram),
+ 		K(i.freeram),
++		K(available),
+ 		K(i.bufferram),
+ 		K(cached),
+ 		K(total_swapcache_pages()),
+diff --git a/include/linux/lz4.h b/include/linux/lz4.h
+new file mode 100644
+index 00000000..4356686b
+--- /dev/null
++++ b/include/linux/lz4.h
+@@ -0,0 +1,87 @@
++#ifndef __LZ4_H__
++#define __LZ4_H__
++/*
++ * LZ4 Kernel Interface
++ *
++ * Copyright (C) 2013, LG Electronics, Kyungsik Lee <kyungsik.lee@lge.com>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++#define LZ4_MEM_COMPRESS	(4096 * sizeof(unsigned char *))
++#define LZ4HC_MEM_COMPRESS	(65538 * sizeof(unsigned char *))
++
++/*
++ * lz4_compressbound()
++ * Provides the maximum size that LZ4 may output in a "worst case" scenario
++ * (input data not compressible)
++ */
++static inline size_t lz4_compressbound(size_t isize)
++{
++	return isize + (isize / 255) + 16;
++}
++
++/*
++ * lz4_compress()
++ *	src     : source address of the original data
++ *	src_len : size of the original data
++ *	dst	: output buffer address of the compressed data
++ *		This requires 'dst' of size LZ4_COMPRESSBOUND.
++ *	dst_len : is the output size, which is returned after compress done
++ *	workmem : address of the working memory.
++ *		This requires 'workmem' of size LZ4_MEM_COMPRESS.
++ *	return  : Success if return 0
++ *		  Error if return (< 0)
++ *	note :  Destination buffer and workmem must be already allocated with
++ *		the defined size.
++ */
++int lz4_compress(const unsigned char *src, size_t src_len,
++		unsigned char *dst, size_t *dst_len, void *wrkmem);
++
++ /*
++  * lz4hc_compress()
++  *	 src	 : source address of the original data
++  *	 src_len : size of the original data
++  *	 dst	 : output buffer address of the compressed data
++  *		This requires 'dst' of size LZ4_COMPRESSBOUND.
++  *	 dst_len : is the output size, which is returned after compress done
++  *	 workmem : address of the working memory.
++  *		This requires 'workmem' of size LZ4HC_MEM_COMPRESS.
++  *	 return  : Success if return 0
++  *		   Error if return (< 0)
++  *	 note :  Destination buffer and workmem must be already allocated with
++  *		 the defined size.
++  */
++int lz4hc_compress(const unsigned char *src, size_t src_len,
++		unsigned char *dst, size_t *dst_len, void *wrkmem);
++
++/*
++ * lz4_decompress()
++ *	src     : source address of the compressed data
++ *	src_len : is the input size, whcih is returned after decompress done
++ *	dest	: output buffer address of the decompressed data
++ *	actual_dest_len: is the size of uncompressed data, supposing it's known
++ *	return  : Success if return 0
++ *		  Error if return (< 0)
++ *	note :  Destination buffer must be already allocated.
++ *		slightly faster than lz4_decompress_unknownoutputsize()
++ */
++int lz4_decompress(const unsigned char *src, size_t *src_len,
++		unsigned char *dest, size_t actual_dest_len);
++
++/*
++ * lz4_decompress_unknownoutputsize()
++ *	src     : source address of the compressed data
++ *	src_len : is the input size, therefore the compressed size
++ *	dest	: output buffer address of the decompressed data
++ *	dest_len: is the max size of the destination buffer, which is
++ *			returned with actual size of decompressed data after
++ *			decompress done
++ *	return  : Success if return 0
++ *		  Error if return (< 0)
++ *	note :  Destination buffer must be already allocated.
++ */
++int lz4_decompress_unknownoutputsize(const unsigned char *src, size_t src_len,
++		unsigned char *dest, size_t *dest_len);
++#endif
+diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
+index 21a5734d..974b9656 100644
+--- a/include/linux/syscalls.h
++++ b/include/linux/syscalls.h
+@@ -854,4 +854,5 @@ asmlinkage long sys_process_vm_writev(pid_t pid,
+ asmlinkage long sys_kcmp(pid_t pid1, pid_t pid2, int type,
+ 			 unsigned long idx1, unsigned long idx2);
+ asmlinkage long sys_finit_module(int fd, const char __user *uargs, int flags);
++asmlinkage long sys_getrandom(char __user *buf, size_t count, unsigned int flags);
+ #endif
+diff --git a/include/linux/workqueue.h b/include/linux/workqueue.h
+index 7f0f4eac..ade2fc2e 100644
+--- a/include/linux/workqueue.h
++++ b/include/linux/workqueue.h
+@@ -304,6 +304,9 @@ enum {
+ 	WQ_CPU_INTENSIVE	= 1 << 5, /* cpu instensive workqueue */
+ 	WQ_SYSFS		= 1 << 6, /* visible in sysfs, see wq_sysfs_register() */
+ 
++	/* Allows CPU affinity to be relaxed only for explicitly marked work. */
++	WQ_POWER_EFFICIENT	= 1 << 7,
++
+ 	__WQ_DRAINING		= 1 << 16, /* internal: workqueue is draining */
+ 	__WQ_ORDERED		= 1 << 17, /* internal: workqueue is ordered */
+ 
+@@ -339,6 +342,8 @@ extern struct workqueue_struct *system_wq;
+ extern struct workqueue_struct *system_long_wq;
+ extern struct workqueue_struct *system_unbound_wq;
+ extern struct workqueue_struct *system_freezable_wq;
++extern struct workqueue_struct *system_power_efficient_wq;
++extern struct workqueue_struct *system_freezable_power_efficient_wq;
+ 
+ static inline struct workqueue_struct * __deprecated __system_nrt_wq(void)
+ {
+diff --git a/include/uapi/linux/random.h b/include/uapi/linux/random.h
+index 7471b5b3..354ead27 100644
+--- a/include/uapi/linux/random.h
++++ b/include/uapi/linux/random.h
+@@ -47,4 +47,7 @@ struct rnd_state {
+ /* Exported functions */
+ 
+ 
++#define GRND_NONBLOCK 0x0001
++#define GRND_RANDOM 0x0002
++
+ #endif /* _UAPI_LINUX_RANDOM_H */
+diff --git a/kernel/power/Kconfig b/kernel/power/Kconfig
+index 9b7cf67e..83ab4bac 100644
+--- a/kernel/power/Kconfig
++++ b/kernel/power/Kconfig
+@@ -288,3 +288,23 @@ config SUSPEND_TIME
+ 	  Prints the time spent in suspend in the kernel log, and
+ 	  keeps statistics on the time spent in suspend in
+ 	  /sys/kernel/debug/suspend_time
++
++config WQ_POWER_EFFICIENT_DEFAULT
++	bool "Enable workqueue power-efficient mode by default"
++	depends on PM
++	default n
++	help
++	  Per-cpu workqueues are generally preferred because they show
++	  better performance thanks to cache locality; unfortunately,
++	  per-cpu workqueues tend to be more power hungry than unbound
++	  workqueues.
++
++	  Enabling workqueue.power_efficient kernel parameter makes the
++	  per-cpu workqueues which were observed to contribute
++	  significantly to power consumption unbound, leading to measurably
++	  lower power usage at the cost of small performance overhead.
++
++	  This config option determines whether workqueue.power_efficient
++	  is enabled by default.
++
++	  If in doubt, say N.
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index c607473e..bcbbc458 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -273,6 +273,14 @@ static cpumask_var_t *wq_numa_possible_cpumask;
+ static bool wq_disable_numa;
+ module_param_named(disable_numa, wq_disable_numa, bool, 0444);
+ 
++/* Opt-in unbound execution for work explicitly marked power efficient. */
++#ifdef CONFIG_WQ_POWER_EFFICIENT_DEFAULT
++static bool wq_power_efficient = true;
++#else
++static bool wq_power_efficient;
++#endif
++module_param_named(power_efficient, wq_power_efficient, bool, 0444);
++
+ static bool wq_numa_enabled;		/* unbound NUMA affinity enabled */
+ 
+ /* buf for wq_update_unbound_numa_attrs(), protected by CPU hotplug exclusion */
+@@ -309,6 +317,10 @@ struct workqueue_struct *system_unbound_wq __read_mostly;
+ EXPORT_SYMBOL_GPL(system_unbound_wq);
+ struct workqueue_struct *system_freezable_wq __read_mostly;
+ EXPORT_SYMBOL_GPL(system_freezable_wq);
++struct workqueue_struct *system_power_efficient_wq __read_mostly;
++EXPORT_SYMBOL_GPL(system_power_efficient_wq);
++struct workqueue_struct *system_freezable_power_efficient_wq __read_mostly;
++EXPORT_SYMBOL_GPL(system_freezable_power_efficient_wq);
+ 
+ static int worker_thread(void *__worker);
+ static void copy_workqueue_attrs(struct workqueue_attrs *to,
+@@ -4199,6 +4211,9 @@ struct workqueue_struct *__alloc_workqueue_key(const char *fmt,
+ 	struct workqueue_struct *wq;
+ 	struct pool_workqueue *pwq;
+ 
++	if ((flags & WQ_POWER_EFFICIENT) && wq_power_efficient)
++		flags |= WQ_UNBOUND;
++
+ 	/* allocate wq and format name */
+ 	if (flags & WQ_UNBOUND)
+ 		tbl_size = wq_numa_tbl_len * sizeof(wq->numa_pwq_tbl[0]);
+@@ -5108,8 +5123,14 @@ static int __init init_workqueues(void)
+ 					    WQ_UNBOUND_MAX_ACTIVE);
+ 	system_freezable_wq = alloc_workqueue("events_freezable",
+ 					      WQ_FREEZABLE, 0);
++	system_power_efficient_wq = alloc_workqueue("events_power_efficient",
++					      WQ_POWER_EFFICIENT, 0);
++	system_freezable_power_efficient_wq =
++		alloc_workqueue("events_freezable_power_efficient",
++				WQ_FREEZABLE | WQ_POWER_EFFICIENT, 0);
+ 	BUG_ON(!system_wq || !system_highpri_wq || !system_long_wq ||
+-	       !system_unbound_wq || !system_freezable_wq);
++	       !system_unbound_wq || !system_freezable_wq ||
++	       !system_power_efficient_wq || !system_freezable_power_efficient_wq);
+ 	return 0;
+ }
+ early_initcall(init_workqueues);
+diff --git a/lib/Kconfig b/lib/Kconfig
+index d9c307dd..2ff286e1 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -424,3 +424,9 @@ config QMI_ENCDEC_DEBUG
+ 	  and message being encoded & decoded.
+ 
+ endmenu
++
++config LZ4_COMPRESS
++	tristate
++
++config LZ4_DECOMPRESS
++	tristate
+diff --git a/lib/Makefile b/lib/Makefile
+index 86572b45..1d462e5f 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -182,3 +182,6 @@ quiet_cmd_build_OID_registry = GEN     $@
+ clean-files	+= oid_registry_data.c
+ 
+ obj-$(CONFIG_UCS2_STRING) += ucs2_string.o
++
++obj-$(CONFIG_LZ4_COMPRESS) += lz4/
++obj-$(CONFIG_LZ4_DECOMPRESS) += lz4/
+diff --git a/lib/lz4/Makefile b/lib/lz4/Makefile
+new file mode 100644
+index 00000000..8085d04e
+--- /dev/null
++++ b/lib/lz4/Makefile
+@@ -0,0 +1,3 @@
++obj-$(CONFIG_LZ4_COMPRESS) += lz4_compress.o
++obj-$(CONFIG_LZ4HC_COMPRESS) += lz4hc_compress.o
++obj-$(CONFIG_LZ4_DECOMPRESS) += lz4_decompress.o
+diff --git a/lib/lz4/lz4_compress.c b/lib/lz4/lz4_compress.c
+new file mode 100644
+index 00000000..28321d8f
+--- /dev/null
++++ b/lib/lz4/lz4_compress.c
+@@ -0,0 +1,443 @@
++/*
++ * LZ4 - Fast LZ compression algorithm
++ * Copyright (C) 2011-2012, Yann Collet.
++ * BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
++
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are
++ * met:
++ *
++ *     * Redistributions of source code must retain the above copyright
++ * notice, this list of conditions and the following disclaimer.
++ *     * Redistributions in binary form must reproduce the above
++ * copyright notice, this list of conditions and the following disclaimer
++ * in the documentation and/or other materials provided with the
++ * distribution.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
++ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
++ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
++ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
++ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
++ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
++ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
++ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
++ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
++ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ *
++ * You can contact the author at :
++ * - LZ4 homepage : http://fastcompression.blogspot.com/p/lz4.html
++ * - LZ4 source repository : http://code.google.com/p/lz4/
++ *
++ *  Changed for kernel use by:
++ *  Chanho Min <chanho.min@lge.com>
++ */
++
++#include <linux/module.h>
++#include <linux/kernel.h>
++#include <linux/lz4.h>
++#include <asm/unaligned.h>
++#include "lz4defs.h"
++
++/*
++ * LZ4_compressCtx :
++ * -----------------
++ * Compress 'isize' bytes from 'source' into an output buffer 'dest' of
++ * maximum size 'maxOutputSize'.  * If it cannot achieve it, compression
++ * will stop, and result of the function will be zero.
++ * return : the number of bytes written in buffer 'dest', or 0 if the
++ * compression fails
++ */
++static inline int lz4_compressctx(void *ctx,
++		const char *source,
++		char *dest,
++		int isize,
++		int maxoutputsize)
++{
++	HTYPE *hashtable = (HTYPE *)ctx;
++	const u8 *ip = (u8 *)source;
++#if LZ4_ARCH64
++	const BYTE * const base = ip;
++#else
++	const int base = 0;
++#endif
++	const u8 *anchor = ip;
++	const u8 *const iend = ip + isize;
++	const u8 *const mflimit = iend - MFLIMIT;
++	#define MATCHLIMIT (iend - LASTLITERALS)
++
++	u8 *op = (u8 *) dest;
++	u8 *const oend = op + maxoutputsize;
++	int length;
++	const int skipstrength = SKIPSTRENGTH;
++	u32 forwardh;
++	int lastrun;
++
++	/* Init */
++	if (isize < MINLENGTH)
++		goto _last_literals;
++
++	memset((void *)hashtable, 0, LZ4_MEM_COMPRESS);
++
++	/* First Byte */
++	hashtable[LZ4_HASH_VALUE(ip)] = ip - base;
++	ip++;
++	forwardh = LZ4_HASH_VALUE(ip);
++
++	/* Main Loop */
++	for (;;) {
++		int findmatchattempts = (1U << skipstrength) + 3;
++		const u8 *forwardip = ip;
++		const u8 *ref;
++		u8 *token;
++
++		/* Find a match */
++		do {
++			u32 h = forwardh;
++			int step = findmatchattempts++ >> skipstrength;
++			ip = forwardip;
++			forwardip = ip + step;
++
++			if (unlikely(forwardip > mflimit))
++				goto _last_literals;
++
++			forwardh = LZ4_HASH_VALUE(forwardip);
++			ref = base + hashtable[h];
++			hashtable[h] = ip - base;
++		} while ((ref < ip - MAX_DISTANCE) || (A32(ref) != A32(ip)));
++
++		/* Catch up */
++		while ((ip > anchor) && (ref > (u8 *)source) &&
++			unlikely(ip[-1] == ref[-1])) {
++			ip--;
++			ref--;
++		}
++
++		/* Encode Literal length */
++		length = (int)(ip - anchor);
++		token = op++;
++		/* check output limit */
++		if (unlikely(op + length + (2 + 1 + LASTLITERALS) +
++			(length >> 8) > oend))
++			return 0;
++
++		if (length >= (int)RUN_MASK) {
++			int len;
++			*token = (RUN_MASK << ML_BITS);
++			len = length - RUN_MASK;
++			for (; len > 254 ; len -= 255)
++				*op++ = 255;
++			*op++ = (u8)len;
++		} else
++			*token = (length << ML_BITS);
++
++		/* Copy Literals */
++		LZ4_BLINDCOPY(anchor, op, length);
++_next_match:
++		/* Encode Offset */
++		LZ4_WRITE_LITTLEENDIAN_16(op, (u16)(ip - ref));
++
++		/* Start Counting */
++		ip += MINMATCH;
++		/* MinMatch verified */
++		ref += MINMATCH;
++		anchor = ip;
++		while (likely(ip < MATCHLIMIT - (STEPSIZE - 1))) {
++			#if LZ4_ARCH64
++			u64 diff = A64(ref) ^ A64(ip);
++			#else
++			u32 diff = A32(ref) ^ A32(ip);
++			#endif
++			if (!diff) {
++				ip += STEPSIZE;
++				ref += STEPSIZE;
++				continue;
++			}
++			ip += LZ4_NBCOMMONBYTES(diff);
++			goto _endcount;
++		}
++		#if LZ4_ARCH64
++		if ((ip < (MATCHLIMIT - 3)) && (A32(ref) == A32(ip))) {
++			ip += 4;
++			ref += 4;
++		}
++		#endif
++		if ((ip < (MATCHLIMIT - 1)) && (A16(ref) == A16(ip))) {
++			ip += 2;
++			ref += 2;
++		}
++		if ((ip < MATCHLIMIT) && (*ref == *ip))
++			ip++;
++_endcount:
++		/* Encode MatchLength */
++		length = (int)(ip - anchor);
++		/* Check output limit */
++		if (unlikely(op + (1 + LASTLITERALS) + (length >> 8) > oend))
++			return 0;
++		if (length >= (int)ML_MASK) {
++			*token += ML_MASK;
++			length -= ML_MASK;
++			for (; length > 509 ; length -= 510) {
++				*op++ = 255;
++				*op++ = 255;
++			}
++			if (length > 254) {
++				length -= 255;
++				*op++ = 255;
++			}
++			*op++ = (u8)length;
++		} else
++			*token += length;
++
++		/* Test end of chunk */
++		if (ip > mflimit) {
++			anchor = ip;
++			break;
++		}
++
++		/* Fill table */
++		hashtable[LZ4_HASH_VALUE(ip-2)] = ip - 2 - base;
++
++		/* Test next position */
++		ref = base + hashtable[LZ4_HASH_VALUE(ip)];
++		hashtable[LZ4_HASH_VALUE(ip)] = ip - base;
++		if ((ref > ip - (MAX_DISTANCE + 1)) && (A32(ref) == A32(ip))) {
++			token = op++;
++			*token = 0;
++			goto _next_match;
++		}
++
++		/* Prepare next loop */
++		anchor = ip++;
++		forwardh = LZ4_HASH_VALUE(ip);
++	}
++
++_last_literals:
++	/* Encode Last Literals */
++	lastrun = (int)(iend - anchor);
++	if (((char *)op - dest) + lastrun + 1
++		+ ((lastrun + 255 - RUN_MASK) / 255) > (u32)maxoutputsize)
++		return 0;
++
++	if (lastrun >= (int)RUN_MASK) {
++		*op++ = (RUN_MASK << ML_BITS);
++		lastrun -= RUN_MASK;
++		for (; lastrun > 254 ; lastrun -= 255)
++			*op++ = 255;
++		*op++ = (u8)lastrun;
++	} else
++		*op++ = (lastrun << ML_BITS);
++	memcpy(op, anchor, iend - anchor);
++	op += iend - anchor;
++
++	/* End */
++	return (int)(((char *)op) - dest);
++}
++
++static inline int lz4_compress64kctx(void *ctx,
++		const char *source,
++		char *dest,
++		int isize,
++		int maxoutputsize)
++{
++	u16 *hashtable = (u16 *)ctx;
++	const u8 *ip = (u8 *) source;
++	const u8 *anchor = ip;
++	const u8 *const base = ip;
++	const u8 *const iend = ip + isize;
++	const u8 *const mflimit = iend - MFLIMIT;
++	#define MATCHLIMIT (iend - LASTLITERALS)
++
++	u8 *op = (u8 *) dest;
++	u8 *const oend = op + maxoutputsize;
++	int len, length;
++	const int skipstrength = SKIPSTRENGTH;
++	u32 forwardh;
++	int lastrun;
++
++	/* Init */
++	if (isize < MINLENGTH)
++		goto _last_literals;
++
++	memset((void *)hashtable, 0, LZ4_MEM_COMPRESS);
++
++	/* First Byte */
++	ip++;
++	forwardh = LZ4_HASH64K_VALUE(ip);
++
++	/* Main Loop */
++	for (;;) {
++		int findmatchattempts = (1U << skipstrength) + 3;
++		const u8 *forwardip = ip;
++		const u8 *ref;
++		u8 *token;
++
++		/* Find a match */
++		do {
++			u32 h = forwardh;
++			int step = findmatchattempts++ >> skipstrength;
++			ip = forwardip;
++			forwardip = ip + step;
++
++			if (forwardip > mflimit)
++				goto _last_literals;
++
++			forwardh = LZ4_HASH64K_VALUE(forwardip);
++			ref = base + hashtable[h];
++			hashtable[h] = (u16)(ip - base);
++		} while (A32(ref) != A32(ip));
++
++		/* Catch up */
++		while ((ip > anchor) && (ref > (u8 *)source)
++			&& (ip[-1] == ref[-1])) {
++			ip--;
++			ref--;
++		}
++
++		/* Encode Literal length */
++		length = (int)(ip - anchor);
++		token = op++;
++		/* Check output limit */
++		if (unlikely(op + length + (2 + 1 + LASTLITERALS)
++			+ (length >> 8) > oend))
++			return 0;
++		if (length >= (int)RUN_MASK) {
++			*token = (RUN_MASK << ML_BITS);
++			len = length - RUN_MASK;
++			for (; len > 254 ; len -= 255)
++				*op++ = 255;
++			*op++ = (u8)len;
++		} else
++			*token = (length << ML_BITS);
++
++		/* Copy Literals */
++		LZ4_BLINDCOPY(anchor, op, length);
++
++_next_match:
++		/* Encode Offset */
++		LZ4_WRITE_LITTLEENDIAN_16(op, (u16)(ip - ref));
++
++		/* Start Counting */
++		ip += MINMATCH;
++		/* MinMatch verified */
++		ref += MINMATCH;
++		anchor = ip;
++
++		while (ip < MATCHLIMIT - (STEPSIZE - 1)) {
++			#if LZ4_ARCH64
++			u64 diff = A64(ref) ^ A64(ip);
++			#else
++			u32 diff = A32(ref) ^ A32(ip);
++			#endif
++
++			if (!diff) {
++				ip += STEPSIZE;
++				ref += STEPSIZE;
++				continue;
++			}
++			ip += LZ4_NBCOMMONBYTES(diff);
++			goto _endcount;
++		}
++		#if LZ4_ARCH64
++		if ((ip < (MATCHLIMIT - 3)) && (A32(ref) == A32(ip))) {
++			ip += 4;
++			ref += 4;
++		}
++		#endif
++		if ((ip < (MATCHLIMIT - 1)) && (A16(ref) == A16(ip))) {
++			ip += 2;
++			ref += 2;
++		}
++		if ((ip < MATCHLIMIT) && (*ref == *ip))
++			ip++;
++_endcount:
++
++		/* Encode MatchLength */
++		len = (int)(ip - anchor);
++		/* Check output limit */
++		if (unlikely(op + (1 + LASTLITERALS) + (len >> 8) > oend))
++			return 0;
++		if (len >= (int)ML_MASK) {
++			*token += ML_MASK;
++			len -= ML_MASK;
++			for (; len > 509 ; len -= 510) {
++				*op++ = 255;
++				*op++ = 255;
++			}
++			if (len > 254) {
++				len -= 255;
++				*op++ = 255;
++			}
++			*op++ = (u8)len;
++		} else
++			*token += len;
++
++		/* Test end of chunk */
++		if (ip > mflimit) {
++			anchor = ip;
++			break;
++		}
++
++		/* Fill table */
++		hashtable[LZ4_HASH64K_VALUE(ip-2)] = (u16)(ip - 2 - base);
++
++		/* Test next position */
++		ref = base + hashtable[LZ4_HASH64K_VALUE(ip)];
++		hashtable[LZ4_HASH64K_VALUE(ip)] = (u16)(ip - base);
++		if (A32(ref) == A32(ip)) {
++			token = op++;
++			*token = 0;
++			goto _next_match;
++		}
++
++		/* Prepare next loop */
++		anchor = ip++;
++		forwardh = LZ4_HASH64K_VALUE(ip);
++	}
++
++_last_literals:
++	/* Encode Last Literals */
++	lastrun = (int)(iend - anchor);
++	if (op + lastrun + 1 + (lastrun - RUN_MASK + 255) / 255 > oend)
++		return 0;
++	if (lastrun >= (int)RUN_MASK) {
++		*op++ = (RUN_MASK << ML_BITS);
++		lastrun -= RUN_MASK;
++		for (; lastrun > 254 ; lastrun -= 255)
++			*op++ = 255;
++		*op++ = (u8)lastrun;
++	} else
++		*op++ = (lastrun << ML_BITS);
++	memcpy(op, anchor, iend - anchor);
++	op += iend - anchor;
++	/* End */
++	return (int)(((char *)op) - dest);
++}
++
++int lz4_compress(const unsigned char *src, size_t src_len,
++			unsigned char *dst, size_t *dst_len, void *wrkmem)
++{
++	int ret = -1;
++	int out_len = 0;
++
++	if (src_len < LZ4_64KLIMIT)
++		out_len = lz4_compress64kctx(wrkmem, src, dst, src_len,
++				lz4_compressbound(src_len));
++	else
++		out_len = lz4_compressctx(wrkmem, src, dst, src_len,
++				lz4_compressbound(src_len));
++
++	if (out_len < 0)
++		goto exit;
++
++	*dst_len = out_len;
++
++	return 0;
++exit:
++	return ret;
++}
++EXPORT_SYMBOL(lz4_compress);
++
++MODULE_LICENSE("Dual BSD/GPL");
++MODULE_DESCRIPTION("LZ4 compressor");
+diff --git a/lib/lz4/lz4_decompress.c b/lib/lz4/lz4_decompress.c
+new file mode 100644
+index 00000000..f0f5c5c3
+--- /dev/null
++++ b/lib/lz4/lz4_decompress.c
+@@ -0,0 +1,337 @@
++/*
++ * LZ4 Decompressor for Linux kernel
++ *
++ * Copyright (C) 2013, LG Electronics, Kyungsik Lee <kyungsik.lee@lge.com>
++ *
++ * Based on LZ4 implementation by Yann Collet.
++ *
++ * LZ4 - Fast LZ compression algorithm
++ * Copyright (C) 2011-2012, Yann Collet.
++ * BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions are
++ * met:
++ *
++ *     * Redistributions of source code must retain the above copyright
++ * notice, this list of conditions and the following disclaimer.
++ *     * Redistributions in binary form must reproduce the above
++ * copyright notice, this list of conditions and the following disclaimer
++ * in the documentation and/or other materials provided with the
++ * distribution.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
++ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
++ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
++ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
++ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
++ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
++ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
++ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
++ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
++ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ *
++ *  You can contact the author at :
++ *  - LZ4 homepage : http://fastcompression.blogspot.com/p/lz4.html
++ *  - LZ4 source repository : http://code.google.com/p/lz4/
++ */
++
++#ifndef STATIC
++#include <linux/module.h>
++#include <linux/kernel.h>
++#endif
++#include <linux/lz4.h>
++
++#include <asm/unaligned.h>
++
++#include "lz4defs.h"
++
++static int lz4_uncompress(const char *source, char *dest, int osize)
++{
++	const BYTE *ip = (const BYTE *) source;
++	const BYTE *ref;
++	BYTE *op = (BYTE *) dest;
++	BYTE * const oend = op + osize;
++	BYTE *cpy;
++	unsigned token;
++	size_t length;
++	size_t dec32table[] = {0, 3, 2, 3, 0, 0, 0, 0};
++#if LZ4_ARCH64
++	size_t dec64table[] = {0, 0, 0, -1, 0, 1, 2, 3};
++#endif
++
++	while (1) {
++
++		/* get runlength */
++		token = *ip++;
++		length = (token >> ML_BITS);
++		if (length == RUN_MASK) {
++			size_t len;
++
++			len = *ip++;
++			for (; len == 255; length += 255)
++				len = *ip++;
++			if (unlikely(length > (size_t)(length + len)))
++				goto _output_error;
++			length += len;
++		}
++
++		/* copy literals */
++		cpy = op + length;
++		if (unlikely(cpy > oend - COPYLENGTH)) {
++			/*
++			 * Error: not enough place for another match
++			 * (min 4) + 5 literals
++			 */
++			if (cpy != oend)
++				goto _output_error;
++
++			memcpy(op, ip, length);
++			ip += length;
++			break; /* EOF */
++		}
++		LZ4_WILDCOPY(ip, op, cpy);
++		ip -= (op - cpy);
++		op = cpy;
++
++		/* get offset */
++		LZ4_READ_LITTLEENDIAN_16(ref, cpy, ip);
++		ip += 2;
++
++		/* Error: offset create reference outside destination buffer */
++		if (unlikely(ref < (BYTE *const) dest))
++			goto _output_error;
++
++		/* get matchlength */
++		length = token & ML_MASK;
++		if (length == ML_MASK) {
++			for (; *ip == 255; length += 255)
++				ip++;
++			if (unlikely(length > (size_t)(length + *ip)))
++				goto _output_error;
++			length += *ip++;
++		}
++
++		/* copy repeated sequence */
++		if (unlikely((op - ref) < STEPSIZE)) {
++#if LZ4_ARCH64
++			size_t dec64 = dec64table[op - ref];
++#else
++			const int dec64 = 0;
++#endif
++			op[0] = ref[0];
++			op[1] = ref[1];
++			op[2] = ref[2];
++			op[3] = ref[3];
++			op += 4;
++			ref += 4;
++			ref -= dec32table[op-ref];
++			PUT4(ref, op);
++			op += STEPSIZE - 4;
++			ref -= dec64;
++		} else {
++			LZ4_COPYSTEP(ref, op);
++		}
++		cpy = op + length - (STEPSIZE - 4);
++		if (cpy > (oend - COPYLENGTH)) {
++
++			/* Error: request to write beyond destination buffer */
++			if (cpy > oend)
++				goto _output_error;
++			if ((ref + COPYLENGTH) > oend ||
++					(op + COPYLENGTH) > oend)
++				goto _output_error;
++			LZ4_SECURECOPY(ref, op, (oend - COPYLENGTH));
++			while (op < cpy)
++				*op++ = *ref++;
++			op = cpy;
++			/*
++			 * Check EOF (should never happen, since last 5 bytes
++			 * are supposed to be literals)
++			 */
++			if (op == oend)
++				goto _output_error;
++			continue;
++		}
++		LZ4_SECURECOPY(ref, op, cpy);
++		op = cpy; /* correction */
++	}
++	/* end of decoding */
++	return (int) (((char *)ip) - source);
++
++	/* write overflow error detected */
++_output_error:
++	return -1;
++}
++
++static int lz4_uncompress_unknownoutputsize(const char *source, char *dest,
++				int isize, size_t maxoutputsize)
++{
++	const BYTE *ip = (const BYTE *) source;
++	const BYTE *const iend = ip + isize;
++	const BYTE *ref;
++
++
++	BYTE *op = (BYTE *) dest;
++	BYTE * const oend = op + maxoutputsize;
++	BYTE *cpy;
++
++	size_t dec32table[] = {0, 3, 2, 3, 0, 0, 0, 0};
++#if LZ4_ARCH64
++	size_t dec64table[] = {0, 0, 0, -1, 0, 1, 2, 3};
++#endif
++
++	/* Main Loop */
++	while (ip < iend) {
++
++		unsigned token;
++		size_t length;
++
++		/* get runlength */
++		token = *ip++;
++		length = (token >> ML_BITS);
++		if (length == RUN_MASK) {
++			int s = 255;
++			while ((ip < iend) && (s == 255)) {
++				s = *ip++;
++				if (unlikely(length > (size_t)(length + s)))
++					goto _output_error;
++				length += s;
++			}
++		}
++		/* copy literals */
++		cpy = op + length;
++		if ((cpy > oend - COPYLENGTH) ||
++			(ip + length > iend - COPYLENGTH)) {
++
++			if (cpy > oend)
++				goto _output_error;/* writes beyond buffer */
++
++			if (ip + length != iend)
++				goto _output_error;/*
++						    * Error: LZ4 format requires
++						    * to consume all input
++						    * at this stage
++						    */
++			memcpy(op, ip, length);
++			op += length;
++			break;/* Necessarily EOF, due to parsing restrictions */
++		}
++		LZ4_WILDCOPY(ip, op, cpy);
++		ip -= (op - cpy);
++		op = cpy;
++
++		/* get offset */
++		LZ4_READ_LITTLEENDIAN_16(ref, cpy, ip);
++		ip += 2;
++		if (ref < (BYTE * const) dest)
++			goto _output_error;
++			/*
++			 * Error : offset creates reference
++			 * outside of destination buffer
++			 */
++
++		/* get matchlength */
++		length = (token & ML_MASK);
++		if (length == ML_MASK) {
++			while (ip < iend) {
++				int s = *ip++;
++				if (unlikely(length > (size_t)(length + s)))
++					goto _output_error;
++				length += s;
++				if (s == 255)
++					continue;
++				break;
++			}
++		}
++
++		/* copy repeated sequence */
++		if (unlikely((op - ref) < STEPSIZE)) {
++#if LZ4_ARCH64
++			size_t dec64 = dec64table[op - ref];
++#else
++			const int dec64 = 0;
++#endif
++				op[0] = ref[0];
++				op[1] = ref[1];
++				op[2] = ref[2];
++				op[3] = ref[3];
++				op += 4;
++				ref += 4;
++				ref -= dec32table[op - ref];
++				PUT4(ref, op);
++				op += STEPSIZE - 4;
++				ref -= dec64;
++		} else {
++			LZ4_COPYSTEP(ref, op);
++		}
++		cpy = op + length - (STEPSIZE-4);
++		if (cpy > oend - COPYLENGTH) {
++			if (cpy > oend)
++				goto _output_error; /* write outside of buf */
++
++			LZ4_SECURECOPY(ref, op, (oend - COPYLENGTH));
++			while (op < cpy)
++				*op++ = *ref++;
++			op = cpy;
++			/*
++			 * Check EOF (should never happen, since last 5 bytes
++			 * are supposed to be literals)
++			 */
++			if (op == oend)
++				goto _output_error;
++			continue;
++		}
++		LZ4_SECURECOPY(ref, op, cpy);
++		op = cpy; /* correction */
++	}
++	/* end of decoding */
++	return (int) (((char *) op) - dest);
++
++	/* write overflow error detected */
++_output_error:
++	return -1;
++}
++
++int lz4_decompress(const unsigned char *src, size_t *src_len,
++		unsigned char *dest, size_t actual_dest_len)
++{
++	int ret = -1;
++	int input_len = 0;
++
++	input_len = lz4_uncompress(src, dest, actual_dest_len);
++	if (input_len < 0)
++		goto exit_0;
++	*src_len = input_len;
++
++	return 0;
++exit_0:
++	return ret;
++}
++#ifndef STATIC
++EXPORT_SYMBOL(lz4_decompress);
++#endif
++
++int lz4_decompress_unknownoutputsize(const unsigned char *src, size_t src_len,
++		unsigned char *dest, size_t *dest_len)
++{
++	int ret = -1;
++	int out_len = 0;
++
++	out_len = lz4_uncompress_unknownoutputsize(src, dest, src_len,
++					*dest_len);
++	if (out_len < 0)
++		goto exit_0;
++	*dest_len = out_len;
++
++	return 0;
++exit_0:
++	return ret;
++}
++#ifndef STATIC
++EXPORT_SYMBOL(lz4_decompress_unknownoutputsize);
++
++MODULE_LICENSE("Dual BSD/GPL");
++MODULE_DESCRIPTION("LZ4 Decompressor");
++#endif
+diff --git a/lib/lz4/lz4defs.h b/lib/lz4/lz4defs.h
+new file mode 100644
+index 00000000..0710a62a
+--- /dev/null
++++ b/lib/lz4/lz4defs.h
+@@ -0,0 +1,159 @@
++/*
++ * lz4defs.h -- architecture specific defines
++ *
++ * Copyright (C) 2013, LG Electronics, Kyungsik Lee <kyungsik.lee@lge.com>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++
++/*
++ * Detects 64 bits mode
++ */
++#if defined(CONFIG_64BIT)
++#define LZ4_ARCH64 1
++#else
++#define LZ4_ARCH64 0
++#endif
++
++/*
++ * Architecture-specific macros
++ */
++#define BYTE	u8
++typedef struct _U16_S { u16 v; } U16_S;
++typedef struct _U32_S { u32 v; } U32_S;
++typedef struct _U64_S { u64 v; } U64_S;
++#if defined(CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS)		\
++	|| defined(CONFIG_ARM) && __LINUX_ARM_ARCH__ >= 6	\
++	&& defined(ARM_EFFICIENT_UNALIGNED_ACCESS)
++
++#define A16(x) (((U16_S *)(x))->v)
++#define A32(x) (((U32_S *)(x))->v)
++#define A64(x) (((U64_S *)(x))->v)
++
++#define PUT4(s, d) (A32(d) = A32(s))
++#define PUT8(s, d) (A64(d) = A64(s))
++
++#define LZ4_READ_LITTLEENDIAN_16(d, s, p)	\
++	(d = s - A16(p))
++
++#define LZ4_WRITE_LITTLEENDIAN_16(p, v)	\
++	do {	\
++		A16(p) = v; \
++		p += 2; \
++	} while (0)
++#else /* CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS */
++
++#define A64(x) get_unaligned((u64 *)&(((U16_S *)(x))->v))
++#define A32(x) get_unaligned((u32 *)&(((U16_S *)(x))->v))
++#define A16(x) get_unaligned((u16 *)&(((U16_S *)(x))->v))
++
++#define PUT4(s, d) \
++	put_unaligned(get_unaligned((const u32 *) s), (u32 *) d)
++#define PUT8(s, d) \
++	put_unaligned(get_unaligned((const u64 *) s), (u64 *) d)
++
++#define LZ4_READ_LITTLEENDIAN_16(d, s, p)	\
++	(d = s - get_unaligned_le16(p))
++
++#define LZ4_WRITE_LITTLEENDIAN_16(p, v)			\
++	do {						\
++		put_unaligned_le16(v, (u16 *)(p));	\
++		p += 2;					\
++	} while (0)
++#endif
++
++#define COPYLENGTH 8
++#define ML_BITS  4
++#define ML_MASK  ((1U << ML_BITS) - 1)
++#define RUN_BITS (8 - ML_BITS)
++#define RUN_MASK ((1U << RUN_BITS) - 1)
++#define MEMORY_USAGE	14
++#define MINMATCH	4
++#define SKIPSTRENGTH	6
++#define LASTLITERALS	5
++#define MFLIMIT		(COPYLENGTH + MINMATCH)
++#define MINLENGTH	(MFLIMIT + 1)
++#define MAXD_LOG	16
++#define MAXD		(1 << MAXD_LOG)
++#define MAXD_MASK	(u32)(MAXD - 1)
++#define MAX_DISTANCE	(MAXD - 1)
++#define HASH_LOG	(MAXD_LOG - 1)
++#define HASHTABLESIZE	(1 << HASH_LOG)
++#define MAX_NB_ATTEMPTS	256
++#define OPTIMAL_ML	(int)((ML_MASK-1)+MINMATCH)
++#define LZ4_64KLIMIT	((1<<16) + (MFLIMIT - 1))
++#define HASHLOG64K	((MEMORY_USAGE - 2) + 1)
++#define HASH64KTABLESIZE	(1U << HASHLOG64K)
++#define LZ4_HASH_VALUE(p)	(((A32(p)) * 2654435761U) >> \
++				((MINMATCH * 8) - (MEMORY_USAGE-2)))
++#define LZ4_HASH64K_VALUE(p)	(((A32(p)) * 2654435761U) >> \
++				((MINMATCH * 8) - HASHLOG64K))
++#define HASH_VALUE(p)		(((A32(p)) * 2654435761U) >> \
++				((MINMATCH * 8) - HASH_LOG))
++
++#if LZ4_ARCH64/* 64-bit */
++#define STEPSIZE 8
++
++#define LZ4_COPYSTEP(s, d)	\
++	do {			\
++		PUT8(s, d);	\
++		d += 8;		\
++		s += 8;		\
++	} while (0)
++
++#define LZ4_COPYPACKET(s, d)	LZ4_COPYSTEP(s, d)
++
++#define LZ4_SECURECOPY(s, d, e)			\
++	do {					\
++		if (d < e) {			\
++			LZ4_WILDCOPY(s, d, e);	\
++		}				\
++	} while (0)
++#define HTYPE u32
++
++#ifdef __BIG_ENDIAN
++#define LZ4_NBCOMMONBYTES(val) (__builtin_clzll(val) >> 3)
++#else
++#define LZ4_NBCOMMONBYTES(val) (__builtin_ctzll(val) >> 3)
++#endif
++
++#else	/* 32-bit */
++#define STEPSIZE 4
++
++#define LZ4_COPYSTEP(s, d)	\
++	do {			\
++		PUT4(s, d);	\
++		d += 4;		\
++		s += 4;		\
++	} while (0)
++
++#define LZ4_COPYPACKET(s, d)		\
++	do {				\
++		LZ4_COPYSTEP(s, d);	\
++		LZ4_COPYSTEP(s, d);	\
++	} while (0)
++
++#define LZ4_SECURECOPY	LZ4_WILDCOPY
++#define HTYPE const u8*
++
++#ifdef __BIG_ENDIAN
++#define LZ4_NBCOMMONBYTES(val) (__builtin_clz(val) >> 3)
++#else
++#define LZ4_NBCOMMONBYTES(val) (__builtin_ctz(val) >> 3)
++#endif
++
++#endif
++
++#define LZ4_WILDCOPY(s, d, e)		\
++	do {				\
++		LZ4_COPYPACKET(s, d);	\
++	} while (d < e)
++
++#define LZ4_BLINDCOPY(s, d, l)	\
++	do {	\
++		u8 *e = (d) + l;	\
++		LZ4_WILDCOPY(s, d, e);	\
++		d = e;	\
++	} while (0)

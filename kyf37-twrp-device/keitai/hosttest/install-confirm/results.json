@@ -1,0 +1,22 @@
+[
+ [
+  "shot",
+  "30-install-confirm",
+  1639680
+ ],
+ [
+  "shot",
+  "31-verify-toggled",
+  1639680
+ ],
+ [
+  "shot",
+  "32-back-cancels",
+  1639680
+ ],
+ [
+  "log",
+  "queuezip",
+  false
+ ]
+]
