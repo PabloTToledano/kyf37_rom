@@ -1,0 +1,4 @@
+#!/bin/bash
+# Scroll benchmark: Settings D-pad navigation, prints jank stats from gfxinfo. Usage: tools/gpu-jank-test.sh [label]. Needs the phone lock.
+export MSYS_NO_PATHCONV=1; A=C:/Users/pablo/Downloads/platform-tools-latest-windows/platform-tools/adb.exe
+$A shell "svc power stayon true; input keyevent KEYCODE_WAKEUP; input keyevent KEYCODE_DPAD_CENTER; am force-stop com.android.settings; am start -n com.android.settings/.Settings >/dev/null; sleep 4; dumpsys gfxinfo com.android.settings reset >/dev/null; i=0; while [ \$i -lt 30 ]; do input keyevent KEYCODE_DPAD_DOWN; sleep 0.12; i=\$((i+1)); done; i=0; while [ \$i -lt 30 ]; do input keyevent KEYCODE_DPAD_UP; sleep 0.12; i=\$((i+1)); done; sleep 1; dumpsys gfxinfo com.android.settings | grep -E 'Total frames|Janky|50th|90th|95th|99th|Missed Vsync|High input|Slow UI|Slow bitmap|Slow issue|Frame deadline'" | sed "s/^/[$1] /"

@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "classic_icons": 80,
+  "settings_icon_counts": [
+    80,
+    80
+  ],
+  "handset_wallpaper_entries": [
+    "res/drawable-hdpi-v4/default_wallpaper.png"
+  ],
+  "source": "final v23 build APKs",
+  "hardware_verified": false,
+  "asset_hashes": {
+    "priv-app/Kyf37Home/Kyf37Home.apk": "dda7c3afd0750f80646c2cda0449decf3fba05eba5ba737182e571ad39fb5bbd",
+    "product/priv-app/Settings/Settings.apk": "7f779c4c1ed9de86b241c17e9b9bab42f8637f9bfa0440c4ef26d7871206f8bc",
+    "app/Kyf37PhoneSettings/Kyf37PhoneSettings.apk": "fc66b9fb3e7e0d8b97198600a6e596b263b96c03de2b1a8f470392d719d2781c",
+    "framework/framework-res.apk": "d83ec78bcd1543cdb44a06d975e0cf29952e8eb560140454402a1be2e00cfab8"
+  }
+}

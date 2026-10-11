@@ -1,0 +1,24 @@
+{
+  "revision": "v22",
+  "date": "2026-10-11",
+  "serial": "981108631314",
+  "flash_success": true,
+  "boot_completed": true,
+  "userdata_preserved": true,
+  "installer_readback_and_protected_partition_checks_passed": true,
+  "rollback": "/external_sd/KYF37-Android10-rollback-20171201-075023-276",
+  "home_wallpaper_folder_screenshots_checked": true,
+  "brightness_nodes": [
+    40,
+    180
+  ],
+  "brightness_restored": 10,
+  "sim_state": "LOADED",
+  "operator": "Movistar",
+  "mobile_data": "GPRS; ping bound to rmnet_data0, 2/2 received",
+  "wifi": "Enabled, disconnected; reconnection unresolved",
+  "stable_uptime_observed_seconds": 902,
+  "crash_buffer_empty_at_check": true,
+  "limits": "More than 15 minutes uptime observed before intentional recovery reboot; calls/SMS/LTE and complete hardware coverage not established",
+  "post_flash_update": "Original-icon fallback launcher APK installed separately without flashing"
+}

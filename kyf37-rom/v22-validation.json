@@ -1,0 +1,27 @@
+{
+  "revision": "v22",
+  "zip": "C:\\Users\\pablo\\Documents\\ChatGPT\\flipphone_roms\\kyf37-rom\\kyf37-android10-go-20261007-twrp-v22.zip",
+  "bytes": 917452177,
+  "sha256": "007659dabcaacf383733d73b6673b8eb7b2b3f5dd8efc6fe14f936a3137848e9",
+  "zip_crc_and_payload_hashes_verified": true,
+  "installer_tests": {
+    "tests": {
+      "success": "passed",
+      "check-only": "passed",
+      "wrong-model": "passed",
+      "wrong-keystore": "passed",
+      "corrupt-payload": "passed",
+      "no-space": "passed",
+      "mounted-alias": "passed",
+      "system-write-failure": "passed",
+      "system-readback-failure": "passed"
+    },
+    "scope": "Host shell flow with temporary-file fixtures and mocked recovery commands; no phone or block devices accessed."
+  },
+  "phone_accessed": false,
+  "hardware_installation_tested": false,
+  "hardware_boot_verified": false,
+  "backup_required": true,
+  "automatic_reboot": false,
+  "userdata_wipe": false
+}
